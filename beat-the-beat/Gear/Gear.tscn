@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://cyihb2h16dtpe"]
+
+[ext_resource type="Texture2D" uid="uid://vd2wt6014vt5" path="res://assets/gear.png" id="2_ody3a"]
+
+[node name="Gear" type="Node2D"]
+
+[node name="Just to Fill" type="ColorRect" parent="."]
+offset_left = -195.0
+offset_top = 231.0
+offset_right = 196.0
+offset_bottom = 316.0
+
+[node name="Background" type="ColorRect" parent="."]
+offset_left = -196.0
+offset_top = -318.0
+offset_right = 195.0
+offset_bottom = 226.0
+color = Color(0, 0, 0, 0.572549)
+
+[node name="Gear" type="Sprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(1.8, 1.8)
+texture = ExtResource("2_ody3a")

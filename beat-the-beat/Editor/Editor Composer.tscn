@@ -1,0 +1,225 @@
+[gd_scene load_steps=7 format=3 uid="uid://dw4rs74gsagrn"]
+
+[ext_resource type="Script" uid="uid://ddx3q78woi7jl" path="res://Editor/SoundComponentsItems.gd" id="1_7fqon"]
+[ext_resource type="Script" uid="uid://c62vpgbd1d1qy" path="res://Editor/EditorComposer.gd" id="1_a7m05"]
+[ext_resource type="Script" uid="uid://jr7inyppvgoi" path="res://Editor/GameComponentsList.gd" id="1_sakc5"]
+[ext_resource type="Script" uid="uid://b5sxt0fdx3nd3" path="res://Editor/Game.gd" id="2_d6op5"]
+[ext_resource type="Script" uid="uid://cr1l58jmclcj" path="res://Editor/SoundBoard.gd" id="3_ty45h"]
+[ext_resource type="AudioStream" uid="uid://bmdadx4pafmd6" path="res://Sound Test Sample/Brutal, acabou pro beta versão globo.mp3" id="5_d6op5"]
+
+[node name="Editor Composer" type="VBoxContainer"]
+clip_contents = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_a7m05")
+
+[node name="MenuBar" type="FlowContainer" parent="."]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Button" type="Button" parent="MenuBar"]
+layout_mode = 2
+text = "File"
+
+[node name="Button2" type="Button" parent="MenuBar"]
+layout_mode = 2
+text = "Edit"
+
+[node name="Button3" type="Button" parent="MenuBar"]
+layout_mode = 2
+text = "Compose"
+
+[node name="Button4" type="Button" parent="MenuBar"]
+layout_mode = 2
+text = "Test"
+
+[node name="Middle" type="HBoxContainer" parent="."]
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="Sound Components List" type="ItemList" parent="Middle"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+script = ExtResource("1_7fqon")
+
+[node name="Close Button" type="Button" parent="Middle/Sound Components List"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -24.65
+offset_top = -15.5
+offset_right = -6.64999
+offset_bottom = 15.5
+grow_horizontal = 0
+grow_vertical = 2
+text = "<"
+
+[node name="Resize Button" type="Button" parent="Middle/Sound Components List"]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -6.0
+offset_right = 2.0
+grow_horizontal = 0
+grow_vertical = 2
+scale = Vector2(0.5, 1)
+mouse_default_cursor_shape = 10
+
+[node name="Game" type="PanelContainer" parent="Middle"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Game" type="Button" parent="Middle/Game"]
+clip_contents = true
+layout_mode = 2
+flat = true
+script = ExtResource("2_d6op5")
+
+[node name="Focus Effect" type="ReferenceRect" parent="Middle/Game/Game"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+border_color = Color(1, 1, 1, 1)
+border_width = 5.0
+editor_only = false
+
+[node name="Game Components List" type="ItemList" parent="Middle"]
+clip_contents = false
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.0
+item_count = 13
+item_0/text = "- TOOLS -"
+item_0/selectable = false
+item_1/text = "Select"
+item_2/text = "Un/lock"
+item_3/text = "- NOTES -"
+item_3/selectable = false
+item_4/text = "Tap"
+item_5/text = "Hold"
+item_6/text = "- EFFECTS -"
+item_6/selectable = false
+item_7/text = "Power"
+item_8/text = "Speed"
+item_9/text = "Fade"
+item_10/text = "Sound"
+item_11/text = "- ANNOTATION -"
+item_11/selectable = false
+item_12/text = "Note"
+script = ExtResource("1_sakc5")
+
+[node name="Resize Button" type="Button" parent="Middle/Game Components List"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = -2.0
+offset_right = 6.0
+grow_vertical = 2
+scale = Vector2(0.5, 1)
+mouse_default_cursor_shape = 10
+
+[node name="SoundBoard" type="FlowContainer" parent="."]
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 8
+script = ExtResource("3_ty45h")
+
+[node name="Time" type="TextEdit" parent="SoundBoard"]
+custom_minimum_size = Vector2(120, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "00:00:000"
+placeholder_text = "00:00:000"
+emoji_menu_enabled = false
+drag_and_drop_selection_enabled = false
+
+[node name="Time Percentage" type="TextEdit" parent="SoundBoard"]
+custom_minimum_size = Vector2(70, 40)
+layout_mode = 2
+size_flags_vertical = 4
+text = "0.0%"
+placeholder_text = "0.0%"
+emoji_menu_enabled = false
+drag_and_drop_selection_enabled = false
+
+[node name="Play" type="Button" parent="SoundBoard"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "Play"
+
+[node name="Stop" type="Button" parent="SoundBoard"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "Reset"
+
+[node name="SpeedContainer" type="VBoxContainer" parent="SoundBoard"]
+layout_mode = 2
+alignment = 1
+
+[node name="SpeedText" type="TextEdit" parent="SoundBoard/SpeedContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "100%"
+placeholder_text = "0%"
+emoji_menu_enabled = false
+drag_and_drop_selection_enabled = false
+scroll_past_end_of_file = true
+scroll_fit_content_height = true
+
+[node name="SpeedSlider" type="HSlider" parent="SoundBoard/SpeedContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_vertical = 4
+min_value = 1.0
+max_value = 300.0
+value = 100.0
+tick_count = 4
+ticks_on_borders = true
+
+[node name="Time Slider" type="HSlider" parent="SoundBoard"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+step = 0.1
+tick_count = 15
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_d6op5")
+
+[connection signal="pressed" from="Middle/Sound Components List/Close Button" to="Middle/Sound Components List" method="_on_close_button_pressed"]
+[connection signal="button_down" from="Middle/Sound Components List/Resize Button" to="Middle/Sound Components List" method="_on_resize_button_down"]
+[connection signal="button_up" from="Middle/Sound Components List/Resize Button" to="Middle/Sound Components List" method="_on_resize_button_up"]
+[connection signal="item_selected" from="Middle/Game Components List" to="Middle/Game Components List" method="_on_item_selected"]
+[connection signal="button_down" from="Middle/Game Components List/Resize Button" to="Middle/Game Components List" method="_on_resize_button_button_down"]
+[connection signal="button_up" from="Middle/Game Components List/Resize Button" to="Middle/Game Components List" method="_on_resize_button_button_up"]
+[connection signal="focus_entered" from="SoundBoard/Time" to="SoundBoard" method="_on_time_focus_entered"]
+[connection signal="focus_exited" from="SoundBoard/Time" to="SoundBoard" method="_on_time_focus_exited"]
+[connection signal="text_changed" from="SoundBoard/Time" to="SoundBoard" method="_on_time_text_changed"]
+[connection signal="focus_exited" from="SoundBoard/Time Percentage" to="SoundBoard" method="_on_time_percentage_focus_exited"]
+[connection signal="text_changed" from="SoundBoard/Time Percentage" to="SoundBoard" method="_on_time_percentage_text_changed"]
+[connection signal="pressed" from="SoundBoard/Play" to="SoundBoard" method="_on_play_pressed"]
+[connection signal="pressed" from="SoundBoard/Stop" to="SoundBoard" method="_on_stop_pressed"]
+[connection signal="focus_exited" from="SoundBoard/SpeedContainer/SpeedText" to="SoundBoard" method="_on_speed_text_focus_exited"]
+[connection signal="text_changed" from="SoundBoard/SpeedContainer/SpeedText" to="SoundBoard" method="_on_speed_text_text_changed"]
+[connection signal="drag_ended" from="SoundBoard/SpeedContainer/SpeedSlider" to="SoundBoard" method="_on_speed_slider_drag_ended"]
+[connection signal="drag_started" from="SoundBoard/SpeedContainer/SpeedSlider" to="SoundBoard" method="_on_speed_slider_drag_started"]
+[connection signal="drag_ended" from="SoundBoard/Time Slider" to="SoundBoard" method="_on_time_slider_drag_ended"]
+[connection signal="drag_started" from="SoundBoard/Time Slider" to="SoundBoard" method="_on_time_slider_drag_started"]

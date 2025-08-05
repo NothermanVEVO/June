@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://ckm76q263gm2s"]
+
+[ext_resource type="Script" uid="uid://i8p2ri84j03i" path="res://MusicPlayer.gd" id="1_glv2v"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_glv2v")
