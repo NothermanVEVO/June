@@ -85,6 +85,7 @@ clip_contents = true
 layout_mode = 2
 flat = true
 script = ExtResource("2_d6op5")
+keys_quantity = null
 
 [node name="Focus Effect" type="ReferenceRect" parent="Middle/Game/Game"]
 layout_mode = 1

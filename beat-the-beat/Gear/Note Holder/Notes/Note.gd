@@ -2,24 +2,23 @@ extends NinePatchRect
 
 class_name Note
 
-static var _speed = 200
+enum State{TO_HIT, HITTED, BREAK}
 
-static var img = preload("res://assets/noteFormated.png")
+const NORMAL_NOTE_IMG = preload("res://assets/noteFormated.png")
 
-static var height = 25
+static var height : int = 25
 
 var _current_time : float
+
+var state : State = State.TO_HIT
 
 func _init(current_time : float) -> void:
 	_current_time = current_time
 	
-	texture = img
-	custom_minimum_size = Vector2(NoteHolder.width, height)
-	position = Vector2(-custom_minimum_size / 2)
+	texture = NORMAL_NOTE_IMG
+	size = Vector2(NoteHolder.width, height)
+	position = Vector2(-size / 2)
 	z_index = 1
-
-func _physics_process(delta: float) -> void:
-	global_position.y += _speed * delta
 
 #func _draw() -> void:
 	#draw_rect(Rect2(-NoteHolder.width / 2, -12.5, NoteHolder.width, 25), Color.BLUE_VIOLET)
@@ -30,6 +29,3 @@ func set_time(time : float) -> void:
 
 func get_time() -> float:
 	return _current_time
-
-static func get_speed() -> float:
-	return _speed

@@ -6,9 +6,10 @@ var _gear : Gear
 
 func _ready() -> void:
 	# TEMP ===========
-	_gear = Gear.new(Gear.Type.SIX_KEYS)
-	add_child(_gear)
+	#_gear = Gear.new(Gear.Type.SIX_KEYS)
+	#add_child(_gear)
 	# TEMP ===========
+	pass
 
 func _physics_process(delta: float) -> void:
 	#if Input.is_action_just_pressed("ui_accept"):

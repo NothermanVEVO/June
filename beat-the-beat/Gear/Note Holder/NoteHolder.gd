@@ -5,40 +5,74 @@ class_name NoteHolder
 var note_action : String = ""
 
 var _notes : Array[Note]
+var _note_idx : int = 0
 
 static var width : float = 0.0
 const max_note_distance : float = 100.0
 
 var _pos_x := 0.0
-static var _hit_zone_y := 0.0
+static var _hit_zone_y : float = -50.0 # SET THE POSITION OF THE HITZONE #NOTE
 
-const SECS_SIZE_Y = 10
+const SECS_SIZE_Y = 10 # SPEED OF THE GAME
 
-static var current_time : float = 0.0 #TODO #TODO #TODO ...
+var _last_visible_notes : Array[Note] = []
 
 func _init(note_action : String, pos_x : float) -> void:
 	self.note_action = note_action
 	_pos_x = pos_x
 
 func _ready() -> void:
-	_hit_zone_y = get_viewport_rect().size.y - 20 # SET THE POSITION OF THE HITZONE #NOTE
-	global_position = Vector2(_pos_x, _hit_zone_y)
+	position = Vector2(_pos_x, _hit_zone_y)
 
 func _physics_process(delta: float) -> void:
 	if _notes:
-		if _notes[0].global_position.y > global_position.y + max_note_distance:
-			print("BREAK")
-			_notes[0].queue_free()
-			_notes.remove_at(0)
+		match Gear.mode:
+			Gear.Mode.PLAYER:
+				_player_process()
+			Gear.Mode.EDITOR:
+				_editor_process()
+	#if _notes: # NOTE REDO
+		#if _notes[0].global_position.y > global_position.y + max_note_distance:
+			#print("BREAK")
+			#_notes[0].state = Note.State.BREAK
+			#_notes[0].visible = false
+			##_notes[0].queue_free()
+			##_notes.remove_at(0)
+
+func _player_process() -> void:
 	if Input.is_action_just_pressed(note_action):
 		_hit()
 
-func _hit() -> void:
-	if _notes:
-		if abs(_notes[0].global_position.y + (Note.height / 2) - global_position.y) <= max_note_distance:
-			print(_calculate_round_precision(_notes[0]))
-			_notes[0].queue_free()
-			_notes.remove_at(0)
+func _editor_process() -> void:
+	var time : float = Song.get_time()
+	
+	var notes := get_notes(time, time + SECS_SIZE_Y)
+	
+	for note in _last_visible_notes:
+		if not note in notes:
+			note.visible = false
+			notes.erase(note)
+			
+	for note in notes:
+		note.visible = true
+		note.position.x = -width / 2
+		note.position.y = -get_local_pos_y_correct(Note.height / 2, Gear.get_max_size_y() + Note.height / 2, note.get_time(), time, time + SECS_SIZE_Y)# + (Note.height / 2)
+		
+		if note is HoldNote and note.get_start_time() < time:
+			var difference = -get_local_pos_y_correct(0, Gear.get_max_size_y(), note.get_time() + (time - note.get_time()), note.get_time(), note.get_time() + SECS_SIZE_Y)
+			note.position.y -= difference
+	
+	_last_visible_notes = notes
+
+func _hit() -> void: # NOTE REDO
+	#if _notes:
+		#if abs(_notes[0].global_position.y + (Note.height / 2) - global_position.y) <= max_note_distance:
+			#print(_calculate_round_precision(_notes[0]))
+			#_notes[0].state = Note.State.HITTED
+			#_notes[0].visible = false
+			#_notes[0].queue_free()
+			#_notes.remove_at(0)
+	pass
 
 func _calculate_difference(note : Note) -> float:
 	var note_pos = -(note.global_position.y + (Note.height / 2) - global_position.y)
@@ -91,11 +125,18 @@ func add_note(note : Note) -> void:
 			low = mid + 1
 
 	_notes.insert(low, note)
+	add_child(note)
+	note.visible = false
 
 func get_notes(from : float, to : float) -> Array[Note]:
-	var result: Array[Note] = []
+	var result : Array[Note] = []
 	var low := 0
 	var high := _notes.size()
+
+	for note in _notes:
+		if note is HoldNote and (note.get_start_time() < from and note.get_end_time() > from):
+			result.append(note)
+			break
 
 	while low < high:
 		var mid := (low + high) / 2
@@ -116,12 +157,27 @@ static func get_hitzone() -> float:
 
 func _draw() -> void:
 	var pos = Vector2.ZERO
-	var rect_size_y = 25
+	var rect_size_y = Note.height
 	var pos_x = pos.x - width / 2
 	var pos_y = pos.y - (rect_size_y / 2)
 	draw_rect(Rect2(pos_x, pos_y, width, rect_size_y), Color.BLUE)
-	draw_line(Vector2(pos_x, pos_y), Vector2(pos_x, pos_y - 1000), Color.WHITE)
-	draw_line(Vector2(pos_x + width, pos_y), Vector2(pos_x + width, pos_y - 1000), Color.WHITE)
+	draw_line(Vector2(pos_x, pos_y), Vector2(pos_x, pos_y - Gear.get_max_size_y()), Color.WHITE)
+	draw_line(Vector2(pos_x + width, pos_y), Vector2(pos_x + width, pos_y - Gear.get_max_size_y()), Color.WHITE)
 	draw_circle(pos, 5, Color.YELLOW)
 	draw_circle(Vector2(pos.x, pos.y - max_note_distance), 
 		5, Color.RED)
+
+static func get_time_pos_y(min_pos_y : float, max_pos_y : float, pos_y : float, min_time : float, max_time : float) -> float:
+	var percentage = Global.get_percentage_between(min_pos_y, max_pos_y, pos_y)
+	var value = min_time + (max_time - min_time) * percentage
+	return clampf(value, min_time, max_time)
+
+static func get_local_pos_y(min_pos_y : float, max_pos_y : float, time_pos_y : float, min_time : float, max_time : float) -> float:
+	var percentage = Global.get_percentage_between(min_time, max_time, time_pos_y)
+	var value = min_pos_y + (max_pos_y - min_pos_y) * percentage
+	return clampf(value, max_pos_y, min_pos_y)
+
+static func get_local_pos_y_correct(min_pos_y : float, max_pos_y : float, time_pos_y : float, min_time : float, max_time : float) -> float:
+	var percentage = Global.get_percentage_between(min_time, max_time, time_pos_y)
+	var value = min_pos_y + (max_pos_y - min_pos_y) * percentage
+	return clampf(value, min_pos_y, max_pos_y)

@@ -11,11 +11,26 @@ const width := 500
 
 var _center_screen : bool = true
 
-func _init(type : Type, center_screen : bool = true) -> void:
+enum Mode{PLAYER, EDITOR}
+static var mode : Mode
+
+static var _max_size_y : float = -1
+
+static var current_time : float = 0.0
+
+func _init(type : Type, mode : Mode, center_screen : bool = true, max_size_y : float = -1) -> void:
 	_type = type
+	self.mode = mode
 	_center_screen = center_screen
+	if max_size_y >= 0:
+		_max_size_y = max_size_y
 
 func _ready() -> void: #TODO HANDLE ANY POSITION FOR THE GEAR, NOT ONLY THE MIDDLE
+	if _max_size_y < 0:
+		_max_size_y = get_viewport_rect().size.y + Note.height
+	
+	_note_holders.clear()
+	
 	NoteHolder.width = width / _type
 	var initial_x
 	if _center_screen:
@@ -40,6 +55,9 @@ static func get_note_holders_global_position() -> Array[Vector2]:
 	for note_holder in _note_holders:
 		array.append(note_holder.global_position)
 	return array
+
+static func get_max_size_y() -> float:
+	return _max_size_y
 
 func _draw() -> void:
 	draw_circle(Vector2.ZERO, 10, Color.AQUA)

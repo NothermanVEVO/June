@@ -2,7 +2,7 @@ extends FlowContainer
 
 class_name SoundBoard
 
-@onready var song : AudioStreamPlayer = $"../AudioStreamPlayer"
+@onready var song : Song = $"../AudioStreamPlayer"
 
 ## SPEED TEXT AND SLIDER			-- START --
 @onready var speed_text : TextEdit = $SpeedContainer/SpeedText
@@ -44,7 +44,7 @@ var last_valid_time_pos_text : String = ""
 var song_was_playing : bool = false
 
 # SONG VARS
-var _temp_song_time_pos : float = 0.0
+static var _temp_song_time_pos : float = 0.0
 var _song_finished : bool = false
 
 func _ready() -> void:
@@ -83,6 +83,8 @@ func _process(delta: float) -> void:
 	if is_dragging_time_slider:
 		time_text.text = (str(time_slider.value) + "%")
 		_temp_song_time_pos = song.stream.get_length() * time_slider.value / 100
+		song.set_time(_temp_song_time_pos)
+		#song.seek(_temp_song_time_pos)
 		_adjust_time_pos_text(true)
 	if last_time_value != time_slider.value:
 		time_text.text = str(time_slider.value) + "%"
@@ -93,7 +95,7 @@ func _process(delta: float) -> void:
 		
 	## SONG
 	if song.playing: # THE SONG IS PLAYING
-		time_slider.value = song.get_playback_position() * 100 / song.stream.get_length()
+		time_slider.value = song.get_time() * 100 / song.stream.get_length()
 		_adjust_time_pos_text()
 	elif _song_finished: # THE SONG FINISHED
 		time_slider.value = 100.0
@@ -320,6 +322,7 @@ func _on_time_text_changed(force_change : bool = false) -> void:
 		var miliseconds : float = str_to_var("0." + values[2])
 		var absolute_seconds : float = minutes * 60 + seconds + miliseconds
 		_temp_song_time_pos = absolute_seconds
+		song.set_time(_temp_song_time_pos)
 		time_pos_text.release_focus()
 
 func _on_time_focus_entered() -> void:
@@ -342,6 +345,9 @@ func _on_stop_pressed() -> void:
 	time_slider.value = 0.0
 	_on_time_slider_drag_ended(false)
 	#_adjust_time_pos_text()
+
+static func get_temp_song_time_pos() -> float:
+	return _temp_song_time_pos
 
 func get_time_pos() -> float:
 	if $Play.text == "Pause":
