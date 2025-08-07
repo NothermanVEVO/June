@@ -207,6 +207,8 @@ script = ExtResource("6_a7m05")
 [connection signal="pressed" from="Middle/Sound Components List/Close Button" to="Middle/Sound Components List" method="_on_close_button_pressed"]
 [connection signal="button_down" from="Middle/Sound Components List/Resize Button" to="Middle/Sound Components List" method="_on_resize_button_down"]
 [connection signal="button_up" from="Middle/Sound Components List/Resize Button" to="Middle/Sound Components List" method="_on_resize_button_up"]
+[connection signal="mouse_entered" from="Middle/Game/Game" to="Middle/Game/Game" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Middle/Game/Game" to="Middle/Game/Game" method="_on_mouse_exited"]
 [connection signal="item_selected" from="Middle/Game Components List" to="Middle/Game Components List" method="_on_item_selected"]
 [connection signal="button_down" from="Middle/Game Components List/Resize Button" to="Middle/Game Components List" method="_on_resize_button_button_down"]
 [connection signal="button_up" from="Middle/Game Components List/Resize Button" to="Middle/Game Components List" method="_on_resize_button_button_up"]

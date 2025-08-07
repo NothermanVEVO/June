@@ -9,11 +9,12 @@ var gear : Gear
 @onready var soundboard : SoundBoard = $"../../../SoundBoard"
 
 var sample_tap_note : NoteEditor
-var last_item_tap_pos : Vector2 = Vector2(-10000000, -10000000)
 
 var _hit_zone_y : float
 
 var _currently_hold_note : HoldNote
+
+var _is_mouse_inside : bool = false
 
 func _ready() -> void:
 	match keys_quantity:
@@ -29,20 +30,12 @@ func _ready() -> void:
 	
 	sample_tap_note = NoteEditor.new(0, true)
 	add_child(sample_tap_note)
-	sample_tap_note.position = last_item_tap_pos
+	sample_tap_note.position = Vector2(-10000000, -10000000)
 	sample_tap_note.modulate = Color(1, 1, 1, 0.5)
 
 func _resized() -> void:
-	remove_child(gear)
 	_hit_zone_y = size.y + NoteHolder.get_hitzone()
-	match keys_quantity:
-		4:
-			gear = Gear.new(Gear.Type.FOUR_KEYS, Gear.Mode.EDITOR, false, _hit_zone_y)
-		5:
-			gear = Gear.new(Gear.Type.FIVE_KEYS, Gear.Mode.EDITOR, false, _hit_zone_y)
-		6:
-			gear = Gear.new(Gear.Type.SIX_KEYS, Gear.Mode.EDITOR, false, _hit_zone_y)
-	add_child(gear)
+	gear.set_max_size_y(_hit_zone_y)
 	gear.position.x = size.x / 2
 	gear.position.y = size.y# - NoteHolder.get_hitzone()
 
@@ -126,6 +119,7 @@ func _handle_selected_item_tap() -> void:
 	var idx : int = result["note_hold"]
 	
 	if mouse_pos.x >= 0: # FINDED A NOTE HOLD
+		sample_tap_note.visible = true
 		sample_tap_note.position = Vector2(mouse_pos.x - NoteHolder.width / 2, mouse_pos.y)
 		var time_pos = Song.get_time()
 		
@@ -138,12 +132,11 @@ func _handle_selected_item_tap() -> void:
 		#print(sample_tap_note.get_time())
 		#print("SIZE Y: " + str(size.y) + " | GEAR SIZE Y: " + str(Gear.get_max_size_y()))
 		#print(NoteHolder.get_local_pos_y(size.y - Note.height / 2, - Note.height / 2, sample_tap_note.get_time(), time_pos, time_pos + NoteHolder.SECS_SIZE_Y))
-		last_item_tap_pos = sample_tap_note.position
 		
 		if Input.is_action_just_pressed("Add Item"):
 			gear.add_note_at(idx, NoteEditor.new(sample_tap_note.get_time()))
 	else: # DIDN'T FIND A NOTE HOLD
-		sample_tap_note.position = last_item_tap_pos
+		sample_tap_note.visible = false
 
 func _handle_selected_item_hold() -> void:
 	var result = _get_limited_by_gear_local_mouse_position()
@@ -151,6 +144,7 @@ func _handle_selected_item_hold() -> void:
 	var idx : int = result["note_hold"]
 	
 	if mouse_pos.x >= 0: # FINDED A NOTE HOLD
+		sample_tap_note.visible = true
 		sample_tap_note.position = Vector2(mouse_pos.x - NoteHolder.width / 2, mouse_pos.y)
 		var time_pos = Song.get_time()
 		
@@ -168,3 +162,11 @@ func _handle_selected_item_hold() -> void:
 			_currently_hold_note.set_end_time(mouse_time_pos_y)
 		elif Input.is_action_just_released("Add Item"):
 			_currently_hold_note.set_end_time(mouse_time_pos_y)
+	else: # DIDN'T FIND A NOTE HOLD
+		sample_tap_note.visible = false
+
+func _on_mouse_entered() -> void:
+	_is_mouse_inside = true
+
+func _on_mouse_exited() -> void:
+	_is_mouse_inside = false

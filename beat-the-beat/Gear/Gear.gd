@@ -56,6 +56,11 @@ static func get_note_holders_global_position() -> Array[Vector2]:
 		array.append(note_holder.global_position)
 	return array
 
+func set_max_size_y(max_size_y : float) -> void:
+	_max_size_y = max_size_y
+	if _max_size_y < 0:
+		_max_size_y = get_viewport_rect().size.y + Note.height
+
 static func get_max_size_y() -> float:
 	return _max_size_y
 

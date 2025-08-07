@@ -24,6 +24,9 @@ func _init(note_action : String, pos_x : float) -> void:
 func _ready() -> void:
 	position = Vector2(_pos_x, _hit_zone_y)
 
+func _process(delta: float) -> void:
+	queue_redraw() #TODO REMOVE THIS LATER, FOR THE SAKE OF GOD
+
 func _physics_process(delta: float) -> void:
 	if _notes:
 		match Gear.mode:
@@ -31,6 +34,7 @@ func _physics_process(delta: float) -> void:
 				_player_process()
 			Gear.Mode.EDITOR:
 				_editor_process()
+				
 	#if _notes: # NOTE REDO
 		#if _notes[0].global_position.y > global_position.y + max_note_distance:
 			#print("BREAK")
