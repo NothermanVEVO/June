@@ -8,11 +8,11 @@ var gear : Gear
 @onready var focus_effect : ReferenceRect = $"Focus Effect"
 @onready var soundboard : SoundBoard = $"../../../SoundBoard"
 
-var sample_tap_note : NoteEditor
+var sample_tap_note : Note
 
 var _hit_zone_y : float
 
-var _currently_hold_note : HoldNote
+var _currently_hold_note : HoldNoteEditor
 
 var _is_mouse_inside : bool = false
 
@@ -28,7 +28,7 @@ func _ready() -> void:
 	
 	resized.connect(_resized)
 	
-	sample_tap_note = NoteEditor.new(0, true)
+	sample_tap_note = Note.new(0)
 	add_child(sample_tap_note)
 	sample_tap_note.position = Vector2(-10000000, -10000000)
 	sample_tap_note.modulate = Color(1, 1, 1, 0.5)
@@ -134,7 +134,7 @@ func _handle_selected_item_tap() -> void:
 		#print(NoteHolder.get_local_pos_y(size.y - Note.height / 2, - Note.height / 2, sample_tap_note.get_time(), time_pos, time_pos + NoteHolder.SECS_SIZE_Y))
 		
 		if Input.is_action_just_pressed("Add Item"):
-			gear.add_note_at(idx, NoteEditor.new(sample_tap_note.get_time()))
+			gear.add_note_at(idx, NoteEditor.new(sample_tap_note.get_time(), global_position.y))
 	else: # DIDN'T FIND A NOTE HOLD
 		sample_tap_note.visible = false
 
@@ -156,7 +156,7 @@ func _handle_selected_item_hold() -> void:
 		sample_tap_note.set_time(mouse_time_pos_y)
 		
 		if Input.is_action_just_pressed("Add Item"):
-			_currently_hold_note = HoldNote.new(mouse_time_pos_y, mouse_time_pos_y)
+			_currently_hold_note = HoldNoteEditor.new(mouse_time_pos_y, mouse_time_pos_y, global_position.y)
 			gear.add_note_at(idx, _currently_hold_note)
 		elif Input.is_action_pressed("Add Item"):
 			_currently_hold_note.set_end_time(mouse_time_pos_y)

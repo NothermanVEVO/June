@@ -1,0 +1,42 @@
+[gd_scene load_steps=2 format=3 uid="uid://b82iibq8fpgqn"]
+
+[ext_resource type="Script" uid="uid://dvq0k3sxpd7x0" path="res://Editor/NoteInfo.gd" id="1_feaks"]
+
+[node name="Note Info" type="PanelContainer"]
+offset_right = 100.0
+offset_bottom = 109.0
+script = ExtResource("1_feaks")
+
+[node name="InfoVBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Start Time" type="TextEdit" parent="InfoVBox"]
+custom_minimum_size = Vector2(100, 35)
+layout_mode = 2
+text = "00:00:000"
+placeholder_text = "00:00:000"
+
+[node name="End Time" type="TextEdit" parent="InfoVBox"]
+custom_minimum_size = Vector2(100, 35)
+layout_mode = 2
+text = "00:00:000"
+placeholder_text = "00:00:000"
+
+[node name="SFX" type="TextEdit" parent="InfoVBox"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+text = "SFX: TODO"
+editable = false
+
+[node name="Locked" type="CheckBox" parent="InfoVBox"]
+layout_mode = 2
+text = "Locked"
+
+[node name="Power" type="CheckBox" parent="InfoVBox"]
+layout_mode = 2
+text = "Power"
+
+[connection signal="text_changed" from="InfoVBox/Start Time" to="." method="_on_start_time_text_changed"]
+[connection signal="text_changed" from="InfoVBox/End Time" to="." method="_on_end_time_text_changed"]
+[connection signal="pressed" from="InfoVBox/Locked" to="." method="_on_locked_pressed"]
+[connection signal="pressed" from="InfoVBox/Power" to="." method="_on_power_pressed"]

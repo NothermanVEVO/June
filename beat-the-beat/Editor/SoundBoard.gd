@@ -65,7 +65,8 @@ func _ready() -> void:
 	last_time_value = time_slider.value
 	
 	## TIME POS
-	valid_time_pos.compile("^\\d{2}:\\d{2}:\\d{3,}$")
+	valid_time_pos.compile("^\\d{,2}:\\d{,2}:\\d{,3}$")
+	last_valid_time_pos_text = "00:00:000"
 	
 	song.finished.connect(_song_has_finished)
 
@@ -87,7 +88,7 @@ func _process(delta: float) -> void:
 		#song.seek(_temp_song_time_pos)
 		_adjust_time_pos_text(true)
 	if last_time_value != time_slider.value:
-		time_text.text = str(time_slider.value) + "%"
+		#time_text.text = str(time_slider.value) + "%"
 		#_temp_song_time_pos = song.stream.get_length() * time_slider.value / 100
 		#song.seek(_temp_song_time_pos)
 		last_time_value = time_slider.value
@@ -230,16 +231,17 @@ func _on_time_percentage_text_changed() -> void:
 			var str = get_float_number.search(text).strings[0]
 			if str.begins_with("."):
 				str = "0" + str
-			var value = str_to_var(str)
+			var value : float = str_to_var(str)
 			if value < time_slider.min_value:
 				time_slider.value = time_slider.min_value
 			elif value > time_slider.max_value:
 				time_slider.value = time_slider.max_value
 			else:
 				time_slider.value = value
+		
+		_temp_song_time_pos = song.stream.get_length() * time_slider.value / 100
 		last_time_value = time_slider.value
 		last_pseudo_valid_time_text = time_text.text
-		return
 
 func _on_time_percentage_focus_exited() -> void:
 	adjust_time()
@@ -315,7 +317,10 @@ func split_time(total_seconds: float) -> Dictionary:
 func _on_time_text_changed(force_change : bool = false) -> void:
 	if "\n" in time_pos_text.text or force_change:
 		time_pos_text.text = time_pos_text.text.replace("\n", "")
-		valid_time_pos.search(time_pos_text.text)
+		time_pos_text.release_focus()
+	
+	var result := valid_time_pos.search(time_pos_text.text)
+	if result:
 		var values := time_pos_text.text.split(":")
 		var minutes : int = str_to_var(values[0])
 		var seconds : int = str_to_var(values[1])
@@ -323,7 +328,15 @@ func _on_time_text_changed(force_change : bool = false) -> void:
 		var absolute_seconds : float = minutes * 60 + seconds + miliseconds
 		_temp_song_time_pos = absolute_seconds
 		song.set_time(_temp_song_time_pos)
-		time_pos_text.release_focus()
+		
+		last_valid_time_pos_text = time_pos_text.text
+		time_text.text = "%.1f" % (song.get_time() * 100 / song.stream.get_length()) + "%"
+	else:
+		_adjust_time_pos_text()
+		var idx = time_pos_text.get_caret_column()
+		idx = idx - (time_pos_text.text.length() - last_valid_time_pos_text.length())
+		time_pos_text.text = last_valid_time_pos_text
+		time_pos_text.set_caret_column(idx)
 
 func _on_time_focus_entered() -> void:
 	if $Play.text == "Pause":

@@ -26,9 +26,6 @@ func _init(start_time : float, end_time : float) -> void:
 	_middle_note.texture = MIDDLE_NOTE_IMG
 	_end_note.texture = END_NOTE_IMG
 	
-	#NoteHolder.width = 150
-	#Gear._max_size_y = 500
-	
 	add_child(_start_note)
 	_start_note.size = Vector2(NoteHolder.width, height / 2)
 	_start_note.position = Vector2(0, _start_note.size.y)
