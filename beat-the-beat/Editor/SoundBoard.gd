@@ -40,6 +40,7 @@ var last_time_value : float = 0.0
 
 # TIME POS VARS
 var valid_time_pos := RegEx.new()
+var outlimits_valid_time_pos := RegEx.new()
 var last_valid_time_pos_text : String = ""
 var song_was_playing : bool = false
 
@@ -65,7 +66,8 @@ func _ready() -> void:
 	last_time_value = time_slider.value
 	
 	## TIME POS
-	valid_time_pos.compile("^\\d{,2}:\\d{,2}:\\d{,3}$")
+	valid_time_pos.compile("^\\d*:[0-5]\\d:\\d{,3}$")
+	outlimits_valid_time_pos.compile("^\\d*:[0-5]*\\d*:\\d{3,}$")
 	last_valid_time_pos_text = "00:00:000"
 	
 	song.finished.connect(_song_has_finished)
@@ -84,7 +86,7 @@ func _process(delta: float) -> void:
 	if is_dragging_time_slider:
 		time_text.text = (str(time_slider.value) + "%")
 		_temp_song_time_pos = song.stream.get_length() * time_slider.value / 100
-		song.set_time(_temp_song_time_pos)
+		song.set_time(_temp_song_time_pos) # TODO TAVA AQUUI ............................................
 		#song.seek(_temp_song_time_pos)
 		_adjust_time_pos_text(true)
 	if last_time_value != time_slider.value:
@@ -304,7 +306,7 @@ func _adjust_time_pos_text(split_time_by_temp_time : bool = false) -> void:
 	var splitted_time = split_time(song.get_playback_position())
 	time_pos_text.text = "%02d:%02d:%03d" % [splitted_time["minutes"], splitted_time["seconds"], splitted_time["milliseconds"]]
 
-func split_time(total_seconds: float) -> Dictionary:
+static func split_time(total_seconds: float) -> Dictionary:
 	var minutes = int(total_seconds) / 60
 	var seconds = int(total_seconds) % 60
 	var milliseconds = int((total_seconds - int(total_seconds)) * 1000)
@@ -315,23 +317,76 @@ func split_time(total_seconds: float) -> Dictionary:
 	}
 
 func _on_time_text_changed(force_change : bool = false) -> void:
+	var pressed_enter := false
 	if "\n" in time_pos_text.text or force_change:
 		time_pos_text.text = time_pos_text.text.replace("\n", "")
+		var values := time_pos_text.text.split(":")
+		values[0] = "00" if not values[0] else "0" + values[0] if values[0].length() == 1 else values[0]
+		values[1] = "00" if not values[1] else "0" + values[1] if values[1].length() == 1 else values[1]
+		values[2] = "000" if not values[2] else values[2] + "00" if values[2].length() == 1 else values[2] + "0" if values[2].length() == 2 else values[2]
+		time_pos_text.text = values[0] + ":" + values[1] + ":" + values[2]
+		pressed_enter = true
 		time_pos_text.release_focus()
 	
 	var result := valid_time_pos.search(time_pos_text.text)
 	if result:
 		var values := time_pos_text.text.split(":")
-		var minutes : int = str_to_var(values[0])
-		var seconds : int = str_to_var(values[1])
+		var minutes : int = str_to_var(values[0]) if values[0] else 0
+		var seconds : int = str_to_var(values[1]) if values[1] else 0
 		var miliseconds : float = str_to_var("0." + values[2])
 		var absolute_seconds : float = minutes * 60 + seconds + miliseconds
-		_temp_song_time_pos = absolute_seconds
+		_temp_song_time_pos = absolute_seconds if absolute_seconds <= song.stream.get_length() else song.stream.get_length()
 		song.set_time(_temp_song_time_pos)
-		
+		if pressed_enter:
+			_adjust_time_pos_text(true)
 		last_valid_time_pos_text = time_pos_text.text
 		time_text.text = "%.1f" % (song.get_time() * 100 / song.stream.get_length()) + "%"
 	else:
+		print("1")
+		result = outlimits_valid_time_pos.search(time_pos_text.text)
+		var total_zeros = 0
+		if result:
+			var values := time_pos_text.text.split(":")
+			if values[0] and values[0].length() == 3:
+				if values[0].begins_with("00"):
+					total_zeros = 1
+					values[0] = "0" + values[0][2]
+				elif values[0].begins_with("0"):
+					total_zeros = 1
+					values[0] = values[0][1] + values[0][2]
+			elif values[1] and values[1].length() == 3:
+				if values[1].begins_with("00"):
+					total_zeros = 1
+					values[1] = "0" + values[1][2]
+				elif values[1].begins_with("0"):
+					total_zeros = 1
+					values[1] = values[1][1] + values[1][2]
+			elif values[2] and values[2].length() == 4:
+				if values[2].begins_with("000"):
+					total_zeros = 2
+					values[2] = "00" + values[2][3]
+				elif values[2].begins_with("00"):
+					total_zeros = 2
+					values[2] = "0" + values[2][2] + values[2][3]
+				elif values[2].begins_with("0"):
+					total_zeros = 2
+					values[2] = values[2][1] + values[2][2] + values[2][3]
+					
+			var idx = time_pos_text.get_caret_column()
+			time_pos_text.text = values[0] + ":" + values[1] + ":" + values[2]
+			time_pos_text.set_caret_column(idx - (3 - total_zeros - 1))
+			if valid_time_pos.search(time_pos_text.text):
+				values = time_pos_text.text.split(":")
+				var minutes : int = str_to_var(values[0]) if values[0] else 0
+				var seconds : int = str_to_var(values[1]) if values[1] else 0
+				var miliseconds : float = str_to_var("0." + values[2])
+				var absolute_seconds : float = minutes * 60 + seconds + miliseconds
+				_temp_song_time_pos = absolute_seconds if absolute_seconds <= song.stream.get_length() else song.stream.get_length()
+				song.set_time(_temp_song_time_pos)
+		
+				last_valid_time_pos_text = time_pos_text.text
+				time_text.text = "%.1f" % (song.get_time() * 100 / song.stream.get_length()) + "%"
+			return
 		_adjust_time_pos_text()
 		var idx = time_pos_text.get_caret_column()
 		idx = idx - (time_pos_text.text.length() - last_valid_time_pos_text.length())
