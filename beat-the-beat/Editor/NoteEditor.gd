@@ -23,9 +23,7 @@ func _ready() -> void:
 	_note_info.visible = false
 	_note_info.set_type(NoteInfo.Type.TAP)
 	
-	var dict_result = SoundBoard.split_time(_current_time)
-	#var minutes : String = 
-	_note_info.set_start_time("")
+	_note_info.set_start_time(_current_time)
 
 func _process(delta: float) -> void:
 	var mouse_pos := get_global_mouse_position()

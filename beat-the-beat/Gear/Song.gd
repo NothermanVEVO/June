@@ -6,8 +6,11 @@ static var _current_time : float = 0.0
 
 static var _song_finished : bool = false
 
+static var _duration : float = 0.0
+
 func _ready() -> void:
 	finished.connect(_finished)
+	_duration = stream.get_length()
 
 func _physics_process(delta: float) -> void:
 	if _song_finished:
@@ -15,7 +18,6 @@ func _physics_process(delta: float) -> void:
 	
 	if playing:
 		_current_time = get_playback_position()
-	#print(_current_time)
 
 func _finished() -> void:
 	_song_finished = true
@@ -29,3 +31,6 @@ static func get_time() -> float:
 
 static func is_song_finished() -> bool:
 	return _song_finished
+
+static func get_duration() -> float:
+	return _duration

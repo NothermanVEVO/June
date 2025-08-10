@@ -36,6 +36,9 @@ func _ready() -> void:
 	add_child(_note_info)
 	_note_info.visible = false
 	_note_info.set_type(NoteInfo.Type.HOLD)
+	
+	_note_info.set_start_time(_start_time)
+	_note_info.set_end_time(_end_time)
 
 func _process(delta: float) -> void:
 	var mouse_pos := get_global_mouse_position()
