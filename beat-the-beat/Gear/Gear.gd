@@ -45,16 +45,45 @@ func _ready() -> void: #TODO HANDLE ANY POSITION FOR THE GEAR, NOT ONLY THE MIDD
 		add_child(note_holder)
 
 func add_note_at(idx : int, note : Note) -> void:
+	note.set_idx(idx)
 	_note_holders[idx].add_note(note)
 
 static func get_type() -> int:
 	return _type
 
 static func get_note_holders_global_position() -> Array[Vector2]:
-	var array : Array[Vector2]
+	var array : Array[Vector2] = []
 	for note_holder in _note_holders:
 		array.append(note_holder.global_position)
 	return array
+
+static func get_global_intersected_rects(rect : Rect2) -> Array[Note]:
+	var array : Array[Note] = []
+	for note_holder in _note_holders:
+		for note in note_holder.get_notes_array():
+			if note is HoldNote and rect.intersects(note.get_global_hold_rect(), true):
+				array.append(note)
+			elif rect.intersects(note.get_global_rect(), true):
+				array.append(note)
+	return array
+
+static func change_note_from_note_holder(from : int, to : int, note : Note) -> void:
+	if from == to:
+		_note_holders[from].update_note(note)
+		return
+	_note_holders[from].remove_note(note)
+	note.set_idx(to)
+	_note_holders[to].add_note(note)
+
+static func get_notes_between(from : float, to : float) -> Array[Note]:
+	var notes : Array[Note] = []
+	for note_holder in _note_holders:
+		for note in note_holder.get_notes(from, to):
+			notes.append(note)
+	return notes
+
+static func update_note_time(note : Note) -> void:
+	change_note_from_note_holder(note.get_idx(), note.get_idx(), note)
 
 func set_max_size_y(max_size_y : float) -> void:
 	_max_size_y = max_size_y

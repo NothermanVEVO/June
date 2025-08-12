@@ -5,6 +5,9 @@ class_name NoteEditor
 @onready var _note_info_scene : PackedScene = preload("res://Editor/NoteInfo.tscn")
 var _note_info : NoteInfo
 
+var _shader_material = ShaderMaterial.new()
+const HIGHLIGHT_SHADER = preload("res://shaders/Highlight.gdshader")
+
 var _min_global_pos_y : float
 
 func _init(current_time : float, min_global_pos_y : float) -> void:
@@ -15,7 +18,6 @@ func _init(current_time : float, min_global_pos_y : float) -> void:
 	size = Vector2(NoteHolder.width, height)
 	position = Vector2(-size / 2)
 	z_index = 1
-	
 
 func _ready() -> void:
 	_note_info = _note_info_scene.instantiate()
@@ -24,6 +26,10 @@ func _ready() -> void:
 	_note_info.set_type(NoteInfo.Type.TAP)
 	
 	_note_info.set_start_time(_current_time)
+	
+	_note_info.valid_start_time_text_change.connect(_time_text_changed)
+	
+	_shader_material.shader = HIGHLIGHT_SHADER
 
 func _process(delta: float) -> void:
 	var mouse_pos := get_global_mouse_position()
@@ -36,3 +42,17 @@ func _process(delta: float) -> void:
 	elif _note_info.visible and not _note_info.get_global_rect().has_point(mouse_pos) and (
 			Input.is_action_just_pressed("Add Item") or Input.is_action_just_pressed("Inspect Note")):
 		_note_info.visible = false
+
+func set_highlight(highlight : bool) -> void:
+	_is_selected = highlight
+	if highlight:
+		material = _shader_material
+	else:
+		material = null
+
+func _time_text_changed(seconds : float) -> void: # SIGNAL
+	set_time(seconds)
+	Gear.update_note_time(self)
+
+func has_mouse_on_info() -> bool:
+	return _note_info.visible and _note_info.has_mouse()

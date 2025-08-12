@@ -86,7 +86,7 @@ func _process(delta: float) -> void:
 	if is_dragging_time_slider:
 		time_text.text = (str(time_slider.value) + "%")
 		_temp_song_time_pos = song.stream.get_length() * time_slider.value / 100
-		song.set_time(_temp_song_time_pos) # TODO TAVA AQUUI ............................................
+		song.set_time(_temp_song_time_pos)
 		#song.seek(_temp_song_time_pos)
 		_adjust_time_pos_text(true)
 	if last_time_value != time_slider.value:
@@ -103,6 +103,7 @@ func _process(delta: float) -> void:
 		_adjust_time_pos_text()
 	elif _song_finished: # THE SONG FINISHED
 		time_slider.value = 100.0
+		time_text.text = "100.0%"
 		##NOTE GAMBIARRA A SEGUIR, TO ALTERANDO O TEMP SONG TIME POS PRA AJUSTAR O TEXTO PRO TEMPO FINAL:
 		_temp_song_time_pos = song.stream.get_length()
 		_adjust_time_pos_text(true)
@@ -459,6 +460,7 @@ func _on_time_focus_exited() -> void:
 func _on_stop_pressed() -> void:
 	_temp_song_time_pos = 0.0
 	$Play.text = "Play"
+	song.set_time(0.0)
 	song.stop()
 	time_slider.value = 0.0
 	_on_time_slider_drag_ended(false)

@@ -103,7 +103,7 @@ custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.0
-item_count = 13
+item_count = 14
 item_0/text = "- TOOLS -"
 item_0/selectable = false
 item_1/text = "Select"
@@ -121,6 +121,7 @@ item_10/text = "Sound"
 item_11/text = "- ANNOTATION -"
 item_11/selectable = false
 item_12/text = "Note"
+item_13/text = "Moment"
 script = ExtResource("1_sakc5")
 
 [node name="Resize Button" type="Button" parent="Middle/Game Components List"]

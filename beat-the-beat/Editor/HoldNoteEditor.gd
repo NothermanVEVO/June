@@ -5,6 +5,9 @@ class_name HoldNoteEditor
 @onready var _note_info_scene : PackedScene = preload("res://Editor/NoteInfo.tscn")
 var _note_info : NoteInfo
 
+var _shader_material = ShaderMaterial.new()
+const HIGHLIGHT_SHADER = preload("res://shaders/Highlight.gdshader")
+
 var _min_global_pos_y : float
 
 func _init(start_time : float, end_time : float, min_global_pos_y : float) -> void:
@@ -39,6 +42,11 @@ func _ready() -> void:
 	
 	_note_info.set_start_time(_start_time)
 	_note_info.set_end_time(_end_time)
+	
+	_note_info.valid_start_time_text_change.connect(_start_time_text_changed)
+	_note_info.valid_end_time_text_change.connect(_end_time_text_changed)
+	
+	_shader_material.shader = HIGHLIGHT_SHADER
 
 func _process(delta: float) -> void:
 	var mouse_pos := get_global_mouse_position()
@@ -54,3 +62,36 @@ func _process(delta: float) -> void:
 	elif _note_info.visible and not _note_info.get_global_rect().has_point(mouse_pos) and (
 			Input.is_action_just_pressed("Add Item") or Input.is_action_just_pressed("Inspect Note")):
 		_note_info.visible = false
+
+func get_global_hold_rect() -> Rect2:
+	return Rect2(_end_note.global_position, Vector2(_start_note.size.x, _start_note.size.y + _middle_note.size.y + _end_note.size.y))
+
+func set_highlight(highlight : bool) -> void:
+	_is_selected = highlight
+	if highlight:
+		_start_note.material = _shader_material
+		_middle_note.material = _shader_material
+		_end_note.material = _shader_material
+	else:
+		_start_note.material = null
+		_middle_note.material = null
+		_end_note.material = null
+
+func update_end_time_text() -> void:
+	_note_info.set_end_time(get_end_time())
+
+func _start_time_text_changed(seconds : float) -> void:
+	set_start_time(seconds)
+	Gear.update_note_time(self)
+
+func _end_time_text_changed(seconds : float) -> void: # SIGNAL
+	set_end_time(seconds)
+	
+	var end_pos = NoteHolder.get_local_pos_y_correct(0, Gear.get_max_size_y(), get_end_time() - get_start_time(), 0, NoteHolder.SECS_SIZE_Y)
+	_end_note.size = Vector2(NoteHolder.width, Note.height / 2)
+	_end_note.position = Vector2(0, -end_pos)
+	
+	Gear.update_note_time(self)
+
+func has_mouse_on_info() -> bool:
+	return _note_info.visible and _note_info.has_mouse()

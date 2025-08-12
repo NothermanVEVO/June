@@ -129,8 +129,27 @@ func add_note(note : Note) -> void:
 			low = mid + 1
 
 	_notes.insert(low, note)
-	add_child(note)
+	add_child.call_deferred(note)
 	note.visible = false
+
+func remove_note(note : Note) -> void:
+	_notes.erase(note)
+	remove_child.call_deferred(note)
+
+func update_note(note : Note) -> void:
+	_notes.erase(note)
+	
+	var low := 0
+	var high := _notes.size()
+
+	while low < high:
+		var mid := (low + high) / 2
+		if note.get_time() < _notes[mid].get_time():
+			high = mid
+		else:
+			low = mid + 1
+
+	_notes.insert(low, note)
 
 func get_notes(from : float, to : float) -> Array[Note]:
 	var result : Array[Note] = []
@@ -158,6 +177,9 @@ func get_notes(from : float, to : float) -> Array[Note]:
 
 static func get_hitzone() -> float:
 	return _hit_zone_y
+
+func get_notes_array() -> Array[Note]:
+	return _notes
 
 func _draw() -> void:
 	var pos = Vector2.ZERO

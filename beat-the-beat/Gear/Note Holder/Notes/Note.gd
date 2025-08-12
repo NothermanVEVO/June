@@ -12,6 +12,10 @@ var _current_time : float
 
 var state : State = State.TO_HIT
 
+var _is_selected : bool = false
+
+var _idx : int
+
 func _init(current_time : float) -> void:
 	_current_time = current_time
 	
@@ -29,3 +33,12 @@ func set_time(time : float) -> void:
 
 func get_time() -> float:
 	return _current_time
+
+func is_selected() -> bool:
+	return _is_selected
+
+func set_idx(idx : int) -> void:
+	_idx = idx
+
+func get_idx() -> int:
+	return _idx

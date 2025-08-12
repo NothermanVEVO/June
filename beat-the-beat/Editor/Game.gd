@@ -16,6 +16,11 @@ var _currently_hold_note : HoldNoteEditor
 
 var _is_mouse_inside : bool = false
 
+var _start_mouse_click_position : Vector2
+var _mouse_selection : Selection = Selection.new()
+var _selected_notes : Array[Note] = []
+var _clicked_on_note : bool = false
+
 func _ready() -> void:
 	match keys_quantity:
 		4:
@@ -32,6 +37,8 @@ func _ready() -> void:
 	add_child(sample_tap_note)
 	sample_tap_note.position = Vector2(-10000000, -10000000)
 	sample_tap_note.modulate = Color(1, 1, 1, 0.5)
+	
+	add_child(_mouse_selection)
 
 func _resized() -> void:
 	_hit_zone_y = size.y + NoteHolder.get_hitzone()
@@ -53,13 +60,13 @@ func _process(delta: float) -> void:
 func _handle_selected_item(item_text : String) -> void:
 	match item_text:
 		"Select":
-			pass
+			_handle_select() # DOING ...
 		"Un/lock":
 			pass
 		"Tap":
 			_handle_selected_item_tap() # TO REVIEW ...
 		"Hold":
-			_handle_selected_item_hold() # DOING ...
+			_handle_selected_item_hold() # TO REVIEW ...
 		"Power":
 			pass
 		"Speed":
@@ -73,11 +80,47 @@ func _handle_selected_item(item_text : String) -> void:
 		#_:
 			#print("epa, NÃO ERA PRA ESTAR ENTRANDO AQUI, FICA ESPERTO")
 
+func _handle_select() -> void:
+	if Input.is_action_just_pressed("Add Item"):
+		_start_mouse_click_position = get_local_mouse_position()
+		var notes := Gear.get_global_intersected_rects(Rect2(get_global_mouse_position(), Vector2.ZERO))
+		_clicked_on_note = notes.size() == 1 # IF TRUE, MEANS THAT IT CLICKED ON A NOTE
+		if _clicked_on_note:
+			if !notes[0].is_selected():
+				_clear_selected_notes()
+				_selected_notes.append(notes[0])
+				notes[0].set_highlight(true)
+		else: # IF DIDN'T CLICKED ON A NOTE, JUST CLEAR SELECTED NOTES
+			_clear_selected_notes()
+	elif _clicked_on_note:
+		if Input.is_action_pressed("Add Item"):
+			#var difference = get_local_mouse_position() - _start_mouse_click_position
+			pass
+		elif Input.is_action_just_released("Add Item"):
+			pass
+	else:
+		if Input.is_action_pressed("Add Item"):
+			_mouse_selection.set_rect(Rect2(_start_mouse_click_position, get_local_mouse_position() - _start_mouse_click_position))
+		elif Input.is_action_just_released("Add Item") and not _clicked_on_note:
+			var rect := Rect2(_start_mouse_click_position, get_local_mouse_position() - _start_mouse_click_position)
+			rect.position += global_position
+			rect.size = (get_global_mouse_position() - (_start_mouse_click_position + global_position))
+			rect = rect.abs()
+			_selected_notes = Gear.get_global_intersected_rects(rect)
+			for notes in _selected_notes:
+				notes.set_highlight(true)
+			_mouse_selection.set_rect(Rect2(0, 0, 0, 0))
+
+func _clear_selected_notes() -> void:
+	for notes in _selected_notes:
+		notes.set_highlight(false)
+	_selected_notes.clear()
+
 func _get_limited_by_gear_global_mouse_position() -> Vector2:
 	var mouse_pos = get_global_mouse_position()
 	
 	mouse_pos.y = clampf(mouse_pos.y, 
-						gear.global_position.y - gear.get_max_size_y() + NoteHolder.get_hitzone(), 
+						gear.global_position.y - Gear.get_max_size_y() + NoteHolder.get_hitzone(), 
 						gear.global_position.y + NoteHolder.get_hitzone())
 	
 	var note_holds = Gear.get_note_holders_global_position()
@@ -114,6 +157,10 @@ func _get_limited_by_gear_local_mouse_position() -> Dictionary:
 	}
 
 func _handle_selected_item_tap() -> void:
+	if not get_rect().has_point(get_local_mouse_position()) or _is_any_note_with_display_info():
+		sample_tap_note.visible = false
+		return
+	
 	var result = _get_limited_by_gear_local_mouse_position()
 	var mouse_pos : Vector2 = result["position"]
 	var idx : int = result["note_hold"]
@@ -139,6 +186,10 @@ func _handle_selected_item_tap() -> void:
 		sample_tap_note.visible = false
 
 func _handle_selected_item_hold() -> void:
+	if not get_rect().has_point(get_local_mouse_position()) or _is_any_note_with_display_info():
+		sample_tap_note.visible = false
+		return
+	
 	var result = _get_limited_by_gear_local_mouse_position()
 	var mouse_pos : Vector2 = result["position"]
 	var idx : int = result["note_hold"]
@@ -162,8 +213,16 @@ func _handle_selected_item_hold() -> void:
 			_currently_hold_note.set_end_time(mouse_time_pos_y)
 		elif Input.is_action_just_released("Add Item"):
 			_currently_hold_note.set_end_time(mouse_time_pos_y)
+			_currently_hold_note.update_end_time_text()
 	else: # DIDN'T FIND A NOTE HOLD
 		sample_tap_note.visible = false
+
+func  _is_any_note_with_display_info() -> bool:
+	var notes := Gear.get_notes_between(Song.get_time(), Song.get_time() + NoteHolder.SECS_SIZE_Y)
+	for note in notes:
+		if note.has_mouse_on_info():
+			return true
+	return false
 
 func _on_mouse_entered() -> void:
 	_is_mouse_inside = true
