@@ -45,6 +45,9 @@ func get_start_time() -> float:
 func get_end_time() -> float:
 	return _end_time
 
+func get_duration() -> float:
+	return _end_time - _start_time
+
 func set_start_time(start_time : float) -> void:
 	_start_time = start_time
 	set_time(start_time)

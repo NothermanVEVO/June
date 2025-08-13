@@ -137,15 +137,21 @@ func _handle_select() -> void:
 			var highest_note : Note
 			for note in _selected_notes:
 				if highest_note:
-					if note.get_time() > highest_note.get_time():
-						highest_note = note
+					if highest_note is HoldNoteEditor:
+						if note is HoldNoteEditor and note.get_time() + note.get_duration() > highest_note.get_time() + highest_note.get_duration():
+							highest_note = note
+					else: # HIGHEST NOTE IS NOT HOLD NOTE
+						if note is HoldNoteEditor and note.get_time() + note.get_duration() > highest_note.get_time():
+							highest_note = note
+						elif note.get_time() > highest_note.get_time():
+							highest_note = note
 				else:
 					highest_note = note
 			
-			if not highest_note.visible:
-				print(highest_note.get_time())
-				print(Song.get_time())
-				print("Omg")
+			#if not highest_note.visible:
+				#print(highest_note.get_time())
+				#print(Song.get_time())
+				#print("Omg")
 			
 			var changed_lowest := false
 			var changed_highest := false
@@ -163,17 +169,16 @@ func _handle_select() -> void:
 				song.set_time(lowest_note.get_time())
 				Gear.update_note_time(lowest_note)
 			
-			if highest_note.get_time() + time_difference_y > Song.get_duration():
-				time_difference_y = Song.get_duration() - highest_note.get_time()
-			if highest_note.get_time() + time_difference_y > Song.get_time() + NoteHolder.SECS_SIZE_Y:
+			var highest_note_time = highest_note.get_time() + highest_note.get_duration() if highest_note is HoldNoteEditor else highest_note.get_time()
+			
+			if highest_note_time + time_difference_y > Song.get_duration():
+				time_difference_y = Song.get_duration() - highest_note_time
+			if highest_note_time + time_difference_y > Song.get_time() + NoteHolder.SECS_SIZE_Y:
 				changed_highest = true
 				highest_note.set_time(highest_note.get_time() + time_difference_y)
 				var song := Song.new()
-				song.set_time(Song.get_time() + time_difference_y)
-				Gear.update_note_time(lowest_note)
-			
-			#for note in _selected_notes:
-				#note.visible = true ## NOTE POOR SOLUTION FOR BLINKING NOTES THAT OCCURS WHEN DRAGGING BELOW OR ABOVE
+				song.set_time(highest_note_time + time_difference_y - NoteHolder.SECS_SIZE_Y)
+				Gear.update_note_time(highest_note)
 			
 			if time_difference_y:
 				for note in _selected_notes:

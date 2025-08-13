@@ -19,6 +19,11 @@ config/icon="res://icon.svg"
 
 Global="*res://Global/Global.gd"
 
+[display]
+
+window/stretch/mode="viewport"
+window/stretch/aspect="expand"
+
 [input]
 
 1_4k={
