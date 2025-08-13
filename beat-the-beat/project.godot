@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="Beat the Beat"
+config/tags=PackedStringArray("rythm")
 run/main_scene="uid://ckm76q263gm2s"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
@@ -18,11 +19,6 @@ config/icon="res://icon.svg"
 [autoload]
 
 Global="*res://Global/Global.gd"
-
-[display]
-
-window/stretch/mode="viewport"
-window/stretch/aspect="expand"
 
 [input]
 
