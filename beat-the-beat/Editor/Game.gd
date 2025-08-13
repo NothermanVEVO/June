@@ -17,9 +17,12 @@ var _currently_hold_note : HoldNoteEditor
 var _is_mouse_inside : bool = false
 
 var _start_mouse_click_position : Vector2
+var _clicked_on_note : bool = false
 var _mouse_selection : Selection = Selection.new()
 var _selected_notes : Array[Note] = []
-var _clicked_on_note : bool = false
+var _last_drag_mouse_position : Vector2
+var _last_time_difference_y : float = 0.0
+var _last_note_holder_idx : int
 
 func _ready() -> void:
 	match keys_quantity:
@@ -77,6 +80,8 @@ func _handle_selected_item(item_text : String) -> void:
 			pass
 		"Note":
 			pass
+		"Section":
+			pass
 		#_:
 			#print("epa, NÃO ERA PRA ESTAR ENTRANDO AQUI, FICA ESPERTO")
 
@@ -86,7 +91,8 @@ func _handle_select() -> void:
 		var notes := Gear.get_global_intersected_rects(Rect2(get_global_mouse_position(), Vector2.ZERO))
 		_clicked_on_note = notes.size() == 1 # IF TRUE, MEANS THAT IT CLICKED ON A NOTE
 		if _clicked_on_note:
-			if !notes[0].is_selected():
+			_last_drag_mouse_position = _get_limited_by_gear_local_mouse_position()["position"]
+			if not notes[0].is_selected():
 				_clear_selected_notes()
 				_selected_notes.append(notes[0])
 				notes[0].set_highlight(true)
@@ -94,9 +100,90 @@ func _handle_select() -> void:
 			_clear_selected_notes()
 	elif _clicked_on_note:
 		if Input.is_action_pressed("Add Item"):
-			#var difference = get_local_mouse_position() - _start_mouse_click_position
-			pass
+			#if not _is_mouse_inside_selection_rect():
+				#return
+				
+			#var dict := _get_limited_by_gear_local_mouse_position()
+			var mouse_pos : Vector2 = get_local_mouse_position()
+			mouse_pos.y -= Note.height / 2
+			#var note_hold_idx = dict["note_hold"]
+			
+			var difference = mouse_pos.y - _last_drag_mouse_position.y
+			var is_negative : bool = difference < 0
+			if is_negative:
+				difference += _hit_zone_y - Note.height / 2
+			else:
+				difference = _hit_zone_y - Note.height / 2 - difference
+			
+			var time_difference_y = NoteHolder.get_time_pos_y(_hit_zone_y - Note.height / 2, - Note.height / 2, difference, 0, NoteHolder.SECS_SIZE_Y)
+			
+			if not is_negative:
+				time_difference_y *= -1
+			
+			
+			var lowest_note : Note
+			for note in _selected_notes:
+				if lowest_note:
+					if note.get_time() < lowest_note.get_time():
+						lowest_note = note
+				else:
+					lowest_note = note
+			
+			#if not lowest_note.visible:
+				#print(lowest_note.get_time())
+				#print(Song.get_time())
+				#print("Omg")
+			
+			var highest_note : Note
+			for note in _selected_notes:
+				if highest_note:
+					if note.get_time() > highest_note.get_time():
+						highest_note = note
+				else:
+					highest_note = note
+			
+			if not highest_note.visible:
+				print(highest_note.get_time())
+				print(Song.get_time())
+				print("Omg")
+			
+			var changed_lowest := false
+			var changed_highest := false
+			
+			var temp = time_difference_y
+			time_difference_y -= _last_time_difference_y
+			_last_time_difference_y = temp
+			
+			if lowest_note.get_time() + time_difference_y < 0.0:
+				time_difference_y = -lowest_note.get_time()
+			if lowest_note.get_time() + time_difference_y < Song.get_time():
+				changed_lowest = true
+				lowest_note.set_time(lowest_note.get_time() + time_difference_y)
+				var song := Song.new()
+				song.set_time(lowest_note.get_time())
+				Gear.update_note_time(lowest_note)
+			
+			if highest_note.get_time() + time_difference_y > Song.get_duration():
+				time_difference_y = Song.get_duration() - highest_note.get_time()
+			if highest_note.get_time() + time_difference_y > Song.get_time() + NoteHolder.SECS_SIZE_Y:
+				changed_highest = true
+				highest_note.set_time(highest_note.get_time() + time_difference_y)
+				var song := Song.new()
+				song.set_time(Song.get_time() + time_difference_y)
+				Gear.update_note_time(lowest_note)
+			
+			#for note in _selected_notes:
+				#note.visible = true ## NOTE POOR SOLUTION FOR BLINKING NOTES THAT OCCURS WHEN DRAGGING BELOW OR ABOVE
+			
+			if time_difference_y:
+				for note in _selected_notes:
+					if (note == lowest_note and changed_lowest) or (note == highest_note and changed_highest):
+						continue
+					note.set_time(note.get_time() + time_difference_y)
+					Gear.update_note_time(note)
+			
 		elif Input.is_action_just_released("Add Item"):
+			_last_time_difference_y = 0.0
 			pass
 	else:
 		if Input.is_action_pressed("Add Item"):
@@ -110,6 +197,14 @@ func _handle_select() -> void:
 			for notes in _selected_notes:
 				notes.set_highlight(true)
 			_mouse_selection.set_rect(Rect2(0, 0, 0, 0))
+
+func _is_mouse_inside_selection_rect() -> bool:
+	if not _selected_notes:
+		return false
+	var full_rect := _selected_notes[0].get_global_rect()
+	for note in _selected_notes:
+		full_rect = full_rect.merge(note.get_global_rect())
+	return full_rect.has_point(get_global_mouse_position())
 
 func _clear_selected_notes() -> void:
 	for notes in _selected_notes:
@@ -150,7 +245,7 @@ func _get_limited_by_gear_local_mouse_position() -> Dictionary:
 			idx = i
 	
 	mouse_pos.y -= Note.height / 2 + global_position.y
-	mouse_pos.x = pos_x
+	mouse_pos.x = pos_x # If -1 here, means that didn't finded a note_holder
 	return {
 		"position": mouse_pos,
 		"note_hold": idx
@@ -176,9 +271,6 @@ func _handle_selected_item_tap() -> void:
 			sample_tap_note.position.y = NoteHolder.get_local_pos_y(_hit_zone_y - Note.height / 2, - Note.height / 2, mouse_time_pos_y, time_pos, time_pos + NoteHolder.SECS_SIZE_Y)
 		
 		sample_tap_note.set_time(mouse_time_pos_y)
-		#print(sample_tap_note.get_time())
-		#print("SIZE Y: " + str(size.y) + " | GEAR SIZE Y: " + str(Gear.get_max_size_y()))
-		#print(NoteHolder.get_local_pos_y(size.y - Note.height / 2, - Note.height / 2, sample_tap_note.get_time(), time_pos, time_pos + NoteHolder.SECS_SIZE_Y))
 		
 		if Input.is_action_just_pressed("Add Item"):
 			gear.add_note_at(idx, NoteEditor.new(sample_tap_note.get_time(), global_position.y))

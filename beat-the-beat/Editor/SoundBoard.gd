@@ -109,9 +109,9 @@ func _process(delta: float) -> void:
 		_adjust_time_pos_text(true)
 		_temp_song_time_pos = 0.0
 	else: # THE SONG IS PAUSED
-		time_slider.value = _temp_song_time_pos * 100 / song.stream.get_length()
-		if !time_pos_text.has_focus():
-			_adjust_time_pos_text(true)
+		time_slider.value = Song.get_time() * 100 / song.stream.get_length()
+		if not time_pos_text.has_focus():
+			_adjust_time_pos_text()
 	song.pitch_scale = speed_slider.value / 100
 
 # CHECK IF THE TEXT IN THE SPEED TEXT IS VALID
@@ -293,7 +293,7 @@ func _on_play_pressed() -> void:
 		_song_finished = false
 	elif $Play.text == "Pause": #PAUSE
 		$Play.text = "Play"
-		_temp_song_time_pos = song.get_playback_position()
+		_temp_song_time_pos = Song.get_time()
 		song.stop()
 
 func _song_has_finished() -> void:
@@ -308,7 +308,7 @@ func _adjust_time_pos_text(split_time_by_temp_time : bool = false) -> void:
 		last_valid_time_pos_text = time_pos_text.text
 		return
 	
-	var splitted_time = split_time(song.get_playback_position())
+	var splitted_time = split_time(Song.get_time())
 	time_pos_text.text = "%02d:%02d:%03d" % [splitted_time["minutes"], splitted_time["seconds"], splitted_time["milliseconds"]]
 	last_valid_time_pos_text = time_pos_text.text
 
@@ -471,5 +471,5 @@ static func get_temp_song_time_pos() -> float:
 
 func get_time_pos() -> float:
 	if $Play.text == "Pause":
-		return song.get_playback_position()
+		return Song.get_time()
 	return _temp_song_time_pos

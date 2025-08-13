@@ -121,7 +121,7 @@ item_10/text = "Sound"
 item_11/text = "- ANNOTATION -"
 item_11/selectable = false
 item_12/text = "Note"
-item_13/text = "Moment"
+item_13/text = "Section"
 script = ExtResource("1_sakc5")
 
 [node name="Resize Button" type="Button" parent="Middle/Game Components List"]
