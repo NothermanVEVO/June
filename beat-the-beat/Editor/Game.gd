@@ -22,7 +22,7 @@ var _mouse_selection : Selection = Selection.new()
 var _selected_notes : Array[Note] = []
 var _last_drag_mouse_position : Vector2
 var _last_time_difference_y : float = 0.0
-var _last_note_holder_idx : int
+var _last_note_holder_idx : int = -1
 
 func _ready() -> void:
 	match keys_quantity:
@@ -103,23 +103,42 @@ func _handle_select() -> void:
 			#if not _is_mouse_inside_selection_rect():
 				#return
 				
-			#var dict := _get_limited_by_gear_local_mouse_position()
-			var mouse_pos : Vector2 = get_local_mouse_position()
-			mouse_pos.y -= Note.height / 2
-			#var note_hold_idx = dict["note_hold"]
+			var dict := _get_limited_by_gear_local_mouse_position()
+			var note_hold_idx = dict["note_hold"]
+			var time_difference_y := _get_time_difference_y()
 			
-			var difference = mouse_pos.y - _last_drag_mouse_position.y
-			var is_negative : bool = difference < 0
-			if is_negative:
-				difference += _hit_zone_y - Note.height / 2
-			else:
-				difference = _hit_zone_y - Note.height / 2 - difference
+			var leftest_note : Note
+			for note in _selected_notes:
+				if leftest_note:
+					if note.get_idx() < leftest_note.get_idx():
+						leftest_note = note
+				else:
+					leftest_note = note
 			
-			var time_difference_y = NoteHolder.get_time_pos_y(_hit_zone_y - Note.height / 2, - Note.height / 2, difference, 0, NoteHolder.SECS_SIZE_Y)
+			var rightest_note : Note
+			for note in _selected_notes:
+				if rightest_note:
+					if note.get_idx() > rightest_note.get_idx():
+						rightest_note = note
+				else:
+					rightest_note = note
 			
-			if not is_negative:
-				time_difference_y *= -1
+			if note_hold_idx < 0 or _last_note_holder_idx < 0:
+				_last_note_holder_idx = note_hold_idx
+			elif note_hold_idx != _last_note_holder_idx:
+				var distance = note_hold_idx - _last_note_holder_idx
+				if not ((leftest_note.get_idx() + distance < 0) or (leftest_note.get_idx() + distance > Gear.get_type() - 1) or (
+					rightest_note.get_idx() + distance < 0) or (rightest_note.get_idx() + distance > Gear.get_type() - 1)):
+					for note in _selected_notes:
+						Gear.change_note_from_note_holder(note.get_idx(), note.get_idx() + distance, note)
+					_last_note_holder_idx = note_hold_idx
 			
+			var temp = time_difference_y
+			time_difference_y -= _last_time_difference_y
+			_last_time_difference_y = temp
+			
+			if not time_difference_y: # THE MOUSE HASN'T MOVED
+				return
 			
 			var lowest_note : Note
 			for note in _selected_notes:
@@ -156,10 +175,6 @@ func _handle_select() -> void:
 			var changed_lowest := false
 			var changed_highest := false
 			
-			var temp = time_difference_y
-			time_difference_y -= _last_time_difference_y
-			_last_time_difference_y = temp
-			
 			if lowest_note.get_time() + time_difference_y < 0.0:
 				time_difference_y = -lowest_note.get_time()
 			if lowest_note.get_time() + time_difference_y < Song.get_time():
@@ -180,15 +195,15 @@ func _handle_select() -> void:
 				song.set_time(highest_note_time + time_difference_y - NoteHolder.SECS_SIZE_Y)
 				Gear.update_note_time(highest_note)
 			
-			if time_difference_y:
-				for note in _selected_notes:
-					if (note == lowest_note and changed_lowest) or (note == highest_note and changed_highest):
-						continue
-					note.set_time(note.get_time() + time_difference_y)
-					Gear.update_note_time(note)
+			for note in _selected_notes:
+				if (note == lowest_note and changed_lowest) or (note == highest_note and changed_highest):
+					continue
+				note.set_time(note.get_time() + time_difference_y)
+				Gear.update_note_time(note)
 			
 		elif Input.is_action_just_released("Add Item"):
 			_last_time_difference_y = 0.0
+			_last_note_holder_idx = -1
 			pass
 	else:
 		if Input.is_action_pressed("Add Item"):
@@ -202,6 +217,24 @@ func _handle_select() -> void:
 			for notes in _selected_notes:
 				notes.set_highlight(true)
 			_mouse_selection.set_rect(Rect2(0, 0, 0, 0))
+
+func _get_time_difference_y() -> float:
+	var mouse_pos : Vector2 = get_local_mouse_position()
+	mouse_pos.y -= Note.height / 2
+	
+	var difference = mouse_pos.y - _last_drag_mouse_position.y
+	var is_negative : bool = difference < 0
+	if is_negative:
+		difference += _hit_zone_y - Note.height / 2
+	else:
+		difference = _hit_zone_y - Note.height / 2 - difference
+	
+	var time_difference_y = NoteHolder.get_time_pos_y(_hit_zone_y - Note.height / 2, - Note.height / 2, difference, 0, NoteHolder.SECS_SIZE_Y)
+	
+	if not time_difference_y:
+		return 0.0
+	
+	return time_difference_y if is_negative else time_difference_y * -1
 
 func _is_mouse_inside_selection_rect() -> bool:
 	if not _selected_notes:
@@ -238,7 +271,7 @@ func _get_limited_by_gear_local_mouse_position() -> Dictionary:
 	
 	var closest_x_dist := 1000000000
 	var pos_x = -1
-	var idx = 0
+	var idx = -1
 	
 	for i in note_holds.size():
 		var dist_dif = abs(get_global_mouse_position().x - note_holds[i].x)
@@ -253,7 +286,7 @@ func _get_limited_by_gear_local_mouse_position() -> Dictionary:
 	mouse_pos.x = pos_x # If -1 here, means that didn't finded a note_holder
 	return {
 		"position": mouse_pos,
-		"note_hold": idx
+		"note_hold": idx # If -1 here, means that didn't finded a note_holder
 	}
 
 func _handle_selected_item_tap() -> void:
