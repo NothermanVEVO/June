@@ -137,8 +137,12 @@ func _handle_select() -> void:
 			time_difference_y -= _last_time_difference_y
 			_last_time_difference_y = temp
 			
-			if not time_difference_y: # THE MOUSE HASN'T MOVED
+			if not time_difference_y or (time_difference_y > 0.0 and get_local_mouse_position().y > _hit_zone_y) or (
+				time_difference_y < 0.0 and get_local_mouse_position().y < 0.0):
 				return
+			#elif time_difference_y > 0.0:
+			#if get_local_mouse_position().y > _hit_zone_y:
+				#print(_hit_zone_y - Note.height / 2)
 			
 			var lowest_note : Note
 			for note in _selected_notes:
