@@ -30,14 +30,10 @@ func _init(start_time : float, end_time : float) -> void:
 	_start_note.size = Vector2(NoteHolder.width, height / 2)
 	_start_note.position = Vector2(0, _start_note.size.y)
 	
-	var end_pos = NoteHolder.get_local_pos_y_correct(0, Gear.get_max_size_y(), end_time - start_time, 0, NoteHolder.SECS_SIZE_Y)
 	add_child(_end_note)
-	_end_note.size = Vector2(NoteHolder.width, Note.height / 2)
-	_end_note.position = Vector2(0, -end_pos)
-	
 	add_child(_middle_note)
-	_middle_note.size = Vector2(NoteHolder.width, abs(_start_note.position.y - (_end_note.position.y + _end_note.size.y)))
-	_middle_note.position = Vector2(0, _start_note.position.y - _middle_note.size.y)
+	
+	set_end_time(end_time)
 
 func get_start_time() -> float:
 	return _start_time
@@ -66,6 +62,11 @@ func set_end_time(end_time : float) -> void:
 	_end_time = end_time
 	
 	var end_pos = NoteHolder.get_local_pos_y_correct(0, Gear.get_max_size_y(), end_time - _start_time, 0, NoteHolder.SECS_SIZE_Y)
+	
+	while end_time - _start_time > NoteHolder.SECS_SIZE_Y:
+		end_time -= NoteHolder.SECS_SIZE_Y
+		end_pos += NoteHolder.get_local_pos_y_correct(0, Gear.get_max_size_y(), end_time - _start_time, 0, NoteHolder.SECS_SIZE_Y)
+	
 	_end_note.size = Vector2(NoteHolder.width, Note.height / 2)
 	_end_note.position = Vector2(0, -end_pos)
 	

@@ -60,10 +60,11 @@ func _editor_process() -> void:
 	for note in notes:
 		note.visible = true
 		note.position.x = -width / 2
-		note.position.y = -get_local_pos_y_correct(Note.height / 2, Gear.get_max_size_y() + Note.height / 2, note.get_time(), time, time + SECS_SIZE_Y)# + (Note.height / 2)
+		note.position.y = -get_local_pos_y_correct(Note.height / 2, Gear.get_max_size_y() + Note.height / 2, note.get_time(), time, time + SECS_SIZE_Y)
 		
 		if note is HoldNote and note.get_time() < time:
 			var difference = -get_local_pos_y_correct(0, Gear.get_max_size_y(), note.get_time() + (time - note.get_time()), note.get_time(), note.get_time() + SECS_SIZE_Y)
+			print(note.get_time() + (time - note.get_time())) # TODO # TODO TODO >..................
 			note.position.y -= difference
 	
 	_last_visible_notes = notes
