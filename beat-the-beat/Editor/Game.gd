@@ -17,6 +17,7 @@ var _currently_hold_note : HoldNoteEditor
 var _is_mouse_inside : bool = false
 
 var _start_mouse_click_position : Vector2
+var _clicked_note : Note
 var _clicked_on_note : bool = false
 var _mouse_selection : Selection = Selection.new()
 var _selected_notes : Array[Note] = []
@@ -92,6 +93,7 @@ func _handle_select() -> void:
 		_clicked_on_note = notes.size() == 1 # IF TRUE, MEANS THAT IT CLICKED ON A NOTE
 		if _clicked_on_note:
 			_last_drag_mouse_position = _get_limited_by_gear_local_mouse_position()["position"]
+			_clicked_note = notes[0]
 			if not notes[0].is_selected():
 				_clear_selected_notes()
 				_selected_notes.append(notes[0])
@@ -138,6 +140,8 @@ func _handle_select() -> void:
 			time_difference_y -= _last_time_difference_y
 			_last_time_difference_y = temp
 			
+			#print("Time Diff: " + str(time_difference_y))
+			
 			if not time_difference_y or (time_difference_y > 0.0 and get_local_mouse_position().y > _hit_zone_y) or (
 				time_difference_y < 0.0 and get_local_mouse_position().y < 0.0):
 				return
@@ -174,31 +178,32 @@ func _handle_select() -> void:
 				#print(Song.get_time())
 				#print("Omg")
 			
-			var changed_lowest := false
-			var changed_highest := false
+			var changed_clicked_note := false
 			
 			if lowest_note.get_time() + time_difference_y < 0.0:
 				time_difference_y = -lowest_note.get_time()
-			if lowest_note.get_time() + time_difference_y < Song.get_time():
-				changed_lowest = true
-				lowest_note.set_time(lowest_note.get_time() + time_difference_y)
+			if _clicked_note.get_time() + time_difference_y < Song.get_time():
+				changed_clicked_note = true
+				_clicked_note.set_time(_clicked_note.get_time() + time_difference_y)
 				var song := Song.new()
-				song.set_time(lowest_note.get_time())
-				Gear.update_note_time(lowest_note)
+				if _clicked_note.get_time() < Song.get_time():
+					song.set_time(_clicked_note.get_time())
+				Gear.update_note_time(_clicked_note)
 			
 			var highest_note_time = highest_note.get_time() + highest_note.get_duration() if highest_note is HoldNoteEditor else highest_note.get_time()
 			
 			if highest_note_time + time_difference_y > Song.get_duration():
 				time_difference_y = Song.get_duration() - highest_note_time
+			highest_note_time = _clicked_note.get_time() + _clicked_note.get_duration() if _clicked_note is HoldNoteEditor else _clicked_note.get_time()
 			if highest_note_time + time_difference_y > Song.get_time() + NoteHolder.SECS_SIZE_Y:
-				changed_highest = true
-				highest_note.set_time(highest_note.get_time() + time_difference_y)
+				changed_clicked_note = true
+				_clicked_note.set_time(_clicked_note.get_time() + time_difference_y)
 				var song := Song.new()
 				song.set_time(highest_note_time + time_difference_y - NoteHolder.SECS_SIZE_Y)
-				Gear.update_note_time(highest_note)
+				Gear.update_note_time(_clicked_note)
 			
 			for note in _selected_notes:
-				if (note == lowest_note and changed_lowest) or (note == highest_note and changed_highest):
+				if note == _clicked_note and changed_clicked_note:
 					continue
 				note.set_time(note.get_time() + time_difference_y)
 				Gear.update_note_time(note)
@@ -222,6 +227,10 @@ func _handle_select() -> void:
 func _get_time_difference_y() -> float:
 	var mouse_pos : Vector2 = get_local_mouse_position()
 	mouse_pos.y -= Note.height / 2
+	
+	
+	#print("Mouse Pos Y: " + str(mouse_pos.y))
+	#print("Last Drag Mouse Position Y: " + str(_last_drag_mouse_position.y))
 	
 	var difference = mouse_pos.y - _last_drag_mouse_position.y
 	var is_negative : bool = difference < 0
@@ -351,7 +360,7 @@ func _handle_selected_item_hold() -> void:
 			_last_time_difference_y = temp
 			
 			if not _currently_hold_note.visible:
-				_currently_hold_note.visible = true # NOT THE BEST WAY, BUT WORKS FOR NOW
+				_currently_hold_note.visible = true #NOTE NOT THE BEST WAY, BUT WORKS FOR NOW
 				
 			if not time_difference_y or (time_difference_y > 0.0 and get_local_mouse_position().y > _hit_zone_y) or (
 				time_difference_y < 0.0 and get_local_mouse_position().y < 0.0):
@@ -362,6 +371,7 @@ func _handle_selected_item_hold() -> void:
 		elif Input.is_action_just_released("Add Item"):
 			_currently_hold_note.set_end_time(mouse_time_pos_y)
 			_currently_hold_note.update_end_time_text()
+			_last_time_difference_y = 0.0
 	else: # DIDN'T FIND A NOTE HOLD
 		sample_tap_note.visible = false
 

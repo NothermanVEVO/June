@@ -2,11 +2,11 @@ extends PanelContainer
 
 class_name NoteInfo
 
-@onready var _start_time : TextEdit = $"InfoVBox/Start Time"
-@onready var _end_time : TextEdit = $"InfoVBox/End Time"
-@onready var _sfx : TextEdit = $InfoVBox/SFX
-@onready var _locked : CheckBox = $InfoVBox/Locked
-@onready var _power : CheckBox = $InfoVBox/Power
+@onready var _start_time : TextEdit = $"MarginContainer/InfoVBox/Start Time"
+@onready var _end_time : TextEdit = $"MarginContainer/InfoVBox/End Time"
+@onready var _sfx : TextEdit = $MarginContainer/InfoVBox/SFX
+@onready var _locked : CheckBox = $MarginContainer/InfoVBox/Locked
+@onready var _power : CheckBox = $MarginContainer/InfoVBox/Power
 
 enum Type{TAP, HOLD}
 

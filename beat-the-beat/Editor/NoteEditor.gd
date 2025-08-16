@@ -50,6 +50,9 @@ func set_highlight(highlight : bool) -> void:
 	else:
 		material = null
 
+func update_start_time_text() -> void:
+	_note_info.set_start_time(get_time())
+
 func _time_text_changed(seconds : float) -> void: # SIGNAL
 	set_time(seconds)
 	Gear.update_note_time(self)

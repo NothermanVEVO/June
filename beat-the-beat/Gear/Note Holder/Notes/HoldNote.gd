@@ -10,7 +10,7 @@ var _start_note : NinePatchRect = NinePatchRect.new()
 var _middle_note : NinePatchRect = NinePatchRect.new()
 var _end_note : NinePatchRect = NinePatchRect.new()
 
-var _start_time : float
+var _start_time : float #TODO REMOVE THIS SHIT, I'M JUST USING THE GET_TIME()
 var _end_time : float
 
 var start_state : State = State.TO_HIT
@@ -26,14 +26,11 @@ func _init(start_time : float, end_time : float) -> void:
 	_middle_note.texture = MIDDLE_NOTE_IMG
 	_end_note.texture = END_NOTE_IMG
 	
-	add_child(_start_note)
-	_start_note.size = Vector2(NoteHolder.width, height / 2)
-	_start_note.position = Vector2(0, _start_note.size.y)
+	set_start_time(start_time)
 	
+	add_child(_start_note)
 	add_child(_end_note)
 	add_child(_middle_note)
-	
-	set_end_time(end_time)
 
 func get_start_time() -> float:
 	return _start_time
@@ -48,15 +45,10 @@ func set_start_time(start_time : float) -> void:
 	_start_time = start_time
 	set_time(start_time)
 	
-	_start_note.size = Vector2(NoteHolder.width, height / 2)
+	_start_note.size = Vector2(NoteHolder.width, height / 2.0)
 	_start_note.position = Vector2(0, _start_note.size.y)
 	
-	var end_pos = NoteHolder.get_local_pos_y_correct(0, Gear.get_max_size_y(), _end_time - start_time, 0, NoteHolder.SECS_SIZE_Y)
-	_end_note.size = Vector2(NoteHolder.width, Note.height / 2)
-	_end_note.position = Vector2(0, -end_pos)
-	
-	_middle_note.size = Vector2(NoteHolder.width, abs(_start_note.position.y - (_end_note.position.y + _end_note.size.y)))
-	_middle_note.position = Vector2(0, _start_note.position.y - _middle_note.size.y)
+	set_end_time(_end_time)
 
 func set_end_time(end_time : float) -> void:
 	_end_time = end_time
@@ -67,8 +59,15 @@ func set_end_time(end_time : float) -> void:
 		end_time -= NoteHolder.SECS_SIZE_Y
 		end_pos += NoteHolder.get_local_pos_y_correct(0, Gear.get_max_size_y(), end_time - _start_time, 0, NoteHolder.SECS_SIZE_Y)
 	
-	_end_note.size = Vector2(NoteHolder.width, Note.height / 2)
+	_end_note.size = Vector2(NoteHolder.width, Note.height / 2.0)
 	_end_note.position = Vector2(0, -end_pos)
 	
-	_middle_note.size = Vector2(NoteHolder.width, abs(_start_note.position.y - (_end_note.position.y + _end_note.size.y)))
-	_middle_note.position = Vector2(0, _start_note.position.y - _middle_note.size.y)
+	#_middle_note.size = Vector2(NoteHolder.width, abs(_start_note.position.y - (_end_note.position.y + _end_note.size.y)))
+	#_middle_note.position = Vector2(0, _start_note.position.y - _middle_note.size.y)
+	_middle_note.position = Vector2(0, floor(_end_note.position.y + _end_note.size.y))
+	_middle_note.size = Vector2(NoteHolder.width, ceil(abs(_middle_note.position.y - _start_note.size.y)))
+	#print(_end_note.position.y + _end_note.size.y)
+	#print("S: " + str(_start_note.position))
+	#print("M: " + str(_middle_note.position))
+	#print("M SIZE: " + str(_middle_note.size))
+	#print("E: " + str(_end_note.position))

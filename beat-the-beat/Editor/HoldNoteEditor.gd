@@ -21,18 +21,10 @@ func _init(start_time : float, end_time : float, min_global_pos_y : float) -> vo
 	_middle_note.texture = MIDDLE_NOTE_IMG
 	_end_note.texture = END_NOTE_IMG
 	
+	set_start_time(_start_time)
 	add_child(_start_note)
-	_start_note.size = Vector2(NoteHolder.width, height / 2)
-	_start_note.position = Vector2(0, _start_note.size.y)
-	
-	var end_pos = NoteHolder.get_local_pos_y_correct(0, Gear.get_max_size_y(), end_time - start_time, 0, NoteHolder.SECS_SIZE_Y)
 	add_child(_end_note)
-	_end_note.size = Vector2(NoteHolder.width, Note.height / 2)
-	_end_note.position = Vector2(0, -end_pos)
-	
 	add_child(_middle_note)
-	_middle_note.size = Vector2(NoteHolder.width, abs(_start_note.position.y - (_end_note.position.y + _end_note.size.y)))
-	_middle_note.position = Vector2(0, _start_note.position.y - _middle_note.size.y)
 
 func _ready() -> void:
 	_note_info = _note_info_scene.instantiate()
@@ -77,8 +69,14 @@ func set_highlight(highlight : bool) -> void:
 		_middle_note.material = null
 		_end_note.material = null
 
+func update_start_time_text() -> void:
+	_note_info.set_start_time(get_time())
+
 func update_end_time_text() -> void:
 	_note_info.set_end_time(get_end_time())
+	print("Time: " + str(get_time()))
+	print("Start time: " + str(get_start_time()))
+	print("End time: " + str(get_end_time()))
 
 func _start_time_text_changed(seconds : float) -> void:
 	set_start_time(seconds)
@@ -88,7 +86,7 @@ func _end_time_text_changed(seconds : float) -> void: # SIGNAL
 	set_end_time(seconds)
 	
 	var end_pos = NoteHolder.get_local_pos_y_correct(0, Gear.get_max_size_y(), get_end_time() - get_start_time(), 0, NoteHolder.SECS_SIZE_Y)
-	_end_note.size = Vector2(NoteHolder.width, Note.height / 2)
+	_end_note.size = Vector2(NoteHolder.width, Note.height / 2.0)
 	_end_note.position = Vector2(0, -end_pos)
 	
 	Gear.update_note_time(self)

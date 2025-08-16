@@ -83,6 +83,11 @@ static func get_notes_between(from : float, to : float) -> Array[Note]:
 	return notes
 
 static func update_note_time(note : Note) -> void:
+	if note is NoteEditor:
+		note.update_start_time_text()
+	elif note is HoldNoteEditor:
+		note.update_start_time_text()
+		note.update_end_time_text()
 	change_note_from_note_holder(note.get_idx(), note.get_idx(), note)
 
 func set_max_size_y(max_size_y : float) -> void:
