@@ -350,9 +350,8 @@ func _handle_selected_item_hold() -> void:
 			time_difference_y -= _last_time_difference_y
 			_last_time_difference_y = temp
 			
-			#if _currently_hold_note.get_end_time() == Song.get_time():
-				#var song := Song.new()
-				#song.set_time(clampf(Song.get_time() - 0.1, 0.0, Song.get_duration()))
+			if not _currently_hold_note.visible:
+				_currently_hold_note.visible = true # NOT THE BEST WAY, BUT WORKS FOR NOW
 				
 			if not time_difference_y or (time_difference_y > 0.0 and get_local_mouse_position().y > _hit_zone_y) or (
 				time_difference_y < 0.0 and get_local_mouse_position().y < 0.0):
