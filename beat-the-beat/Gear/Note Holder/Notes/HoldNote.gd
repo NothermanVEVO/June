@@ -62,12 +62,5 @@ func set_end_time(end_time : float) -> void:
 	_end_note.size = Vector2(NoteHolder.width, Note.height / 2.0)
 	_end_note.position = Vector2(0, -end_pos)
 	
-	#_middle_note.size = Vector2(NoteHolder.width, abs(_start_note.position.y - (_end_note.position.y + _end_note.size.y)))
-	#_middle_note.position = Vector2(0, _start_note.position.y - _middle_note.size.y)
 	_middle_note.position = Vector2(0, floor(_end_note.position.y + _end_note.size.y))
 	_middle_note.size = Vector2(NoteHolder.width, ceil(abs(_middle_note.position.y - _start_note.size.y)))
-	#print(_end_note.position.y + _end_note.size.y)
-	#print("S: " + str(_start_note.position))
-	#print("M: " + str(_middle_note.position))
-	#print("M SIZE: " + str(_middle_note.size))
-	#print("E: " + str(_end_note.position))
