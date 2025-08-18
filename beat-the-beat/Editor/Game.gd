@@ -87,6 +87,10 @@ func _handle_selected_item(item_text : String) -> void:
 			#print("epa, NÃO ERA PRA ESTAR ENTRANDO AQUI, FICA ESPERTO")
 
 func _handle_select() -> void:
+	if Input.is_action_just_pressed("Delete"):
+		for note in _selected_notes:
+			Gear.remove_note_at(note.get_idx(), note, true, true)
+	
 	if Input.is_action_just_pressed("Add Item"):
 		_start_mouse_click_position = get_local_mouse_position()
 		var notes := Gear.get_global_intersected_rects(Rect2(get_global_mouse_position(), Vector2.ZERO))
@@ -262,8 +266,10 @@ func _is_mouse_inside_selection_rect() -> bool:
 	return full_rect.has_point(get_global_mouse_position())
 
 func _clear_selected_notes() -> void:
-	for notes in _selected_notes:
-		notes.set_selected_highlight(false)
+	for note in _selected_notes:
+		if not is_instance_valid(note):
+			continue
+		note.set_selected_highlight(false)
 	_selected_notes.clear()
 
 func _get_limited_by_gear_global_mouse_position() -> Vector2:

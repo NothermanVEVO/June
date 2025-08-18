@@ -142,9 +142,12 @@ func add_note(note : Note, validate_note : bool = false) -> void:
 		else:
 			validate_notes(note.get_time(), note.get_time())
 
-func remove_note(note : Note, validate_note : bool = false) -> void:
+func remove_note(note : Note, validate_note : bool = false, free : bool = false) -> void:
 	_notes.erase(note)
+	_last_visible_notes.erase(note)
 	remove_child.call_deferred(note)
+	if free:
+		note.call_deferred("queue_free")
 	if validate_note:
 		validate_notes(0.0, Song.get_duration())
 

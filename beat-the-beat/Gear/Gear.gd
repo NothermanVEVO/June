@@ -48,8 +48,8 @@ func add_note_at(idx : int, note : Note, validate_note : bool = false) -> void:
 	note.set_idx(idx)
 	_note_holders[idx].add_note(note, validate_note)
 
-static func remove_note_at(idx : int, note : Note, validate_note : bool = false) -> void:
-	_note_holders[idx].remove_note(note, validate_note)
+static func remove_note_at(idx : int, note : Note, validate_note : bool = false, free : bool = false) -> void:
+	_note_holders[idx].remove_note(note, validate_note, free)
 
 static func get_type() -> int:
 	return _type
