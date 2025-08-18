@@ -44,9 +44,12 @@ func _ready() -> void: #TODO HANDLE ANY POSITION FOR THE GEAR, NOT ONLY THE MIDD
 		_note_holders.append(note_holder)
 		add_child(note_holder)
 
-func add_note_at(idx : int, note : Note) -> void:
+func add_note_at(idx : int, note : Note, validate_note : bool = false) -> void:
 	note.set_idx(idx)
-	_note_holders[idx].add_note(note)
+	_note_holders[idx].add_note(note, validate_note)
+
+static func remove_note_at(idx : int, note : Note, validate_note : bool = false) -> void:
+	_note_holders[idx].remove_note(note, validate_note)
 
 static func get_type() -> int:
 	return _type
@@ -67,13 +70,13 @@ static func get_global_intersected_rects(rect : Rect2) -> Array[Note]:
 				array.append(note)
 	return array
 
-static func change_note_from_note_holder(from : int, to : int, note : Note) -> void:
+static func change_note_from_note_holder(from : int, to : int, note : Note, validate_note : bool = false) -> void:
 	if from == to:
-		_note_holders[from].update_note(note)
+		_note_holders[from].update_note(note, validate_note)
 		return
-	_note_holders[from].remove_note(note)
+	_note_holders[from].remove_note(note, validate_note)
 	note.set_idx(to)
-	_note_holders[to].add_note(note)
+	_note_holders[to].add_note(note, validate_note)
 
 static func get_notes_between(from : float, to : float) -> Array[Note]:
 	var notes : Array[Note] = []
@@ -82,13 +85,13 @@ static func get_notes_between(from : float, to : float) -> Array[Note]:
 			notes.append(note)
 	return notes
 
-static func update_note_time(note : Note) -> void:
+static func update_note_time(note : Note, validate_note : bool = false) -> void:
 	if note is NoteEditor:
 		note.update_start_time_text()
 	elif note is HoldNoteEditor:
 		note.update_start_time_text()
 		note.update_end_time_text()
-	change_note_from_note_holder(note.get_idx(), note.get_idx(), note)
+	change_note_from_note_holder(note.get_idx(), note.get_idx(), note, validate_note)
 
 func set_max_size_y(max_size_y : float) -> void:
 	_max_size_y = max_size_y

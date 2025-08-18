@@ -55,8 +55,7 @@ func _process(delta: float) -> void:
 func get_global_hold_rect() -> Rect2:
 	return Rect2(_end_note.global_position, Vector2(_start_note.size.x, _start_note.size.y + _middle_note.size.y + _end_note.size.y))
 
-func set_highlight(highlight : bool) -> void:
-	_is_selected = highlight
+func _set_highlight(highlight : bool) -> void:
 	if highlight:
 		_start_note.material = _shader_material
 		_middle_note.material = _shader_material
@@ -66,18 +65,31 @@ func set_highlight(highlight : bool) -> void:
 		_middle_note.material = null
 		_end_note.material = null
 
+func set_selected_highlight(selected : bool) -> void:
+	_is_selected = selected
+	_set_highlight(selected)
+	if selected:
+		_shader_material.set_shader_parameter("shade_color", Vector4(1.0, 1.0, 1.0, 0.5))
+	elif not _is_valid:
+		set_invalid_highlight(true)
+
+func set_invalid_highlight(is_invalid : bool) -> void:
+	_is_valid = not is_invalid
+	_set_highlight(is_invalid)
+	if is_invalid and not _is_selected:
+			_shader_material.set_shader_parameter("shade_color", Vector4(1.0, 0.1, 0.1, 0.5))
+	elif _is_selected:
+		set_selected_highlight(true)
+
 func update_start_time_text() -> void:
 	_note_info.set_start_time(get_time())
 
 func update_end_time_text() -> void:
 	_note_info.set_end_time(get_end_time())
-	print("Time: " + str(get_time()))
-	print("Start time: " + str(get_start_time()))
-	print("End time: " + str(get_end_time()))
 
-func _start_time_text_changed(seconds : float) -> void:
+func _start_time_text_changed(seconds : float) -> void: # SIGNAL
 	set_start_time(seconds)
-	Gear.update_note_time(self)
+	Gear.update_note_time(self, true)
 
 func _end_time_text_changed(seconds : float) -> void: # SIGNAL
 	set_end_time(seconds)
@@ -86,7 +98,7 @@ func _end_time_text_changed(seconds : float) -> void: # SIGNAL
 	_end_note.size = Vector2(NoteHolder.width, Note.height / 2.0)
 	_end_note.position = Vector2(0, -end_pos)
 	
-	Gear.update_note_time(self)
+	Gear.update_note_time(self, true)
 
 func has_mouse_on_info() -> bool:
 	return _note_info.visible and _note_info.has_mouse()

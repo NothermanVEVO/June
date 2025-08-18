@@ -121,7 +121,7 @@ func _calculate_round_precision(note : Note) -> int:
 	#_notes.append(note)
 	#add_child(note)
 
-func add_note(note : Note) -> void:
+func add_note(note : Note, validate_note : bool = false) -> void:
 	var low := 0
 	var high := _notes.size()
 
@@ -135,12 +135,20 @@ func add_note(note : Note) -> void:
 	_notes.insert(low, note)
 	add_child.call_deferred(note)
 	note.visible = false
+	
+	if validate_note:
+		if note is HoldNote:
+			validate_notes(note.get_start_time(), note.get_end_time())
+		else:
+			validate_notes(note.get_time(), note.get_time())
 
-func remove_note(note : Note) -> void:
+func remove_note(note : Note, validate_note : bool = false) -> void:
 	_notes.erase(note)
 	remove_child.call_deferred(note)
+	if validate_note:
+		validate_notes(0.0, Song.get_duration())
 
-func update_note(note : Note) -> void:
+func update_note(note : Note, validate_note : bool = false) -> void:
 	_notes.erase(note)
 	
 	var low := 0
@@ -154,6 +162,8 @@ func update_note(note : Note) -> void:
 			low = mid + 1
 
 	_notes.insert(low, note)
+	if validate_note:
+		validate_notes(0.0, Song.get_duration())
 
 func get_notes(from : float, to : float) -> Array[Note]:
 	var result : Array[Note] = []
@@ -178,6 +188,30 @@ func get_notes(from : float, to : float) -> Array[Note]:
 		i += 1
 
 	return result
+
+func validate_notes(from : float, to : float) -> bool:
+	var is_valid := true
+	var notes := get_notes(from, to)
+	for note in notes:
+		if note is HoldNoteEditor:
+			var temp_notes := get_notes(note.get_start_time(), note.get_end_time())
+			if temp_notes.size() > 1:
+				is_valid = false
+				for temp_note in temp_notes:
+					temp_note.set_invalid_highlight(true)
+			elif note.get_end_time() < note.get_start_time():
+				note.set_invalid_highlight(true)
+			else:
+				note.set_invalid_highlight(false)
+		elif note is NoteEditor:
+			var temp_notes := get_notes(note.get_time(), note.get_time())
+			if temp_notes.size() > 1:
+				is_valid = false
+				for temp_note in temp_notes:
+					temp_note.set_invalid_highlight(true)
+			else:
+				note.set_invalid_highlight(false)
+	return is_valid
 
 static func get_hitzone() -> float:
 	return _hit_zone_y

@@ -97,7 +97,7 @@ func _handle_select() -> void:
 			if not notes[0].is_selected():
 				_clear_selected_notes()
 				_selected_notes.append(notes[0])
-				notes[0].set_highlight(true)
+				notes[0].set_selected_highlight(true)
 		else: # IF DIDN'T CLICKED ON A NOTE, JUST CLEAR SELECTED NOTES
 			_clear_selected_notes()
 	elif _clicked_on_note:
@@ -131,7 +131,7 @@ func _handle_select() -> void:
 				if not ((leftest_note.get_idx() + distance < 0) or (leftest_note.get_idx() + distance > Gear.get_type() - 1) or (
 					rightest_note.get_idx() + distance < 0) or (rightest_note.get_idx() + distance > Gear.get_type() - 1)):
 					for note in _selected_notes:
-						Gear.change_note_from_note_holder(note.get_idx(), note.get_idx() + distance, note)
+						Gear.change_note_from_note_holder(note.get_idx(), note.get_idx() + distance, note, true)
 					_last_note_holder_idx = note_hold_idx
 			
 			var time_difference_y := _get_time_difference_y()
@@ -188,7 +188,7 @@ func _handle_select() -> void:
 				var song := Song.new()
 				if _clicked_note.get_time() < Song.get_time():
 					song.set_time(_clicked_note.get_time())
-				Gear.update_note_time(_clicked_note)
+				Gear.update_note_time(_clicked_note, true)
 			
 			var highest_note_time = highest_note.get_time() + highest_note.get_duration() if highest_note is HoldNoteEditor else highest_note.get_time()
 			
@@ -200,13 +200,13 @@ func _handle_select() -> void:
 				_clicked_note.set_time(_clicked_note.get_time() + time_difference_y)
 				var song := Song.new()
 				song.set_time(highest_note_time + time_difference_y - NoteHolder.SECS_SIZE_Y)
-				Gear.update_note_time(_clicked_note)
+				Gear.update_note_time(_clicked_note, true)
 			
 			for note in _selected_notes:
 				if note == _clicked_note and changed_clicked_note:
 					continue
 				note.set_time(note.get_time() + time_difference_y)
-				Gear.update_note_time(note)
+				Gear.update_note_time(note, true)
 			
 		elif Input.is_action_just_released("Add Item"):
 			_last_time_difference_y = 0.0
@@ -221,7 +221,7 @@ func _handle_select() -> void:
 			rect = rect.abs()
 			_selected_notes = Gear.get_global_intersected_rects(rect)
 			for notes in _selected_notes:
-				notes.set_highlight(true)
+				notes.set_selected_highlight(true)
 			_mouse_selection.set_rect(Rect2(0, 0, 0, 0))
 
 func _get_time_difference_y() -> float:
@@ -253,7 +253,7 @@ func _is_mouse_inside_selection_rect() -> bool:
 
 func _clear_selected_notes() -> void:
 	for notes in _selected_notes:
-		notes.set_highlight(false)
+		notes.set_selected_highlight(false)
 	_selected_notes.clear()
 
 func _get_limited_by_gear_global_mouse_position() -> Vector2:
@@ -318,7 +318,7 @@ func _handle_selected_item_tap() -> void:
 		sample_tap_note.set_time(mouse_time_pos_y)
 		
 		if Input.is_action_just_pressed("Add Item"):
-			gear.add_note_at(idx, NoteEditor.new(sample_tap_note.get_time(), global_position.y))
+			gear.add_note_at(idx, NoteEditor.new(sample_tap_note.get_time(), global_position.y), true)
 	else: # DIDN'T FIND A NOTE HOLD
 		sample_tap_note.visible = false
 
@@ -346,11 +346,12 @@ func _handle_selected_item_hold() -> void:
 		if Input.is_action_just_pressed("Add Item"):
 			sample_tap_note.visible = false
 			_currently_hold_note = HoldNoteEditor.new(mouse_time_pos_y, mouse_time_pos_y, global_position.y)
-			gear.add_note_at(idx, _currently_hold_note)
+			gear.add_note_at(idx, _currently_hold_note, true)
 			_last_drag_mouse_position = _get_limited_by_gear_local_mouse_position()["position"]
 		elif Input.is_action_pressed("Add Item"):
 			sample_tap_note.visible = false
 			_currently_hold_note.set_end_time(mouse_time_pos_y)
+			Gear.update_note_time(_currently_hold_note, true)
 			
 			var time_difference_y := _get_time_difference_y()
 			_last_drag_mouse_position = _get_limited_by_gear_local_mouse_position()["position"]
