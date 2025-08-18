@@ -10,17 +10,14 @@ var _start_note : NinePatchRect = NinePatchRect.new()
 var _middle_note : NinePatchRect = NinePatchRect.new()
 var _end_note : NinePatchRect = NinePatchRect.new()
 
-var _start_time : float #TODO REMOVE THIS SHIT, I'M JUST USING THE GET_TIME()
-var _end_time : float
+var _duration : float
 
 var start_state : State = State.TO_HIT
 var end_state : State = State.TO_HIT
 
 func _init(start_time : float, end_time : float) -> void:
-	_start_time = start_time
-	_end_time = end_time
-	
-	set_time(_start_time)
+	_current_time = start_time
+	_duration = end_time - start_time
 	
 	_start_note.texture = START_NOTE_IMG
 	_middle_note.texture = MIDDLE_NOTE_IMG
@@ -33,31 +30,30 @@ func _init(start_time : float, end_time : float) -> void:
 	add_child(_middle_note)
 
 func get_start_time() -> float:
-	return _start_time
+	return _current_time
 
 func get_end_time() -> float:
-	return _end_time
+	return _current_time + _duration
 
 func get_duration() -> float:
-	return _end_time - _start_time
+	return _duration
 
 func set_start_time(start_time : float) -> void:
-	_start_time = start_time
 	set_time(start_time)
 	
 	_start_note.size = Vector2(NoteHolder.width, height / 2.0)
 	_start_note.position = Vector2(0, _start_note.size.y)
 	
-	set_end_time(_end_time)
+	set_end_time(get_end_time())
 
 func set_end_time(end_time : float) -> void:
-	_end_time = end_time
+	_duration = end_time - _current_time
 	
-	var end_pos = NoteHolder.get_local_pos_y_correct(0, Gear.get_max_size_y(), end_time - _start_time, 0, NoteHolder.SECS_SIZE_Y)
+	var end_pos = NoteHolder.get_local_pos_y_correct(0, Gear.get_max_size_y(), end_time - _current_time, 0, NoteHolder.SECS_SIZE_Y)
 	
-	while end_time - _start_time > NoteHolder.SECS_SIZE_Y:
+	while end_time - _current_time > NoteHolder.SECS_SIZE_Y:
 		end_time -= NoteHolder.SECS_SIZE_Y
-		end_pos += NoteHolder.get_local_pos_y_correct(0, Gear.get_max_size_y(), end_time - _start_time, 0, NoteHolder.SECS_SIZE_Y)
+		end_pos += NoteHolder.get_local_pos_y_correct(0, Gear.get_max_size_y(), end_time - _current_time, 0, NoteHolder.SECS_SIZE_Y)
 	
 	_end_note.size = Vector2(NoteHolder.width, Note.height / 2.0)
 	_end_note.position = Vector2(0, -end_pos)

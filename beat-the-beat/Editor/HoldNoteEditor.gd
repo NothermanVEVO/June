@@ -11,17 +11,14 @@ const HIGHLIGHT_SHADER = preload("res://shaders/Highlight.gdshader")
 var _min_global_pos_y : float
 
 func _init(start_time : float, end_time : float, min_global_pos_y : float) -> void:
-	_start_time = start_time
-	_end_time = end_time
+	set_start_time(start_time)
+	set_end_time(end_time)
 	_min_global_pos_y = min_global_pos_y
-	
-	set_time(_start_time)
 	
 	_start_note.texture = START_NOTE_IMG
 	_middle_note.texture = MIDDLE_NOTE_IMG
 	_end_note.texture = END_NOTE_IMG
 	
-	set_start_time(_start_time)
 	add_child(_start_note)
 	add_child(_end_note)
 	add_child(_middle_note)
@@ -32,8 +29,8 @@ func _ready() -> void:
 	_note_info.visible = false
 	_note_info.set_type(NoteInfo.Type.HOLD)
 	
-	_note_info.set_start_time(_start_time)
-	_note_info.set_end_time(_end_time)
+	_note_info.set_start_time(_current_time)
+	_note_info.set_end_time(get_end_time())
 	
 	_note_info.valid_start_time_text_change.connect(_start_time_text_changed)
 	_note_info.valid_end_time_text_change.connect(_end_time_text_changed)
