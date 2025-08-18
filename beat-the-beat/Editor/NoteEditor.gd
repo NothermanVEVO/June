@@ -53,7 +53,10 @@ func set_selected_highlight(selected : bool) -> void:
 	_is_selected = selected
 	_set_highlight(selected)
 	if selected:
-		_shader_material.set_shader_parameter("shade_color", Vector4(1.0, 1.0, 1.0, 0.5))
+		if _is_valid:
+			_shader_material.set_shader_parameter("shade_color", Vector4(1.0, 1.0, 1.0, 0.5))
+		else:
+			_shader_material.set_shader_parameter("shade_color", Vector4(1.0, 0.4, 0.4, 0.5))
 	elif not _is_valid:
 		set_invalid_highlight(true)
 
