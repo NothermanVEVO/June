@@ -90,14 +90,24 @@ func _handle_select() -> void:
 	if Input.is_action_just_pressed("Add Item"):
 		_start_mouse_click_position = get_local_mouse_position()
 		var notes := Gear.get_global_intersected_rects(Rect2(get_global_mouse_position(), Vector2.ZERO))
-		_clicked_on_note = notes.size() == 1 # IF TRUE, MEANS THAT IT CLICKED ON A NOTE
+		_clicked_on_note = notes.size() >= 1 # IF TRUE, MEANS THAT IT CLICKED ON A NOTE
+		
+		var closest_note : Note
+		for note in notes:
+			if closest_note:
+				if note.get_local_mouse_position().distance_squared_to(_start_mouse_click_position) < (
+				closest_note.get_local_mouse_position().distance_squared_to(_start_mouse_click_position)):
+					closest_note = note
+			else:
+				closest_note = note
+		
 		if _clicked_on_note:
 			_last_drag_mouse_position = _get_limited_by_gear_local_mouse_position()["position"]
-			_clicked_note = notes[0]
-			if not notes[0].is_selected():
+			_clicked_note = closest_note
+			if not closest_note.is_selected():
 				_clear_selected_notes()
-				_selected_notes.append(notes[0])
-				notes[0].set_selected_highlight(true)
+				_selected_notes.append(closest_note)
+				closest_note.set_selected_highlight(true)
 		else: # IF DIDN'T CLICKED ON A NOTE, JUST CLEAR SELECTED NOTES
 			_clear_selected_notes()
 	elif _clicked_on_note:
