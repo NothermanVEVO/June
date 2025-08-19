@@ -50,7 +50,7 @@ func _player_process() -> void:
 func _editor_process() -> void:
 	var time : float = Song.get_time()
 	
-	var notes := get_notes(time, time + SECS_SIZE_Y)
+	var notes := get_notes(time, time + Gear.MAX_TIME_Y())
 	
 	for note in _last_visible_notes:
 		if not note in notes:
@@ -60,14 +60,14 @@ func _editor_process() -> void:
 	for note in notes:
 		note.visible = true
 		note.position.x = -width / 2
-		note.position.y = -get_local_pos_y_correct(Note.height / 2, Gear.get_max_size_y() + Note.height / 2, note.get_time(), time, time + SECS_SIZE_Y)
+		note.position.y = -get_local_pos_y_correct(Note.height / 2, Gear.get_max_size_y() + Note.height / 2, note.get_time(), time, time + Gear.MAX_TIME_Y())
 		
 		if note is HoldNote and note.get_time() < time:
 			var p_time = note.get_time() + (time - note.get_time())
-			var difference = -get_local_pos_y_correct(0, Gear.get_max_size_y(), p_time, note.get_time(), note.get_time() + SECS_SIZE_Y)
-			while p_time - SECS_SIZE_Y > 0.0:
-				p_time -= SECS_SIZE_Y
-				difference -= get_local_pos_y_correct(0, Gear.get_max_size_y(), p_time, note.get_time(), note.get_time() + SECS_SIZE_Y)
+			var difference = -get_local_pos_y_correct(0, Gear.get_max_size_y(), p_time, note.get_time(), note.get_time() + Gear.MAX_TIME_Y())
+			while p_time - Gear.MAX_TIME_Y() > 0.0:
+				p_time -= Gear.MAX_TIME_Y()
+				difference -= get_local_pos_y_correct(0, Gear.get_max_size_y(), p_time, note.get_time(), note.get_time() + Gear.MAX_TIME_Y())
 			note.position.y -= difference
 	
 	_last_visible_notes = notes

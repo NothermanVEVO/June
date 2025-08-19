@@ -24,6 +24,8 @@ func _init(start_time : float, end_time : float, min_global_pos_y : float) -> vo
 	add_child(_middle_note)
 
 func _ready() -> void:
+	Global.speed_changed.connect(_speed_changed)
+	
 	_note_info = _note_info_scene.instantiate()
 	add_child(_note_info)
 	_note_info.visible = false

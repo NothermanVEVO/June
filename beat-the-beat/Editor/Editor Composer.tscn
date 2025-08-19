@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://dw4rs74gsagrn"]
 
 [ext_resource type="Script" uid="uid://ddx3q78woi7jl" path="res://Editor/SoundComponentsItems.gd" id="1_7fqon"]
-[ext_resource type="Script" uid="uid://re8yk5328yco" path="res://Editor/MenuBar.gd" id="1_p8fip"]
+[ext_resource type="Script" uid="uid://re8yk5328yco" path="res://Editor/EditorMenuBar.gd" id="1_p8fip"]
 [ext_resource type="Script" uid="uid://jr7inyppvgoi" path="res://Editor/GameComponentsList.gd" id="1_sakc5"]
 [ext_resource type="Script" uid="uid://b5sxt0fdx3nd3" path="res://Editor/Game.gd" id="2_d6op5"]
 [ext_resource type="Script" uid="uid://cr1l58jmclcj" path="res://Editor/SoundBoard.gd" id="3_ty45h"]

@@ -209,11 +209,11 @@ func _handle_select() -> void:
 			if highest_note_time + time_difference_y > Song.get_duration():
 				time_difference_y = Song.get_duration() - highest_note_time
 			highest_note_time = _clicked_note.get_time() + _clicked_note.get_duration() if _clicked_note is HoldNoteEditor else _clicked_note.get_time()
-			if highest_note_time + time_difference_y > Song.get_time() + NoteHolder.SECS_SIZE_Y:
+			if highest_note_time + time_difference_y > Song.get_time() + Gear.MAX_TIME_Y():
 				changed_clicked_note = true
 				_clicked_note.set_time(_clicked_note.get_time() + time_difference_y)
 				var song := Song.new()
-				song.set_time(highest_note_time + time_difference_y - NoteHolder.SECS_SIZE_Y)
+				song.set_time(highest_note_time + time_difference_y - Gear.MAX_TIME_Y())
 				Gear.update_note_time(_clicked_note, true)
 			
 			for note in _selected_notes:
@@ -253,7 +253,7 @@ func _get_time_difference_y() -> float:
 	else:
 		difference = _hit_zone_y - Note.height / 2 - difference
 	
-	var time_difference_y = NoteHolder.get_time_pos_y(_hit_zone_y - Note.height / 2, - Note.height / 2, difference, 0, NoteHolder.SECS_SIZE_Y)
+	var time_difference_y = NoteHolder.get_time_pos_y(_hit_zone_y - Note.height / 2, - Note.height / 2, difference, 0, Gear.MAX_TIME_Y())
 	
 	return time_difference_y if is_negative else time_difference_y * -1
 
@@ -326,10 +326,10 @@ func _handle_selected_item_tap() -> void:
 		sample_tap_note.position = Vector2(mouse_pos.x - NoteHolder.width / 2, mouse_pos.y)
 		var time_pos = Song.get_time()
 		
-		var mouse_time_pos_y = NoteHolder.get_time_pos_y(_hit_zone_y - Note.height / 2, - Note.height / 2, mouse_pos.y, time_pos, time_pos + NoteHolder.SECS_SIZE_Y)
+		var mouse_time_pos_y = NoteHolder.get_time_pos_y(_hit_zone_y - Note.height / 2, - Note.height / 2, mouse_pos.y, time_pos, time_pos + Gear.MAX_TIME_Y())
 		if mouse_time_pos_y > soundboard.song.stream.get_length():
 			mouse_time_pos_y = soundboard.song.stream.get_length()
-			sample_tap_note.position.y = NoteHolder.get_local_pos_y(_hit_zone_y - Note.height / 2, - Note.height / 2, mouse_time_pos_y, time_pos, time_pos + NoteHolder.SECS_SIZE_Y)
+			sample_tap_note.position.y = NoteHolder.get_local_pos_y(_hit_zone_y - Note.height / 2, - Note.height / 2, mouse_time_pos_y, time_pos, time_pos + Gear.MAX_TIME_Y())
 		
 		sample_tap_note.set_time(mouse_time_pos_y)
 		
@@ -352,10 +352,10 @@ func _handle_selected_item_hold() -> void:
 		sample_tap_note.position = Vector2(mouse_pos.x - NoteHolder.width / 2, mouse_pos.y)
 		var time_pos = Song.get_time()
 		
-		var mouse_time_pos_y = NoteHolder.get_time_pos_y(_hit_zone_y - Note.height / 2, - Note.height / 2, mouse_pos.y, time_pos, time_pos + NoteHolder.SECS_SIZE_Y)
+		var mouse_time_pos_y = NoteHolder.get_time_pos_y(_hit_zone_y - Note.height / 2, - Note.height / 2, mouse_pos.y, time_pos, time_pos + Gear.MAX_TIME_Y())
 		if mouse_time_pos_y > soundboard.song.stream.get_length():
 			mouse_time_pos_y = soundboard.song.stream.get_length()
-			sample_tap_note.position.y = NoteHolder.get_local_pos_y(_hit_zone_y - Note.height / 2, - Note.height / 2, mouse_time_pos_y, time_pos, time_pos + NoteHolder.SECS_SIZE_Y)
+			sample_tap_note.position.y = NoteHolder.get_local_pos_y(_hit_zone_y - Note.height / 2, - Note.height / 2, mouse_time_pos_y, time_pos, time_pos + Gear.MAX_TIME_Y())
 		
 		sample_tap_note.set_time(mouse_time_pos_y)
 		
@@ -393,7 +393,7 @@ func _handle_selected_item_hold() -> void:
 		sample_tap_note.visible = false
 
 func  _is_any_note_with_display_info() -> bool:
-	var notes := Gear.get_notes_between(Song.get_time(), Song.get_time() + NoteHolder.SECS_SIZE_Y)
+	var notes := Gear.get_notes_between(Song.get_time(), Song.get_time() + Gear.MAX_TIME_Y())
 	for note in notes:
 		if note.has_mouse_on_info():
 			return true
