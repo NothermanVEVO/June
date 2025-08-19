@@ -96,11 +96,6 @@ func _start_time_text_changed(seconds : float) -> void: # SIGNAL
 
 func _end_time_text_changed(seconds : float) -> void: # SIGNAL
 	set_end_time(seconds)
-	
-	var end_pos = NoteHolder.get_local_pos_y_correct(0, Gear.get_max_size_y(), get_end_time() - get_start_time(), 0, NoteHolder.SECS_SIZE_Y)
-	_end_note.size = Vector2(NoteHolder.width, Note.height / 2.0)
-	_end_note.position = Vector2(0, -end_pos)
-	
 	Gear.update_note_time(self, true)
 
 func has_mouse_on_info() -> bool:

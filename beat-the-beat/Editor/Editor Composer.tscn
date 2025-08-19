@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://dw4rs74gsagrn"]
+[gd_scene load_steps=8 format=3 uid="uid://dw4rs74gsagrn"]
 
 [ext_resource type="Script" uid="uid://ddx3q78woi7jl" path="res://Editor/SoundComponentsItems.gd" id="1_7fqon"]
+[ext_resource type="Script" uid="uid://re8yk5328yco" path="res://Editor/MenuBar.gd" id="1_p8fip"]
 [ext_resource type="Script" uid="uid://jr7inyppvgoi" path="res://Editor/GameComponentsList.gd" id="1_sakc5"]
 [ext_resource type="Script" uid="uid://b5sxt0fdx3nd3" path="res://Editor/Game.gd" id="2_d6op5"]
 [ext_resource type="Script" uid="uid://cr1l58jmclcj" path="res://Editor/SoundBoard.gd" id="3_ty45h"]
@@ -20,6 +21,7 @@ size_flags_vertical = 3
 [node name="MenuBar" type="FlowContainer" parent="."]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
+script = ExtResource("1_p8fip")
 
 [node name="Button" type="Button" parent="MenuBar"]
 layout_mode = 2
@@ -36,6 +38,100 @@ text = "Compose"
 [node name="Button4" type="Button" parent="MenuBar"]
 layout_mode = 2
 text = "Test"
+
+[node name="Gear Type" type="OptionButton" parent="MenuBar"]
+layout_mode = 2
+selected = 0
+item_count = 5
+popup/item_0/text = "4 Buttons"
+popup/item_0/id = 0
+popup/item_1/id = 3
+popup/item_1/separator = true
+popup/item_2/text = "5 Buttons"
+popup/item_2/id = 1
+popup/item_3/id = 4
+popup/item_3/separator = true
+popup/item_4/text = "6 Buttons"
+popup/item_4/id = 2
+
+[node name="Difficulty" type="OptionButton" parent="MenuBar"]
+layout_mode = 2
+selected = 0
+item_count = 7
+popup/item_0/text = "Facil"
+popup/item_0/id = 0
+popup/item_1/id = 5
+popup/item_1/separator = true
+popup/item_2/text = "Normal"
+popup/item_2/id = 1
+popup/item_3/id = 4
+popup/item_3/separator = true
+popup/item_4/text = "Hard"
+popup/item_4/id = 2
+popup/item_5/id = 6
+popup/item_5/separator = true
+popup/item_6/text = "Maximus"
+popup/item_6/id = 3
+
+[node name="FlowContainer" type="FlowContainer" parent="MenuBar"]
+layout_mode = 2
+size_flags_horizontal = 10
+vertical = true
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="MenuBar/FlowContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = " Snap Divisor: "
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SnapDivisor" type="OptionButton" parent="MenuBar/FlowContainer"]
+layout_mode = 2
+tooltip_text = "Make a grid based on the BPM.
+
+0: disables the grid.
+1/1 - 1/16: Divide the BPM."
+selected = 0
+item_count = 7
+popup/item_0/text = "0"
+popup/item_0/id = 6
+popup/item_1/text = "1/1"
+popup/item_1/id = 0
+popup/item_2/text = "1/2"
+popup/item_2/id = 1
+popup/item_3/text = "1/4"
+popup/item_3/id = 2
+popup/item_4/text = "1/8"
+popup/item_4/id = 3
+popup/item_5/text = "1/12"
+popup/item_5/id = 4
+popup/item_6/text = "1/16"
+popup/item_6/id = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MenuBar/FlowContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = " Speed: "
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Speed" type="SpinBox" parent="MenuBar/FlowContainer"]
+layout_mode = 2
+tooltip_text = "Define the fall speed of the notes.
+
+Note: Doesn't change their actual position.
+
+Minimum Speed: 1.0
+Maximum Speed: 10.0"
+min_value = 1.0
+max_value = 10.0
+step = 0.1
+value = 1.0
+update_on_text_changed = true
 
 [node name="Middle" type="HBoxContainer" parent="."]
 clip_contents = true
@@ -206,6 +302,7 @@ tick_count = 15
 stream = ExtResource("5_d6op5")
 script = ExtResource("6_a7m05")
 
+[connection signal="value_changed" from="MenuBar/FlowContainer/Speed" to="MenuBar" method="_on_speed_value_changed"]
 [connection signal="pressed" from="Middle/Sound Components List/Close Button" to="Middle/Sound Components List" method="_on_close_button_pressed"]
 [connection signal="button_down" from="Middle/Sound Components List/Resize Button" to="Middle/Sound Components List" method="_on_resize_button_down"]
 [connection signal="button_up" from="Middle/Sound Components List/Resize Button" to="Middle/Sound Components List" method="_on_resize_button_up"]

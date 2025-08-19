@@ -13,7 +13,7 @@ const max_note_distance : float = 100.0
 var _pos_x := 0.0
 static var _hit_zone_y : float = -50.0 # SET THE POSITION OF THE HITZONE #NOTE
 
-const SECS_SIZE_Y = 10 # SPEED OF THE GAME
+const SECS_SIZE_Y = 5 # SPEED OF THE GAME
 
 var _last_visible_notes : Array[Note] = []
 

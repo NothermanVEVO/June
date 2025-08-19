@@ -18,6 +18,8 @@ static var _max_size_y : float = -1
 
 static var current_time : float = 0.0
 
+static var speed : float = 1.0
+
 func _init(type : Type, mode : Mode, center_screen : bool = true, max_size_y : float = -1) -> void:
 	_type = type
 	self.mode = mode
@@ -43,6 +45,9 @@ func _ready() -> void: #TODO HANDLE ANY POSITION FOR THE GEAR, NOT ONLY THE MIDD
 		initial_x += NoteHolder.width
 		_note_holders.append(note_holder)
 		add_child(note_holder)
+
+static func MAX_TIME_Y() -> float:
+	return NoteHolder.SECS_SIZE_Y / speed
 
 func add_note_at(idx : int, note : Note, validate_note : bool = false) -> void:
 	note.set_idx(idx)
