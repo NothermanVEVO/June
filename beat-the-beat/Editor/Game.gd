@@ -65,7 +65,7 @@ func _process(delta: float) -> void:
 func _handle_selected_item(item_text : String) -> void:
 	match item_text:
 		"Select":
-			_handle_select() # DOING ...
+			_handle_select() # TO REVIEW ...
 		"Un/lock":
 			pass
 		"Tap":
@@ -149,17 +149,19 @@ func _handle_select() -> void:
 						Gear.change_note_from_note_holder(note.get_idx(), note.get_idx() + distance, note, true)
 					_last_note_holder_idx = note_hold_idx
 			
-			var time_difference_y := _get_time_difference_y()
+			var mouse_time_difference_y := _get_time_difference_y()
 			
-			var temp = time_difference_y
-			time_difference_y -= _last_time_difference_y
+			var temp = mouse_time_difference_y
+			mouse_time_difference_y -= _last_time_difference_y
 			_last_time_difference_y = temp
+			
+			var time_difference_y := _get_closest_grid_time_to_mouse() - _clicked_note.get_time()
 			
 			#print("Time Diff: " + str(time_difference_y))
 			
-			if not time_difference_y or (time_difference_y > 0.0 and get_local_mouse_position().y > _hit_zone_y) or (
-				time_difference_y < 0.0 and get_local_mouse_position().y < 0.0):
-				return
+			#if not time_difference_y or (time_difference_y > 0.0 and get_local_mouse_position().y > _hit_zone_y) or (
+				#time_difference_y < 0.0 and get_local_mouse_position().y < 0.0):
+				#return
 			
 			var lowest_note : Note = null
 			for note in _selected_notes:
@@ -188,38 +190,26 @@ func _handle_select() -> void:
 				else:
 					highest_note = note
 			
-			#if not highest_note.visible:
-				#print(highest_note.get_time())
-				#print(Song.get_time())
-				#print("Omg")
-			
-			var changed_clicked_note := false
-			
 			if lowest_note.get_time() + time_difference_y < 0.0:
 				time_difference_y = -lowest_note.get_time()
-			if _clicked_note.get_time() + time_difference_y < Song.get_time():
-				changed_clicked_note = true
-				_clicked_note.set_time(_clicked_note.get_time() + time_difference_y)
+			if get_local_mouse_position().y > _hit_zone_y and mouse_time_difference_y < 0: #MOVE DOWN
 				var song := Song.new()
-				if _clicked_note.get_time() < Song.get_time():
-					song.set_time(_clicked_note.get_time())
-				Gear.update_note_time(_clicked_note, true)
+				song.set_time(clampf(Song.get_time() + mouse_time_difference_y, 0.0, Song.get_duration()))
 			
 			var highest_note_time = highest_note.get_time() + highest_note.get_duration() if highest_note is HoldNoteEditor else highest_note.get_time()
 			
-			if highest_note_time + time_difference_y > Song.get_duration():
-				time_difference_y = Song.get_duration() - highest_note_time
+			if highest_note_time + time_difference_y > _get_highest_grid_time():
+				time_difference_y = 0
 			highest_note_time = _clicked_note.get_time() + _clicked_note.get_duration() if _clicked_note is HoldNoteEditor else _clicked_note.get_time()
 			if highest_note_time + time_difference_y > Song.get_time() + Gear.MAX_TIME_Y():
-				changed_clicked_note = true
-				_clicked_note.set_time(_clicked_note.get_time() + time_difference_y)
 				var song := Song.new()
-				song.set_time(highest_note_time + time_difference_y - Gear.MAX_TIME_Y())
-				Gear.update_note_time(_clicked_note, true)
+				if mouse_time_difference_y > 0:
+					song.set_time(clampf(Song.get_time() + mouse_time_difference_y, 0.0, Song.get_duration()))
+			if get_local_mouse_position().y < 0 and mouse_time_difference_y > 0: #MOVE UP
+				var song := Song.new()
+				song.set_time(clampf(Song.get_time() + mouse_time_difference_y, 0.0, Song.get_duration()))
 			
 			for note in _selected_notes:
-				if note == _clicked_note and changed_clicked_note:
-					continue
 				note.set_time(note.get_time() + time_difference_y)
 				Gear.update_note_time(note, true)
 			
@@ -242,7 +232,6 @@ func _handle_select() -> void:
 func _get_time_difference_y() -> float:
 	var mouse_pos : Vector2 = get_local_mouse_position()
 	mouse_pos.y -= Note.height / 2
-	
 	
 	#print("Mouse Pos Y: " + str(mouse_pos.y))
 	#print("Last Drag Mouse Position Y: " + str(_last_drag_mouse_position.y))
@@ -327,11 +316,15 @@ func _handle_selected_item_tap() -> void:
 		sample_tap_note.position = Vector2(mouse_pos.x - NoteHolder.width / 2, mouse_pos.y)
 		var time_pos = Song.get_time()
 		
-		var mouse_time_pos_y = NoteHolder.get_time_pos_y(_hit_zone_y - Note.height / 2, - Note.height / 2, mouse_pos.y, time_pos, time_pos + Gear.MAX_TIME_Y())
-		if mouse_time_pos_y > soundboard.song.stream.get_length():
-			mouse_time_pos_y = soundboard.song.stream.get_length()
-			sample_tap_note.position.y = NoteHolder.get_local_pos_y(_hit_zone_y - Note.height / 2, - Note.height / 2, mouse_time_pos_y, time_pos, time_pos + Gear.MAX_TIME_Y())
+		#var mouse_time_pos_y = NoteHolder.get_time_pos_y(_hit_zone_y - Note.height / 2, - Note.height / 2, mouse_pos.y, time_pos, time_pos + Gear.MAX_TIME_Y())
+		var mouse_time_pos_y = _get_closest_grid_time_to_mouse()
 		
+		#if mouse_time_pos_y > soundboard.song.stream.get_length():
+			#mouse_time_pos_y = soundboard.song.stream.get_length()
+		if mouse_time_pos_y > _get_highest_grid_time():
+			mouse_time_pos_y = _get_highest_grid_time()
+		
+		sample_tap_note.position.y = NoteHolder.get_local_pos_y(_hit_zone_y - Note.height / 2, - Note.height / 2, mouse_time_pos_y, time_pos, time_pos + Gear.MAX_TIME_Y())
 		sample_tap_note.set_time(mouse_time_pos_y)
 		
 		if Input.is_action_just_pressed("Add Item"):
@@ -353,10 +346,15 @@ func _handle_selected_item_hold() -> void:
 		sample_tap_note.position = Vector2(mouse_pos.x - NoteHolder.width / 2, mouse_pos.y)
 		var time_pos = Song.get_time()
 		
-		var mouse_time_pos_y = NoteHolder.get_time_pos_y(_hit_zone_y - Note.height / 2, - Note.height / 2, mouse_pos.y, time_pos, time_pos + Gear.MAX_TIME_Y())
-		if mouse_time_pos_y > soundboard.song.stream.get_length():
-			mouse_time_pos_y = soundboard.song.stream.get_length()
-			sample_tap_note.position.y = NoteHolder.get_local_pos_y(_hit_zone_y - Note.height / 2, - Note.height / 2, mouse_time_pos_y, time_pos, time_pos + Gear.MAX_TIME_Y())
+		#var mouse_time_pos_y = NoteHolder.get_time_pos_y(_hit_zone_y - Note.height / 2, - Note.height / 2, mouse_pos.y, time_pos, time_pos + Gear.MAX_TIME_Y())
+		var mouse_time_pos_y = _get_closest_grid_time_to_mouse()
+		
+		#if mouse_time_pos_y > soundboard.song.stream.get_length():
+			#mouse_time_pos_y = soundboard.song.stream.get_length()
+		if mouse_time_pos_y > _get_highest_grid_time():
+			mouse_time_pos_y = _get_highest_grid_time()	
+		
+		sample_tap_note.position.y = NoteHolder.get_local_pos_y(_hit_zone_y - Note.height / 2, - Note.height / 2, mouse_time_pos_y, time_pos, time_pos + Gear.MAX_TIME_Y())
 		
 		sample_tap_note.set_time(mouse_time_pos_y)
 		
@@ -400,6 +398,21 @@ func  _is_any_note_with_display_info() -> bool:
 			return true
 	return false
 
+func _get_closest_grid_time_to_mouse() -> float:
+	var mouse_pos : Vector2 = _get_limited_by_gear_local_mouse_position()["position"]
+	var value := EditorMenuBar.get_divisor()
+		
+	var time_pos := NoteHolder.get_time_pos_y(_hit_zone_y - Note.height / 2, - Note.height / 2, mouse_pos.y, Song.get_time(), Song.get_time() + Gear.MAX_TIME_Y())
+	var rest := fmod(time_pos, value)
+	if rest <= value / 2.0:
+		time_pos -= rest
+	else:
+		time_pos += value - rest
+	return time_pos
+
+func _get_highest_grid_time() -> float:
+	return floor(Song.get_duration() / EditorMenuBar.get_divisor()) * EditorMenuBar.get_divisor()
+
 func _draw() -> void:
 	var nh_positions := Gear.get_note_holders_global_position()
 	var left_x := 0.0
@@ -413,7 +426,7 @@ func _draw() -> void:
 	left_x = nh_positions[0].x - global_position.x - NoteHolder.width / 2
 	right_x = nh_positions[nh_positions.size() - 1].x - global_position.x + NoteHolder.width / 2
 	
-	var value := 60.0 / Song.BPM / snap_divisor_value
+	var value := EditorMenuBar.get_divisor()
 	var rest := fmod(Song.get_time(), value)
 	var start_time_pos := Song.get_time() + value - rest
 	var n_grids := int((Gear.MAX_TIME_Y()) / value)
@@ -422,8 +435,6 @@ func _draw() -> void:
 		var pos_y = NoteHolder.get_local_pos_y(_hit_zone_y - Note.height / 2, - Note.height / 2, start_time_pos + (value * i), Song.get_time(), Song.get_time() + Gear.MAX_TIME_Y())
 		pos_y += Note.height / 2
 		draw_line(Vector2(left_x, pos_y), Vector2(right_x, pos_y), Color.WHITE, 1)
-	
-	#print(get_local_mouse_position().y)
 
 func _on_mouse_entered() -> void:
 	_is_mouse_inside = true
