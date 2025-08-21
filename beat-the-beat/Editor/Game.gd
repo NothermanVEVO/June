@@ -52,6 +52,7 @@ func _resized() -> void:
 
 func _process(delta: float) -> void:
 	focus_effect.visible = false
+	queue_redraw() # TODO REMOVE THIS SHIT LATER 
 	if has_focus():
 		focus_effect.visible = true
 		if Input.is_action_just_pressed("Scroll Up"): # SCROLL THE SONG
@@ -96,7 +97,7 @@ func _handle_select() -> void:
 		var notes := Gear.get_global_intersected_rects(Rect2(get_global_mouse_position(), Vector2.ZERO))
 		_clicked_on_note = notes.size() >= 1 # IF TRUE, MEANS THAT IT CLICKED ON A NOTE
 		
-		var closest_note : Note
+		var closest_note : Note = null
 		for note in notes:
 			if closest_note:
 				if note.get_local_mouse_position().distance_squared_to(_start_mouse_click_position) < (
@@ -122,7 +123,7 @@ func _handle_select() -> void:
 			var dict := _get_limited_by_gear_local_mouse_position()
 			var note_hold_idx = dict["note_hold"]
 			
-			var leftest_note : Note
+			var leftest_note : Note = null
 			for note in _selected_notes:
 				if leftest_note:
 					if note.get_idx() < leftest_note.get_idx():
@@ -130,7 +131,7 @@ func _handle_select() -> void:
 				else:
 					leftest_note = note
 			
-			var rightest_note : Note
+			var rightest_note : Note = null
 			for note in _selected_notes:
 				if rightest_note:
 					if note.get_idx() > rightest_note.get_idx():
@@ -160,7 +161,7 @@ func _handle_select() -> void:
 				time_difference_y < 0.0 and get_local_mouse_position().y < 0.0):
 				return
 			
-			var lowest_note : Note
+			var lowest_note : Note = null
 			for note in _selected_notes:
 				if lowest_note:
 					if note.get_time() < lowest_note.get_time():
@@ -173,7 +174,7 @@ func _handle_select() -> void:
 				#print(Song.get_time())
 				#print("Omg")
 			
-			var highest_note : Note
+			var highest_note : Note = null
 			for note in _selected_notes:
 				if highest_note:
 					if highest_note is HoldNoteEditor:
@@ -398,6 +399,31 @@ func  _is_any_note_with_display_info() -> bool:
 		if note.has_mouse_on_info():
 			return true
 	return false
+
+func _draw() -> void:
+	var nh_positions := Gear.get_note_holders_global_position()
+	var left_x := 0.0
+	var right_x := 0.0
+	
+	var snap_divisor_value := EditorMenuBar.get_snap_divisor_value()
+	
+	if not nh_positions or not snap_divisor_value:
+		return
+	
+	left_x = nh_positions[0].x - global_position.x - NoteHolder.width / 2
+	right_x = nh_positions[nh_positions.size() - 1].x - global_position.x + NoteHolder.width / 2
+	
+	var value := 60.0 / Song.BPM / snap_divisor_value
+	var rest := fmod(Song.get_time(), value)
+	var start_time_pos := Song.get_time() + value - rest
+	var n_grids := int((Gear.MAX_TIME_Y()) / value)
+	
+	for i in n_grids:
+		var pos_y = NoteHolder.get_local_pos_y(_hit_zone_y - Note.height / 2, - Note.height / 2, start_time_pos + (value * i), Song.get_time(), Song.get_time() + Gear.MAX_TIME_Y())
+		pos_y += Note.height / 2
+		draw_line(Vector2(left_x, pos_y), Vector2(right_x, pos_y), Color.WHITE, 1)
+	
+	#print(get_local_mouse_position().y)
 
 func _on_mouse_entered() -> void:
 	_is_mouse_inside = true

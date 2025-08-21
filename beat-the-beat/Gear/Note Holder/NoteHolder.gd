@@ -5,7 +5,6 @@ class_name NoteHolder
 var note_action : String = ""
 
 var _notes : Array[Note]
-var _note_idx : int = 0
 
 static var width : float = 0.0
 const max_note_distance : float = 100.0

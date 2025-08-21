@@ -8,6 +8,8 @@ static var _song_finished : bool = false
 
 static var _duration : float = 0.0
 
+static var BPM : int = 120
+
 func _ready() -> void:
 	finished.connect(_finished)
 	_duration = stream.get_length()

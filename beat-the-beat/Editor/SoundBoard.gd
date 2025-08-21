@@ -98,8 +98,8 @@ func _process(delta: float) -> void:
 		
 	## SONG
 	if song.playing: # THE SONG IS PLAYING
-		time_slider.value = song.get_time() * 100 / song.stream.get_length()
-		time_text.text = "%.1f" % (song.get_time() * 100 / song.stream.get_length()) + "%"
+		time_slider.value = Song.get_time() * 100 / song.stream.get_length()
+		time_text.text = "%.1f" % (Song.get_time() * 100 / song.stream.get_length()) + "%"
 		_adjust_time_pos_text()
 	elif _song_finished: # THE SONG FINISHED
 		time_slider.value = 100.0
@@ -347,7 +347,7 @@ func _on_time_text_changed(force_change : bool = false) -> void:
 		song.set_time(_temp_song_time_pos)
 		
 		last_valid_time_pos_text = time_pos_text.text
-		time_text.text = "%.1f" % (song.get_time() * 100 / song.stream.get_length()) + "%"
+		time_text.text = "%.1f" % (Song.get_time() * 100 / song.stream.get_length()) + "%"
 
 #func _on_time_text_changed(force_change : bool = false) -> void:
 	#var pressed_enter := false

@@ -1,6 +1,6 @@
 extends Node
 
-## REFERS TO THE SPEED INSIDE THE GEAR
+## REFERS TO THE SPEED INSIDE THE GEAR CLASS
 signal speed_changed
 
 func get_percentage_between(start: float, end: float, value: float) -> float:

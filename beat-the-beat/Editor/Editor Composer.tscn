@@ -302,6 +302,7 @@ tick_count = 15
 stream = ExtResource("5_d6op5")
 script = ExtResource("6_a7m05")
 
+[connection signal="item_selected" from="MenuBar/FlowContainer/SnapDivisor" to="MenuBar" method="_on_snap_divisor_item_selected"]
 [connection signal="value_changed" from="MenuBar/FlowContainer/Speed" to="MenuBar" method="_on_speed_value_changed"]
 [connection signal="pressed" from="Middle/Sound Components List/Close Button" to="Middle/Sound Components List" method="_on_close_button_pressed"]
 [connection signal="button_down" from="Middle/Sound Components List/Resize Button" to="Middle/Sound Components List" method="_on_resize_button_down"]
