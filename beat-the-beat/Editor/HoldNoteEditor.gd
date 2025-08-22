@@ -57,9 +57,14 @@ func _ready() -> void:
 	add_child(bottom_button)
 
 func _process(delta: float) -> void:
-	
-	top_button.position = _end_note.position
-	bottom_button.position = _start_note.position
+	if is_selected():
+		top_button.visible = true
+		bottom_button.visible = true
+		top_button.position = _end_note.position - Vector2(0, Note.height / 8)
+		bottom_button.position = _start_note.position + Vector2(0, Note.height / 4)
+	else:
+		top_button.visible = false
+		bottom_button.visible = false
 	
 	var mouse_pos := get_global_mouse_position()
 	

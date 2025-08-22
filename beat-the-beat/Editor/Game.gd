@@ -19,6 +19,7 @@ var _is_mouse_inside : bool = false
 var _start_mouse_click_position : Vector2
 var _clicked_note : Note
 var _clicked_on_note : bool = false
+var _last_grid_time_mouse : float
 var _mouse_selection : Selection = Selection.new()
 var _selected_notes : Array[Note] = []
 var _last_drag_mouse_position : Vector2
@@ -53,6 +54,18 @@ func _resized() -> void:
 func _process(delta: float) -> void:
 	focus_effect.visible = false
 	queue_redraw() # TODO REMOVE THIS SHIT LATER 
+	
+	if Input.is_action_pressed("Add Item"):
+		var mouse_time_difference_y := _get_time_difference_y() # TIME DIFFERENCE IT'S NOT SO EFFICIENT
+	
+		var temp = mouse_time_difference_y
+		mouse_time_difference_y -= _last_time_difference_y
+		_last_time_difference_y = temp
+	
+		if get_local_mouse_position().y > _hit_zone_y and mouse_time_difference_y < 0 or get_local_mouse_position().y < 0 and mouse_time_difference_y > 0: #MOVE DOWN / MOVE UP
+			var song := Song.new()
+			song.set_time(clampf(Song.get_time() + mouse_time_difference_y, 0.0, Song.get_duration()))
+	
 	if has_focus():
 		focus_effect.visible = true
 		if Input.is_action_just_pressed("Scroll Up"): # SCROLL THE SONG
@@ -94,6 +107,7 @@ func _handle_select() -> void:
 	
 	if Input.is_action_just_pressed("Add Item"):
 		_start_mouse_click_position = get_local_mouse_position()
+		_last_time_difference_y = 0.0
 		var notes := Gear.get_global_intersected_rects(Rect2(get_global_mouse_position(), Vector2.ZERO))
 		_clicked_on_note = notes.size() >= 1 # IF TRUE, MEANS THAT IT CLICKED ON A NOTE
 		
@@ -109,6 +123,7 @@ func _handle_select() -> void:
 		if _clicked_on_note:
 			_last_drag_mouse_position = _get_limited_by_gear_local_mouse_position()["position"]
 			_clicked_note = closest_note
+			_last_grid_time_mouse = _get_closest_grid_time_to_mouse()
 			if not closest_note.is_selected():
 				_clear_selected_notes()
 				_selected_notes.append(closest_note)
@@ -155,7 +170,9 @@ func _handle_select() -> void:
 			mouse_time_difference_y -= _last_time_difference_y
 			_last_time_difference_y = temp
 			
-			var time_difference_y := _get_closest_grid_time_to_mouse() - _clicked_note.get_time()
+			#var time_difference_y := _get_closest_grid_time_to_mouse() - _clicked_note.get_time()
+			var time_difference_y := _get_closest_grid_time_to_mouse() - _last_grid_time_mouse
+			_last_grid_time_mouse = _get_closest_grid_time_to_mouse()
 			
 			#print("Time Diff: " + str(time_difference_y))
 			
@@ -188,7 +205,8 @@ func _handle_select() -> void:
 			
 			if lowest_note.get_time() + time_difference_y < 0.0:
 				time_difference_y = -lowest_note.get_time()
-			if get_local_mouse_position().y > _hit_zone_y and mouse_time_difference_y < 0: #MOVE DOWN
+			#if get_local_mouse_position().y > _hit_zone_y and mouse_time_difference_y < 0: #MOVE DOWN
+			if lowest_note.get_time() < Song.get_time() and mouse_time_difference_y < 0: #MOVE DOWN
 				var song := Song.new()
 				song.set_time(clampf(Song.get_time() + mouse_time_difference_y, 0.0, Song.get_duration()))
 			
@@ -228,9 +246,6 @@ func _handle_select() -> void:
 func _get_time_difference_y() -> float:
 	var mouse_pos : Vector2 = get_local_mouse_position()
 	mouse_pos.y -= Note.height / 2
-	
-	#print("Mouse Pos Y: " + str(mouse_pos.y))
-	#print("Last Drag Mouse Position Y: " + str(_last_drag_mouse_position.y))
 	
 	var difference = mouse_pos.y - _last_drag_mouse_position.y
 	var is_negative : bool = difference < 0
@@ -440,14 +455,24 @@ func _on_mouse_exited() -> void:
 	_is_mouse_inside = false
 
 func _pressing_some_hold_resize_button(hold_note : HoldNoteEditor, top_button : bool) -> void:
+	var diff : float
 	if top_button:
-		var diff := _get_closest_grid_time_to_mouse() - hold_note.get_end_time()
-		if diff:
-			hold_note.set_end_time(_get_closest_grid_time_to_mouse())
+		diff = _get_closest_grid_time_to_mouse() - hold_note.get_end_time()
 	else:
-		var diff := _get_closest_grid_time_to_mouse() - hold_note.get_start_time()
-		if diff:
-			var end_time = hold_note.get_end_time()
-			hold_note.set_start_time(_get_closest_grid_time_to_mouse())
-			hold_note.set_end_time(end_time)
-			## TODO PQ TEM DEMONIOS TEM UM ERRO VISUAL DE 1 FRAME AQ???? OLHA A PASTA RECORDS TODO BUG NOTE WARNING
+		diff = _get_closest_grid_time_to_mouse() - hold_note.get_start_time()
+		
+	if not diff:
+		return
+	
+	if top_button:
+		for note in _selected_notes:
+			if not note is HoldNoteEditor:
+				continue
+			note.set_end_time(clampf(note.get_end_time() + diff, 0.0, _get_highest_grid_time()))
+	else:
+		for note in _selected_notes:
+			if not note is HoldNoteEditor:
+				continue
+			var end_time = note.get_end_time()
+			note.set_start_time(note.get_start_time() + diff)
+			note.set_end_time(end_time) ## TODO PQ TEM DEMONIOS TEM UM ERRO VISUAL DE 1 FRAME AQ???? OLHA A PASTA RECORDS TODO BUG NOTE WARNING
