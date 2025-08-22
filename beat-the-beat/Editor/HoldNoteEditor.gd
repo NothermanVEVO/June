@@ -10,6 +10,13 @@ const HIGHLIGHT_SHADER = preload("res://shaders/Highlight.gdshader")
 
 var _min_global_pos_y : float
 
+var top_button := Button.new()
+var bottom_button := Button.new()
+
+var is_button_down : bool = false
+
+signal pressing_button(hold_note : HoldNoteEditor, top_button : bool)
+
 func _init(start_time : float, end_time : float, min_global_pos_y : float) -> void:
 	set_start_time(start_time)
 	set_end_time(end_time)
@@ -38,9 +45,28 @@ func _ready() -> void:
 	_note_info.valid_end_time_text_change.connect(_end_time_text_changed)
 	
 	_shader_material.shader = HIGHLIGHT_SHADER
+	
+	top_button.position = _end_note.position# + Vector2(0, - Note.height)
+	top_button.size = Vector2(_end_note.size.x, Note.height / 4)
+	top_button.mouse_default_cursor_shape = Control.CURSOR_VSIZE
+	add_child(top_button)
+	
+	bottom_button.position = _start_note.position# + Vector2(0, - Note.height)
+	bottom_button.size = Vector2(_start_note.size.x, Note.height / 4)
+	bottom_button.mouse_default_cursor_shape = Control.CURSOR_VSIZE
+	add_child(bottom_button)
 
 func _process(delta: float) -> void:
+	
+	top_button.position = _end_note.position
+	bottom_button.position = _start_note.position
+	
 	var mouse_pos := get_global_mouse_position()
+	
+	if top_button.button_pressed:
+		pressing_button.emit(self, true)
+	elif bottom_button.button_pressed:
+		pressing_button.emit(self, false)
 	
 	var rect := Rect2(_end_note.global_position, Vector2(_start_note.size.x, _start_note.size.y + _middle_note.size.y + _end_note.size.y))
 	

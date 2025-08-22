@@ -162,6 +162,7 @@ func _handle_select() -> void:
 			#if not time_difference_y or (time_difference_y > 0.0 and get_local_mouse_position().y > _hit_zone_y) or (
 				#time_difference_y < 0.0 and get_local_mouse_position().y < 0.0):
 				#return
+			## TODO REWORK THIS...
 			
 			var lowest_note : Note = null
 			for note in _selected_notes:
@@ -170,11 +171,6 @@ func _handle_select() -> void:
 						lowest_note = note
 				else:
 					lowest_note = note
-			
-			#if not lowest_note.visible:
-				#print(lowest_note.get_time())
-				#print(Song.get_time())
-				#print("Omg")
 			
 			var highest_note : Note = null
 			for note in _selected_notes:
@@ -385,6 +381,7 @@ func _handle_selected_item_hold() -> void:
 				var song := Song.new()
 				song.set_time(clampf(Song.get_time() + time_difference_y, 0.0, Song.get_duration()))
 		elif Input.is_action_just_released("Add Item"):
+			_currently_hold_note.pressing_button.connect(_pressing_some_hold_resize_button)
 			_currently_hold_note.set_end_time(mouse_time_pos_y)
 			_currently_hold_note.update_end_time_text()
 			_last_time_difference_y = 0.0
@@ -441,3 +438,16 @@ func _on_mouse_entered() -> void:
 
 func _on_mouse_exited() -> void:
 	_is_mouse_inside = false
+
+func _pressing_some_hold_resize_button(hold_note : HoldNoteEditor, top_button : bool) -> void:
+	if top_button:
+		var diff := _get_closest_grid_time_to_mouse() - hold_note.get_end_time()
+		if diff:
+			hold_note.set_end_time(_get_closest_grid_time_to_mouse())
+	else:
+		var diff := _get_closest_grid_time_to_mouse() - hold_note.get_start_time()
+		if diff:
+			var end_time = hold_note.get_end_time()
+			hold_note.set_start_time(_get_closest_grid_time_to_mouse())
+			hold_note.set_end_time(end_time)
+			## TODO PQ TEM DEMONIOS TEM UM ERRO VISUAL DE 1 FRAME AQ???? OLHA A PASTA RECORDS TODO BUG NOTE WARNING

@@ -1,0 +1,34 @@
+[remap]
+
+importer="texture"
+type="CompressedTexture2D"
+uid="uid://khkoa738s3s7"
+path="res://.godot/imported/ERRO VISUAL HOLD NOTE, A POSIÇÃO INICIAL TÁ CERTA, OS DOIS BOTÕES TAMBÉM, MAS A NOTA FINAL E DO MEIO TÃ OERRADA.png-be8572b5b38ea6dd86a1791b7f69c5f2.ctex"
+metadata={
+"vram_texture": false
+}
+
+[deps]
+
+source_file="res://Records/ERRO VISUAL HOLD NOTE, A POSIÇÃO INICIAL TÁ CERTA, OS DOIS BOTÕES TAMBÉM, MAS A NOTA FINAL E DO MEIO TÃ OERRADA.png"
+dest_files=["res://.godot/imported/ERRO VISUAL HOLD NOTE, A POSIÇÃO INICIAL TÁ CERTA, OS DOIS BOTÕES TAMBÉM, MAS A NOTA FINAL E DO MEIO TÃ OERRADA.png-be8572b5b38ea6dd86a1791b7f69c5f2.ctex"]
+
+[params]
+
+compress/mode=0
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/normal_map=0
+compress/channel_pack=0
+mipmaps/generate=false
+mipmaps/limit=-1
+roughness/mode=0
+roughness/src_normal=""
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/normal_map_invert_y=false
+process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
+process/size_limit=0
+detect_3d/compress_to=1

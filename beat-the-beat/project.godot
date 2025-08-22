@@ -20,6 +20,10 @@ config/icon="res://icon.svg"
 
 Global="*res://Global/Global.gd"
 
+[editor]
+
+movie_writer/movie_file="C:/Users/yagon/Documents/GitHub/Beat-the-Beat/beat-the-beat/Records/Records.avi"
+
 [input]
 
 1_4k={
