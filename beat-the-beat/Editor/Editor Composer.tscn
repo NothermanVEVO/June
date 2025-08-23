@@ -234,6 +234,7 @@ item_0/text = "- TOOLS -"
 item_0/selectable = false
 item_1/text = "Select"
 item_2/text = "Un/lock"
+item_2/disabled = true
 item_3/text = "- NOTES -"
 item_3/selectable = false
 item_4/text = "Tap"
@@ -242,12 +243,17 @@ item_6/text = "- EFFECTS -"
 item_6/selectable = false
 item_7/text = "Power"
 item_8/text = "Speed"
+item_8/disabled = true
 item_9/text = "Fade"
+item_9/disabled = true
 item_10/text = "Sound"
+item_10/disabled = true
 item_11/text = "- ANNOTATION -"
 item_11/selectable = false
 item_12/text = "Note"
+item_12/disabled = true
 item_13/text = "Section"
+item_13/disabled = true
 script = ExtResource("1_sakc5")
 
 [node name="Resize Button" type="Button" parent="Middle/Game Components List"]

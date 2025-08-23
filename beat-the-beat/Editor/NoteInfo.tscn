@@ -3,12 +3,14 @@
 [ext_resource type="Script" uid="uid://dvq0k3sxpd7x0" path="res://Editor/NoteInfo.gd" id="1_feaks"]
 
 [node name="Note Info" type="PanelContainer"]
-offset_right = 100.0
-offset_bottom = 109.0
+offset_right = 152.0
+offset_bottom = 80.0
 script = ExtResource("1_feaks")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
@@ -16,6 +18,8 @@ theme_override_constants/margin_bottom = 5
 
 [node name="InfoVBox" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
 
 [node name="Start" type="FlowContainer" parent="MarginContainer/InfoVBox"]
 layout_mode = 2

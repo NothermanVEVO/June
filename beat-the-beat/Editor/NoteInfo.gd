@@ -8,6 +8,8 @@ class_name NoteInfo
 @onready var _locked : CheckBox = $MarginContainer/InfoVBox/Locked
 @onready var _power : CheckBox = $MarginContainer/InfoVBox/Power
 
+@onready var _end_time_container : FlowContainer = $MarginContainer/InfoVBox/End
+
 enum Type{TAP, HOLD}
 
 var _last_valid_start_time := ""
@@ -19,15 +21,17 @@ var _last_valid_end_time_before_change := ""
 signal valid_start_time_text_change(seconds : float)
 signal valid_end_time_text_change(seconds : float)
 
+signal power_changed(value : bool)
+
 func _ready() -> void:
 	z_index = 2
 
 func set_type(type : Type) -> void:
 	match type:
 		Type.TAP:
-			_end_time.visible = false
+			_end_time_container.visible = false
 		Type.HOLD:
-			_end_time.visible = true
+			_end_time_container.visible = true
 
 func set_start_time(start_time : float) -> void:
 	var splitted_time := SoundBoard.split_time(start_time)
@@ -40,6 +44,9 @@ func set_end_time(end_time : float) -> void:
 	_end_time.text = "%02d:%02d:%03d" % [splitted_time["minutes"], splitted_time["seconds"], splitted_time["milliseconds"]]
 	_last_valid_end_time = _end_time.text
 	_last_valid_end_time_before_change = _end_time.text
+
+func set_power_value(value : bool) -> void:
+	_power.button_pressed = value
 
 func _on_start_time_text_changed() -> void:
 	var pressed_enter := false
@@ -83,7 +90,7 @@ func _on_locked_pressed() -> void:
 	pass # Replace with function body.
 
 func _on_power_pressed() -> void:
-	pass # Replace with function body.
+	power_changed.emit(_power.button_pressed)
 
 func _on_start_time_focus_exited() -> void:
 	_start_time.text = _last_valid_start_time_before_change

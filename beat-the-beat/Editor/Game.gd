@@ -92,7 +92,7 @@ func _handle_selected_item(item_text : String) -> void:
 		"Hold":
 			_handle_selected_item_hold() # TO REVIEW ...
 		"Power":
-			pass
+			_handle_selected_item_power()
 		"Speed":
 			pass
 		"Fade":
@@ -249,6 +249,21 @@ func _handle_select() -> void:
 				notes.set_selected_highlight(true)
 			_mouse_selection.set_rect(Rect2(0, 0, 0, 0))
 
+func _handle_selected_item_power() -> void:
+	if Input.is_action_just_pressed("Add Item"):
+		var notes := gear.get_global_intersected_rects(Rect2(get_global_mouse_position(), Vector2.ZERO))
+		_clicked_on_note = notes.size() >= 1 # IF TRUE, MEANS THAT IT CLICKED ON A NOTE
+		if _clicked_on_note:
+			var closest_note : Note = null
+			for note in notes:
+				if closest_note:
+					if note.get_local_mouse_position().distance_squared_to(_start_mouse_click_position) < (
+					closest_note.get_local_mouse_position().distance_squared_to(_start_mouse_click_position)):
+						closest_note = note
+				else:
+					closest_note = note
+			closest_note.powered = !closest_note.powered
+
 func _get_time_difference_y() -> float:
 	var mouse_pos : Vector2 = get_local_mouse_position()
 	mouse_pos.y -= Note.height / 2
@@ -369,7 +384,7 @@ func _handle_selected_item_hold() -> void:
 		#if mouse_time_pos_y > soundboard.song.stream.get_length():
 			#mouse_time_pos_y = soundboard.song.stream.get_length()
 		if mouse_time_pos_y > _get_highest_grid_time():
-			mouse_time_pos_y = _get_highest_grid_time()	
+			mouse_time_pos_y = _get_highest_grid_time()
 		
 		sample_tap_note.position.y = NoteHolder.get_local_pos_y(_hit_zone_y - Note.height / 2, - Note.height / 2, mouse_time_pos_y, time_pos, time_pos + Gear.MAX_TIME_Y())
 		

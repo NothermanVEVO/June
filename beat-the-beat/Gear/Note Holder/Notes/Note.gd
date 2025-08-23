@@ -17,6 +17,8 @@ var _is_valid : bool = true
 
 var _idx : int
 
+var powered : bool = false
+
 func _init(current_time : float) -> void:
 	_current_time = current_time
 	

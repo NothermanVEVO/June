@@ -28,12 +28,14 @@ func _ready() -> void:
 	_note_info.set_start_time(_current_time)
 	
 	#_note_info.valid_start_time_text_change.connect(_time_text_changed)
+	_note_info.power_changed.connect(_power_changed)
 	
 	_shader_material.shader = HIGHLIGHT_SHADER
 
 func _process(delta: float) -> void:
 	var mouse_pos := get_global_mouse_position()
 	if get_global_rect().has_point(mouse_pos) and Input.is_action_just_pressed("Inspect Note"):
+		_note_info.set_power_value(powered)
 		if _note_info.global_position.y - _note_info.size.y < _min_global_pos_y:
 			_note_info.position = Vector2(get_local_mouse_position().x, get_local_mouse_position().y)
 		else:
@@ -74,6 +76,9 @@ func update_start_time_text() -> void:
 #func _time_text_changed(seconds : float) -> void: # SIGNAL
 	#set_time(seconds)
 	#Gear.update_note_time(self, true)
+
+func _power_changed(value : bool) -> void:
+	powered = value
 
 func has_mouse_on_info() -> bool:
 	return _note_info.visible and _note_info.has_mouse()
