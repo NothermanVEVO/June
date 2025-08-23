@@ -109,12 +109,12 @@ func _handle_selected_item(item_text : String) -> void:
 func _handle_select() -> void:
 	if Input.is_action_just_pressed("Delete"):
 		for note in _selected_notes:
-			Gear.remove_note_at(note.get_idx(), note, true, true)
+			gear.remove_note_at(note.get_idx(), note, true, true)
 	
 	if Input.is_action_just_pressed("Add Item"):
 		_start_mouse_click_position = get_local_mouse_position()
 		_last_time_difference_y = 0.0
-		var notes := Gear.get_global_intersected_rects(Rect2(get_global_mouse_position(), Vector2.ZERO))
+		var notes := gear.get_global_intersected_rects(Rect2(get_global_mouse_position(), Vector2.ZERO))
 		_clicked_on_note = notes.size() >= 1 # IF TRUE, MEANS THAT IT CLICKED ON A NOTE
 		
 		var closest_note : Note = null
@@ -164,10 +164,10 @@ func _handle_select() -> void:
 				_last_note_holder_idx = note_hold_idx
 			elif note_hold_idx != _last_note_holder_idx:
 				var distance = note_hold_idx - _last_note_holder_idx
-				if not ((leftest_note.get_idx() + distance < 0) or (leftest_note.get_idx() + distance > Gear.get_type() - 1) or (
-					rightest_note.get_idx() + distance < 0) or (rightest_note.get_idx() + distance > Gear.get_type() - 1)):
+				if not ((leftest_note.get_idx() + distance < 0) or (leftest_note.get_idx() + distance > gear.get_type() - 1) or (
+					rightest_note.get_idx() + distance < 0) or (rightest_note.get_idx() + distance > gear.get_type() - 1)):
 					for note in _selected_notes:
-						Gear.change_note_from_note_holder(note.get_idx(), note.get_idx() + distance, note, true)
+						gear.change_note_from_note_holder(note.get_idx(), note.get_idx() + distance, note, true)
 					_last_note_holder_idx = note_hold_idx
 			
 			var mouse_time_difference_y := _get_time_difference_y()
@@ -231,7 +231,7 @@ func _handle_select() -> void:
 			
 			for note in _selected_notes:
 				note.set_time(note.get_time() + time_difference_y)
-				Gear.update_note_time(note, true)
+				gear.update_note_time(note, true)
 			
 		elif Input.is_action_just_released("Add Item"):
 			_last_time_difference_y = 0.0
@@ -244,7 +244,7 @@ func _handle_select() -> void:
 			rect.position += global_position
 			rect.size = (get_global_mouse_position() - (_start_mouse_click_position + global_position))
 			rect = rect.abs()
-			_selected_notes = Gear.get_global_intersected_rects(rect)
+			_selected_notes = gear.get_global_intersected_rects(rect)
 			for notes in _selected_notes:
 				notes.set_selected_highlight(true)
 			_mouse_selection.set_rect(Rect2(0, 0, 0, 0))
@@ -286,7 +286,7 @@ func _get_limited_by_gear_global_mouse_position() -> Vector2:
 						gear.global_position.y - Gear.get_max_size_y() + NoteHolder.get_hitzone(), 
 						gear.global_position.y + NoteHolder.get_hitzone())
 	
-	var note_holds = Gear.get_note_holders_global_position()
+	var note_holds = gear.get_note_holders_global_position()
 	
 	if note_holds:
 		mouse_pos.x = clampf(mouse_pos.x, 
@@ -297,7 +297,7 @@ func _get_limited_by_gear_global_mouse_position() -> Vector2:
 
 func _get_limited_by_gear_local_mouse_position() -> Dictionary:
 	var mouse_pos = _get_limited_by_gear_global_mouse_position()
-	var note_holds : Array[Vector2] = Gear.get_note_holders_global_position()
+	var note_holds : Array[Vector2] = gear.get_note_holders_global_position()
 	
 	var closest_x_dist := 1000000000
 	var pos_x = -1
@@ -383,7 +383,7 @@ func _handle_selected_item_hold() -> void:
 		elif Input.is_action_pressed("Add Item"):
 			sample_tap_note.visible = false
 			_currently_hold_note.set_end_time(mouse_time_pos_y)
-			Gear.update_note_time(_currently_hold_note, true)
+			gear.update_note_time(_currently_hold_note, true)
 			
 			var time_difference_y := _get_time_difference_y()
 			_last_drag_mouse_position = _get_limited_by_gear_local_mouse_position()["position"]
@@ -410,7 +410,7 @@ func _handle_selected_item_hold() -> void:
 		sample_tap_note.visible = false
 
 func  _is_any_note_with_display_info() -> bool:
-	var notes := Gear.get_notes_between(Song.get_time(), Song.get_time() + Gear.MAX_TIME_Y())
+	var notes := gear.get_notes_between(Song.get_time(), Song.get_time() + Gear.MAX_TIME_Y())
 	for note in notes:
 		if note.has_mouse_on_info():
 			return true
@@ -432,7 +432,7 @@ func _get_highest_grid_time() -> float:
 	return floor(Song.get_duration() / EditorMenuBar.get_divisor()) * EditorMenuBar.get_divisor()
 
 func _draw() -> void:
-	var nh_positions := Gear.get_note_holders_global_position()
+	var nh_positions := gear.get_note_holders_global_position()
 	var left_x := 0.0
 	var right_x := 0.0
 	
@@ -482,4 +482,4 @@ func _pressing_some_hold_resize_button(hold_note : HoldNoteEditor, top_button : 
 			var end_time = note.get_end_time()
 			note.set_start_time(note.get_start_time() + diff)
 			note.set_end_time(end_time) ## TODO PQ TEM DEMONIOS TEM UM ERRO VISUAL DE 1 FRAME AQ???? OLHA A PASTA RECORDS TODO BUG NOTE WARNING
-	Gear.update_note_time(hold_note, true)
+	gear.update_note_time(hold_note, true)

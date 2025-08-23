@@ -41,8 +41,8 @@ func _ready() -> void:
 	_note_info.set_start_time(_current_time)
 	_note_info.set_end_time(get_end_time())
 	
-	_note_info.valid_start_time_text_change.connect(_start_time_text_changed)
-	_note_info.valid_end_time_text_change.connect(_end_time_text_changed)
+	#_note_info.valid_start_time_text_change.connect(_start_time_text_changed)
+	#_note_info.valid_end_time_text_change.connect(_end_time_text_changed)
 	
 	_shader_material.shader = HIGHLIGHT_SHADER
 	
@@ -123,13 +123,13 @@ func update_start_time_text() -> void:
 func update_end_time_text() -> void:
 	_note_info.set_end_time(get_end_time())
 
-func _start_time_text_changed(seconds : float) -> void: # SIGNAL
-	set_start_time(seconds)
-	Gear.update_note_time(self, true)
+#func _start_time_text_changed(seconds : float) -> void: # SIGNAL
+	#set_start_time(seconds)
+	#Gear.update_note_time(self, true)
 
-func _end_time_text_changed(seconds : float) -> void: # SIGNAL
-	set_end_time(seconds)
-	Gear.update_note_time(self, true)
+#func _end_time_text_changed(seconds : float) -> void: # SIGNAL
+	#set_end_time(seconds)
+	#Gear.update_note_time(self, true)
 
 func has_mouse_on_info() -> bool:
 	return _note_info.visible and _note_info.has_mouse()
