@@ -26,6 +26,8 @@ var _last_drag_mouse_position : Vector2
 var _last_time_difference_y : float = 0.0
 var _last_note_holder_idx : int = -1
 
+var _mouse_was_pressed_inside : bool = false
+
 func _ready() -> void:
 	match keys_quantity:
 		4:
@@ -55,8 +57,12 @@ func _process(delta: float) -> void:
 	focus_effect.visible = false
 	queue_redraw() # TODO REMOVE THIS SHIT LATER 
 	
-	if Input.is_action_pressed("Add Item"):
-		var mouse_time_difference_y := _get_time_difference_y() # TIME DIFFERENCE IT'S NOT SO EFFICIENT
+	if Input.is_action_just_pressed("Add Item"):
+		_mouse_was_pressed_inside = get_global_rect().has_point(get_global_mouse_position())
+	
+	if Input.is_action_pressed("Add Item") and _mouse_was_pressed_inside:
+		var mouse_time_difference_y := _get_time_difference_y() # BUG TIME DIFFERENCE IT'S NOT SO EFFICIENT
+		# print(mouse_time_difference_y) # BUG USE THIS TO SEE
 	
 		var temp = mouse_time_difference_y
 		mouse_time_difference_y -= _last_time_difference_y
@@ -476,3 +482,4 @@ func _pressing_some_hold_resize_button(hold_note : HoldNoteEditor, top_button : 
 			var end_time = note.get_end_time()
 			note.set_start_time(note.get_start_time() + diff)
 			note.set_end_time(end_time) ## TODO PQ TEM DEMONIOS TEM UM ERRO VISUAL DE 1 FRAME AQ???? OLHA A PASTA RECORDS TODO BUG NOTE WARNING
+	Gear.update_note_time(hold_note, true)

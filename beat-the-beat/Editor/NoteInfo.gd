@@ -2,8 +2,8 @@ extends PanelContainer
 
 class_name NoteInfo
 
-@onready var _start_time : TextEdit = $"MarginContainer/InfoVBox/Start Time"
-@onready var _end_time : TextEdit = $"MarginContainer/InfoVBox/End Time"
+@onready var _start_time : TextEdit = $"MarginContainer/InfoVBox/Start/Start Time"
+@onready var _end_time : TextEdit = $"MarginContainer/InfoVBox/End/End Time"
 @onready var _sfx : TextEdit = $MarginContainer/InfoVBox/SFX
 @onready var _locked : CheckBox = $MarginContainer/InfoVBox/Locked
 @onready var _power : CheckBox = $MarginContainer/InfoVBox/Power
@@ -21,7 +21,6 @@ signal valid_end_time_text_change(seconds : float)
 
 func _ready() -> void:
 	z_index = 2
-	_sfx.visible = false # TODO ...... TODO ...............
 
 func set_type(type : Type) -> void:
 	match type:

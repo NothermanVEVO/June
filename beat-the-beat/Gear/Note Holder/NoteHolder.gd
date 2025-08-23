@@ -148,7 +148,7 @@ func remove_note(note : Note, validate_note : bool = false, free : bool = false)
 	if free:
 		note.call_deferred("queue_free")
 	if validate_note:
-		validate_notes(0.0, Song.get_duration())
+		validate_notes(0.0, Song.get_duration()) # EH FEIO FAZER ISSO AQ, PREGUIÇOSO
 
 func update_note(note : Note, validate_note : bool = false) -> void:
 	_notes.erase(note)
@@ -165,7 +165,7 @@ func update_note(note : Note, validate_note : bool = false) -> void:
 
 	_notes.insert(low, note)
 	if validate_note:
-		validate_notes(0.0, Song.get_duration())
+		validate_notes(0.0, Song.get_duration()) # EH FEIO FAZER ISSO AQ, PREGUIÇOSO
 
 func get_notes(from : float, to : float) -> Array[Note]:
 	var result : Array[Note] = []
@@ -194,6 +194,7 @@ func get_notes(from : float, to : float) -> Array[Note]:
 func validate_notes(from : float, to : float) -> bool:
 	var is_valid := true
 	var notes := get_notes(from, to)
+	var invalid_notes : Array[Note] = []
 	for note in notes:
 		if note is HoldNoteEditor:
 			var temp_notes := get_notes(note.get_start_time(), note.get_end_time())
@@ -201,18 +202,23 @@ func validate_notes(from : float, to : float) -> bool:
 				is_valid = false
 				for temp_note in temp_notes:
 					temp_note.set_invalid_highlight(true)
-			elif note.get_end_time() < note.get_start_time():
+					invalid_notes.append(temp_note)
+			elif note.get_end_time() <= note.get_start_time():
 				note.set_invalid_highlight(true)
+				invalid_notes.append(note)
 			else:
-				note.set_invalid_highlight(false)
+				if not invalid_notes.has(note):
+					note.set_invalid_highlight(false)
 		elif note is NoteEditor:
 			var temp_notes := get_notes(note.get_time(), note.get_time())
 			if temp_notes.size() > 1:
 				is_valid = false
 				for temp_note in temp_notes:
 					temp_note.set_invalid_highlight(true)
+					invalid_notes.append(temp_note)
 			else:
-				note.set_invalid_highlight(false)
+				if not invalid_notes.has(note):
+					note.set_invalid_highlight(false)
 	return is_valid
 
 static func get_hitzone() -> float:
