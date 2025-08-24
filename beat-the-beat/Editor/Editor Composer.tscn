@@ -59,10 +59,12 @@ text = "Test"
 
 [node name="Undo" type="Button" parent="MenuBar"]
 layout_mode = 2
+disabled = true
 text = "<"
 
-[node name="Do" type="Button" parent="MenuBar"]
+[node name="Redo" type="Button" parent="MenuBar"]
 layout_mode = 2
+disabled = true
 text = ">"
 
 [node name="FlowContainer2" type="FlowContainer" parent="MenuBar"]
@@ -223,6 +225,30 @@ border_color = Color(1, 1, 1, 1)
 border_width = 5.0
 editor_only = false
 
+[node name="Mouse Time" type="PanelContainer" parent="Middle/Game/Game"]
+visible = false
+layout_mode = 1
+offset_right = 83.0
+offset_bottom = 33.0
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Middle/Game/Game/Mouse Time"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Middle/Game/Game/Mouse Time/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+text = "00:00:000"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Game Components List" type="ItemList" parent="Middle"]
 clip_contents = false
 custom_minimum_size = Vector2(200, 0)
@@ -338,6 +364,8 @@ tick_count = 15
 stream = ExtResource("5_d6op5")
 script = ExtResource("6_a7m05")
 
+[connection signal="pressed" from="MenuBar/Undo" to="MenuBar" method="_on_undo_pressed"]
+[connection signal="pressed" from="MenuBar/Redo" to="MenuBar" method="_on_redo_pressed"]
 [connection signal="item_selected" from="MenuBar/FlowContainer/SnapDivisor" to="MenuBar" method="_on_snap_divisor_item_selected"]
 [connection signal="value_changed" from="MenuBar/FlowContainer/Speed" to="MenuBar" method="_on_speed_value_changed"]
 [connection signal="pressed" from="Middle/Sound Components List/Close Button" to="Middle/Sound Components List" method="_on_close_button_pressed"]

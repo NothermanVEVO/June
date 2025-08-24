@@ -1,5 +1,7 @@
 extends Button
 
+class_name GameEditor
+
 @export_range(4, 6) var keys_quantity : int = 4
 
 var gear : Gear
@@ -25,8 +27,14 @@ var _selected_notes : Array[Note] = []
 var _last_drag_mouse_position : Vector2
 var _last_time_difference_y : float = 0.0
 var _last_note_holder_idx : int = -1
+var _had_time_difference : bool = false
 
 var _mouse_was_pressed_inside : bool = false
+
+@onready var _mouse_time_container : PanelContainer = $"Mouse Time"
+@onready var _mouse_time_text : RichTextLabel = $"Mouse Time/MarginContainer/RichTextLabel"
+
+signal changed
 
 func _ready() -> void:
 	match keys_quantity:
@@ -57,20 +65,22 @@ func _process(delta: float) -> void:
 	focus_effect.visible = false
 	queue_redraw() # TODO REMOVE THIS SHIT LATER 
 	
+	_display_mouse_time_position()
+	
 	if Input.is_action_just_pressed("Add Item"):
 		_mouse_was_pressed_inside = get_global_rect().has_point(get_global_mouse_position())
 	
-	if Input.is_action_pressed("Add Item") and _mouse_was_pressed_inside:
-		var mouse_time_difference_y := _get_time_difference_y() # BUG TIME DIFFERENCE IT'S NOT SO EFFICIENT
-		# print(mouse_time_difference_y) # BUG USE THIS TO SEE
-	
-		var temp = mouse_time_difference_y
-		mouse_time_difference_y -= _last_time_difference_y
-		_last_time_difference_y = temp
-	
-		if get_local_mouse_position().y > _hit_zone_y and mouse_time_difference_y < 0 or get_local_mouse_position().y < 0 and mouse_time_difference_y > 0: #MOVE DOWN / MOVE UP
-			var song := Song.new()
-			song.set_time(clampf(Song.get_time() + mouse_time_difference_y, 0.0, Song.get_duration()))
+	#if Input.is_action_pressed("Add Item") and _mouse_was_pressed_inside: #BUG TODO WARNING NOTE REALLY BUGGED
+		#var mouse_time_difference_y := _get_time_difference_y() # BUG TIME DIFFERENCE IT'S NOT SO EFFICIENT
+		## print(mouse_time_difference_y) # BUG USE THIS TO SEE
+	#
+		#var temp = mouse_time_difference_y
+		#mouse_time_difference_y -= _last_time_difference_y
+		#_last_time_difference_y = temp
+	#
+		#if get_local_mouse_position().y > _hit_zone_y and mouse_time_difference_y < 0 or get_local_mouse_position().y < 0 and mouse_time_difference_y > 0: #MOVE DOWN / MOVE UP
+			#var song := Song.new()
+			#song.set_time(clampf(Song.get_time() + mouse_time_difference_y, 0.0, Song.get_duration()))
 	
 	if has_focus():
 		focus_effect.visible = true
@@ -80,6 +90,32 @@ func _process(delta: float) -> void:
 			time_slider.value -= 0.1
 	
 		_handle_selected_item(GameComponents.get_selected_item_text())
+
+func _display_mouse_time_position(display_on_grid : bool = false) -> void:
+	#if get_local_mouse_position().x < 0 or get_local_mouse_position().x > size.x:
+		#return
+	
+	_mouse_time_container.visible = true
+	var mouse_time_pos_y
+	var result = _get_limited_by_gear_local_mouse_position()
+	var mouse_pos : Vector2 = result["position"]
+	if display_on_grid:
+		mouse_time_pos_y = _get_closest_grid_time_to_mouse()
+	else:
+		mouse_time_pos_y = NoteHolder.get_time_pos_y(_hit_zone_y - Note.height / 2, - Note.height / 2, mouse_pos.y, Song.get_time(), Song.get_time() + Gear.MAX_TIME_Y())
+	#print(Song.get_time())
+	var splitted_time := SoundBoard.split_time(mouse_time_pos_y)
+	_mouse_time_text.text = "%02d:%02d:%03d" % [splitted_time["minutes"], splitted_time["seconds"], splitted_time["milliseconds"]]
+	
+	var note_holders_positions := gear.get_note_holders_global_position()
+	if note_holders_positions:
+		var position_x = note_holders_positions[note_holders_positions.size() - 1].x - global_position.x + _mouse_time_container.size.x#  + NoteHolder.width / 2
+		var miss_placement_y = -_mouse_time_container.size.y / 8
+		var position_y
+		if display_on_grid:
+			mouse_pos.y = NoteHolder.get_local_pos_y(_hit_zone_y - Note.height / 2, - Note.height / 2, mouse_time_pos_y, Song.get_time(), Song.get_time() + Gear.MAX_TIME_Y())
+		position_y = clampf(mouse_pos.y - miss_placement_y, 0.0, _hit_zone_y)
+		_mouse_time_container.position = Vector2(position_x, position_y)
 
 func _handle_selected_item(item_text : String) -> void:
 	match item_text:
@@ -91,7 +127,7 @@ func _handle_selected_item(item_text : String) -> void:
 			_handle_selected_item_tap() # TO REVIEW ...
 		"Hold":
 			_handle_selected_item_hold() # TO REVIEW ...
-		"Power":
+		"Power": # TO REVIEW ...
 			_handle_selected_item_power()
 		"Speed":
 			pass
@@ -108,8 +144,11 @@ func _handle_selected_item(item_text : String) -> void:
 
 func _handle_select() -> void:
 	if Input.is_action_just_pressed("Delete"):
+		if _selected_notes:
+			changed.emit()
 		for note in _selected_notes:
 			gear.remove_note_at(note.get_idx(), note, true, true)
+		_selected_notes.clear()
 	
 	if Input.is_action_just_pressed("Add Item"):
 		_start_mouse_click_position = get_local_mouse_position()
@@ -138,6 +177,7 @@ func _handle_select() -> void:
 			_clear_selected_notes()
 	elif _clicked_on_note:
 		if Input.is_action_pressed("Add Item"):
+			_display_mouse_time_position(true)
 			#if not _is_mouse_inside_selection_rect():
 				#return
 				
@@ -180,6 +220,8 @@ func _handle_select() -> void:
 			var time_difference_y := _get_closest_grid_time_to_mouse() - _last_grid_time_mouse
 			_last_grid_time_mouse = _get_closest_grid_time_to_mouse()
 			
+			if time_difference_y:
+				_had_time_difference = true
 			#print("Time Diff: " + str(time_difference_y))
 			
 			#if not time_difference_y or (time_difference_y > 0.0 and get_local_mouse_position().y > _hit_zone_y) or (
@@ -234,6 +276,9 @@ func _handle_select() -> void:
 				gear.update_note_time(note, true)
 			
 		elif Input.is_action_just_released("Add Item"):
+			if _had_time_difference:
+				_had_time_difference = false
+				changed.emit()
 			_last_time_difference_y = 0.0
 			_last_note_holder_idx = -1
 	else:
@@ -263,6 +308,7 @@ func _handle_selected_item_power() -> void:
 				else:
 					closest_note = note
 			closest_note.powered = !closest_note.powered
+			changed.emit()
 
 func _get_time_difference_y() -> float:
 	var mouse_pos : Vector2 = get_local_mouse_position()
@@ -344,6 +390,7 @@ func _handle_selected_item_tap() -> void:
 	var idx : int = result["note_hold"]
 	
 	if mouse_pos.x >= 0: # FINDED A NOTE HOLD
+		_display_mouse_time_position(true)
 		sample_tap_note.visible = true
 		sample_tap_note.position = Vector2(mouse_pos.x - NoteHolder.width / 2, mouse_pos.y)
 		var time_pos = Song.get_time()
@@ -361,6 +408,7 @@ func _handle_selected_item_tap() -> void:
 		
 		if Input.is_action_just_pressed("Add Item"):
 			gear.add_note_at(idx, NoteEditor.new(sample_tap_note.get_time(), global_position.y), true)
+			changed.emit()
 	else: # DIDN'T FIND A NOTE HOLD
 		sample_tap_note.visible = false
 
@@ -374,6 +422,7 @@ func _handle_selected_item_hold() -> void:
 	var idx : int = result["note_hold"]
 	
 	if mouse_pos.x >= 0: # FINDED A NOTE HOLD
+		_display_mouse_time_position(true)
 		sample_tap_note.visible = true
 		sample_tap_note.position = Vector2(mouse_pos.x - NoteHolder.width / 2, mouse_pos.y)
 		var time_pos = Song.get_time()
@@ -421,6 +470,7 @@ func _handle_selected_item_hold() -> void:
 			_currently_hold_note.set_end_time(mouse_time_pos_y)
 			_currently_hold_note.update_end_time_text()
 			_last_time_difference_y = 0.0
+			changed.emit()
 	else: # DIDN'T FIND A NOTE HOLD
 		sample_tap_note.visible = false
 

@@ -2,7 +2,7 @@ extends Node2D
 
 class_name NoteHolder
 
-var note_action : String = ""
+var _note_action : String = ""
 
 var _notes : Array[Note]
 
@@ -16,24 +16,27 @@ const SECS_SIZE_Y = 5 # SPEED OF THE GAME
 
 var _last_visible_notes : Array[Note] = []
 
+var _key_pressed_gradient := KeyPressedGradient.new()
+
 func _init(note_action : String, pos_x : float) -> void:
-	self.note_action = note_action
+	_note_action = note_action
 	_pos_x = pos_x
 
 func _ready() -> void:
 	position = Vector2(_pos_x, _hit_zone_y)
+	add_child(_key_pressed_gradient)
 
 func _process(delta: float) -> void:
 	queue_redraw() #TODO REMOVE THIS LATER, FOR THE SAKE OF GOD
 
 func _physics_process(delta: float) -> void:
-	if _notes:
-		match Gear.mode:
-			Gear.Mode.PLAYER:
-				_player_process()
-			Gear.Mode.EDITOR:
-				_editor_process()
-				
+	#if _notes:sasa~]sa~]
+	match Gear.mode:
+		Gear.Mode.PLAYER:
+			_player_process()
+		Gear.Mode.EDITOR:
+			_editor_process()
+		
 	#if _notes: # NOTE REDO
 		#if _notes[0].global_position.y > global_position.y + max_note_distance:
 			#print("BREAK")
@@ -43,10 +46,15 @@ func _physics_process(delta: float) -> void:
 			##_notes.remove_at(0)
 
 func _player_process() -> void:
-	if Input.is_action_just_pressed(note_action):
+	if Input.is_action_just_pressed(_note_action):
 		_hit()
 
 func _editor_process() -> void:
+	if Input.is_action_just_pressed(_note_action):
+		_key_pressed_gradient.key_just_pressed()
+	elif Input.is_action_just_released(_note_action):
+		_key_pressed_gradient.key_just_released()
+	
 	var time : float = Song.get_time()
 	
 	var notes := get_notes(time, time + Gear.MAX_TIME_Y())

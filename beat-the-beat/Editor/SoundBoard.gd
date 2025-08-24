@@ -107,9 +107,13 @@ func _process(delta: float) -> void:
 		##NOTE GAMBIARRA A SEGUIR, TO ALTERANDO O TEMP SONG TIME POS PRA AJUSTAR O TEXTO PRO TEMPO FINAL:
 		_temp_song_time_pos = song.stream.get_length()
 		_adjust_time_pos_text(true)
+		song.set_time(_temp_song_time_pos)
 		_temp_song_time_pos = 0.0
+		_song_finished = false
 	else: # THE SONG IS PAUSED
 		time_slider.value = Song.get_time() * 100 / song.stream.get_length()
+		if not time_text.has_focus():
+			time_text.text = "%.1f" % (Song.get_time() * 100 / song.stream.get_length()) + "%"
 		if not time_pos_text.has_focus():
 			_adjust_time_pos_text()
 	song.pitch_scale = speed_slider.value / 100
@@ -207,7 +211,6 @@ func _on_time_slider_drag_ended(value_changed: bool) -> void:
 		_temp_song_time_pos = song.stream.get_length() * time_slider.value / 100
 		if $Play.text == "Pause": # IT'S PLAYING
 			song.play(_temp_song_time_pos)
-	
 
 func _on_time_percentage_text_changed() -> void:
 	if "\n" in time_text.text:
@@ -244,6 +247,7 @@ func _on_time_percentage_text_changed() -> void:
 				time_slider.value = time_slider.max_value
 			else:
 				time_slider.value = value
+			song.set_time(Song.get_duration() * (time_slider.value / 100))
 		
 		_temp_song_time_pos = song.stream.get_length() * time_slider.value / 100
 		last_time_value = time_slider.value
@@ -289,7 +293,7 @@ func adjust_time() -> void:
 func _on_play_pressed() -> void:
 	if $Play.text == "Play": #PLAY
 		$Play.text = "Pause"
-		song.play(_temp_song_time_pos)
+		song.play(Song.get_time())
 		_song_finished = false
 	elif $Play.text == "Pause": #PAUSE
 		$Play.text = "Play"
@@ -349,101 +353,6 @@ func _on_time_text_changed(force_change : bool = false) -> void:
 		last_valid_time_pos_text = time_pos_text.text
 		time_text.text = "%.1f" % (Song.get_time() * 100 / song.stream.get_length()) + "%"
 
-#func _on_time_text_changed(force_change : bool = false) -> void:
-	#var pressed_enter := false
-	#if "\n" in time_pos_text.text or force_change:
-		#time_pos_text.text = time_pos_text.text.replace("\n", "")
-		#var values := time_pos_text.text.split(":")
-		#if values.size() == 3:
-			#values[0] = "00" if not values[0] else "0" + values[0] if values[0].length() == 1 else values[0]
-			#values[1] = "00" if not values[1] else "0" + values[1] if values[1].length() == 1 else values[1]
-			#values[2] = "000" if not values[2] else values[2] + "00" if values[2].length() == 1 else values[2] + "0" if values[2].length() == 2 else values[2]
-			#time_pos_text.text = values[0] + ":" + values[1] + ":" + values[2]
-		#else:
-			#time_pos_text.text = last_valid_time_pos_text
-		#pressed_enter = true
-		#time_pos_text.release_focus()
-	#
-	#var result := valid_time_pos.search(time_pos_text.text)
-	#if result:
-		#var values := time_pos_text.text.split(":")
-		#var minutes : int = str_to_var(values[0]) if values[0] else 0
-		#var seconds : int = str_to_var(values[1]) if values[1] else 0
-		#var miliseconds : float = str_to_var("0." + values[2])
-		#var absolute_seconds : float = minutes * 60 + seconds + miliseconds
-		#_temp_song_time_pos = absolute_seconds if absolute_seconds <= song.stream.get_length() else song.stream.get_length()
-		#song.set_time(_temp_song_time_pos)
-		#if pressed_enter:
-			#_adjust_time_pos_text(true)
-		#last_valid_time_pos_text = time_pos_text.text
-		#time_text.text = "%.1f" % (song.get_time() * 100 / song.stream.get_length()) + "%"
-	#else:
-		#result = outlimits_valid_time_pos.search(time_pos_text.text)
-		#var total_zeros = 2
-		#if result:
-			#var values := time_pos_text.text.split(":")
-			#if values[0]:
-				#if values[0].length() == 3:
-					#if values[0].begins_with("00"):
-						#total_zeros = 1
-						#values[0] = "0" + values[0][2]
-					#elif values[0].begins_with("0"):
-						#total_zeros = 1
-						#values[0] = values[0][1] + values[0][2]
-				#if values[0].length() >= 3:
-					#total_zeros = 0
-					#for i in range(values[0].length() - 2):
-						#total_zeros += 1
-						#values[0] = values[0].erase(values[0].length() - 1)
-			#if values[1]:
-				#if values[1].length() == 3:
-					#if values[1].begins_with("00"):
-						#total_zeros = 1
-						#values[1] = "0" + values[1][2]
-					#elif values[1].begins_with("0"):
-						#total_zeros = 1
-						#values[1] = values[1][1] + values[1][2]
-				#if values[1].length() >= 3:
-					#total_zeros = 0
-					#for i in range(values[1].length() - 2):
-						#total_zeros += 1
-						#values[1] = values[1].erase(values[1].length() - 1)
-			#if values[2]:
-				#if values[2].length() == 4:
-					#if values[2].begins_with("000"):
-						#total_zeros = 2
-						#values[2] = "00" + values[2][3]
-					#elif values[2].begins_with("00"):
-						#total_zeros = 2
-						#values[2] = "0" + values[2][2] + values[2][3]
-					#elif values[2].begins_with("0"):
-						#total_zeros = 2
-						#values[2] = values[2][1] + values[2][2] + values[2][3]
-				#if values[2].length() >= 4:
-					#total_zeros = 0
-					#for i in range(values[2].length() - 3):
-						#total_zeros += 1
-						#values[2] = values[2].erase(values[2].length() - 1)
-			#
-			#if time_pos_text.text.length() >= last_valid_time_pos_text.length():
-				#print(total_zeros)
-				#var idx = time_pos_text.get_caret_column()
-				#time_pos_text.text = values[0] + ":" + values[1] + ":" + values[2]
-				#time_pos_text.set_caret_column(idx - (3 - total_zeros - 1))
-			#if valid_time_pos.search(time_pos_text.text):
-				#values = time_pos_text.text.split(":")
-				#var minutes : int = str_to_var(values[0]) if values[0] else 0
-				#var seconds : int = str_to_var(values[1]) if values[1] else 0
-				#var miliseconds : float = str_to_var("0." + values[2])
-				#var absolute_seconds : float = minutes * 60 + seconds + miliseconds
-				#_temp_song_time_pos = absolute_seconds if absolute_seconds <= song.stream.get_length() else song.stream.get_length()
-				#song.set_time(_temp_song_time_pos)
-		#
-				#time_text.text = "%.1f" % (song.get_time() * 100 / song.stream.get_length()) + "%"
-				#
-			#last_valid_time_pos_text = time_pos_text.text
-			#return
-
 func _on_time_focus_entered() -> void:
 	if $Play.text == "Pause":
 		$Play.text = "Play"
@@ -464,7 +373,6 @@ func _on_stop_pressed() -> void:
 	song.stop()
 	time_slider.value = 0.0
 	_on_time_slider_drag_ended(false)
-	#_adjust_time_pos_text()
 
 static func get_temp_song_time_pos() -> float:
 	return _temp_song_time_pos

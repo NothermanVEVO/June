@@ -107,6 +107,7 @@ func set_max_size_y(max_size_y : float) -> void:
 	_max_size_y = max_size_y
 	if _max_size_y < 0:
 		_max_size_y = get_viewport_rect().size.y + Note.height
+	Global.changed_max_size_y.emit()
 
 static func get_max_size_y() -> float:
 	return _max_size_y
