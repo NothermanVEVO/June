@@ -18,6 +18,9 @@ static var _max_size_y : float = -1
 
 static var _speed : float = 1.0
 
+var _long_notes : Array[LongNote]
+var _last_visible_long_notes : Array[LongNote]
+
 func _init(type : Type, mode : Mode, center_screen : bool = true, max_size_y : float = -1) -> void:
 	_type = type
 	self.mode = mode
@@ -43,6 +46,73 @@ func _ready() -> void: #TODO HANDLE ANY POSITION FOR THE GEAR, NOT ONLY THE MIDD
 		initial_x += NoteHolder.width
 		_note_holders.append(note_holder)
 		add_child(note_holder)
+
+func _physics_process(delta: float) -> void:
+	if not _long_notes:
+		return
+	
+	match mode:
+		Mode.PLAYER:
+			pass
+		Mode.EDITOR:
+			_editor_process()
+
+func _editor_process() -> void:
+	var long_notes = get_long_notes(Song.get_time(), MAX_TIME_Y())
+	
+	for note in _last_visible_long_notes:
+		if not note in long_notes:
+			note.visible = false
+			_last_visible_long_notes.erase(note)
+	
+	for long_note in long_notes:
+		long_note.visible = true
+		var time_pos_y = NoteHolder.get_local_pos_y(NoteHolder.get_hitzone() - LongNote.height / 2, -_max_size_y + NoteHolder.get_hitzone() - LongNote.height / 2, long_note.get_time(), Song.get_time(), Song.get_time() + MAX_TIME_Y())
+		long_note.position.x = -width / 2
+		long_note.position.y = time_pos_y
+	
+	_last_visible_long_notes = long_notes
+
+func add_long_note(long_note : LongNote) -> void:
+	var low := 0
+	var high := _long_notes.size()
+
+	while low < high:
+		var mid := (low + high) / 2
+		if long_note.get_time() < _long_notes[mid].get_time():
+			high = mid
+		else:
+			low = mid + 1
+
+	_long_notes.insert(low, long_note)
+	add_child.call_deferred(long_note)
+	long_note.visible = false
+
+func remove_long_note(long_note : LongNote, free : bool = false) -> void:
+	_long_notes.erase(long_note)
+	_last_visible_long_notes.erase(long_note)
+	remove_child.call_deferred(long_note)
+	if free:
+		long_note.call_deferred("queue_free")
+
+func get_long_notes(from : float, to : float) -> Array[LongNote]:
+	var result : Array[LongNote] = []
+	var low := 0
+	var high := _long_notes.size()
+
+	while low < high:
+		var mid := (low + high) / 2
+		if _long_notes[mid].get_time() < from:
+			low = mid + 1
+		else:
+			high = mid
+
+	var i := low
+	while i < _long_notes.size() and _long_notes[i].get_time() <= to:
+		result.append(_long_notes[i])
+		i += 1
+
+	return result
 
 static func set_speed(speed : float) -> void:
 	_speed = clampf(speed, 0.0, 10.0)

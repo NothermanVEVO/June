@@ -62,7 +62,7 @@ func _editor_process() -> void:
 	for note in _last_visible_notes:
 		if not note in notes:
 			note.visible = false
-			notes.erase(note)
+			_last_visible_notes.erase(note)
 			
 	for note in notes:
 		note.visible = true

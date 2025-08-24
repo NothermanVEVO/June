@@ -2,7 +2,7 @@ extends TextureRect
 
 class_name KeyPressedGradient
 
-@onready var gradient := load("res://assets/ClickGradient.tres")
+const gradient := preload("res://assets/ClickGradient.tres")
 
 var fade_tween : Tween = null
 
