@@ -114,6 +114,27 @@ func get_long_notes(from : float, to : float) -> Array[LongNote]:
 
 	return result
 
+func update_long_note(note : LongNote) -> void:
+	_long_notes.erase(note)
+	
+	var low := 0
+	var high := _long_notes.size()
+
+	while low < high:
+		var mid := (low + high) / 2
+		if note.get_time() < _long_notes[mid].get_time():
+			high = mid
+		else:
+			low = mid + 1
+
+	_long_notes.insert(low, note)
+
+func get_global_long_note_intersected_rects(rect : Rect2) -> LongNote:
+	for long_note in _long_notes:
+		if long_note.get_global_rect().intersects(rect):
+			return long_note
+	return null
+
 static func set_speed(speed : float) -> void:
 	_speed = clampf(speed, 0.0, 10.0)
 	Global.speed_changed.emit()
@@ -140,7 +161,7 @@ func get_note_holders_global_position() -> Array[Vector2]:
 		array.append(note_holder.global_position)
 	return array
 
-func get_global_intersected_rects(rect : Rect2) -> Array[Note]:
+func get_global_note_intersected_rects(rect : Rect2) -> Array[Note]:
 	var array : Array[Note] = []
 	for note_holder in _note_holders:
 		for note in note_holder.get_notes_array():

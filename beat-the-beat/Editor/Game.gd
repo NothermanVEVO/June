@@ -29,6 +29,8 @@ var _last_time_difference_y : float = 0.0
 var _last_note_holder_idx : int = -1
 var _had_time_difference : bool = false
 
+var _clicked_long_note : LongNote
+
 var _mouse_was_pressed_inside : bool = false
 
 @onready var _mouse_time_container : PanelContainer = $"Mouse Time"
@@ -150,18 +152,18 @@ func _handle_selected_item(item_text : String) -> void:
 			_handle_selected_item_tap() # TO REVIEW ...
 		"Hold":
 			_handle_selected_item_hold() # TO REVIEW ...
-		"Power": # TO REVIEW ...
-			_handle_selected_item_power()
+		"Power":
+			_handle_selected_item_power() # TO REVIEW ...
 		"Speed":
-			_handle_long_note(LongNote.Type.SPEED)
+			_handle_long_note(LongNote.Type.SPEED) # TO REVIEW ...
 		"Fade":
 			pass
 		"Sound":
 			pass
 		"Note":
-			_handle_long_note(LongNote.Type.ANNOTATION)
+			_handle_long_note(LongNote.Type.ANNOTATION) # TO REVIEW ...
 		"Section":
-			_handle_long_note(LongNote.Type.SECTION)
+			_handle_long_note(LongNote.Type.SECTION) # TO REVIEW ...
 		#_:
 			#print("epa, NÃO ERA PRA ESTAR ENTRANDO AQUI, FICA ESPERTO")
 
@@ -176,7 +178,7 @@ func _handle_select() -> void:
 	if Input.is_action_just_pressed("Add Item"):
 		_start_mouse_click_position = get_local_mouse_position()
 		_last_time_difference_y = 0.0
-		var notes := gear.get_global_intersected_rects(Rect2(get_global_mouse_position(), Vector2.ZERO))
+		var notes := gear.get_global_note_intersected_rects(Rect2(get_global_mouse_position(), Vector2.ZERO))
 		_clicked_on_note = notes.size() >= 1 # IF TRUE, MEANS THAT IT CLICKED ON A NOTE
 		
 		var closest_note : Note = null
@@ -198,6 +200,13 @@ func _handle_select() -> void:
 				closest_note.set_selected_highlight(true)
 		else: # IF DIDN'T CLICKED ON A NOTE, JUST CLEAR SELECTED NOTES
 			_clear_selected_notes()
+			
+			## CHECK IF CLICKED IN A LONG NOTE
+			var long_note := gear.get_global_long_note_intersected_rects(Rect2(get_global_mouse_position(), Vector2.ZERO))
+			if long_note:
+				_last_drag_mouse_position = _get_limited_by_gear_local_mouse_position()["position"]
+				_last_grid_time_mouse = _get_closest_grid_time_to_mouse()
+				_clicked_long_note = long_note
 	elif _clicked_on_note:
 		if Input.is_action_pressed("Add Item"):
 			_display_mouse_time_position(true)
@@ -304,6 +313,15 @@ func _handle_select() -> void:
 				changed.emit()
 			_last_time_difference_y = 0.0
 			_last_note_holder_idx = -1
+	elif _clicked_long_note:
+		if Input.is_action_pressed("Add Item"):
+			var time_difference_y := _get_closest_grid_time_to_mouse() - _last_grid_time_mouse
+			_last_grid_time_mouse = _get_closest_grid_time_to_mouse()
+			if time_difference_y:
+				_clicked_long_note.set_time(_clicked_long_note.get_time() + time_difference_y)
+				gear.update_long_note(_clicked_long_note)
+		elif Input.is_action_just_released("Add Item"):
+			_clicked_long_note = null
 	else:
 		if Input.is_action_pressed("Add Item"):
 			_mouse_selection.set_rect(Rect2(_start_mouse_click_position, get_local_mouse_position() - _start_mouse_click_position))
@@ -312,7 +330,7 @@ func _handle_select() -> void:
 			rect.position += global_position
 			rect.size = (get_global_mouse_position() - (_start_mouse_click_position + global_position))
 			rect = rect.abs()
-			_selected_notes = gear.get_global_intersected_rects(rect)
+			_selected_notes = gear.get_global_note_intersected_rects(rect)
 			for notes in _selected_notes:
 				notes.set_selected_highlight(true)
 			_mouse_selection.set_rect(Rect2(0, 0, 0, 0))
@@ -413,7 +431,7 @@ func _handle_selected_item_hold() -> void:
 
 func _handle_selected_item_power() -> void:
 	if Input.is_action_just_pressed("Add Item"):
-		var notes := gear.get_global_intersected_rects(Rect2(get_global_mouse_position(), Vector2.ZERO))
+		var notes := gear.get_global_note_intersected_rects(Rect2(get_global_mouse_position(), Vector2.ZERO))
 		_clicked_on_note = notes.size() >= 1 # IF TRUE, MEANS THAT IT CLICKED ON A NOTE
 		if _clicked_on_note:
 			var closest_note : Note = null
