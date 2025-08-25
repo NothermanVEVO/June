@@ -36,6 +36,8 @@ func _ready() -> void:
 			texture = SPEED_TEXTURE
 	patch_margin_left = 3
 	patch_margin_right = 3
+	
+	_long_note_info.visible = false
 
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("Inspect Note") and get_global_rect().has_point(get_global_mouse_position()):
