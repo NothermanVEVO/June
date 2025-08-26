@@ -63,16 +63,19 @@ func _ready() -> void:
 	
 	_sample_long_annotation_note = LongNote.new(0, LongNote.Type.ANNOTATION)
 	add_child(_sample_long_annotation_note)
+	_sample_long_annotation_note.set_process(false)
 	_sample_long_annotation_note.position = Vector2(-10000000, -10000000)
 	_sample_long_annotation_note.modulate = Color(1, 1, 1, 0.5)
 	
 	_sample_long_section_note = LongNote.new(0, LongNote.Type.SECTION)
 	add_child(_sample_long_section_note)
+	_sample_long_section_note.set_process(false)
 	_sample_long_section_note.position = Vector2(-10000000, -10000000)
 	_sample_long_section_note.modulate = Color(1, 1, 1, 0.5)
 	
 	_sample_long_speed_note = LongNote.new(0, LongNote.Type.SPEED)
 	add_child(_sample_long_speed_note)
+	_sample_long_speed_note.set_process(false)
 	_sample_long_speed_note.position = Vector2(-10000000, -10000000)
 	_sample_long_speed_note.modulate = Color(1, 1, 1, 0.5)
 	
@@ -107,6 +110,11 @@ func _process(delta: float) -> void:
 			#var song := Song.new()
 			#song.set_time(clampf(Song.get_time() + mouse_time_difference_y, 0.0, Song.get_duration()))
 	
+	if GameComponents.get_selected_item_text() == "Power":
+		Global.set_mouse_effect(MouseEffect.Effect.POWER_ITEM)
+	else:
+		Global.set_mouse_effect(MouseEffect.Effect.NONE)
+	
 	if has_focus():
 		focus_effect.visible = true
 		if Input.is_action_just_pressed("Scroll Up"): # SCROLL THE SONG
@@ -128,7 +136,6 @@ func _display_mouse_time_position(display_on_grid : bool = false) -> void:
 		mouse_time_pos_y = _get_closest_grid_time_to_mouse()
 	else:
 		mouse_time_pos_y = NoteHolder.get_time_pos_y(_hit_zone_y - Note.height / 2, - Note.height / 2, mouse_pos.y, Song.get_time(), Song.get_time() + Gear.MAX_TIME_Y())
-	#print(Song.get_time())
 	var splitted_time := SoundBoard.split_time(mouse_time_pos_y)
 	_mouse_time_text.text = "%02d:%02d:%03d" % [splitted_time["minutes"], splitted_time["seconds"], splitted_time["milliseconds"]]
 	
@@ -477,6 +484,8 @@ func _handle_long_note(type : LongNote.Type) -> void:
 		_currently_sample_long_note.set_time(mouse_time_pos_y)
 		
 		if Input.is_action_just_pressed("Add Item"):
+			if gear.get_long_notes(_currently_sample_long_note.get_time(), _currently_sample_long_note.get_time()):
+				return #TODO SHOW A POPUP DIALOG HERE
 			gear.add_long_note(LongNote.new(_currently_sample_long_note.get_time(), _currently_sample_long_note.get_type()))
 			changed.emit()
 	else: # DIDN'T FIND A NOTE HOLD

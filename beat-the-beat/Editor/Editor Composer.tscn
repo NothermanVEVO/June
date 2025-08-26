@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dw4rs74gsagrn"]
+[gd_scene load_steps=20 format=3 uid="uid://dw4rs74gsagrn"]
 
 [ext_resource type="Script" uid="uid://ddx3q78woi7jl" path="res://Editor/SoundComponentsItems.gd" id="1_7fqon"]
 [ext_resource type="Script" uid="uid://re8yk5328yco" path="res://Editor/MenuBar/EditorMenuBar.gd" id="1_p8fip"]
@@ -8,7 +8,17 @@
 [ext_resource type="Script" uid="uid://b2vfybh62v642" path="res://Editor/MenuBar/Edit.gd" id="2_qj7uo"]
 [ext_resource type="Script" uid="uid://cr1l58jmclcj" path="res://Editor/SoundBoard.gd" id="3_ty45h"]
 [ext_resource type="AudioStream" uid="uid://bmdadx4pafmd6" path="res://Sound Test Sample/Brutal, acabou pro beta versão globo.mp3" id="5_d6op5"]
+[ext_resource type="Texture2D" uid="uid://oyfiimbt1x0y" path="res://assets/gameItemsIcons/selectIcon.png" id="6_6pnfi"]
 [ext_resource type="Script" uid="uid://df36n2m4tgkt0" path="res://Gear/Song.gd" id="6_a7m05"]
+[ext_resource type="Texture2D" uid="uid://cmb4i22o1gq1y" path="res://assets/gameItemsIcons/unLockIcon.png" id="7_vl3l7"]
+[ext_resource type="Texture2D" uid="uid://ckv44gvcprwo0" path="res://assets/gameItemsIcons/tapIcon.png" id="8_g7rpo"]
+[ext_resource type="Texture2D" uid="uid://do6yk8uk1nup3" path="res://assets/gameItemsIcons/holdIcon.png" id="9_fp4jx"]
+[ext_resource type="Texture2D" uid="uid://d1n862qhib3xx" path="res://assets/gameItemsIcons/powerIcon.png" id="10_6548f"]
+[ext_resource type="Texture2D" uid="uid://c7trhntorrf6m" path="res://assets/gameItemsIcons/speedIcon.png" id="11_p5hb3"]
+[ext_resource type="Texture2D" uid="uid://cwd2tbyrd7ani" path="res://assets/gameItemsIcons/fadeIcon.png" id="12_4las8"]
+[ext_resource type="Texture2D" uid="uid://dgsnb7bfdmvxl" path="res://assets/gameItemsIcons/soundIcon.png" id="13_1a345"]
+[ext_resource type="Texture2D" uid="uid://bl4jk8gih08u4" path="res://assets/gameItemsIcons/noteIcon.png" id="14_nlio8"]
+[ext_resource type="Texture2D" uid="uid://wt08ilca7rq5" path="res://assets/gameItemsIcons/sectionIcon.png" id="15_lhgse"]
 
 [node name="Editor Composer" type="VBoxContainer"]
 clip_contents = true
@@ -256,27 +266,37 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.0
 item_count = 14
-item_0/text = "- TOOLS -"
+item_0/text = "---- TOOLS ----"
 item_0/selectable = false
 item_1/text = "Select"
-item_2/text = "Un/lock"
+item_1/icon = ExtResource("6_6pnfi")
+item_2/text = "Un/lock ...TODO"
+item_2/icon = ExtResource("7_vl3l7")
 item_2/disabled = true
-item_3/text = "- NOTES -"
+item_3/text = "---- NOTES ----"
 item_3/selectable = false
 item_4/text = "Tap"
+item_4/icon = ExtResource("8_g7rpo")
 item_5/text = "Hold"
-item_6/text = "- EFFECTS -"
+item_5/icon = ExtResource("9_fp4jx")
+item_6/text = "---- EFFECTS ----"
 item_6/selectable = false
 item_7/text = "Power"
+item_7/icon = ExtResource("10_6548f")
 item_8/text = "Speed"
-item_9/text = "Fade"
+item_8/icon = ExtResource("11_p5hb3")
+item_9/text = "Fade ...TODO"
+item_9/icon = ExtResource("12_4las8")
 item_9/disabled = true
-item_10/text = "Sound"
+item_10/text = "Sound ...TODO"
+item_10/icon = ExtResource("13_1a345")
 item_10/disabled = true
-item_11/text = "- ANNOTATION -"
+item_11/text = "---- ANNOTATION ----"
 item_11/selectable = false
 item_12/text = "Note"
+item_12/icon = ExtResource("14_nlio8")
 item_13/text = "Section"
+item_13/icon = ExtResource("15_lhgse")
 script = ExtResource("1_sakc5")
 
 [node name="Resize Button" type="Button" parent="Middle/Game Components List"]
