@@ -6,7 +6,6 @@ class_name HoldNoteEditor
 var _note_info : NoteInfo
 
 var _shader_material = ShaderMaterial.new()
-const HIGHLIGHT_SHADER = preload("res://shaders/Highlight.gdshader")
 
 var _min_global_pos_y : float
 
@@ -45,7 +44,7 @@ func _ready() -> void:
 	#_note_info.valid_end_time_text_change.connect(_end_time_text_changed)
 	_note_info.power_changed.connect(_power_changed)
 	
-	_shader_material.shader = HIGHLIGHT_SHADER
+	_shader_material.shader = Global.HIGHLIGHT_SHADER
 	
 	top_button.position = _end_note.position# + Vector2(0, - Note.height)
 	top_button.size = Vector2(_end_note.size.x, Note.height / 4)

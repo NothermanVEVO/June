@@ -114,20 +114,24 @@ func get_long_notes(from : float, to : float) -> Array[LongNote]:
 
 	return result
 
-func update_long_note(note : LongNote) -> void:
-	_long_notes.erase(note)
+func update_long_note(long_note : LongNote, validate : bool = false) -> void:
+	_long_notes.erase(long_note)
 	
 	var low := 0
 	var high := _long_notes.size()
 
 	while low < high:
 		var mid := (low + high) / 2
-		if note.get_time() < _long_notes[mid].get_time():
+		if long_note.get_time() < _long_notes[mid].get_time():
 			high = mid
 		else:
 			low = mid + 1
 
-	_long_notes.insert(low, note)
+	_long_notes.insert(low, long_note)
+	
+	if validate: # EH FEIO ISSO AQ MAS TO COM PREGUIÇA DE FAZER MELHOR
+		for note in _long_notes:
+			note.set_invalid_highlight(get_long_notes(note.get_time(), note.get_time()).size() > 1)
 
 func get_global_long_note_intersected_rects(rect : Rect2) -> LongNote:
 	for long_note in _long_notes:

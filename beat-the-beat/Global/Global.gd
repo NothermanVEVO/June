@@ -6,6 +6,8 @@ signal speed_changed
 ## REFERS TO THE MAX SIZE Y IN THE GEAR CLASS
 signal changed_max_size_y
 
+const HIGHLIGHT_SHADER = preload("res://shaders/Highlight.gdshader")
+
 var _mouse_effect : MouseEffect
 
 func _ready() -> void:

@@ -24,6 +24,7 @@ var _clicked_on_note : bool = false
 var _last_grid_time_mouse : float
 var _mouse_selection : Selection = Selection.new()
 var _selected_notes : Array[Note] = []
+var _selected_long_notes : Array[LongNote] = []
 var _last_drag_mouse_position : Vector2
 var _last_time_difference_y : float = 0.0
 var _last_note_holder_idx : int = -1
@@ -180,7 +181,10 @@ func _handle_select() -> void:
 			changed.emit()
 		for note in _selected_notes:
 			gear.remove_note_at(note.get_idx(), note, true, true)
+		for long_note in _selected_long_notes:
+			gear.remove_long_note(long_note, true)
 		_selected_notes.clear()
+		_selected_long_notes.clear()
 	
 	if Input.is_action_just_pressed("Add Item"):
 		_start_mouse_click_position = get_local_mouse_position()
@@ -205,12 +209,15 @@ func _handle_select() -> void:
 				_clear_selected_notes()
 				_selected_notes.append(closest_note)
 				closest_note.set_selected_highlight(true)
-		else: # IF DIDN'T CLICKED ON A NOTE, JUST CLEAR SELECTED NOTES
+		else: # IF DIDN'T CLICKED ON A NOTE, CLEAR SELECTED NOTES
 			_clear_selected_notes()
+			_clear_selected_long_notes()
 			
 			## CHECK IF CLICKED IN A LONG NOTE
 			var long_note := gear.get_global_long_note_intersected_rects(Rect2(get_global_mouse_position(), Vector2.ZERO))
 			if long_note:
+				_selected_long_notes.append(long_note)
+				long_note.set_selected_highlight(true)
 				_last_drag_mouse_position = _get_limited_by_gear_local_mouse_position()["position"]
 				_last_grid_time_mouse = _get_closest_grid_time_to_mouse()
 				_clicked_long_note = long_note
@@ -326,7 +333,7 @@ func _handle_select() -> void:
 			_last_grid_time_mouse = _get_closest_grid_time_to_mouse()
 			if time_difference_y:
 				_clicked_long_note.set_time(_clicked_long_note.get_time() + time_difference_y)
-				gear.update_long_note(_clicked_long_note)
+				gear.update_long_note(_clicked_long_note, true)
 		elif Input.is_action_just_released("Add Item"):
 			_clicked_long_note = null
 	else:
@@ -466,7 +473,6 @@ func _handle_long_note(type : LongNote.Type) -> void:
 	
 	var result = _get_limited_by_gear_local_mouse_position()
 	var mouse_pos : Vector2 = result["position"]
-	var idx : int = result["note_hold"]
 	
 	if mouse_pos.x >= 0: # FINDED A NOTE HOLD
 		_display_mouse_time_position(true)
@@ -510,7 +516,7 @@ func _get_time_difference_y() -> float:
 func _is_mouse_inside_selection_rect() -> bool:
 	if not _selected_notes:
 		return false
-	var full_rect := _selected_notes[0].get_global_rect()
+	var full_rect = _selected_notes[0].get_global_rect()
 	for note in _selected_notes:
 		full_rect = full_rect.merge(note.get_global_rect())
 	return full_rect.has_point(get_global_mouse_position())
@@ -521,6 +527,13 @@ func _clear_selected_notes() -> void:
 			continue
 		note.set_selected_highlight(false)
 	_selected_notes.clear()
+
+func _clear_selected_long_notes() -> void:
+	for long_note in _selected_long_notes:
+		if not is_instance_valid(long_note):
+			continue
+		long_note.set_selected_highlight(false)
+	_selected_long_notes.clear()
 
 func _get_limited_by_gear_global_mouse_position() -> Vector2:
 	var mouse_pos = get_global_mouse_position()
@@ -602,7 +615,7 @@ func _draw() -> void:
 	var start_time_pos := Song.get_time() + value - rest
 	var n_grids := int((Gear.MAX_TIME_Y()) / value)
 	
-	for i in n_grids:
+	for i in (n_grids + 1):
 		var pos_y = NoteHolder.get_local_pos_y(_hit_zone_y - Note.height / 2, - Note.height / 2, start_time_pos + (value * i), Song.get_time(), Song.get_time() + Gear.MAX_TIME_Y())
 		pos_y += Note.height / 2
 		draw_line(Vector2(left_x, pos_y), Vector2(right_x, pos_y), Color.WHITE, 1)

@@ -6,7 +6,6 @@ class_name NoteEditor
 var _note_info : NoteInfo
 
 var _shader_material = ShaderMaterial.new()
-const HIGHLIGHT_SHADER = preload("res://shaders/Highlight.gdshader")
 
 var _min_global_pos_y : float
 
@@ -30,7 +29,7 @@ func _ready() -> void:
 	#_note_info.valid_start_time_text_change.connect(_time_text_changed)
 	_note_info.power_changed.connect(_power_changed)
 	
-	_shader_material.shader = HIGHLIGHT_SHADER
+	_shader_material.shader = Global.HIGHLIGHT_SHADER
 
 func _process(delta: float) -> void:
 	var mouse_pos := get_global_mouse_position()
