@@ -58,6 +58,7 @@ func _physics_process(delta: float) -> void:
 			_editor_process()
 
 func _editor_process() -> void:
+	
 	var long_notes = get_long_notes(Song.get_time(), MAX_TIME_Y())
 	
 	for note in _last_visible_long_notes:
@@ -72,6 +73,16 @@ func _editor_process() -> void:
 		long_note.position.y = time_pos_y
 	
 	_last_visible_long_notes = long_notes
+
+func get_all_long_notes() -> Array[LongNote]:
+	return _long_notes
+
+func get_all_notes() -> Array[Note]:
+	var notes : Array[Note] = []
+	for note_holder in _note_holders:
+		for note in note_holder.get_all_notes():
+			notes.append(note)
+	return notes
 
 func add_long_note(long_note : LongNote) -> void:
 	var low := 0

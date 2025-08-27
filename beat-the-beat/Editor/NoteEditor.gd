@@ -9,6 +9,8 @@ var _shader_material = ShaderMaterial.new()
 
 var _min_global_pos_y : float
 
+signal value_changed
+
 func _init(current_time : float, min_global_pos_y : float) -> void:
 	_current_time = current_time
 	_min_global_pos_y = min_global_pos_y
@@ -78,6 +80,7 @@ func update_start_time_text() -> void:
 
 func _power_changed(value : bool) -> void:
 	powered = value
+	value_changed.emit()
 
 func has_mouse_on_info() -> bool:
 	return _note_info.visible and _note_info.has_mouse()

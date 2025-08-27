@@ -12,6 +12,10 @@ class_name LongNoteInfo
 
 var _type : LongNote.Type
 
+signal annotation_value_changed
+signal section_value_changed
+signal speed_value_changed
+
 func set_type(type : LongNote.Type) -> void:
 	_type = type
 
@@ -55,14 +59,17 @@ func get_speed() -> float:
 	return _speed_spin_box.value
 
 func _on_speed_spin_box_value_changed(value: float) -> void:
+	speed_value_changed.emit()
 	_speed_spin_box.release_focus()
 
 func _on_note_text_changed() -> void:
 	if "\n" in _annotation_text.text:
 		_annotation_text.text = _annotation_text.text.replace("\n", "")
 		_annotation_text.release_focus()
+	annotation_value_changed.emit()
 
 func _on_section_text_changed() -> void:
 	if "\n" in _section_text.text:
 		_section_text.text = _section_text.text.replace("\n", "")
 		_section_text.release_focus()
+	section_value_changed.emit()

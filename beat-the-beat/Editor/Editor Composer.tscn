@@ -90,10 +90,12 @@ item_count = 5
 popup/item_0/text = "4 Buttons"
 popup/item_0/id = 0
 popup/item_1/id = 3
+popup/item_1/disabled = true
 popup/item_1/separator = true
 popup/item_2/text = "5 Buttons"
 popup/item_2/id = 1
-popup/item_3/id = 4
+popup/item_3/id = 3
+popup/item_3/disabled = true
 popup/item_3/separator = true
 popup/item_4/text = "6 Buttons"
 popup/item_4/id = 2
@@ -383,6 +385,8 @@ script = ExtResource("6_a7m05")
 
 [connection signal="pressed" from="MenuBar/Undo" to="MenuBar" method="_on_undo_pressed"]
 [connection signal="pressed" from="MenuBar/Redo" to="MenuBar" method="_on_redo_pressed"]
+[connection signal="item_selected" from="MenuBar/FlowContainer2/Gear Type" to="MenuBar" method="_on_gear_type_item_selected"]
+[connection signal="item_selected" from="MenuBar/FlowContainer2/Difficulty" to="MenuBar" method="_on_difficulty_item_selected"]
 [connection signal="item_selected" from="MenuBar/FlowContainer/SnapDivisor" to="MenuBar" method="_on_snap_divisor_item_selected"]
 [connection signal="value_changed" from="MenuBar/FlowContainer/Speed" to="MenuBar" method="_on_speed_value_changed"]
 [connection signal="pressed" from="Middle/Sound Components List/Close Button" to="Middle/Sound Components List" method="_on_close_button_pressed"]

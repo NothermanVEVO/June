@@ -235,6 +235,9 @@ static func get_hitzone() -> float:
 func get_notes_array() -> Array[Note]:
 	return _notes
 
+func get_all_notes() -> Array[Note]:
+	return _notes
+
 func _draw() -> void:
 	var pos = Vector2.ZERO
 	var rect_size_y = Note.height

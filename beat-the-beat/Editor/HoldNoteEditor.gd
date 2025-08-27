@@ -16,6 +16,8 @@ var is_button_down : bool = false
 
 signal pressing_button(hold_note : HoldNoteEditor, top_button : bool)
 
+signal value_changed
+
 func _init(start_time : float, end_time : float, min_global_pos_y : float) -> void:
 	set_start_time(start_time)
 	set_end_time(end_time)
@@ -134,6 +136,7 @@ func update_end_time_text() -> void:
 
 func _power_changed(value : bool) -> void:
 	powered = value
+	value_changed.emit()
 
 func has_mouse_on_info() -> bool:
 	return _note_info.visible and _note_info.has_mouse()

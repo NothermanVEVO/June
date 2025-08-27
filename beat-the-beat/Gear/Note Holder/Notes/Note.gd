@@ -2,7 +2,7 @@ extends NinePatchRect
 
 class_name Note
 
-enum State{TO_HIT, HITTED, BREAK}
+enum State {TO_HIT, HITTED, BREAK}
 
 const NORMAL_NOTE_IMG = preload("res://assets/noteFormated.png")
 
@@ -48,3 +48,10 @@ func set_idx(idx : int) -> void:
 
 func get_idx() -> int:
 	return _idx
+
+func to_resource() -> NoteResource:
+	var end_time := 0.0
+	var type := NoteResource.Type.HOLD if self is HoldNote else NoteResource.Type.TAP
+	var note = self ## KKKKKKKKKKKKKKKKKKKKKKK PILANTRAGEM HEIN
+	end_time = note.get_end_time() if note is HoldNote else end_time
+	return NoteResource.new(_current_time, end_time, _idx, type, powered, _is_valid, _is_selected)

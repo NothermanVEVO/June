@@ -13,7 +13,7 @@ var _long_note_info : LongNoteInfo
 
 var _shader_material = ShaderMaterial.new()
 
-var _is_valid : bool
+var _is_valid : bool = true ## CAN BE TRUE BECAUSE IT CAN'T BE PLACED IN THE SAME TIME POS
 var _is_selected : bool
 
 var _time : float
@@ -23,7 +23,9 @@ static var height : float = 12
 
 var annotation : String = ""
 var section : String = ""
-var speed : float = 0.0
+var speed : float = 1.0
+
+signal value_changed
 
 func _init(time : float, type : Type) -> void:
 	_time = time
@@ -35,10 +37,13 @@ func _ready() -> void:
 	match _type:
 		Type.ANNOTATION:
 			texture = ANNOTATION_TEXTURE
+			set_annotation(annotation)
 		Type.SECTION:
 			texture = SECTION_TEXTURE
+			set_section(section)
 		Type.SPEED:
 			texture = SPEED_TEXTURE
+			set_speed(speed)
 	patch_margin_left = 3
 	patch_margin_right = 3
 	
@@ -49,6 +54,10 @@ func _ready() -> void:
 	#tree_entered.connect(func(): _long_note_info.display(false)) # TODO
 	
 	_shader_material.shader = Global.HIGHLIGHT_SHADER
+	
+	_long_note_info.annotation_value_changed.connect(_annotation_value_changed)
+	_long_note_info.section_value_changed.connect(_section_value_changed)
+	_long_note_info.speed_value_changed.connect(_speed_value_changed)
 	
 	z_index = 1
 
@@ -69,22 +78,41 @@ func get_type() -> Type:
 	return _type
 
 func set_annotation(note : String) -> void:
-	_long_note_info.set_annotation(note)
+	annotation = note
+	if _long_note_info:
+		_long_note_info.set_annotation(note)
 
-func set_section(name : String) -> void:
-	_long_note_info.set_section(name)
+func set_section(title : String) -> void:
+	section = title
+	if _long_note_info:
+		_long_note_info.set_section(title)
 
+@warning_ignore("shadowed_variable")
 func set_speed(speed : float) -> void:
-	_long_note_info.set_speed(speed)
+	self.speed = speed
+	if _long_note_info:
+		_long_note_info.set_speed(speed)
 
 func get_annotation() -> String:
-	return _long_note_info.get_annotation()
+	return annotation
 
 func get_section() -> String:
-	return _long_note_info.get_section()
+	return section
 
 func get_speed() -> float:
-	return _long_note_info.get_speed()
+	return speed
+
+func _annotation_value_changed() -> void:
+	annotation = _long_note_info.get_annotation()
+	value_changed.emit()
+
+func _section_value_changed() -> void:
+	section = _long_note_info.get_section()
+	value_changed.emit()
+
+func _speed_value_changed() -> void:
+	speed = _long_note_info.get_speed()
+	value_changed.emit()
 
 func _set_highlight(highlight : bool) -> void:
 	if highlight:
@@ -110,3 +138,7 @@ func set_invalid_highlight(is_invalid : bool) -> void:
 			_shader_material.set_shader_parameter("shade_color", Vector4(1.0, 0.1, 0.1, 0.5))
 	elif _is_selected:
 		set_selected_highlight(true)
+
+func to_resource() -> LongNoteResource:
+	var value : String = annotation if _type == Type.ANNOTATION else section if _type == Type.SECTION else str(speed)
+	return LongNoteResource.new(_time, _type, value, _is_valid, _is_selected)
