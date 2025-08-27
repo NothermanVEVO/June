@@ -7,13 +7,10 @@ var _note_info : NoteInfo
 
 var _shader_material = ShaderMaterial.new()
 
-var _min_global_pos_y : float
-
 signal value_changed
 
-func _init(current_time : float, min_global_pos_y : float) -> void:
+func _init(current_time : float) -> void:
 	_current_time = current_time
-	_min_global_pos_y = min_global_pos_y
 	
 	texture = NORMAL_NOTE_IMG
 	size = Vector2(NoteHolder.width, height)
@@ -32,15 +29,19 @@ func _ready() -> void:
 	_note_info.power_changed.connect(_power_changed)
 	
 	_shader_material.shader = Global.HIGHLIGHT_SHADER
+	
+	set_selected_highlight(_is_selected)
+	set_invalid_highlight(not _is_valid)
 
 func _process(delta: float) -> void:
 	var mouse_pos := get_global_mouse_position()
 	if get_global_rect().has_point(mouse_pos) and Input.is_action_just_pressed("Inspect Note"):
 		_note_info.set_power_value(powered)
-		if _note_info.global_position.y - _note_info.size.y < _min_global_pos_y:
-			_note_info.position = Vector2(get_local_mouse_position().x, get_local_mouse_position().y)
-		else:
-			_note_info.position = Vector2(get_local_mouse_position().x, get_local_mouse_position().y - _note_info.size.y)
+		#if _note_info.global_position.y - _note_info.size.y < _min_global_pos_y:
+			#_note_info.position = Vector2(get_local_mouse_position().x, get_local_mouse_position().y)
+		#else:
+			#_note_info.position = Vector2(get_local_mouse_position().x, get_local_mouse_position().y - _note_info.size.y)
+		_note_info.position = Vector2(get_local_mouse_position().x, get_local_mouse_position().y - _note_info.size.y)
 		_note_info.visible = true
 	elif _note_info.visible and not _note_info.get_global_rect().has_point(mouse_pos) and (
 			Input.is_action_just_pressed("Add Item") or Input.is_action_just_pressed("Inspect Note")):
@@ -83,4 +84,6 @@ func _power_changed(value : bool) -> void:
 	value_changed.emit()
 
 func has_mouse_on_info() -> bool:
+	if not _note_info:
+		return false
 	return _note_info.visible and _note_info.has_mouse()

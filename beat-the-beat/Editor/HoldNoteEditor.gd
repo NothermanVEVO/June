@@ -7,8 +7,6 @@ var _note_info : NoteInfo
 
 var _shader_material = ShaderMaterial.new()
 
-var _min_global_pos_y : float
-
 var top_button := Button.new()
 var bottom_button := Button.new()
 
@@ -18,10 +16,9 @@ signal pressing_button(hold_note : HoldNoteEditor, top_button : bool)
 
 signal value_changed
 
-func _init(start_time : float, end_time : float, min_global_pos_y : float) -> void:
+func _init(start_time : float, end_time : float) -> void:
 	set_start_time(start_time)
 	set_end_time(end_time)
-	_min_global_pos_y = min_global_pos_y
 	
 	_start_note.texture = START_NOTE_IMG
 	_middle_note.texture = MIDDLE_NOTE_IMG
@@ -57,6 +54,9 @@ func _ready() -> void:
 	bottom_button.size = Vector2(_start_note.size.x, Note.height / 4)
 	bottom_button.mouse_default_cursor_shape = Control.CURSOR_VSIZE
 	add_child(bottom_button)
+	
+	set_selected_highlight(_is_selected)
+	set_invalid_highlight(not _is_valid)
 
 func _process(delta: float) -> void:
 	if is_selected():
@@ -79,10 +79,11 @@ func _process(delta: float) -> void:
 	
 	if rect.has_point(mouse_pos) and Input.is_action_just_pressed("Inspect Note"):
 		_note_info.set_power_value(powered)
-		if mouse_pos.y - _note_info.size.y < _min_global_pos_y:
-			_note_info.global_position = Vector2(mouse_pos.x, mouse_pos.y)
-		else:
-			_note_info.global_position = Vector2(mouse_pos.x, mouse_pos.y - _note_info.size.y)
+		#if mouse_pos.y - _note_info.size.y < _min_global_pos_y:
+			#_note_info.global_position = Vector2(mouse_pos.x, mouse_pos.y)
+		#else:
+			#_note_info.global_position = Vector2(mouse_pos.x, mouse_pos.y - _note_info.size.y)
+		_note_info.global_position = Vector2(mouse_pos.x, mouse_pos.y - _note_info.size.y)
 		_note_info.visible = true
 	elif _note_info.visible and not _note_info.get_global_rect().has_point(mouse_pos) and (
 			Input.is_action_just_pressed("Add Item") or Input.is_action_just_pressed("Inspect Note")):

@@ -90,6 +90,19 @@ func _resized() -> void:
 	gear.position.x = size.x / 2
 	gear.position.y = size.y# - NoteHolder.get_hitzone()
 
+func set_gear(type : Gear.Type) -> void:
+	remove_child(gear)
+	gear = Gear.new(type, Gear.Mode.EDITOR, false, size.y)
+	add_child(gear)
+	
+	remove_child(sample_tap_note)
+	sample_tap_note = Note.new(0)
+	sample_tap_note.position = Vector2(-10000000, -10000000)
+	sample_tap_note.modulate = Color(1, 1, 1, 0.5)
+	add_child(sample_tap_note)
+	
+	_resized()
+
 func _process(delta: float) -> void:
 	focus_effect.visible = false
 	queue_redraw() # TODO REMOVE THIS SHIT LATER 
@@ -177,13 +190,14 @@ func _handle_selected_item(item_text : String) -> void:
 
 func _handle_select() -> void:
 	if Input.is_action_just_pressed("Delete"):
+		if _selected_notes or _selected_long_notes:
+			changed.emit()
+		
 		for note in _selected_notes:
 			gear.remove_note_at(note.get_idx(), note, true, true)
 		for long_note in _selected_long_notes:
 			gear.remove_long_note(long_note, true)
 		
-		if _selected_notes or _selected_long_notes:
-			changed.emit()
 		_selected_notes.clear()
 		_selected_long_notes.clear()
 	
@@ -253,6 +267,9 @@ func _handle_select() -> void:
 				var distance = note_hold_idx - _last_note_holder_idx
 				if not ((leftest_note.get_idx() + distance < 0) or (leftest_note.get_idx() + distance > gear.get_type() - 1) or (
 					rightest_note.get_idx() + distance < 0) or (rightest_note.get_idx() + distance > gear.get_type() - 1)):
+					
+					_had_time_difference = true
+					changed.emit()
 					for note in _selected_notes:
 						gear.change_note_from_note_holder(note.get_idx(), note.get_idx() + distance, note, true)
 					_last_note_holder_idx = note_hold_idx
@@ -268,6 +285,7 @@ func _handle_select() -> void:
 			_last_grid_time_mouse = _get_closest_grid_time_to_mouse()
 			
 			if time_difference_y:
+				changed.emit()
 				_had_time_difference = true
 			#print("Time Diff: " + str(time_difference_y))
 			
@@ -325,7 +343,7 @@ func _handle_select() -> void:
 		elif Input.is_action_just_released("Add Item"):
 			if _had_time_difference:
 				_had_time_difference = false
-				changed.emit()
+				#changed.emit()
 			_last_time_difference_y = 0.0
 			_last_note_holder_idx = -1
 	elif _clicked_long_note:
@@ -333,13 +351,14 @@ func _handle_select() -> void:
 			var time_difference_y := _get_closest_grid_time_to_mouse() - _last_grid_time_mouse
 			_last_grid_time_mouse = _get_closest_grid_time_to_mouse()
 			if time_difference_y:
+				changed.emit()
 				_had_time_difference = true
 				_clicked_long_note.set_time(_clicked_long_note.get_time() + time_difference_y)
 				gear.update_long_note(_clicked_long_note, true)
 		elif Input.is_action_just_released("Add Item"):
 			if _had_time_difference:
 				_had_time_difference = false
-				changed.emit()
+				#changed.emit()
 			_clicked_long_note = null
 	else:
 		if Input.is_action_pressed("Add Item"):
@@ -381,10 +400,10 @@ func _handle_selected_item_tap() -> void:
 		sample_tap_note.set_time(mouse_time_pos_y)
 		
 		if Input.is_action_just_pressed("Add Item"):
-			var note := NoteEditor.new(sample_tap_note.get_time(), global_position.y)
+			changed.emit()
+			var note := NoteEditor.new(sample_tap_note.get_time())
 			note.value_changed.connect((func(): emit_signal("changed")))
 			gear.add_note_at(idx, note, true)
-			changed.emit()
 	else: # DIDN'T FIND A NOTE HOLD
 		sample_tap_note.visible = false
 
@@ -417,7 +436,8 @@ func _handle_selected_item_hold() -> void:
 		
 		if Input.is_action_just_pressed("Add Item"):
 			sample_tap_note.visible = false
-			_currently_hold_note = HoldNoteEditor.new(mouse_time_pos_y, mouse_time_pos_y, global_position.y)
+			changed.emit()
+			_currently_hold_note = HoldNoteEditor.new(mouse_time_pos_y, mouse_time_pos_y)
 			gear.add_note_at(idx, _currently_hold_note, true)
 			_last_drag_mouse_position = _get_limited_by_gear_local_mouse_position()["position"]
 		elif Input.is_action_pressed("Add Item"):
@@ -447,12 +467,12 @@ func _handle_selected_item_hold() -> void:
 			_currently_hold_note.update_end_time_text()
 			_currently_hold_note.value_changed.connect((func(): emit_signal("changed")))
 			_last_time_difference_y = 0.0
-			changed.emit()
 	else: # DIDN'T FIND A NOTE HOLD
 		sample_tap_note.visible = false
 
 func _handle_selected_item_power() -> void:
 	if Input.is_action_just_pressed("Add Item"):
+		changed.emit()
 		var notes := gear.get_global_note_intersected_rects(Rect2(get_global_mouse_position(), Vector2.ZERO))
 		_clicked_on_note = notes.size() >= 1 # IF TRUE, MEANS THAT IT CLICKED ON A NOTE
 		if _clicked_on_note:
@@ -465,7 +485,6 @@ func _handle_selected_item_power() -> void:
 				else:
 					closest_note = note
 			closest_note.powered = !closest_note.powered
-			changed.emit()
 
 func _handle_long_note(type : LongNote.Type) -> void:
 	if not get_rect().has_point(get_local_mouse_position()) or _is_any_note_with_display_info():
@@ -500,10 +519,10 @@ func _handle_long_note(type : LongNote.Type) -> void:
 		if Input.is_action_just_pressed("Add Item"):
 			if gear.get_long_notes(_currently_sample_long_note.get_time(), _currently_sample_long_note.get_time()):
 				return #TODO SHOW A POPUP DIALOG HERE
+			changed.emit()
 			var long_note = LongNote.new(_currently_sample_long_note.get_time(), _currently_sample_long_note.get_type())
 			gear.add_long_note(long_note)
 			long_note.value_changed.connect(func(): emit_signal("changed"))
-			changed.emit()
 	else: # DIDN'T FIND A NOTE HOLD
 		_currently_sample_long_note.visible = false
 
@@ -646,6 +665,8 @@ func _pressing_some_hold_resize_button(hold_note : HoldNoteEditor, top_button : 
 	if not diff:
 		return
 	
+	changed.emit()
+	
 	if top_button:
 		for note in _selected_notes:
 			if not note is HoldNoteEditor:
@@ -659,4 +680,3 @@ func _pressing_some_hold_resize_button(hold_note : HoldNoteEditor, top_button : 
 			note.set_start_time(note.get_start_time() + diff)
 			note.set_end_time(end_time) ## TODO PQ TEM DEMONIOS TEM UM ERRO VISUAL DE 1 FRAME AQ???? OLHA A PASTA RECORDS TODO BUG NOTE WARNING
 	gear.update_note_time(hold_note, true)
-	changed.emit()
