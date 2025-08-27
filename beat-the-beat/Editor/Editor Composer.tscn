@@ -69,11 +69,15 @@ text = "Test"
 
 [node name="Undo" type="Button" parent="MenuBar"]
 layout_mode = 2
+tooltip_text = "Undo button.
+Shortcut: \"Ctrl + z\""
 disabled = true
 text = "<"
 
 [node name="Redo" type="Button" parent="MenuBar"]
 layout_mode = 2
+tooltip_text = "Redo button.
+Shortcut: \"Ctrl + y\""
 disabled = true
 text = ">"
 
@@ -137,7 +141,6 @@ vertical_alignment = 1
 layout_mode = 2
 tooltip_text = "Make a grid based on the BPM.
 
-0: disables the grid.
 1/1 - 1/16: Divide the BPM."
 selected = 0
 item_count = 6
