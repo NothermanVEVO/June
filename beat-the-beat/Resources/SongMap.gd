@@ -16,6 +16,12 @@ func _init(gear_type : Gear.Type, difficulty : Difficulty, notes : Array[NoteRes
 	self.notes = notes
 	self.long_notes = long_notes
 
+func copy_song_map(song_map : SongMap) -> void:
+	self.gear_type = song_map.gear_type
+	self.difficulty = song_map.difficulty
+	self.notes = song_map.notes
+	self.long_notes = song_map.long_notes
+
 func get_dictionary() -> Dictionary:
 	var dictionary : Dictionary = {"gear_type": gear_type, "difficulty": difficulty, "notes": [], "long_notes": []}
 	
@@ -25,3 +31,6 @@ func get_dictionary() -> Dictionary:
 		dictionary["long_notes"].append(long_note.get_dictionary())
 	
 	return dictionary
+
+static func is_equal(song_map1 : SongMap, song_map2 : SongMap) -> bool:
+	return song_map1.gear_type == song_map2.gear_type and song_map1.difficulty == song_map2.difficulty

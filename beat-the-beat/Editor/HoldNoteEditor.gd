@@ -122,10 +122,12 @@ func set_invalid_highlight(is_invalid : bool) -> void:
 		set_selected_highlight(true)
 
 func update_start_time_text() -> void:
-	_note_info.set_start_time(get_time())
+	if _note_info:
+		_note_info.set_start_time(get_time())
 
 func update_end_time_text() -> void:
-	_note_info.set_end_time(get_end_time())
+	if _note_info:
+		_note_info.set_end_time(get_end_time())
 
 #func _start_time_text_changed(seconds : float) -> void: # SIGNAL
 	#set_start_time(seconds)
@@ -140,4 +142,6 @@ func _power_changed(value : bool) -> void:
 	value_changed.emit()
 
 func has_mouse_on_info() -> bool:
+	if not _note_info:
+		return false
 	return _note_info.visible and _note_info.has_mouse()

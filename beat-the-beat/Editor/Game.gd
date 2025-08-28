@@ -155,12 +155,12 @@ func _display_mouse_time_position(display_on_grid : bool = false) -> void:
 	
 	var note_holders_positions := gear.get_note_holders_global_position()
 	if note_holders_positions:
-		var position_x = note_holders_positions[note_holders_positions.size() - 1].x - global_position.x + _mouse_time_container.size.x#  + NoteHolder.width / 2
-		var miss_placement_y = -_mouse_time_container.size.y / 8
+		var position_x = note_holders_positions[note_holders_positions.size() - 1].x - global_position.x + _mouse_time_container.size.x
+		#var miss_placement_y = -_mouse_time_container.size.y / 8
 		var position_y
 		if display_on_grid:
 			mouse_pos.y = NoteHolder.get_local_pos_y(_hit_zone_y - Note.height / 2, - Note.height / 2, mouse_time_pos_y, Song.get_time(), Song.get_time() + Gear.MAX_TIME_Y())
-		position_y = clampf(mouse_pos.y - miss_placement_y, 0.0, _hit_zone_y)
+		position_y = clampf(mouse_pos.y, 0.0, _hit_zone_y)
 		_mouse_time_container.position = Vector2(position_x, position_y)
 
 func _handle_selected_item(item_text : String) -> void:

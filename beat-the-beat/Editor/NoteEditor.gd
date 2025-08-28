@@ -73,7 +73,8 @@ func set_invalid_highlight(is_invalid : bool) -> void:
 		set_selected_highlight(true)
 
 func update_start_time_text() -> void:
-	_note_info.set_start_time(get_time())
+	if _note_info:
+		_note_info.set_start_time(get_time())
 
 #func _time_text_changed(seconds : float) -> void: # SIGNAL
 	#set_time(seconds)
