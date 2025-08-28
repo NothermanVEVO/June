@@ -132,10 +132,8 @@ func _memory_save_song_map() -> void:
 	
 	for s_map in _saved_song_maps:
 		if SongMap.is_equal(s_map, song_map):
-			print("sim")
 			s_map.copy_song_map(song_map)
 			return
-	print("n")
 	_saved_song_maps.append(song_map)
 
 func to_resource() -> SongMap:
@@ -175,3 +173,34 @@ func load_song_map(song_map : SongMap) -> void:
 
 func _save_file() -> void:
 	pass
+
+func power_selected_ones() -> void:
+	var song_map = to_resource()
+	
+	var every_note_is_powered := true
+	
+	for note in song_map.notes:
+		if not note.is_selected:
+			continue
+		if not note.powered:
+			every_note_is_powered = false
+		note.powered = true
+	
+	if every_note_is_powered:
+		for note in song_map.notes:
+			if not note.is_selected:
+				continue
+			note.powered = false
+	
+	_game_changed()
+	load_song_map(song_map)
+
+func clear_gear() -> void:
+	var song_map = to_resource()
+	if song_map.notes.is_empty() and song_map.long_notes.is_empty():
+		return
+	else:
+		song_map.notes.clear()
+		song_map.long_notes.clear()
+		_game_changed()
+		load_song_map(song_map)

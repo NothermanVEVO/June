@@ -2,6 +2,8 @@ extends MenuBar
 
 class_name Menu
 
+@onready var editor_menu_bar : EditorMenuBar = $".."
+
 @onready var edit_menu := $Edit
 
 var transfer_to := PopupMenu.new()
@@ -15,3 +17,17 @@ func _ready() -> void:
 	transfer_to.add_item("Normal")
 	transfer_to.add_item("Hard")
 	transfer_to.add_item("Maximus")
+	
+	edit_menu.index_pressed.connect(edit_menu_index_pressed)
+	transfer_to.index_pressed.connect(transfer_to_index_pressed)
+
+func edit_menu_index_pressed(index : int) -> void:
+	#print(edit_menu.get_item_text(index))
+	match edit_menu.get_item_text(index):
+		"Power selected ones":
+			editor_menu_bar.power_selected_ones()
+		"Clear gear":
+			editor_menu_bar.clear_gear()
+
+func transfer_to_index_pressed(index : int) -> void:
+	print(transfer_to.get_item_text(index))

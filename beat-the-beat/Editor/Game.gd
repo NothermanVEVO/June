@@ -107,6 +107,17 @@ func _process(delta: float) -> void:
 	focus_effect.visible = false
 	queue_redraw() # TODO REMOVE THIS SHIT LATER 
 	
+	if Input.is_action_just_pressed("Add Item") and not _is_mouse_inside_menu():
+		if _selected_notes:
+			var notes := gear.get_global_note_intersected_rects(Rect2(get_global_mouse_position(), Vector2.ZERO))
+			if not notes:
+				_clear_selected_notes()
+	
+		if _selected_long_notes and not _is_mouse_inside_menu():
+			var long_notes := gear.get_global_long_note_intersected_rects(Rect2(get_global_mouse_position(), Vector2.ZERO))
+			if not long_notes:
+				_clear_selected_long_notes()
+	
 	_display_mouse_time_position()
 	
 	if Input.is_action_just_pressed("Add Item"):
@@ -137,6 +148,13 @@ func _process(delta: float) -> void:
 			time_slider.value -= 0.1
 	
 		_handle_selected_item(GameComponents.get_selected_item_text())
+
+func _is_mouse_inside_menu() -> bool:
+	var edit_rect := Rect2($"../../../MenuBar/MenuBar/Edit".position, $"../../../MenuBar/MenuBar/Edit".size)
+	var file_rect := Rect2($"../../../MenuBar/MenuBar/File".position, $"../../../MenuBar/MenuBar/File".size)
+	return $"../../../MenuBar".get_global_rect().has_point(get_global_mouse_position()) or (
+		$"../../../MenuBar/MenuBar/Edit".visible and edit_rect.has_point(get_global_mouse_position()) or (
+		$"../../../MenuBar/MenuBar/File".visible and file_rect.has_point(get_global_mouse_position())))
 
 func _display_mouse_time_position(display_on_grid : bool = false) -> void:
 	#if get_local_mouse_position().x < 0 or get_local_mouse_position().x > size.x:
@@ -225,6 +243,8 @@ func _handle_select() -> void:
 				_selected_notes.append(closest_note)
 				closest_note.set_selected_highlight(true)
 		else: # IF DIDN'T CLICKED ON A NOTE, CLEAR SELECTED NOTES
+			if _is_mouse_inside_menu():
+				return
 			_clear_selected_notes()
 			_clear_selected_long_notes()
 			
@@ -364,10 +384,13 @@ func _handle_select() -> void:
 		if Input.is_action_pressed("Add Item"):
 			_mouse_selection.set_rect(Rect2(_start_mouse_click_position, get_local_mouse_position() - _start_mouse_click_position))
 		elif Input.is_action_just_released("Add Item") and not _clicked_on_note:
+			if _is_mouse_inside_menu():
+				return
 			var rect := Rect2(_start_mouse_click_position, get_local_mouse_position() - _start_mouse_click_position)
 			rect.position += global_position
 			rect.size = (get_global_mouse_position() - (_start_mouse_click_position + global_position))
 			rect = rect.abs()
+			_clear_selected_notes()
 			_selected_notes = gear.get_global_note_intersected_rects(rect)
 			for notes in _selected_notes:
 				notes.set_selected_highlight(true)
