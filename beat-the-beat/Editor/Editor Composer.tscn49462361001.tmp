@@ -184,6 +184,7 @@ value = 1.0
 update_on_text_changed = true
 
 [node name="Middle" type="HBoxContainer" parent="."]
+clip_contents = true
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
@@ -226,9 +227,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="Game" type="Button" parent="Middle/Game"]
+clip_contents = true
 layout_mode = 2
 flat = true
 script = ExtResource("2_d6op5")
+keys_quantity = null
 
 [node name="Focus Effect" type="ReferenceRect" parent="Middle/Game/Game"]
 layout_mode = 1

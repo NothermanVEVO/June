@@ -114,6 +114,7 @@ func _process(delta: float) -> void:
 	focus_effect.visible = false
 	queue_redraw() # TODO REMOVE THIS SHIT LATER 
 	
+	#print(_selected_long_notes)
 	if Input.is_action_just_pressed("Add Item") and not _is_mouse_inside_menu():
 		if _selected_notes:
 			var notes := gear.get_global_note_intersected_rects(Rect2(get_global_mouse_position(), Vector2.ZERO))
@@ -221,7 +222,7 @@ func _handle_select() -> void:
 		for note in _selected_notes:
 			gear.remove_note_at(note.get_idx(), note, true, true)
 		for long_note in _selected_long_notes:
-			gear.remove_long_note(long_note, true)
+			gear.remove_long_note(long_note, true, true)
 		
 		_selected_notes.clear()
 		_selected_long_notes.clear()
@@ -554,7 +555,7 @@ func _handle_long_note(type : LongNote.Type) -> void:
 				return #TODO SHOW A POPUP DIALOG HERE
 			changed.emit()
 			var long_note = LongNote.new(_currently_sample_long_note.get_time(), _currently_sample_long_note.get_type())
-			gear.add_long_note(long_note)
+			gear.add_long_note(long_note, true)
 			long_note.value_changed.connect(func(): emit_signal("changed"))
 	else: # DIDN'T FIND A NOTE HOLD
 		_currently_sample_long_note.visible = false

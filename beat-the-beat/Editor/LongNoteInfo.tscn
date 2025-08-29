@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://dsdqpralnpbu2"]
+[gd_scene load_steps=3 format=3 uid="uid://dsdqpralnpbu2"]
 
 [ext_resource type="Script" uid="uid://chowwnfxg0hxv" path="res://Editor/LongNoteInfo.gd" id="1_g6eli"]
+[ext_resource type="Texture2D" uid="uid://cqjua7mxnjv5t" path="res://assets/warningIcon.png" id="2_ym7im"]
 
 [node name="PanelContainer" type="PanelContainer"]
 offset_right = 40.0
@@ -79,14 +80,41 @@ max_value = 2.0
 step = 0.1
 value = 1.0
 
-[node name="Fade" type="CheckButton" parent="MarginContainer/VBoxContainer"]
+[node name="Fade" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="FadeCheckButton" type="CheckButton" parent="MarginContainer/VBoxContainer/Fade"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
 text = "Fade Out"
 alignment = 1
 
+[node name="FlowContainer" type="FlowContainer" parent="MarginContainer/VBoxContainer/Fade"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="NinePatchRect" type="NinePatchRect" parent="MarginContainer/VBoxContainer/Fade/FlowContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+texture = ExtResource("2_ym7im")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer/Fade/FlowContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+bbcode_enabled = true
+text = "[b][color=RED]WARNING:[/color][/b]
+- Every [color=GREEN]Fade Out[/color] needs a [color=GREEN]Fade In[/color].
+- There can't be notes [b]between[/b] and [b]at[/b] them."
+fit_content = true
+scroll_active = false
+autowrap_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [connection signal="text_changed" from="MarginContainer/VBoxContainer/Annotation/NoteText" to="." method="_on_note_text_changed"]
 [connection signal="text_changed" from="MarginContainer/VBoxContainer/Section/SectionText" to="." method="_on_section_text_changed"]
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/Speed/SpeedSpinBox" to="." method="_on_speed_spin_box_value_changed"]
-[connection signal="toggled" from="MarginContainer/VBoxContainer/Fade" to="." method="_on_fade_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Fade/FadeCheckButton" to="." method="_on_fade_toggled"]

@@ -5,11 +5,12 @@ class_name LongNoteInfo
 @onready var _annotation_container : FlowContainer = $MarginContainer/VBoxContainer/Annotation
 @onready var _section_container : FlowContainer = $MarginContainer/VBoxContainer/Section
 @onready var _speed_container : FlowContainer = $MarginContainer/VBoxContainer/Speed
+@onready var _fade_container : VBoxContainer = $MarginContainer/VBoxContainer/Fade
 
 @onready var _annotation_text : TextEdit = $MarginContainer/VBoxContainer/Annotation/NoteText
 @onready var _section_text : TextEdit = $MarginContainer/VBoxContainer/Section/SectionText
 @onready var _speed_spin_box : SpinBox = $MarginContainer/VBoxContainer/Speed/SpeedSpinBox
-@onready var _fade_check_button : CheckButton = $MarginContainer/VBoxContainer/Fade
+@onready var _fade_check_button : CheckButton = $MarginContainer/VBoxContainer/Fade/FadeCheckButton
 
 @export var _type : LongNote.Type
 
@@ -25,7 +26,7 @@ func _ready() -> void:
 	_annotation_container.visible = false
 	_section_container.visible = false
 	_speed_container.visible = false
-	_fade_check_button.visible = false
+	_fade_container.visible = false
 	match _type:
 		LongNote.Type.ANNOTATION:
 			_annotation_container.visible = true
@@ -34,7 +35,7 @@ func _ready() -> void:
 		LongNote.Type.SPEED:
 			_speed_container.visible = true
 		LongNote.Type.FADE:
-			_fade_check_button.visible = true
+			_fade_container.visible = true
 	
 	z_index = 2
 

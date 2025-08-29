@@ -178,7 +178,8 @@ func load_song_map(song_map : SongMap) -> void:
 	game._selected_long_notes.clear()
 	for long_note in long_notes:
 		var long_nt = long_note.to_long_note()
-		game.gear.add_long_note(long_note.to_long_note())
+		game.gear.add_long_note(long_nt, true)
+		long_nt.value_changed.connect(_game_changed)
 		if long_nt._is_selected:
 			game._selected_long_notes.append(long_nt)
 
