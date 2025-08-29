@@ -245,5 +245,23 @@ func _transfer_to_confirmation_choice_made(choice : TransferToConfirmation.Choic
 			load_song_map(song_map)
 			
 		TransferToConfirmation.Choices.CHANGE:
-			pass
+			_memory_save_song_map()
+			for s_map in _saved_song_maps:
+				if s_map.difficulty == _transfer_to_difficulty:
+					@warning_ignore("int_as_enum_without_cast", "int_as_enum_without_match")
+					var copy_map := SongMap.new(0, 0, [], [])
+					copy_map.copy_song_map(s_map)
+					copy_map.difficulty = song_map.difficulty
+					
+					s_map.copy_song_map(song_map)
+					s_map.difficulty = _transfer_to_difficulty
+					
+					_transfer_to_confirmation.visible = false
+					_game_changed()
+					load_song_map(copy_map)
+					return
+			
+			song_map.difficulty = _transfer_to_difficulty
+			load_song_map(song_map)
+		
 	_transfer_to_confirmation.visible = false
