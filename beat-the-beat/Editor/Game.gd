@@ -42,6 +42,7 @@ var _currently_sample_long_note : LongNote
 var _sample_long_annotation_note : LongNote
 var _sample_long_section_note : LongNote
 var _sample_long_speed_note : LongNote
+var _sample_long_fade_note : LongNote
 
 signal changed
 
@@ -79,6 +80,12 @@ func _ready() -> void:
 	_sample_long_speed_note.set_process(false)
 	_sample_long_speed_note.position = Vector2(-10000000, -10000000)
 	_sample_long_speed_note.modulate = Color(1, 1, 1, 0.5)
+	
+	_sample_long_fade_note = LongNote.new(0, LongNote.Type.FADE)
+	add_child(_sample_long_fade_note)
+	_sample_long_fade_note.set_process(false)
+	_sample_long_fade_note.position = Vector2(-10000000, -10000000)
+	_sample_long_fade_note.modulate = Color(1, 1, 1, 0.5)
 	
 	_sample_long_annotation_note = _sample_long_annotation_note
 	
@@ -196,7 +203,7 @@ func _handle_selected_item(item_text : String) -> void:
 		"Speed":
 			_handle_long_note(LongNote.Type.SPEED) # TO REVIEW ...
 		"Fade":
-			pass
+			_handle_long_note(LongNote.Type.FADE) # TO REVIEW ...
 		"Sound":
 			pass
 		"Note":
@@ -512,6 +519,7 @@ func _handle_selected_item_power() -> void:
 func _handle_long_note(type : LongNote.Type) -> void:
 	if not get_rect().has_point(get_local_mouse_position()) or _is_any_note_with_display_info():
 		_currently_sample_long_note.visible = false
+		return
 	
 	match type:
 		LongNote.Type.ANNOTATION:
@@ -520,6 +528,8 @@ func _handle_long_note(type : LongNote.Type) -> void:
 			_currently_sample_long_note = _sample_long_section_note
 		LongNote.Type.SPEED:
 			_currently_sample_long_note = _sample_long_speed_note
+		LongNote.Type.FADE:
+			_currently_sample_long_note = _sample_long_fade_note
 	
 	var result = _get_limited_by_gear_local_mouse_position()
 	var mouse_pos : Vector2 = result["position"]

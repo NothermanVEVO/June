@@ -130,7 +130,7 @@ func _on_difficulty_item_selected(index: int) -> void:
 	
 	for sound_map in _saved_song_maps:
 		if sound_map.gear_type == _gear_type_value and sound_map.difficulty == _difficulty_type_value:
-			print(sound_map.get_dictionary())
+			#print(sound_map.get_dictionary())
 			load_song_map(sound_map)
 			return
 	
@@ -261,6 +261,10 @@ func _transfer_to_confirmation_choice_made(choice : TransferToConfirmation.Choic
 					load_song_map(copy_map)
 					return
 			
+			for s_map in _saved_song_maps:
+				if s_map.difficulty == song_map.difficulty:
+					_saved_song_maps.erase(s_map)
+					break
 			song_map.difficulty = _transfer_to_difficulty
 			load_song_map(song_map)
 		

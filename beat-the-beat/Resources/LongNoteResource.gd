@@ -32,9 +32,15 @@ func to_long_note() -> LongNote:
 		LongNote.Type.SPEED:
 			var num = str_to_var(value)
 			if not num is float:
-				printerr("OPA OPA OPA ERRO NO TO_LONG_NOTE() DENTRO DO LONGNOTERESOURCE")
+				print("OPA OPA OPA ERRO NO TO_LONG_NOTE() DENTRO DO LONGNOTERESOURCE 1")
 				num = 1.0
 			long_note.set_speed(num)
+		LongNote.Type.FADE:
+			var num = str_to_var(value)
+			if not num is bool:
+				print("OPA OPA OPA ERRO NO TO_LONG_NOTE() DENTRO DO LONGNOTERESOURCE 2")
+				num = 0
+			long_note.set_fade(num)
 	long_note.set_invalid_highlight(not is_valid)
 	long_note.set_selected_highlight(is_selected)
 	return long_note

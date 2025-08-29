@@ -2,13 +2,14 @@ extends NinePatchRect
 
 class_name LongNote
 
-enum Type{ANNOTATION, SECTION, SPEED}
+enum Type{ANNOTATION, SECTION, SPEED, FADE}
 
 const ANNOTATION_TEXTURE := preload("res://assets/annotation.png")
 const SECTION_TEXTURE := preload("res://assets/section.png")
 const SPEED_TEXTURE := preload("res://assets/speed.png")
+const FADE_TEXTURE := preload("res://assets/fade.png")
 
-@onready var _long_note_info_scene : PackedScene = preload("res://Editor/LongNoteInfo.tscn")
+const _LONG_NOTE_INFO_SCENE : PackedScene = preload("res://Editor/LongNoteInfo.tscn")
 var _long_note_info : LongNoteInfo
 
 var _shader_material = ShaderMaterial.new()
@@ -24,6 +25,7 @@ static var height : float = 12
 var annotation : String = ""
 var section : String = ""
 var speed : float = 1.0
+var fade : bool = false
 
 signal value_changed
 
@@ -44,12 +46,19 @@ func _ready() -> void:
 		Type.SPEED:
 			texture = SPEED_TEXTURE
 			set_speed(speed)
+		Type.FADE:
+			texture = FADE_TEXTURE
+			set_fade(fade)
 	patch_margin_left = 3
 	patch_margin_right = 3
 	
-	_long_note_info = _long_note_info_scene.instantiate()
+	_long_note_info = _LONG_NOTE_INFO_SCENE.instantiate()
 	_long_note_info.set_type(_type)
 	add_child(_long_note_info)
+	_long_note_info.set_annotation(annotation)
+	_long_note_info.set_section(section)
+	_long_note_info.set_speed(speed)
+	_long_note_info.set_fade(fade)
 	_long_note_info.visible = false
 	#tree_entered.connect(func(): _long_note_info.display(false)) # TODO
 	
@@ -58,6 +67,7 @@ func _ready() -> void:
 	_long_note_info.annotation_value_changed.connect(_annotation_value_changed)
 	_long_note_info.section_value_changed.connect(_section_value_changed)
 	_long_note_info.speed_value_changed.connect(_speed_value_changed)
+	_long_note_info.fade_value_changed.connect(_fade_value_changed)
 	
 	z_index = 1
 
@@ -93,6 +103,12 @@ func set_speed(speed : float) -> void:
 	if _long_note_info:
 		_long_note_info.set_speed(speed)
 
+@warning_ignore("shadowed_variable")
+func set_fade(fade : bool) -> void:
+	self.fade = fade
+	if _long_note_info:
+		_long_note_info.set_fade(fade)
+
 func get_annotation() -> String:
 	return annotation
 
@@ -101,6 +117,9 @@ func get_section() -> String:
 
 func get_speed() -> float:
 	return speed
+
+func get_fade() -> bool:
+	return fade
 
 func _annotation_value_changed() -> void:
 	annotation = _long_note_info.get_annotation()
@@ -112,6 +131,10 @@ func _section_value_changed() -> void:
 
 func _speed_value_changed() -> void:
 	speed = _long_note_info.get_speed()
+	value_changed.emit()
+
+func _fade_value_changed() -> void:
+	fade = _long_note_info.get_fade()
 	value_changed.emit()
 
 func _set_highlight(highlight : bool) -> void:
@@ -140,5 +163,5 @@ func set_invalid_highlight(is_invalid : bool) -> void:
 		set_selected_highlight(true)
 
 func to_resource() -> LongNoteResource:
-	var value : String = annotation if _type == Type.ANNOTATION else section if _type == Type.SECTION else str(speed)
+	var value : String = annotation if _type == Type.ANNOTATION else section if _type == Type.SECTION else str(speed) if _type == Type.SPEED else str(fade)
 	return LongNoteResource.new(_time, _type, value, _is_valid, _is_selected)

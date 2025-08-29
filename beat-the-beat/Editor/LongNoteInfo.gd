@@ -2,34 +2,39 @@ extends PanelContainer
 
 class_name LongNoteInfo
 
-@onready var annotation_container : FlowContainer = $MarginContainer/VBoxContainer/Annotation
-@onready var section_container : FlowContainer = $MarginContainer/VBoxContainer/Section
-@onready var speed_container : FlowContainer = $MarginContainer/VBoxContainer/Speed
+@onready var _annotation_container : FlowContainer = $MarginContainer/VBoxContainer/Annotation
+@onready var _section_container : FlowContainer = $MarginContainer/VBoxContainer/Section
+@onready var _speed_container : FlowContainer = $MarginContainer/VBoxContainer/Speed
 
 @onready var _annotation_text : TextEdit = $MarginContainer/VBoxContainer/Annotation/NoteText
 @onready var _section_text : TextEdit = $MarginContainer/VBoxContainer/Section/SectionText
 @onready var _speed_spin_box : SpinBox = $MarginContainer/VBoxContainer/Speed/SpeedSpinBox
+@onready var _fade_check_button : CheckButton = $MarginContainer/VBoxContainer/Fade
 
-var _type : LongNote.Type
+@export var _type : LongNote.Type
 
 signal annotation_value_changed
 signal section_value_changed
 signal speed_value_changed
+signal fade_value_changed
 
 func set_type(type : LongNote.Type) -> void:
 	_type = type
 
 func _ready() -> void:
-	annotation_container.visible = false
-	section_container.visible = false
-	speed_container.visible = false
+	_annotation_container.visible = false
+	_section_container.visible = false
+	_speed_container.visible = false
+	_fade_check_button.visible = false
 	match _type:
 		LongNote.Type.ANNOTATION:
-			annotation_container.visible = true
+			_annotation_container.visible = true
 		LongNote.Type.SECTION:
-			section_container.visible = true
+			_section_container.visible = true
 		LongNote.Type.SPEED:
-			speed_container.visible = true
+			_speed_container.visible = true
+		LongNote.Type.FADE:
+			_fade_check_button.visible = true
 	
 	z_index = 2
 
@@ -49,6 +54,9 @@ func set_section(name : String) -> void:
 func set_speed(speed : float) -> void:
 	_speed_spin_box.value = speed
 
+func set_fade(value : bool) -> void:
+	_fade_check_button.button_pressed = value
+
 func get_annotation() -> String:
 	return _annotation_text.text
 
@@ -57,6 +65,9 @@ func get_section() -> String:
 
 func get_speed() -> float:
 	return _speed_spin_box.value
+
+func get_fade() -> bool:
+	return _fade_check_button.button_pressed
 
 func _on_speed_spin_box_value_changed(value: float) -> void:
 	speed_value_changed.emit()
@@ -73,3 +84,11 @@ func _on_section_text_changed() -> void:
 		_section_text.text = _section_text.text.replace("\n", "")
 		_section_text.release_focus()
 	section_value_changed.emit()
+
+func _on_fade_toggled(toggled_on: bool) -> void:
+	if toggled_on:
+		_fade_check_button.text = "Fade In"
+	else:
+		_fade_check_button.text = "Fade Out"
+	_fade_check_button.release_focus()
+	fade_value_changed.emit()
