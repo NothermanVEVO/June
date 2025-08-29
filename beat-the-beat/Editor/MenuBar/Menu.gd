@@ -22,7 +22,6 @@ func _ready() -> void:
 	transfer_to.index_pressed.connect(transfer_to_index_pressed)
 
 func edit_menu_index_pressed(index : int) -> void:
-	#print(edit_menu.get_item_text(index))
 	match edit_menu.get_item_text(index):
 		"Power selected ones":
 			editor_menu_bar.power_selected_ones()
@@ -30,4 +29,4 @@ func edit_menu_index_pressed(index : int) -> void:
 			editor_menu_bar.clear_gear()
 
 func transfer_to_index_pressed(index : int) -> void:
-	print(transfer_to.get_item_text(index))
+	editor_menu_bar.transfer_to(transfer_to.get_item_id(index))

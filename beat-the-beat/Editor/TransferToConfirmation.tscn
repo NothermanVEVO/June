@@ -1,0 +1,68 @@
+[gd_scene load_steps=2 format=3 uid="uid://35wpkqpv41cv"]
+
+[ext_resource type="Script" uid="uid://b2jn6grsfcgd4" path="res://Editor/TransferToConfirmation.gd" id="1_pqd3g"]
+
+[node name="Transfer To Confirmation" type="PanelContainer"]
+z_index = 20
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_pqd3g")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 2
+color = Color(0.169245, 0.169245, 0.169245, 1)
+
+[node name="ReferenceRect" type="ReferenceRect" parent="."]
+layout_mode = 2
+editor_only = false
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Are you sure about this choice?
+*irreversible*"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Difficulties" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Difficulty -> Difficulty"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Replace" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "Replace"
+
+[node name="Change" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "Change"
+
+[node name="Cancel" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+mouse_default_cursor_shape = 2
+text = "Cancel"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/Replace" to="." method="_on_replace_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/Change" to="." method="_on_change_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/Cancel" to="." method="_on_cancel_pressed"]

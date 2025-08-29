@@ -25,8 +25,17 @@ var _holding_time : float = 0.0
 const _FIRST_HOLDING_TIME_DELAY = 0.3
 const _HOLDING_TIME_DELAY = 0.1
 
+@onready var transfer_to_confirmation_scene := preload("res://Editor/TransferToConfirmation.tscn")
+var _transfer_to_confirmation : TransferToConfirmation
+var _transfer_to_difficulty : SongMap.Difficulty
+
 func _ready() -> void:
 	game.changed.connect(_game_changed)
+	
+	_transfer_to_confirmation = transfer_to_confirmation_scene.instantiate()
+	_transfer_to_confirmation.visible = false
+	_transfer_to_confirmation.choice_made.connect(_transfer_to_confirmation_choice_made)
+	$"../TransferToHolder".add_child.call_deferred(_transfer_to_confirmation)
 
 func _process(delta: float) -> void:
 	if not _undo_song_maps.is_empty():
@@ -150,8 +159,10 @@ func to_resource() -> SongMap:
 
 func load_song_map(song_map : SongMap) -> void:
 	_difficulty.select(_difficulty.get_item_index(song_map.difficulty))
+	_difficulty_type_value = song_map.difficulty
 	
 	game.set_gear(song_map.gear_type)
+	_gear_type_value = song_map.gear_type
 	
 	var notes : Array = song_map.notes
 	game._selected_notes.clear()
@@ -204,3 +215,35 @@ func clear_gear() -> void:
 		song_map.long_notes.clear()
 		_game_changed()
 		load_song_map(song_map)
+
+func transfer_to(difficulty : SongMap.Difficulty) -> void:
+	var song_map := to_resource()
+	_transfer_to_confirmation.set_text(SongMap.Difficulty.keys()[song_map.difficulty], SongMap.Difficulty.keys()[difficulty])
+	_transfer_to_confirmation.visible = true
+	_transfer_to_difficulty = difficulty
+
+func _transfer_to_confirmation_choice_made(choice : TransferToConfirmation.Choices) -> void:
+	var song_map := to_resource()
+	match choice:
+		TransferToConfirmation.Choices.REPLACE:
+			_memory_save_song_map()
+			for s_map in _saved_song_maps:
+				if s_map.difficulty == song_map.difficulty:
+					_saved_song_maps.erase(s_map)
+					break
+			
+			song_map.difficulty = _transfer_to_difficulty
+			for s_map in _saved_song_maps:
+				if s_map.difficulty == _transfer_to_difficulty:
+					s_map.copy_song_map(song_map)
+					_transfer_to_confirmation.visible = false
+					_game_changed()
+					load_song_map(s_map)
+					return
+			_game_changed()
+			_saved_song_maps.append(song_map)
+			load_song_map(song_map)
+			
+		TransferToConfirmation.Choices.CHANGE:
+			pass
+	_transfer_to_confirmation.visible = false

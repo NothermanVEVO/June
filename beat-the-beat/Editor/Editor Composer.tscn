@@ -389,6 +389,8 @@ tick_count = 15
 stream = ExtResource("5_d6op5")
 script = ExtResource("6_a7m05")
 
+[node name="TransferToHolder" type="Node2D" parent="."]
+
 [connection signal="pressed" from="MenuBar/Undo" to="MenuBar" method="_on_undo_pressed"]
 [connection signal="pressed" from="MenuBar/Redo" to="MenuBar" method="_on_redo_pressed"]
 [connection signal="item_selected" from="MenuBar/FlowContainer2/Gear Type" to="MenuBar" method="_on_gear_type_item_selected"]

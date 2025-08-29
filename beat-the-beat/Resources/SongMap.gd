@@ -34,3 +34,6 @@ func get_dictionary() -> Dictionary:
 
 static func is_equal(song_map1 : SongMap, song_map2 : SongMap) -> bool:
 	return song_map1.gear_type == song_map2.gear_type and song_map1.difficulty == song_map2.difficulty
+
+func has_notes() -> bool:
+	return not notes.is_empty() or not long_notes.is_empty()
