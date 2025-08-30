@@ -18,6 +18,8 @@ var _last_visible_notes : Array[Note] = []
 
 var _key_pressed_gradient := KeyPressedGradient.new()
 
+signal changed_note
+
 func _init(note_action : String, pos_x : float) -> void:
 	_note_action = note_action
 	_pos_x = pos_x
@@ -148,6 +150,7 @@ func add_note(note : Note, validate_note : bool = false) -> void:
 			validate_notes(note.get_start_time(), note.get_end_time())
 		else:
 			validate_notes(note.get_time(), note.get_time())
+		changed_note.emit()
 
 func remove_note(note : Note, validate_note : bool = false, free : bool = false) -> void:
 	_notes.erase(note)
@@ -157,6 +160,7 @@ func remove_note(note : Note, validate_note : bool = false, free : bool = false)
 		note.call_deferred("queue_free")
 	if validate_note:
 		validate_notes(0.0, Song.get_duration()) # EH FEIO FAZER ISSO AQ, PREGUIÇOSO
+		changed_note.emit()
 
 func update_note(note : Note, validate_note : bool = false) -> void:
 	_notes.erase(note)
@@ -174,6 +178,7 @@ func update_note(note : Note, validate_note : bool = false) -> void:
 	_notes.insert(low, note)
 	if validate_note:
 		validate_notes(0.0, Song.get_duration()) # EH FEIO FAZER ISSO AQ, PREGUIÇOSO
+		changed_note.emit()
 
 func get_notes(from : float, to : float) -> Array[Note]:
 	var result : Array[Note] = []

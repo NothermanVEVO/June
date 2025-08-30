@@ -46,6 +46,7 @@ func _ready() -> void: #TODO HANDLE ANY POSITION FOR THE GEAR, NOT ONLY THE MIDD
 		initial_x += NoteHolder.width
 		_note_holders.append(note_holder)
 		add_child(note_holder)
+		note_holder.changed_note.connect(_changed_note_from_note_holder)
 
 func _physics_process(delta: float) -> void:
 	if not _long_notes:
@@ -58,8 +59,7 @@ func _physics_process(delta: float) -> void:
 			_editor_process()
 
 func _editor_process() -> void:
-	
-	var long_notes = get_long_notes(Song.get_time(), MAX_TIME_Y())
+	var long_notes = get_long_notes(Song.get_time(), Song.get_time() + MAX_TIME_Y())
 	
 	for note in _last_visible_long_notes:
 		if not note in long_notes:
@@ -205,6 +205,14 @@ func get_global_long_note_intersected_rects(rect : Rect2) -> LongNote:
 		if long_note.get_global_rect().intersects(rect):
 			return long_note
 	return null
+
+func _changed_note_from_note_holder() -> void:
+	var fade_notes : Array[LongNote] = []
+	
+	for long_note in _long_notes:
+		if long_note.get_type() == LongNote.Type.FADE:
+			fade_notes.append(long_note)
+	_validate_fade_notes(fade_notes)
 
 static func set_speed(speed : float) -> void:
 	_speed = clampf(speed, 0.0, 10.0)
