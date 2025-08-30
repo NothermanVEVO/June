@@ -249,8 +249,8 @@ func _draw() -> void:
 	var pos_x = pos.x - width / 2
 	var pos_y = pos.y - (rect_size_y / 2)
 	draw_rect(Rect2(pos_x, pos_y, width, rect_size_y), Color.BLUE)
-	draw_line(Vector2(pos_x, pos_y), Vector2(pos_x, pos_y - Gear.get_max_size_y()), Color.WHITE)
-	draw_line(Vector2(pos_x + width, pos_y), Vector2(pos_x + width, pos_y - Gear.get_max_size_y()), Color.WHITE)
+	draw_line(Vector2(pos_x, pos_y), Vector2(pos_x, pos_y - Gear.get_max_size_y() + Note.height / 2), Color.WHITE)
+	draw_line(Vector2(pos_x + width, pos_y), Vector2(pos_x + width, pos_y - Gear.get_max_size_y() + Note.height / 2), Color.WHITE)
 	draw_circle(pos, 5, Color.YELLOW)
 	draw_circle(Vector2(pos.x, pos.y - max_note_distance), 
 		5, Color.RED)

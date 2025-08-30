@@ -303,6 +303,7 @@ func _handle_select() -> void:
 					_last_note_holder_idx = note_hold_idx
 			
 			var mouse_time_difference_y := _get_time_difference_y()
+			_last_drag_mouse_position = _get_limited_by_gear_local_mouse_position()["position"]
 			
 			var temp = mouse_time_difference_y
 			mouse_time_difference_y -= _last_time_difference_y
@@ -346,8 +347,8 @@ func _handle_select() -> void:
 			
 			if lowest_note.get_time() + time_difference_y < 0.0:
 				time_difference_y = -lowest_note.get_time()
-			#if get_local_mouse_position().y > _hit_zone_y and mouse_time_difference_y < 0: #MOVE DOWN
-			if lowest_note.get_time() < Song.get_time() and mouse_time_difference_y < 0: #MOVE DOWN
+			if get_local_mouse_position().y > _hit_zone_y and mouse_time_difference_y < 0: #MOVE DOWN
+			#if lowest_note.get_time() < Song.get_time() and mouse_time_difference_y < 0: #MOVE DOWN
 				var song := Song.new()
 				song.set_time(clampf(Song.get_time() + mouse_time_difference_y, 0.0, Song.get_duration()))
 			
@@ -376,12 +377,28 @@ func _handle_select() -> void:
 			_last_note_holder_idx = -1
 	elif _clicked_long_note:
 		if Input.is_action_pressed("Add Item"):
+			var mouse_time_difference_y := _get_time_difference_y()
+			_last_drag_mouse_position = _get_limited_by_gear_local_mouse_position()["position"]
+			
+			var temp = mouse_time_difference_y
+			mouse_time_difference_y -= _last_time_difference_y
+			_last_time_difference_y = temp
+			
 			var time_difference_y := _get_closest_grid_time_to_mouse() - _last_grid_time_mouse
 			_last_grid_time_mouse = _get_closest_grid_time_to_mouse()
+			
+			if get_local_mouse_position().y > _hit_zone_y and mouse_time_difference_y < 0: #MOVE DOWN
+				var song := Song.new()
+				song.set_time(clampf(Song.get_time() + mouse_time_difference_y, 0.0, Song.get_duration()))
+			if get_local_mouse_position().y < 0 and mouse_time_difference_y > 0: #MOVE UP
+				var song := Song.new()
+				song.set_time(clampf(Song.get_time() + mouse_time_difference_y, 0.0, Song.get_duration()))
+			
 			if time_difference_y:
 				changed.emit()
 				_had_time_difference = true
-				_clicked_long_note.set_time(_clicked_long_note.get_time() + time_difference_y)
+				_clicked_long_note.set_time(clampf(_clicked_long_note.get_time() + time_difference_y, 0.0, _get_highest_grid_time()))
+			
 				gear.update_long_note(_clicked_long_note, true)
 		elif Input.is_action_just_released("Add Item"):
 			if _had_time_difference:
