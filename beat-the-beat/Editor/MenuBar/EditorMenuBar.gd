@@ -6,11 +6,14 @@ class_name EditorMenuBar
 static var _snap_divisor_value : int = 1
 enum Divisors{ONE = 1, TWO = 2, FOUR = 4, EIGHT = 8, TWELVE = 12, SIXTEEN = 16}
 
-@onready var _gear_type := $"FlowContainer2/Gear Type"
+@onready var _gear_type : OptionButton = $"FlowContainer2/Gear Type"
 static var _gear_type_value : int = 4
 
 @onready var _difficulty := $FlowContainer2/Difficulty
 static var _difficulty_type_value : int = 0
+
+@onready var _stars := $FlowContainer2/Stars
+static var _stars_value : int = 1
 
 @onready var undo : Button = $Undo
 @onready var redo : Button = $Redo
@@ -95,6 +98,8 @@ func _on_undo_pressed() -> void:
 	redo.disabled = false
 	if _undo_song_maps.is_empty():
 		undo.disabled = true
+	
+	_memory_save_song_map()
 
 func _on_redo_pressed() -> void:
 	if _redo_song_maps.is_empty(): # SHOULDN'T ENTER HERE...
@@ -109,11 +114,15 @@ func _on_redo_pressed() -> void:
 	undo.disabled = false
 	if _redo_song_maps.is_empty():
 		redo.disabled = true
+	
+	_memory_save_song_map()
 
 func _on_gear_type_item_selected(index: int) -> void:
 	_memory_save_song_map()
 	
 	_gear_type_value = _gear_type.get_item_id(index)
+	_stars_value = 1
+	_stars.value = _stars_value
 	
 	for sound_map in _saved_song_maps:
 		if sound_map.gear_type == _gear_type_value and sound_map.difficulty == _difficulty_type_value:
@@ -127,6 +136,8 @@ func _on_difficulty_item_selected(index: int) -> void:
 	_memory_save_song_map()
 	
 	_difficulty_type_value = _difficulty.get_item_id(index)
+	_stars_value = 1
+	_stars.value = _stars_value
 	
 	for sound_map in _saved_song_maps:
 		if sound_map.gear_type == _gear_type_value and sound_map.difficulty == _difficulty_type_value:
@@ -135,6 +146,9 @@ func _on_difficulty_item_selected(index: int) -> void:
 			return
 	
 	game.set_gear(_gear_type_value)
+
+func _on_stars_value_changed(value: float) -> void:
+	_stars_value = roundi(value)
 
 func _memory_save_song_map() -> void:
 	var song_map := to_resource()
@@ -155,7 +169,7 @@ func to_resource() -> SongMap:
 	for long_note in game.gear.get_all_long_notes():
 		long_notes_resource.append(long_note.to_resource())
 	
-	return SongMap.new(game.gear.get_type(), _difficulty_type_value, notes_resource, long_notes_resource)
+	return SongMap.new(game.gear.get_type(), _difficulty_type_value, _stars_value, notes_resource, long_notes_resource)
 
 func load_song_map(song_map : SongMap) -> void:
 	_difficulty.select(_difficulty.get_item_index(song_map.difficulty))
@@ -163,6 +177,10 @@ func load_song_map(song_map : SongMap) -> void:
 	
 	game.set_gear(song_map.gear_type)
 	_gear_type_value = song_map.gear_type
+	_gear_type.select(_gear_type.get_item_index(_gear_type_value))
+	
+	_stars_value = song_map.stars
+	_stars.value = _stars_value
 	
 	var notes : Array = song_map.notes
 	game._selected_notes.clear()
@@ -250,7 +268,7 @@ func _transfer_to_confirmation_choice_made(choice : TransferToConfirmation.Choic
 			for s_map in _saved_song_maps:
 				if s_map.difficulty == _transfer_to_difficulty:
 					@warning_ignore("int_as_enum_without_cast", "int_as_enum_without_match")
-					var copy_map := SongMap.new(0, 0, [], [])
+					var copy_map := SongMap.new(0, 0, 0, [], [])
 					copy_map.copy_song_map(s_map)
 					copy_map.difficulty = song_map.difficulty
 					

@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://re8yk5328yco" path="res://Editor/MenuBar/EditorMenuBar.gd" id="1_p8fip"]
 [ext_resource type="Script" uid="uid://jr7inyppvgoi" path="res://Editor/GameComponentsList.gd" id="1_sakc5"]
 [ext_resource type="Script" uid="uid://bbuinuyr63r63" path="res://Editor/MenuBar/Menu.gd" id="2_bnevv"]
-[ext_resource type="Script" uid="uid://b5sxt0fdx3nd3" path="res://Editor/Game.gd" id="2_d6op5"]
+[ext_resource type="Script" uid="uid://b5sxt0fdx3nd3" path="res://Editor/GameEditor.gd" id="2_d6op5"]
 [ext_resource type="Script" uid="uid://b2vfybh62v642" path="res://Editor/MenuBar/Edit.gd" id="2_qj7uo"]
 [ext_resource type="Script" uid="uid://cr1l58jmclcj" path="res://Editor/SoundBoard.gd" id="3_ty45h"]
 [ext_resource type="AudioStream" uid="uid://bmdadx4pafmd6" path="res://Sound Test Sample/Brutal, acabou pro beta versão globo.mp3" id="5_d6op5"]
@@ -127,6 +127,14 @@ popup/item_5/id = 6
 popup/item_5/separator = true
 popup/item_6/text = "Maximus"
 popup/item_6/id = 3
+
+[node name="Stars" type="SpinBox" parent="MenuBar/FlowContainer2"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+min_value = 1.0
+max_value = 30.0
+value = 1.0
+suffix = "Stars"
 
 [node name="FlowContainer" type="FlowContainer" parent="MenuBar"]
 layout_mode = 2
@@ -394,6 +402,7 @@ script = ExtResource("6_a7m05")
 [connection signal="pressed" from="MenuBar/Redo" to="MenuBar" method="_on_redo_pressed"]
 [connection signal="item_selected" from="MenuBar/FlowContainer2/Gear Type" to="MenuBar" method="_on_gear_type_item_selected"]
 [connection signal="item_selected" from="MenuBar/FlowContainer2/Difficulty" to="MenuBar" method="_on_difficulty_item_selected"]
+[connection signal="value_changed" from="MenuBar/FlowContainer2/Stars" to="MenuBar" method="_on_stars_value_changed"]
 [connection signal="item_selected" from="MenuBar/FlowContainer/SnapDivisor" to="MenuBar" method="_on_snap_divisor_item_selected"]
 [connection signal="value_changed" from="MenuBar/FlowContainer/Speed" to="MenuBar" method="_on_speed_value_changed"]
 [connection signal="pressed" from="Middle/Sound Components List/Close Button" to="Middle/Sound Components List" method="_on_close_button_pressed"]

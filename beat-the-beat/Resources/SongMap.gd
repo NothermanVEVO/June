@@ -6,19 +6,22 @@ enum Difficulty {FACIL = 0, NORMAL = 1, HARD = 2, MAXIMUS = 3}
 
 var gear_type : int ## Gear.Type
 var difficulty : int ## Difficulty
+var stars : int
 var notes : Array[NoteResource]
 var long_notes : Array[LongNoteResource]
 
 @warning_ignore("shadowed_variable")
-func _init(gear_type : Gear.Type, difficulty : Difficulty, notes : Array[NoteResource], long_notes : Array[LongNoteResource]) -> void:
+func _init(gear_type : Gear.Type, difficulty : Difficulty, stars : int, notes : Array[NoteResource], long_notes : Array[LongNoteResource]) -> void:
 	self.gear_type = gear_type
 	self.difficulty = difficulty
+	self.stars = stars
 	self.notes = notes
 	self.long_notes = long_notes
 
 func copy_song_map(song_map : SongMap) -> void:
 	self.gear_type = song_map.gear_type
 	self.difficulty = song_map.difficulty
+	self.stars = song_map.stars
 	self.notes = song_map.notes
 	self.long_notes = song_map.long_notes
 
