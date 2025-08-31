@@ -1,0 +1,290 @@
+[gd_scene load_steps=2 format=3 uid="uid://b3ljeq5vwy67a"]
+
+[ext_resource type="Script" uid="uid://cxngxkql6desj" path="res://Editor/EditorSettings.gd" id="1_33eqs"]
+
+[node name="Settings" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_33eqs")
+
+[node name="FileDialog" type="FileDialog" parent="."]
+title = "Open a File"
+initial_position = 1
+ok_button_text = "Open"
+dialog_hide_on_ok = true
+file_mode = 0
+access = 2
+use_native_dialog = true
+
+[node name="AcceptDialog" type="AcceptDialog" parent="."]
+title = "Warning!"
+initial_position = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Left" type="MarginContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Left"]
+layout_mode = 2
+
+[node name="Name" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/Name"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Name: "
+fit_content = true
+autowrap_mode = 0
+
+[node name="TextEdit" type="TextEdit" parent="HBoxContainer/Left/VBoxContainer/Name"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "The name of the song here..."
+
+[node name="Author" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/Author"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Author:"
+fit_content = true
+autowrap_mode = 0
+
+[node name="TextEdit" type="TextEdit" parent="HBoxContainer/Left/VBoxContainer/Author"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "The name of the author of the song here..."
+
+[node name="Track" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/Track"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Track:"
+fit_content = true
+autowrap_mode = 0
+
+[node name="TextEdit" type="TextEdit" parent="HBoxContainer/Left/VBoxContainer/Track"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "The name of the track that the song belongs..."
+
+[node name="BPM" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/BPM"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "BPM:"
+fit_content = true
+autowrap_mode = 0
+
+[node name="SpinBox" type="SpinBox" parent="HBoxContainer/Left/VBoxContainer/BPM"]
+layout_mode = 2
+min_value = 1.0
+max_value = 1000.0
+value = 60.0
+
+[node name="Creator" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/Creator"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Creator:"
+fit_content = true
+autowrap_mode = 0
+
+[node name="TextEdit" type="TextEdit" parent="HBoxContainer/Left/VBoxContainer/Creator"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "The name of the creator of the song map..."
+
+[node name="SongTimeSample" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/SongTimeSample"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Song time sample:"
+fit_content = true
+autowrap_mode = 0
+
+[node name="TextEdit" type="TextEdit" parent="HBoxContainer/Left/VBoxContainer/SongTimeSample"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+placeholder_text = "00:00:000"
+scroll_fit_content_width = true
+
+[node name="VideoTimeSample" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/VideoTimeSample"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Video time sample:"
+fit_content = true
+autowrap_mode = 0
+
+[node name="TextEdit" type="TextEdit" parent="HBoxContainer/Left/VBoxContainer/VideoTimeSample"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+placeholder_text = "00:00:000"
+scroll_fit_content_width = true
+
+[node name="Right" type="MarginContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Right"]
+layout_mode = 2
+
+[node name="Song" type="HBoxContainer" parent="HBoxContainer/Right/VBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Right/VBoxContainer/Song"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Song: "
+fit_content = true
+autowrap_mode = 0
+
+[node name="SongButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Song"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+text = "Select file or Drag and Drop here"
+
+[node name="PlaySongButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Song"]
+layout_mode = 2
+disabled = true
+text = "Play"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="HBoxContainer/Right/VBoxContainer/Song"]
+
+[node name="Icon" type="HBoxContainer" parent="HBoxContainer/Right/VBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Right/VBoxContainer/Icon"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Icon: "
+fit_content = true
+autowrap_mode = 0
+
+[node name="IconButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Icon"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+text = "Select file or Drag and Drop here"
+icon_alignment = 1
+expand_icon = true
+
+[node name="RemoveIconButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Icon"]
+layout_mode = 2
+disabled = true
+text = "Remove"
+
+[node name="IconTexture" type="TextureRect" parent="HBoxContainer/Right/VBoxContainer/Icon"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Image" type="HBoxContainer" parent="HBoxContainer/Right/VBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Right/VBoxContainer/Image"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Image: "
+fit_content = true
+autowrap_mode = 0
+
+[node name="ImageButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Image"]
+layout_mode = 2
+text = "Select file or Drag and Drop here"
+
+[node name="RemoveImageButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Image"]
+layout_mode = 2
+disabled = true
+text = "Remove"
+
+[node name="ImageTexture" type="TextureRect" parent="HBoxContainer/Right/VBoxContainer/Image"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Video" type="HBoxContainer" parent="HBoxContainer/Right/VBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Right/VBoxContainer/Video"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Video: "
+fit_content = true
+autowrap_mode = 0
+
+[node name="VideoButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Video"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+text = "Select file or Drag and Drop here"
+
+[node name="RemoveVideoButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Video"]
+layout_mode = 2
+disabled = true
+text = "Remove"
+
+[node name="VideoPlayer" type="VideoStreamPlayer" parent="HBoxContainer/Right/VBoxContainer/Video"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+volume_db = -80.0
+autoplay = true
+expand = true
+loop = true
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Button" type="Button" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+text = "Compose"
+
+[connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
+[connection signal="pressed" from="HBoxContainer/Right/VBoxContainer/Song/SongButton" to="." method="_on_song_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/Right/VBoxContainer/Song/PlaySongButton" to="." method="_on_play_song_button_pressed"]
+[connection signal="finished" from="HBoxContainer/Right/VBoxContainer/Song/AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]
+[connection signal="pressed" from="HBoxContainer/Right/VBoxContainer/Icon/IconButton" to="." method="_on_icon_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/Right/VBoxContainer/Icon/RemoveIconButton" to="." method="_on_remove_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/Right/VBoxContainer/Image/ImageButton" to="." method="_on_image_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/Right/VBoxContainer/Image/RemoveImageButton" to="." method="_on_remove_image_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/Right/VBoxContainer/Video/VideoButton" to="." method="_on_video_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/Right/VBoxContainer/Video/RemoveVideoButton" to="." method="_on_remove_video_button_pressed"]
