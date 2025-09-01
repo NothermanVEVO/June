@@ -10,6 +10,38 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_33eqs")
 
+[node name="Menu" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_bottom = 5
+
+[node name="FlowContainer" type="FlowContainer" parent="Menu"]
+layout_mode = 2
+
+[node name="MenuBar" type="MenuBar" parent="Menu/FlowContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="File" type="PopupMenu" parent="Menu/FlowContainer/MenuBar"]
+auto_translate_mode = 1
+title = "File"
+item_count = 3
+item_0/text = "New file"
+item_0/id = 0
+item_1/text = "Open file"
+item_1/id = 1
+item_2/text = "Save file"
+item_2/id = 2
+
+[node name="Compose" type="Button" parent="Menu/FlowContainer"]
+layout_mode = 2
+disabled = true
+text = "Compose"
+
+[node name="Test" type="Button" parent="Menu/FlowContainer"]
+layout_mode = 2
+disabled = true
+text = "Test"
+
 [node name="FileDialog" type="FileDialog" parent="."]
 title = "Open a File"
 initial_position = 1
@@ -263,20 +295,6 @@ volume_db = -80.0
 autoplay = true
 expand = true
 loop = true
-
-[node name="MarginContainer" type="MarginContainer" parent="."]
-custom_minimum_size = Vector2(0, 30)
-layout_mode = 2
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="Button" type="Button" parent="MarginContainer"]
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 4
-mouse_default_cursor_shape = 2
-text = "Compose"
 
 [connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
 [connection signal="pressed" from="HBoxContainer/Right/VBoxContainer/Song/SongButton" to="." method="_on_song_button_pressed"]

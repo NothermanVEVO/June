@@ -32,6 +32,8 @@ var _video_path : String = ""
 
 var _last_called_file : Files
 
+@onready var compose_button : Button = $Menu/FlowContainer/Compose
+
 func _ready() -> void:
 	get_tree().root.files_dropped.connect(_on_files_dropped)
 
@@ -77,6 +79,7 @@ func set_song(path : String) -> void:
 	if stream is AudioStream:
 		song.stream = stream
 		play_song_button.disabled = false
+		compose_button.disabled = false
 	else:
 		_pop_up_dialog("Não foi possível carregar o aúdio!")
 		return
