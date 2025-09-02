@@ -19,12 +19,12 @@ static var _stars_value : int = 1
 @onready var redo : Button = $Redo
 @onready var game : GameEditor = $"../Middle/Game/Game"
 
-var _saved_song_maps : Array[SongMap] = []
+static var _saved_song_maps : Array[SongMap] = []
 
-var _undo_song_maps : Array[SongMap] = []
-var _redo_song_maps : Array[SongMap] = []
+static var _undo_song_maps : Array[SongMap] = []
+static var _redo_song_maps : Array[SongMap] = []
 
-var _holding_time : float = 0.0
+static var _holding_time : float = 0.0
 const _FIRST_HOLDING_TIME_DELAY = 0.3
 const _HOLDING_TIME_DELAY = 0.1
 
@@ -201,9 +201,6 @@ func load_song_map(song_map : SongMap) -> void:
 		if long_nt._is_selected:
 			game._selected_long_notes.append(long_nt)
 
-func _save_file() -> void:
-	pass
-
 func power_selected_ones() -> void:
 	var song_map = to_resource()
 	
@@ -288,3 +285,23 @@ func _transfer_to_confirmation_choice_made(choice : TransferToConfirmation.Choic
 			load_song_map(song_map)
 		
 	_transfer_to_confirmation.visible = false
+
+func is_editor_empty() -> bool:
+	return _saved_song_maps.is_empty() and _undo_song_maps.is_empty() and _redo_song_maps.is_empty()
+
+func reset_editor() -> void:
+	snap_divisor.select(0)
+	_snap_divisor_value = 1
+	_gear_type.select(0)
+	_gear_type_value = 4
+	game.set_gear(_gear_type_value)
+	_difficulty.select(0)
+	_difficulty_type_value = 0
+	_stars.value = 1
+	_stars_value = 1
+	_saved_song_maps.clear()
+	_undo_song_maps.clear()
+	_redo_song_maps.clear()
+
+func get_memory_saved_song_maps() -> Array[SongMap]:
+	return _saved_song_maps

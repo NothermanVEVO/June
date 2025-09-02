@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://b3ljeq5vwy67a"]
+[gd_scene load_steps=4 format=3 uid="uid://b3ljeq5vwy67a"]
 
 [ext_resource type="Script" uid="uid://cxngxkql6desj" path="res://Editor/EditorSettings.gd" id="1_33eqs"]
+[ext_resource type="Script" uid="uid://cuhkonamt3aus" path="res://Editor/MenuBar/File.gd" id="2_iy5o1"]
+[ext_resource type="PackedScene" uid="uid://dsydydetqa4bx" path="res://Editor/ConfirmationDialog.tscn" id="3_vxgxl"]
 
 [node name="Settings" type="VBoxContainer"]
 anchors_preset = 15
@@ -21,7 +23,9 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 0
 
-[node name="File" type="PopupMenu" parent="Menu/FlowContainer/MenuBar"]
+[node name="ConfirmationDialog" parent="Menu/FlowContainer/MenuBar" instance=ExtResource("3_vxgxl")]
+
+[node name="File" type="PopupMenu" parent="Menu/FlowContainer/MenuBar" node_paths=PackedStringArray("confirmation_dialog")]
 auto_translate_mode = 1
 title = "File"
 item_count = 3
@@ -31,6 +35,8 @@ item_1/text = "Open file"
 item_1/id = 1
 item_2/text = "Save file"
 item_2/id = 2
+script = ExtResource("2_iy5o1")
+confirmation_dialog = NodePath("../ConfirmationDialog")
 
 [node name="Compose" type="Button" parent="Menu/FlowContainer"]
 layout_mode = 2
@@ -80,11 +86,12 @@ text = "Name: "
 fit_content = true
 autowrap_mode = 0
 
-[node name="TextEdit" type="TextEdit" parent="HBoxContainer/Left/VBoxContainer/Name"]
+[node name="TextEdit" type="LineEdit" parent="HBoxContainer/Left/VBoxContainer/Name"]
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "The name of the song here..."
+clear_button_enabled = true
 
 [node name="Author" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer"]
 layout_mode = 2
@@ -96,11 +103,12 @@ text = "Author:"
 fit_content = true
 autowrap_mode = 0
 
-[node name="TextEdit" type="TextEdit" parent="HBoxContainer/Left/VBoxContainer/Author"]
+[node name="TextEdit" type="LineEdit" parent="HBoxContainer/Left/VBoxContainer/Author"]
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "The name of the author of the song here..."
+clear_button_enabled = true
 
 [node name="Track" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer"]
 layout_mode = 2
@@ -112,11 +120,12 @@ text = "Track:"
 fit_content = true
 autowrap_mode = 0
 
-[node name="TextEdit" type="TextEdit" parent="HBoxContainer/Left/VBoxContainer/Track"]
+[node name="TextEdit" type="LineEdit" parent="HBoxContainer/Left/VBoxContainer/Track"]
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "The name of the track that the song belongs..."
+clear_button_enabled = true
 
 [node name="BPM" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer"]
 layout_mode = 2
@@ -144,11 +153,12 @@ text = "Creator:"
 fit_content = true
 autowrap_mode = 0
 
-[node name="TextEdit" type="TextEdit" parent="HBoxContainer/Left/VBoxContainer/Creator"]
+[node name="TextEdit" type="LineEdit" parent="HBoxContainer/Left/VBoxContainer/Creator"]
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "The name of the creator of the song map..."
+clear_button_enabled = true
 
 [node name="SongTimeSample" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer"]
 layout_mode = 2
@@ -160,10 +170,11 @@ text = "Song time sample:"
 fit_content = true
 autowrap_mode = 0
 
-[node name="TextEdit" type="TextEdit" parent="HBoxContainer/Left/VBoxContainer/SongTimeSample"]
+[node name="SongTimeSampleText" type="TextEdit" parent="HBoxContainer/Left/VBoxContainer/SongTimeSample"]
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 placeholder_text = "00:00:000"
+editable = false
 scroll_fit_content_width = true
 
 [node name="VideoTimeSample" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer"]
@@ -176,10 +187,11 @@ text = "Video time sample:"
 fit_content = true
 autowrap_mode = 0
 
-[node name="TextEdit" type="TextEdit" parent="HBoxContainer/Left/VBoxContainer/VideoTimeSample"]
+[node name="VideoTimeSampleText" type="TextEdit" parent="HBoxContainer/Left/VBoxContainer/VideoTimeSample"]
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 placeholder_text = "00:00:000"
+editable = false
 scroll_fit_content_width = true
 
 [node name="Right" type="MarginContainer" parent="HBoxContainer"]
@@ -296,7 +308,10 @@ autoplay = true
 expand = true
 loop = true
 
+[connection signal="pressed" from="Menu/FlowContainer/Compose" to="." method="_on_compose_pressed"]
 [connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
+[connection signal="text_changed" from="HBoxContainer/Left/VBoxContainer/SongTimeSample/SongTimeSampleText" to="." method="_on_song_time_sample_text_changed"]
+[connection signal="text_changed" from="HBoxContainer/Left/VBoxContainer/VideoTimeSample/VideoTimeSampleText" to="." method="_on_video_time_sample_text_changed"]
 [connection signal="pressed" from="HBoxContainer/Right/VBoxContainer/Song/SongButton" to="." method="_on_song_button_pressed"]
 [connection signal="pressed" from="HBoxContainer/Right/VBoxContainer/Song/PlaySongButton" to="." method="_on_play_song_button_pressed"]
 [connection signal="finished" from="HBoxContainer/Right/VBoxContainer/Song/AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]

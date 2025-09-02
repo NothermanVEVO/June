@@ -1,12 +1,13 @@
-[gd_scene load_steps=20 format=3 uid="uid://dw4rs74gsagrn"]
+[gd_scene load_steps=21 format=3 uid="uid://dw4rs74gsagrn"]
 
 [ext_resource type="Script" uid="uid://ddx3q78woi7jl" path="res://Editor/SoundComponentsItems.gd" id="1_7fqon"]
 [ext_resource type="Script" uid="uid://re8yk5328yco" path="res://Editor/MenuBar/EditorMenuBar.gd" id="1_p8fip"]
 [ext_resource type="Script" uid="uid://jr7inyppvgoi" path="res://Editor/GameComponentsList.gd" id="1_sakc5"]
 [ext_resource type="Script" uid="uid://bbuinuyr63r63" path="res://Editor/MenuBar/Menu.gd" id="2_bnevv"]
 [ext_resource type="Script" uid="uid://b5sxt0fdx3nd3" path="res://Editor/GameEditor.gd" id="2_d6op5"]
-[ext_resource type="Script" uid="uid://b2vfybh62v642" path="res://Editor/MenuBar/Edit.gd" id="2_qj7uo"]
+[ext_resource type="Script" uid="uid://cuhkonamt3aus" path="res://Editor/MenuBar/File.gd" id="3_6pnfi"]
 [ext_resource type="Script" uid="uid://cr1l58jmclcj" path="res://Editor/SoundBoard.gd" id="3_ty45h"]
+[ext_resource type="PackedScene" uid="uid://dsydydetqa4bx" path="res://Editor/ConfirmationDialog.tscn" id="3_vl3l7"]
 [ext_resource type="AudioStream" uid="uid://bmdadx4pafmd6" path="res://Sound Test Sample/Brutal, acabou pro beta versão globo.mp3" id="5_d6op5"]
 [ext_resource type="Texture2D" uid="uid://oyfiimbt1x0y" path="res://assets/gameItemsIcons/selectIcon.png" id="6_6pnfi"]
 [ext_resource type="Script" uid="uid://df36n2m4tgkt0" path="res://Gear/Song.gd" id="6_a7m05"]
@@ -39,28 +40,33 @@ script = ExtResource("1_p8fip")
 layout_mode = 2
 script = ExtResource("2_bnevv")
 
-[node name="File" type="PopupMenu" parent="MenuBar/MenuBar"]
+[node name="ConfirmationDialog" parent="MenuBar/MenuBar" instance=ExtResource("3_vl3l7")]
+
+[node name="File" type="PopupMenu" parent="MenuBar/MenuBar" node_paths=PackedStringArray("confirmation_dialog")]
 title = "File"
-item_count = 3
+item_count = 4
 item_0/text = "New file"
 item_0/id = 0
 item_1/text = "Open file"
 item_1/id = 1
 item_2/text = "Save file"
 item_2/id = 2
+item_3/text = "Export"
+item_3/id = 3
+script = ExtResource("3_6pnfi")
+confirmation_dialog = NodePath("../ConfirmationDialog")
 
 [node name="Edit" type="PopupMenu" parent="MenuBar/MenuBar"]
 auto_translate_mode = 1
 title = "Edit"
 size = Vector2i(106, 100)
 item_count = 3
-item_0/text = "Power selected ones"
+item_0/text = "Settings"
 item_0/id = 0
-item_1/text = "Clear gear"
+item_1/text = "Power selected ones"
 item_1/id = 1
-item_2/text = "Settings"
+item_2/text = "Clear gear"
 item_2/id = 2
-script = ExtResource("2_qj7uo")
 
 [node name="Compose" type="Button" parent="MenuBar"]
 visible = false

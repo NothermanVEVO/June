@@ -34,8 +34,15 @@ var _last_called_file : Files
 
 @onready var compose_button : Button = $Menu/FlowContainer/Compose
 
+@onready var song_time_sample_text : TextEdit = $HBoxContainer/Left/VBoxContainer/SongTimeSample/SongTimeSampleText
+@onready var video_time_sample_text : TextEdit = $HBoxContainer/Left/VBoxContainer/VideoTimeSample/VideoTimeSampleText
+var last_valid_sample_song_text : String = ""
+var last_valid_sample_video_text : String = ""
+var time_regex := RegEx.new()
+
 func _ready() -> void:
 	get_tree().root.files_dropped.connect(_on_files_dropped)
+	time_regex.compile("^\\d{2}:[0-5]\\d:\\d{3}$")
 
 func _on_files_dropped(files: PackedStringArray) -> void:
 	var file = files[0]
@@ -80,6 +87,7 @@ func set_song(path : String) -> void:
 		song.stream = stream
 		play_song_button.disabled = false
 		compose_button.disabled = false
+		song_time_sample_text.editable = true
 	else:
 		_pop_up_dialog("Não foi possível carregar o aúdio!")
 		return
@@ -133,6 +141,7 @@ func set_video(path : String) -> void:
 		video_player.stream = stream
 		video_player.play()
 		remove_video_button.disabled = false
+		video_time_sample_text.editable = true
 	else:
 		_pop_up_dialog("Não foi possível carregar o vídeo!")
 		return
@@ -152,6 +161,7 @@ func _on_video_button_pressed() -> void:
 func _on_remove_video_button_pressed() -> void:
 	video_player.stream = null
 	remove_video_button.disabled = true
+	video_time_sample_text.editable = false
 
 func _on_image_button_pressed() -> void:
 	file_dialog.popup()
@@ -175,3 +185,32 @@ func _on_play_song_button_pressed() -> void:
 
 func _on_audio_stream_player_finished() -> void:
 	play_song_button.text = "Play"
+
+func _on_compose_pressed() -> void:
+	Editor.change_to_composer()
+
+func _on_song_time_sample_text_changed() -> void:
+	if "\n" in song_time_sample_text.text:
+		song_time_sample_text.text = song_time_sample_text.text.replace("\n", "")
+		if time_regex.search(song_time_sample_text.text):
+			last_valid_sample_song_text = song_time_sample_text.text
+		else:
+			song_time_sample_text.text = last_valid_sample_song_text
+		song_time_sample_text.release_focus()
+
+func _on_video_time_sample_text_changed() -> void:
+	if "\n" in video_time_sample_text.text:
+		video_time_sample_text.text = video_time_sample_text.text.replace("\n", "")
+		if time_regex.search(video_time_sample_text.text):
+			last_valid_sample_video_text = video_time_sample_text.text
+		else:
+			video_time_sample_text.text = last_valid_sample_video_text
+		video_time_sample_text.release_focus()
+
+func is_empty() -> bool:
+	return $HBoxContainer/Left/VBoxContainer/Name/TextEdit.text.is_empty() and (
+		$HBoxContainer/Left/VBoxContainer/Author/TextEdit.text.is_empty()) and (
+		$HBoxContainer/Left/VBoxContainer/Track/TextEdit.text.is_empty()) and (
+		$HBoxContainer/Left/VBoxContainer/Creator/TextEdit.text.is_empty()) and (
+		last_valid_sample_song_text.is_empty()) and last_valid_sample_video_text.is_empty() and (
+		not song.stream) and not icon_texture.texture and not image_rect_texture.texture and not video_player.stream

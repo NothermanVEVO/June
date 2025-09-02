@@ -23,6 +23,8 @@ func _ready() -> void:
 
 func edit_menu_index_pressed(index : int) -> void:
 	match edit_menu.get_item_text(index):
+		"Settings":
+			Editor.change_to_settings()
 		"Power selected ones":
 			editor_menu_bar.power_selected_ones()
 		"Clear gear":

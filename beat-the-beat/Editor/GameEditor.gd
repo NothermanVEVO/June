@@ -99,10 +99,12 @@ func _resized() -> void:
 
 func set_gear(type : Gear.Type) -> void:
 	remove_child(gear)
+	gear.queue_free()
 	gear = Gear.new(type, Gear.Mode.EDITOR, false, size.y)
 	add_child(gear)
 	
 	remove_child(sample_tap_note)
+	sample_tap_note.queue_free()
 	sample_tap_note = Note.new(0)
 	sample_tap_note.position = Vector2(-10000000, -10000000)
 	sample_tap_note.modulate = Color(1, 1, 1, 0.5)

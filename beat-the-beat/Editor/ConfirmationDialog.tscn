@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://dsydydetqa4bx"]
+
+[node name="ConfirmationDialog" type="ConfirmationDialog"]
+initial_position = 1
+force_native = true
+dialog_text = "Algum texto aqui"
