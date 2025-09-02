@@ -88,6 +88,7 @@ func set_song(path : String) -> void:
 		play_song_button.disabled = false
 		compose_button.disabled = false
 		song_time_sample_text.editable = true
+		_song_path = path
 	else:
 		_pop_up_dialog("Não foi possível carregar o aúdio!")
 		return
@@ -108,6 +109,7 @@ func set_icon(path : String) -> void:
 		image_texture.set_image(image)
 		icon_texture.texture = image_texture
 		remove_icon_button.disabled = false
+		_icon_path = path
 
 func set_image(path : String) -> void:
 	if not FileAccess.file_exists(path):
@@ -125,6 +127,7 @@ func set_image(path : String) -> void:
 		image_texture.set_image(image)
 		image_rect_texture.texture = image_texture
 		remove_image_button.disabled = false
+		_image_path = path
 
 func set_video(path : String) -> void:
 	if path.get_extension() != "ogv":
@@ -142,6 +145,7 @@ func set_video(path : String) -> void:
 		video_player.play()
 		remove_video_button.disabled = false
 		video_time_sample_text.editable = true
+		_video_path = path
 	else:
 		_pop_up_dialog("Não foi possível carregar o vídeo!")
 		return
@@ -214,3 +218,62 @@ func is_empty() -> bool:
 		$HBoxContainer/Left/VBoxContainer/Creator/TextEdit.text.is_empty()) and (
 		last_valid_sample_song_text.is_empty()) and last_valid_sample_video_text.is_empty() and (
 		not song.stream) and not icon_texture.texture and not image_rect_texture.texture and not video_player.stream
+
+func reset() -> void:
+	$HBoxContainer/Left/VBoxContainer/Name/TextEdit.text = ""
+	$HBoxContainer/Left/VBoxContainer/Author/TextEdit.text = ""
+	$HBoxContainer/Left/VBoxContainer/Track/TextEdit.text = ""
+	$HBoxContainer/Left/VBoxContainer/BPM/SpinBox.value = 60
+	$HBoxContainer/Left/VBoxContainer/Creator/TextEdit.text = ""
+	$HBoxContainer/Left/VBoxContainer/SongTimeSample/SongTimeSampleText.text = ""
+	$HBoxContainer/Left/VBoxContainer/VideoTimeSample/VideoTimeSampleText.text = ""
+	compose_button.disabled = true
+	
+	play_song_button.disabled = true
+	song.stream = null
+	_song_path = ""
+	
+	remove_icon_button.disabled = true
+	icon_texture.texture = null
+	_icon_path = ""
+	
+	remove_image_button.disabled = true
+	image_rect_texture.texture = null
+	_image_path = ""
+	
+	remove_video_button.disabled = true
+	video_player.stream = null
+	_video_path = ""
+
+func get_song_name() -> String:
+	return $HBoxContainer/Left/VBoxContainer/Name/TextEdit.text
+
+func get_author_name() -> String:
+	return $HBoxContainer/Left/VBoxContainer/Author/TextEdit.text
+
+func get_track_name() -> String:
+	return $HBoxContainer/Left/VBoxContainer/Track/TextEdit.text
+
+func get_BPM_value() -> int:
+	return $HBoxContainer/Left/VBoxContainer/BPM/SpinBox.value
+
+func get_creator_name() -> String:
+	return $HBoxContainer/Left/VBoxContainer/Creator/TextEdit.text
+
+func get_song_time_sample() -> String:
+	return $HBoxContainer/Left/VBoxContainer/SongTimeSample/SongTimeSampleText.text
+
+func get_video_time_sample() -> String:
+	return $HBoxContainer/Left/VBoxContainer/VideoTimeSample/VideoTimeSampleText.text
+
+func get_song_path() -> String:
+	return _song_path
+
+func get_icon_path() -> String:
+	return _icon_path
+
+func get_image_path() -> String:
+	return _image_path
+
+func get_video_path() -> String:
+	return _video_path

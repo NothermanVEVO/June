@@ -26,7 +26,7 @@ func copy_song_map(song_map : SongMap) -> void:
 	self.long_notes = song_map.long_notes
 
 func get_dictionary() -> Dictionary:
-	var dictionary : Dictionary = {"gear_type": gear_type, "difficulty": difficulty, "notes": [], "long_notes": []}
+	var dictionary : Dictionary = {"gear_type": gear_type, "difficulty": difficulty, "stars": stars, "notes": [], "long_notes": []}
 	
 	for note in notes:
 		dictionary["notes"].append(note.get_dictionary())
@@ -40,3 +40,17 @@ static func is_equal(song_map1 : SongMap, song_map2 : SongMap) -> bool:
 
 func has_notes() -> bool:
 	return not notes.is_empty() or not long_notes.is_empty()
+
+static func dictionary_to_resource(dictionary : Dictionary) -> SongMap:
+	@warning_ignore("shadowed_variable")
+	var notes : Array[NoteResource] = []
+	@warning_ignore("shadowed_variable")
+	var long_notes : Array[LongNoteResource] = []
+	
+	for dict in dictionary["notes"]:
+		notes.append(NoteResource.dictionary_to_resource(dict))
+	
+	for dict in dictionary["long_notes"]:
+		long_notes.append(LongNoteResource.dictionary_to_resource(dict))
+	
+	return SongMap.new(dictionary["gear_type"], dictionary["difficulty"], dictionary["stars"], notes, long_notes)

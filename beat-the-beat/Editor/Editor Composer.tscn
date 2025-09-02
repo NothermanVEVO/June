@@ -1,6 +1,7 @@
-[gd_scene load_steps=21 format=3 uid="uid://dw4rs74gsagrn"]
+[gd_scene load_steps=22 format=3 uid="uid://dw4rs74gsagrn"]
 
 [ext_resource type="Script" uid="uid://ddx3q78woi7jl" path="res://Editor/SoundComponentsItems.gd" id="1_7fqon"]
+[ext_resource type="Script" uid="uid://3yuoy3etpxip" path="res://Editor/EditorComposer.gd" id="1_g7rpo"]
 [ext_resource type="Script" uid="uid://re8yk5328yco" path="res://Editor/MenuBar/EditorMenuBar.gd" id="1_p8fip"]
 [ext_resource type="Script" uid="uid://jr7inyppvgoi" path="res://Editor/GameComponentsList.gd" id="1_sakc5"]
 [ext_resource type="Script" uid="uid://bbuinuyr63r63" path="res://Editor/MenuBar/Menu.gd" id="2_bnevv"]
@@ -30,6 +31,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+script = ExtResource("1_g7rpo")
 
 [node name="MenuBar" type="FlowContainer" parent="."]
 custom_minimum_size = Vector2(0, 30)

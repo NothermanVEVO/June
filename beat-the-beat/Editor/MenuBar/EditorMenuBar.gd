@@ -84,6 +84,8 @@ func _game_changed() -> void:
 	undo.disabled = false
 	redo.disabled = true
 	_redo_song_maps.clear()
+	
+	_memory_save_song_map.call_deferred()
 
 func _on_undo_pressed() -> void:
 	if _undo_song_maps.is_empty(): # SHOULDN'T ENTER HERE...
@@ -118,7 +120,7 @@ func _on_redo_pressed() -> void:
 	_memory_save_song_map()
 
 func _on_gear_type_item_selected(index: int) -> void:
-	_memory_save_song_map()
+	_game_changed()
 	
 	_gear_type_value = _gear_type.get_item_id(index)
 	_stars_value = 1
@@ -133,7 +135,7 @@ func _on_gear_type_item_selected(index: int) -> void:
 	game.set_gear(_gear_type_value)
 
 func _on_difficulty_item_selected(index: int) -> void:
-	_memory_save_song_map()
+	_game_changed()
 	
 	_difficulty_type_value = _difficulty.get_item_id(index)
 	_stars_value = 1
@@ -149,9 +151,15 @@ func _on_difficulty_item_selected(index: int) -> void:
 
 func _on_stars_value_changed(value: float) -> void:
 	_stars_value = roundi(value)
+	
+	for s_map in _saved_song_maps: ## HAD TO USE THIS BECAUSE USING _MEMORY_SAVE_SONG_MAP OR _GAME_CHANGED WOULD BROKE THE UNDO AND REDO
+		if SongMap.is_equal(s_map, to_resource()):
+			s_map.stars = _stars_value
 
 func _memory_save_song_map() -> void:
 	var song_map := to_resource()
+	
+	#print(song_map.get_dictionary())
 	
 	for s_map in _saved_song_maps:
 		if SongMap.is_equal(s_map, song_map):
@@ -286,10 +294,10 @@ func _transfer_to_confirmation_choice_made(choice : TransferToConfirmation.Choic
 		
 	_transfer_to_confirmation.visible = false
 
-func is_editor_empty() -> bool:
+static func is_editor_empty() -> bool:
 	return _saved_song_maps.is_empty() and _undo_song_maps.is_empty() and _redo_song_maps.is_empty()
 
-func reset_editor() -> void:
+func reset() -> void:
 	snap_divisor.select(0)
 	_snap_divisor_value = 1
 	_gear_type.select(0)
@@ -303,5 +311,5 @@ func reset_editor() -> void:
 	_undo_song_maps.clear()
 	_redo_song_maps.clear()
 
-func get_memory_saved_song_maps() -> Array[SongMap]:
+static func get_memory_saved_song_maps() -> Array[SongMap]:
 	return _saved_song_maps

@@ -35,9 +35,22 @@ func _init(name : String, author : String, BPM : int, track : String, song : Str
 
 func get_dictionary() -> Dictionary:
 	var dictionary := {"id": ID, "name": name, "author": author, "BPM": BPM, "track": track, "song": song, "image": image, 
-		"video": video, "icon": icon, "song_maps": []}
+		"video": video, "icon": icon, "song_maps": [], "song_time_sample": song_time_sample, "video_time_sample": video_time_sample}
 	
 	for song_map in song_maps:
 		dictionary["song_maps"].append(song_map.get_dictionary())
 	
 	return dictionary
+
+static func dictionary_to_resource(dictionary : Dictionary) -> SongResource:
+	@warning_ignore("shadowed_variable")
+	var song_maps : Array[SongMap] = []
+	for dict in dictionary["song_maps"]:
+		song_maps.append(SongMap.dictionary_to_resource(dict))
+	
+	var song_resource := SongResource.new(dictionary["name"], dictionary["author"], dictionary["BPM"], dictionary["track"], dictionary["song"], 
+		dictionary["image"], dictionary["video"], dictionary["icon"], song_maps, dictionary["song_time_sample"], dictionary["video_time_sample"])
+	
+	song_resource.ID = dictionary["ID"]
+	
+	return song_resource
