@@ -91,6 +91,11 @@ func save_file() -> void:
 	if not Editor.editor_settings.is_empty():
 		if _file_path:
 			var song_resource := Editor.to_resource()
+			for s_map in song_resource.song_maps:
+				for note in s_map.notes:
+					note.is_selected = false
+				for long_note in s_map.long_notes:
+					long_note.is_selected = false
 			song_resource.ID = current_ID
 			var file := FileAccess.open(_file_path, FileAccess.WRITE)
 			if file:

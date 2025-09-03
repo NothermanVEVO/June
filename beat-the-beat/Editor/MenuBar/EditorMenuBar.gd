@@ -123,8 +123,6 @@ func _on_gear_type_item_selected(index: int) -> void:
 	_game_changed()
 	
 	_gear_type_value = _gear_type.get_item_id(index)
-	_stars_value = 1
-	_stars.value = _stars_value
 	
 	for sound_map in _saved_song_maps:
 		if sound_map.gear_type == _gear_type_value and sound_map.difficulty == _difficulty_type_value:
@@ -133,13 +131,13 @@ func _on_gear_type_item_selected(index: int) -> void:
 			return
 			
 	game.set_gear(_gear_type_value)
+	_stars_value = 1
+	_stars.value = _stars_value
 
 func _on_difficulty_item_selected(index: int) -> void:
 	_game_changed()
 	
 	_difficulty_type_value = _difficulty.get_item_id(index)
-	_stars_value = 1
-	_stars.value = _stars_value
 	
 	for sound_map in _saved_song_maps:
 		if sound_map.gear_type == _gear_type_value and sound_map.difficulty == _difficulty_type_value:
@@ -148,6 +146,8 @@ func _on_difficulty_item_selected(index: int) -> void:
 			return
 	
 	game.set_gear(_gear_type_value)
+	_stars_value = 1
+	_stars.value = _stars_value
 
 func _on_stars_value_changed(value: float) -> void:
 	_stars_value = roundi(value)
@@ -310,6 +310,17 @@ func reset() -> void:
 	_saved_song_maps.clear()
 	_undo_song_maps.clear()
 	_redo_song_maps.clear()
+	undo.disabled = true
+	redo.disabled = true
 
 static func get_memory_saved_song_maps() -> Array[SongMap]:
 	return _saved_song_maps
+
+func load_song_maps(song_maps : Array[SongMap]) -> void:
+	reset()
+	
+	for s_map in song_maps:
+		_saved_song_maps.append(s_map)
+	
+	if _saved_song_maps:
+		load_song_map(_saved_song_maps[0])
