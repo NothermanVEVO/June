@@ -54,3 +54,24 @@ static func dictionary_to_resource(dictionary : Dictionary) -> SongMap:
 		long_notes.append(LongNoteResource.dictionary_to_resource(dict))
 	
 	return SongMap.new(dictionary["gear_type"], dictionary["difficulty"], dictionary["stars"], notes, long_notes)
+
+static func validate_dictionary(dictionary : Dictionary) -> String:
+	if not dictionary.has("gear_type") or typeof(dictionary["gear_type"]) != TYPE_FLOAT:
+		return  "\"gear_type\" not found or wrong format in SongMap"
+	if not dictionary.has("difficulty") or typeof(dictionary["difficulty"]) != TYPE_FLOAT:
+		return  "\"difficulty\" not found or wrong format in SongMap"
+	if not dictionary.has("stars") or typeof(dictionary["stars"]) != TYPE_FLOAT:
+		return  "\"stars\" not found or wrong format in SongMap"
+	if not dictionary.has("notes") or typeof(dictionary["notes"]) != TYPE_ARRAY:
+		return  "\"notes\" not found or wrong format in SongMap"
+	for dict in dictionary["notes"]:
+		var validate_wrong := NoteResource.validate_dictionary(dict)
+		if validate_wrong:
+			return validate_wrong
+	if not dictionary.has("long_notes") or typeof(dictionary["long_notes"]) != TYPE_ARRAY:
+		return  "\"long_notes\" not found or wrong format in SongMap"
+	for dict in dictionary["long_notes"]:
+		var validate_wrong := LongNoteResource.validate_dictionary(dict)
+		if validate_wrong:
+			return  validate_wrong
+	return  ""

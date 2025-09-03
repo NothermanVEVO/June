@@ -69,8 +69,12 @@ func _on_file_dialog_file_selected(path: String) -> void:
 			set_video(path)
 
 func _pop_up_dialog(dialog : String) -> void:
-	accept_dialog.dialog_text = dialog
-	accept_dialog.popup()
+	var duplicate_accept_dialog : AcceptDialog = accept_dialog.duplicate()
+	duplicate_accept_dialog.dialog_text = dialog
+	add_child(duplicate_accept_dialog)
+	duplicate_accept_dialog.canceled.connect(duplicate_accept_dialog.queue_free)
+	duplicate_accept_dialog.confirmed.connect(duplicate_accept_dialog.queue_free)
+	duplicate_accept_dialog.popup()
 
 func set_song(path : String) -> void:
 	if not path.get_extension() in VALID_AUDIO_EXTENSION:
@@ -244,6 +248,32 @@ func reset() -> void:
 	remove_video_button.disabled = true
 	video_player.stream = null
 	_video_path = ""
+
+@warning_ignore("shadowed_variable")
+func load_editor(song : String, author : String, track : String, BPM : int, creator : String, song_time_sample : String, video_time_sample : String, 
+	song_path : String, icon_path : String, image_path : String, video_path : String) -> void:
+	
+	reset()
+	$HBoxContainer/Left/VBoxContainer/Name/TextEdit.text = song
+	$HBoxContainer/Left/VBoxContainer/Author/TextEdit.text = author
+	$HBoxContainer/Left/VBoxContainer/Track/TextEdit.text = track
+	$HBoxContainer/Left/VBoxContainer/BPM/SpinBox.value = BPM
+	$HBoxContainer/Left/VBoxContainer/Creator/TextEdit.text = creator
+	$HBoxContainer/Left/VBoxContainer/SongTimeSample/SongTimeSampleText.text = song_time_sample
+	$HBoxContainer/Left/VBoxContainer/VideoTimeSample/VideoTimeSampleText.text = video_time_sample
+	
+	if song_path:
+		set_song(song_path)
+	
+	if icon_path:
+		set_icon(icon_path)
+	
+	if image_path:
+		set_image(image_path)
+	
+	if video_path:
+		set_video(video_path)
+	
 
 func get_song_name() -> String:
 	return $HBoxContainer/Left/VBoxContainer/Name/TextEdit.text

@@ -1,5 +1,7 @@
 extends Node
 
+enum TitleType {BASE, EDITOR_UNSAVED, EDITOR_SAVED, EDITOR_SAVED_CHANGED}
+
 const EDITOR_PATH : String = "user://editor"
 const SONGS_PATH : String = "user://songs"
 
@@ -15,18 +17,10 @@ const HIGHLIGHT_SHADER = preload("res://shaders/Highlight.gdshader")
 
 var _mouse_effect : MouseEffect
 
-var file_dialog := FileDialog.new()
-
 func _ready() -> void:
 	_mouse_effect = MouseEffect.new()
 	add_child(_mouse_effect)
 	
-	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_DIR
-	file_dialog.access = FileDialog.ACCESS_USERDATA
-	file_dialog.use_native_dialog = true
-	
-	add_child(file_dialog)
-	#file_dialog.popup()
 	if not DirAccess.dir_exists_absolute(EDITOR_PATH):
 		DirAccess.make_dir_absolute(EDITOR_PATH)
 	if not DirAccess.dir_exists_absolute(SONGS_PATH):
@@ -59,3 +53,14 @@ func get_UUID() -> String:
 		end += values.substr(rng.randi_range(0, values.length() - 1), 1)
 	
 	return begin + "-" + middle + "-" + end
+
+func set_window_title(type : TitleType) -> void:
+	match type:
+		TitleType.BASE:
+			DisplayServer.window_set_title("June")
+		TitleType.EDITOR_UNSAVED:
+			DisplayServer.window_set_title("June - Editor - Unsaved File")
+		TitleType.EDITOR_SAVED:
+			DisplayServer.window_set_title("June - Editor - [" + FileMenu.get_file_path() + "]")
+		TitleType.EDITOR_SAVED_CHANGED:
+			DisplayServer.window_set_title("June - Editor - [" + FileMenu.get_file_path() + "] (*)")

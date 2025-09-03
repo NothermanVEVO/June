@@ -49,3 +49,20 @@ func to_note(gear_mode : Gear.Mode) -> Variant:
 	note._is_selected = is_selected
 	
 	return note
+
+static func validate_dictionary(dictionary : Dictionary) -> String:
+	if not dictionary.has("start_time") or typeof(dictionary["start_time"]) != TYPE_FLOAT:
+		return "\"start_time\" not found or wrong format in NoteResource"
+	if not dictionary.has("end_time") or typeof(dictionary["end_time"]) != TYPE_FLOAT:
+		return "\"end_time\" not found or wrong format in NoteResource"
+	if not dictionary.has("idx") or typeof(dictionary["idx"]) != TYPE_FLOAT:
+		return "\"idx\" not found or wrong format in NoteResource"
+	if not dictionary.has("type") or typeof(dictionary["type"]) != TYPE_FLOAT:
+		return "\"type\" not found or wrong format in NoteResource"
+	if not dictionary.has("powered") or typeof(dictionary["powered"]) != TYPE_BOOL:
+		return "\"powered\" not found or wrong format in NoteResource"
+	if not dictionary.has("is_valid") or typeof(dictionary["is_valid"]) != TYPE_BOOL:
+		return "\"is_valid\" not found or wrong format in NoteResource"
+	if not dictionary.has("is_selected") or typeof(dictionary["is_selected"]) != TYPE_BOOL:
+		return "\"is_selected\" not found or wrong format in NoteResource"
+	return ""

@@ -44,3 +44,16 @@ func to_long_note() -> LongNote:
 	long_note.set_invalid_highlight(not is_valid)
 	long_note.set_selected_highlight(is_selected)
 	return long_note
+
+static func validate_dictionary(dictionary : Dictionary) -> String:
+	if not dictionary.has("time") or typeof(dictionary["time"]) != TYPE_FLOAT:
+		return "\"time\" not found or wrong format in LongNoteResource"
+	if not dictionary.has("type") or typeof(dictionary["type"]) != TYPE_FLOAT:
+		return "\"type\" not found or wrong format in LongNoteResource"
+	if not dictionary.has("value"):
+		return "\"value\" not found or wrong format in LongNoteResource"
+	if not dictionary.has("is_valid") or typeof(dictionary["is_valid"]) != TYPE_BOOL:
+		return "\"is_valid\" not found or wrong format in LongNoteResource"
+	if not dictionary.has("is_selected") or typeof(dictionary["is_selected"]) != TYPE_BOOL:
+		return "\"is_selected\" not found or wrong format in LongNoteResource"
+	return ""
