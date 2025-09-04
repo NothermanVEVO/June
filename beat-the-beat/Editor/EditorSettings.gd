@@ -12,7 +12,6 @@ const VALID_AUDIO_EXTENSION : Array[String] = ["wav", "mp3", "ogg", "flac"]
 
 @onready var song_button : Button = $HBoxContainer/Right/VBoxContainer/Song/SongButton
 @onready var play_song_button : Button = $HBoxContainer/Right/VBoxContainer/Song/PlaySongButton
-@onready var song : AudioStreamPlayer = $HBoxContainer/Right/VBoxContainer/Song/AudioStreamPlayer
 var _song_path : String = ""
 
 @onready var icon_button : Button = $HBoxContainer/Right/VBoxContainer/Icon/IconButton
@@ -43,6 +42,7 @@ var time_regex := RegEx.new()
 func _ready() -> void:
 	get_tree().root.files_dropped.connect(_on_files_dropped)
 	time_regex.compile("^\\d{2}:[0-5]\\d:\\d{3}$")
+	Song.finished.connect(_on_song_finished)
 
 func _on_files_dropped(files: PackedStringArray) -> void:
 	var file = files[0]
@@ -88,7 +88,7 @@ func set_song(path : String) -> void:
 	var stream = load(path)
 	
 	if stream is AudioStream:
-		song.stream = stream
+		Song.set_song(stream)
 		play_song_button.disabled = false
 		compose_button.disabled = false
 		song_time_sample_text.editable = true
@@ -185,16 +185,17 @@ func _on_song_button_pressed() -> void:
 
 func _on_play_song_button_pressed() -> void:
 	if play_song_button.text == "Play":
-		song.play()
+		Song.play()
 		play_song_button.text = "Stop"
 	else:
 		play_song_button.text = "Play"
-		song.stop()
+		Song.stop()
 
-func _on_audio_stream_player_finished() -> void:
+func _on_song_finished() -> void:
 	play_song_button.text = "Play"
 
 func _on_compose_pressed() -> void:
+	Song.BPM = get_BPM_value()
 	Editor.change_to_composer()
 
 func _on_song_time_sample_text_changed() -> void:
@@ -221,7 +222,7 @@ func is_empty() -> bool:
 		$HBoxContainer/Left/VBoxContainer/Track/TextEdit.text.is_empty()) and (
 		$HBoxContainer/Left/VBoxContainer/Creator/TextEdit.text.is_empty()) and (
 		last_valid_sample_song_text.is_empty()) and last_valid_sample_video_text.is_empty() and (
-		not song.stream) and not icon_texture.texture and not image_rect_texture.texture and not video_player.stream
+		not Song.stream) and not icon_texture.texture and not image_rect_texture.texture and not video_player.stream
 
 func reset() -> void:
 	$HBoxContainer/Left/VBoxContainer/Name/TextEdit.text = ""
@@ -234,7 +235,7 @@ func reset() -> void:
 	compose_button.disabled = true
 	
 	play_song_button.disabled = true
-	song.stream = null
+	Song.stream = null
 	_song_path = ""
 	
 	remove_icon_button.disabled = true
@@ -307,3 +308,6 @@ func get_image_path() -> String:
 
 func get_video_path() -> String:
 	return _video_path
+
+func _on_spin_box_value_changed(value: float) -> void:
+	Song.BPM = roundi(value)

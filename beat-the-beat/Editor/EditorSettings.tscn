@@ -225,8 +225,6 @@ layout_mode = 2
 disabled = true
 text = "Play"
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="HBoxContainer/Right/VBoxContainer/Song"]
-
 [node name="Icon" type="HBoxContainer" parent="HBoxContainer/Right/VBoxContainer"]
 layout_mode = 2
 
@@ -310,11 +308,11 @@ loop = true
 
 [connection signal="pressed" from="Menu/FlowContainer/Compose" to="." method="_on_compose_pressed"]
 [connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
+[connection signal="value_changed" from="HBoxContainer/Left/VBoxContainer/BPM/SpinBox" to="." method="_on_spin_box_value_changed"]
 [connection signal="text_changed" from="HBoxContainer/Left/VBoxContainer/SongTimeSample/SongTimeSampleText" to="." method="_on_song_time_sample_text_changed"]
 [connection signal="text_changed" from="HBoxContainer/Left/VBoxContainer/VideoTimeSample/VideoTimeSampleText" to="." method="_on_video_time_sample_text_changed"]
 [connection signal="pressed" from="HBoxContainer/Right/VBoxContainer/Song/SongButton" to="." method="_on_song_button_pressed"]
 [connection signal="pressed" from="HBoxContainer/Right/VBoxContainer/Song/PlaySongButton" to="." method="_on_play_song_button_pressed"]
-[connection signal="finished" from="HBoxContainer/Right/VBoxContainer/Song/AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]
 [connection signal="pressed" from="HBoxContainer/Right/VBoxContainer/Icon/IconButton" to="." method="_on_icon_button_pressed"]
 [connection signal="pressed" from="HBoxContainer/Right/VBoxContainer/Icon/RemoveIconButton" to="." method="_on_remove_button_pressed"]
 [connection signal="pressed" from="HBoxContainer/Right/VBoxContainer/Image/ImageButton" to="." method="_on_image_button_pressed"]

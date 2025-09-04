@@ -43,6 +43,8 @@ func _confirmation_dialog_confirmed() -> void:
 		Choices.NEW:
 			Editor.editor_composer.editor_menu_bar.reset()
 			Editor.editor_settings.reset()
+			Editor.editor_composer.visible = false
+			Editor.editor_settings.visible = true
 			_file_path = ""
 			current_ID = Global.get_UUID()
 			Global.set_window_title(Global.TitleType.EDITOR_UNSAVED)

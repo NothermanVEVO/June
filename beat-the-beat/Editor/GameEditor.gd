@@ -351,8 +351,7 @@ func _handle_select() -> void:
 				time_difference_y = -lowest_note.get_time()
 			if get_local_mouse_position().y > _hit_zone_y and mouse_time_difference_y < 0: #MOVE DOWN
 			#if lowest_note.get_time() < Song.get_time() and mouse_time_difference_y < 0: #MOVE DOWN
-				var song := Song.new()
-				song.set_time(clampf(Song.get_time() + mouse_time_difference_y, 0.0, Song.get_duration()))
+				Song.set_time(clampf(Song.get_time() + mouse_time_difference_y, 0.0, Song.get_duration()))
 			
 			var highest_note_time = highest_note.get_time() + highest_note.get_duration() if highest_note is HoldNoteEditor else highest_note.get_time()
 			
@@ -360,15 +359,13 @@ func _handle_select() -> void:
 				time_difference_y = 0
 			highest_note_time = _clicked_note.get_time() + _clicked_note.get_duration() if _clicked_note is HoldNoteEditor else _clicked_note.get_time()
 			if highest_note_time + time_difference_y > Song.get_time() + Gear.MAX_TIME_Y():
-				var song := Song.new()
 				if mouse_time_difference_y > 0:
-					song.set_time(clampf(Song.get_time() + mouse_time_difference_y, 0.0, Song.get_duration()))
+					Song.set_time(clampf(Song.get_time() + mouse_time_difference_y, 0.0, Song.get_duration()))
 			if get_local_mouse_position().y < 0 and mouse_time_difference_y > 0: #MOVE UP
-				var song := Song.new()
-				song.set_time(clampf(Song.get_time() + mouse_time_difference_y, 0.0, Song.get_duration()))
+				Song.set_time(clampf(Song.get_time() + mouse_time_difference_y, 0.0, Song.get_duration()))
 			
 			for note in _selected_notes:
-				note.set_time(note.get_time() + time_difference_y)
+				note.set_time(_get_closest_grid_time_pos(note.get_time() + time_difference_y))
 				gear.update_note_time(note, true)
 			
 		elif Input.is_action_just_released("Add Item"):
@@ -390,16 +387,14 @@ func _handle_select() -> void:
 			_last_grid_time_mouse = _get_closest_grid_time_to_mouse()
 			
 			if get_local_mouse_position().y > _hit_zone_y and mouse_time_difference_y < 0: #MOVE DOWN
-				var song := Song.new()
-				song.set_time(clampf(Song.get_time() + mouse_time_difference_y, 0.0, Song.get_duration()))
+				Song.set_time(clampf(Song.get_time() + mouse_time_difference_y, 0.0, Song.get_duration()))
 			if get_local_mouse_position().y < 0 and mouse_time_difference_y > 0: #MOVE UP
-				var song := Song.new()
-				song.set_time(clampf(Song.get_time() + mouse_time_difference_y, 0.0, Song.get_duration()))
+				Song.set_time(clampf(Song.get_time() + mouse_time_difference_y, 0.0, Song.get_duration()))
 			
 			if time_difference_y:
 				changed.emit()
 				_had_time_difference = true
-				_clicked_long_note.set_time(clampf(_clicked_long_note.get_time() + time_difference_y, 0.0, _get_highest_grid_time()))
+				_clicked_long_note.set_time(clampf(_get_closest_grid_time_pos(_clicked_long_note.get_time() + time_difference_y), 0.0, _get_highest_grid_time()))
 			
 				gear.update_long_note(_clicked_long_note, true)
 		elif Input.is_action_just_released("Add Item"):
@@ -509,8 +504,7 @@ func _handle_selected_item_hold() -> void:
 				time_difference_y < 0.0 and get_local_mouse_position().y < 0.0):
 				return
 			if get_local_mouse_position().y < 0.0 or get_local_mouse_position().y > _hit_zone_y:
-				var song := Song.new()
-				song.set_time(clampf(Song.get_time() + time_difference_y, 0.0, Song.get_duration()))
+				Song.set_time(clampf(Song.get_time() + time_difference_y, 0.0, Song.get_duration()))
 		elif Input.is_action_just_released("Add Item"):
 			_currently_hold_note.pressing_button.connect(_pressing_some_hold_resize_button)
 			_currently_hold_note.set_end_time(mouse_time_pos_y)
@@ -678,6 +672,15 @@ func _get_closest_grid_time_to_mouse() -> float:
 
 func _get_highest_grid_time() -> float:
 	return floor(Song.get_duration() / EditorMenuBar.get_divisor()) * EditorMenuBar.get_divisor()
+
+func _get_closest_grid_time_pos(time_pos : float) -> float:
+	var value := EditorMenuBar.get_divisor()
+	var rest := fmod(time_pos, value)
+	if rest <= value / 2.0:
+		time_pos -= rest
+	else:
+		time_pos += value - rest
+	return time_pos
 
 func _draw() -> void:
 	var nh_positions := gear.get_note_holders_global_position()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://dw4rs74gsagrn"]
+[gd_scene load_steps=20 format=3 uid="uid://dw4rs74gsagrn"]
 
 [ext_resource type="Script" uid="uid://ddx3q78woi7jl" path="res://Editor/SoundComponentsItems.gd" id="1_7fqon"]
 [ext_resource type="Script" uid="uid://3yuoy3etpxip" path="res://Editor/EditorComposer.gd" id="1_g7rpo"]
@@ -9,9 +9,7 @@
 [ext_resource type="Script" uid="uid://cuhkonamt3aus" path="res://Editor/MenuBar/File.gd" id="3_6pnfi"]
 [ext_resource type="Script" uid="uid://cr1l58jmclcj" path="res://Editor/SoundBoard.gd" id="3_ty45h"]
 [ext_resource type="PackedScene" uid="uid://dsydydetqa4bx" path="res://Editor/ConfirmationDialog.tscn" id="3_vl3l7"]
-[ext_resource type="AudioStream" uid="uid://bmdadx4pafmd6" path="res://Sound Test Sample/Brutal, acabou pro beta versão globo.mp3" id="5_d6op5"]
 [ext_resource type="Texture2D" uid="uid://oyfiimbt1x0y" path="res://assets/gameItemsIcons/selectIcon.png" id="6_6pnfi"]
-[ext_resource type="Script" uid="uid://df36n2m4tgkt0" path="res://Gear/Song.gd" id="6_a7m05"]
 [ext_resource type="Texture2D" uid="uid://cmb4i22o1gq1y" path="res://assets/gameItemsIcons/unLockIcon.png" id="7_vl3l7"]
 [ext_resource type="Texture2D" uid="uid://ckv44gvcprwo0" path="res://assets/gameItemsIcons/tapIcon.png" id="8_g7rpo"]
 [ext_resource type="Texture2D" uid="uid://do6yk8uk1nup3" path="res://assets/gameItemsIcons/holdIcon.png" id="9_fp4jx"]
@@ -399,10 +397,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 4
 step = 0.1
 tick_count = 15
-
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("5_d6op5")
-script = ExtResource("6_a7m05")
 
 [node name="TransferToHolder" type="Node2D" parent="."]
 

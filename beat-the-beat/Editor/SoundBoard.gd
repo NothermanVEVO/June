@@ -2,8 +2,6 @@ extends FlowContainer
 
 class_name SoundBoard
 
-@onready var song : Song = $"../AudioStreamPlayer"
-
 ## SPEED TEXT AND SLIDER			-- START --
 @onready var speed_text : TextEdit = $SpeedContainer/SpeedText
 @onready var speed_slider : HSlider = $SpeedContainer/SpeedSlider
@@ -70,7 +68,7 @@ func _ready() -> void:
 	outlimits_valid_time_pos.compile("^\\d*:[0-5]*\\d*:\\d*$")
 	last_valid_time_pos_text = "00:00:000"
 	
-	song.finished.connect(_song_has_finished)
+	Song.finished.connect(_song_has_finished)
 
 func _process(delta: float) -> void:
 	
@@ -85,8 +83,8 @@ func _process(delta: float) -> void:
 	## TIME TEXT AND SLIDER
 	if is_dragging_time_slider:
 		time_text.text = (str(time_slider.value) + "%")
-		_temp_song_time_pos = song.stream.get_length() * time_slider.value / 100
-		song.set_time(_temp_song_time_pos)
+		_temp_song_time_pos = Song.get_duration() * time_slider.value / 100
+		Song.set_time(_temp_song_time_pos)
 		#song.seek(_temp_song_time_pos)
 		_adjust_time_pos_text(true)
 	if last_time_value != time_slider.value:
@@ -97,26 +95,26 @@ func _process(delta: float) -> void:
 		last_pseudo_valid_time_text = time_text.text
 		
 	## SONG
-	if song.playing: # THE SONG IS PLAYING
-		time_slider.value = Song.get_time() * 100 / song.stream.get_length()
-		time_text.text = "%.1f" % (Song.get_time() * 100 / song.stream.get_length()) + "%"
+	if Song.playing: # THE SONG IS PLAYING
+		time_slider.value = Song.get_time() * 100 / Song.get_duration()
+		time_text.text = "%.1f" % (Song.get_time() * 100 / Song.get_duration()) + "%"
 		_adjust_time_pos_text()
 	elif _song_finished: # THE SONG FINISHED
 		time_slider.value = 100.0
 		time_text.text = "100.0%"
 		##NOTE GAMBIARRA A SEGUIR, TO ALTERANDO O TEMP SONG TIME POS PRA AJUSTAR O TEXTO PRO TEMPO FINAL:
-		_temp_song_time_pos = song.stream.get_length()
+		_temp_song_time_pos = Song.get_duration()
 		_adjust_time_pos_text(true)
-		song.set_time(_temp_song_time_pos)
+		Song.set_time(_temp_song_time_pos)
 		_temp_song_time_pos = 0.0
 		_song_finished = false
 	else: # THE SONG IS PAUSED
-		time_slider.value = Song.get_time() * 100 / song.stream.get_length()
+		time_slider.value = Song.get_time() * 100 / Song.get_duration()
 		if not time_text.has_focus():
-			time_text.text = "%.1f" % (Song.get_time() * 100 / song.stream.get_length()) + "%"
+			time_text.text = "%.1f" % (Song.get_time() * 100 / Song.get_duration()) + "%"
 		if not time_pos_text.has_focus():
 			_adjust_time_pos_text()
-	song.pitch_scale = speed_slider.value / 100
+	Song.pitch_scale = speed_slider.value / 100
 
 # CHECK IF THE TEXT IN THE SPEED TEXT IS VALID
 func is_speed_text_valid() -> bool:
@@ -190,7 +188,7 @@ func _on_speed_slider_drag_ended(value_changed: bool) -> void:
 func _on_time_slider_drag_started() -> void:
 	is_dragging_time_slider = true
 	time_text.text = (str(time_slider.value) + "%")
-	song.stop()
+	Song.stop()
 	_song_finished = false
 	
 	_adjust_time_pos_text(true)
@@ -205,12 +203,12 @@ func _on_time_slider_drag_ended(value_changed: bool) -> void:
 	_song_finished = time_slider.value == 100.0
 	if _song_finished:
 		$Play.text = "Play"
-		song.stop()
+		Song.stop()
 		_temp_song_time_pos = 0.0
 	else:
-		_temp_song_time_pos = song.stream.get_length() * time_slider.value / 100
+		_temp_song_time_pos = Song.get_duration() * time_slider.value / 100
 		if $Play.text == "Pause": # IT'S PLAYING
-			song.play(_temp_song_time_pos)
+			Song.play(_temp_song_time_pos)
 
 func _on_time_percentage_text_changed() -> void:
 	if "\n" in time_text.text:
@@ -247,9 +245,9 @@ func _on_time_percentage_text_changed() -> void:
 				time_slider.value = time_slider.max_value
 			else:
 				time_slider.value = value
-			song.set_time(Song.get_duration() * (time_slider.value / 100))
+			Song.set_time(Song.get_duration() * (time_slider.value / 100))
 		
-		_temp_song_time_pos = song.stream.get_length() * time_slider.value / 100
+		_temp_song_time_pos = Song.get_duration() * time_slider.value / 100
 		last_time_value = time_slider.value
 		last_pseudo_valid_time_text = time_text.text
 
@@ -293,12 +291,12 @@ func adjust_time() -> void:
 func _on_play_pressed() -> void:
 	if $Play.text == "Play": #PLAY
 		$Play.text = "Pause"
-		song.play(Song.get_time())
+		Song.play(Song.get_time())
 		_song_finished = false
 	elif $Play.text == "Pause": #PAUSE
 		$Play.text = "Play"
 		_temp_song_time_pos = Song.get_time()
-		song.stop()
+		Song.stop()
 
 func _song_has_finished() -> void:
 	_song_finished = true
@@ -347,30 +345,30 @@ func _on_time_text_changed(force_change : bool = false) -> void:
 		var seconds : int = str_to_var(values[1]) if values[1] else 0
 		var miliseconds : float = str_to_var("0." + values[2]) if values[2] else 0.0
 		var absolute_seconds : float = minutes * 60 + seconds + miliseconds
-		_temp_song_time_pos = absolute_seconds if absolute_seconds <= song.stream.get_length() else song.stream.get_length()
-		song.set_time(_temp_song_time_pos)
+		_temp_song_time_pos = absolute_seconds if absolute_seconds <= Song.get_duration() else Song.get_duration()
+		Song.set_time(_temp_song_time_pos)
 		
 		last_valid_time_pos_text = time_pos_text.text
-		time_text.text = "%.1f" % (Song.get_time() * 100 / song.stream.get_length()) + "%"
+		time_text.text = "%.1f" % (Song.get_time() * 100 / Song.get_duration()) + "%"
 
 func _on_time_focus_entered() -> void:
 	if $Play.text == "Pause":
 		$Play.text = "Play"
-		song.stop()
+		Song.stop()
 		song_was_playing = true
 
 func _on_time_focus_exited() -> void:
 	_on_time_text_changed(true)
 	if song_was_playing:
 		$Play.text = "Pause"
-		song.play(_temp_song_time_pos)
+		Song.play(_temp_song_time_pos)
 		song_was_playing = false
 
 func _on_stop_pressed() -> void:
 	_temp_song_time_pos = 0.0
 	$Play.text = "Play"
-	song.set_time(0.0)
-	song.stop()
+	Song.set_time(0.0)
+	Song.stop()
 	time_slider.value = 0.0
 	_on_time_slider_drag_ended(false)
 

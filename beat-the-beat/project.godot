@@ -23,6 +23,7 @@ config/icon="res://icon.svg"
 
 Global="*res://Global/Global.gd"
 Editor="*res://Global/Editor.gd"
+Song="*res://Global/Song.gd"
 
 [display]
 
