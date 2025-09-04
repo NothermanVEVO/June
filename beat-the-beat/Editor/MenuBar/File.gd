@@ -120,6 +120,23 @@ func save_file() -> void:
 			file_dialog.popup()
 
 func _export(path : String) -> void:
+	path = path.get_basename()
+	if DirAccess.dir_exists_absolute(path):
+		_pop_confirmation_dialog("This name already exists.", "Ok", Choices.NONE)
+		return
+	else:
+		var error = DirAccess.make_dir_absolute(path)
+		if error == OK:
+			_export_song(path)
+			_export_video(path)
+			_export_icon(path)
+			_export_image(path)
+			_pop_confirmation_dialog("Song map exported successfully!", "Ok", Choices.NONE)
+		else:
+			_pop_confirmation_dialog("An error occured while trying to create the folder.", "Ok", Choices.NONE)
+	pass
+
+func export_file() -> void:
 	var is_settings_valid := Editor.editor_settings.is_valid_for_export()
 	if is_settings_valid:
 		_pop_confirmation_dialog(is_settings_valid, "Ok", Choices.NONE)
@@ -129,16 +146,48 @@ func _export(path : String) -> void:
 	if is_composer_valid:
 		_pop_confirmation_dialog(is_composer_valid, "Ok", Choices.NONE)
 		return
-	
-
-func export_file() -> void:
 	#file_dialog.access = FileDialog.ACCESS_FILESYSTEM
 	file_dialog.access = FileDialog.ACCESS_USERDATA
 	file_dialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
 	_last_file_dialog_choice = Choices.EXPORT
-	file_dialog.root_subfolder = ""
-	#file_dialog.popup()
-	_export("")
+	file_dialog.root_subfolder = Global.SONGS_PATH
+	file_dialog.popup()
+
+func _export_song(path : String) -> void:
+	if not Editor.editor_settings.get_song_path():
+		return
+	var file := FileAccess.open(Editor.editor_settings.get_song_path(), FileAccess.READ)
+	if not file:
+		_pop_confirmation_dialog("Wasn't possible to open the song file.", "Ok", Choices.NONE)
+		return
+	DirAccess.copy_absolute(Editor.editor_settings.get_song_path(), path + "//song." + Editor.editor_settings.get_song_path().get_extension())
+
+func _export_video(path : String) -> void:
+	if not Editor.editor_settings.get_video_path():
+		return
+	var file := FileAccess.open(Editor.editor_settings.get_video_path(), FileAccess.READ)
+	if not file:
+		_pop_confirmation_dialog("Wasn't possible to open the video file.", "Ok", Choices.NONE)
+		return
+	DirAccess.copy_absolute(Editor.editor_settings.get_video_path(), path + "//video." + Editor.editor_settings.get_video_path().get_extension())
+
+func _export_icon(path : String) -> void:
+	if not Editor.editor_settings.get_icon_path():
+		return
+	var file := FileAccess.open(Editor.editor_settings.get_icon_path(), FileAccess.READ)
+	if not file:
+		_pop_confirmation_dialog("Wasn't possible to open the icon file.", "Ok", Choices.NONE)
+		return
+	DirAccess.copy_absolute(Editor.editor_settings.get_icon_path(), path + "//icon." + Editor.editor_settings.get_icon_path().get_extension())
+
+func _export_image(path : String) -> void:
+	if not Editor.editor_settings.get_image_path():
+		return
+	var file := FileAccess.open(Editor.editor_settings.get_image_path(), FileAccess.READ)
+	if not file:
+		_pop_confirmation_dialog("Wasn't possible to open the image file.", "Ok", Choices.NONE)
+		return
+	DirAccess.copy_absolute(Editor.editor_settings.get_image_path(), path + "//video." + Editor.editor_settings.get_image_path().get_extension())
 
 func _pop_confirmation_dialog(dialog_text : String, ok_button_text : String, choice : Choices) -> void:
 	confirmation_dialog.dialog_text = dialog_text
@@ -154,7 +203,7 @@ func _file_dialog_file(path : String) -> void:
 		_file_path = Global.EDITOR_PATH + "//" + path.get_file()
 		_open_file(_file_path)
 	elif _last_file_dialog_choice == Choices.EXPORT:
-		_export(Global.SONGS_PATH + "//" + path.get_file() + ".json")
+		_export(Global.SONGS_PATH + "//" + path.get_file() + "")
 
 static func get_file_path() -> String:
 	return _file_path

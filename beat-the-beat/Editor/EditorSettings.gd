@@ -8,7 +8,7 @@ enum Files{SONG = 0, ICON = 1, IMAGE = 2, VIDEO = 3}
 @onready var accept_dialog : AcceptDialog = $AcceptDialog
 
 const DRAG_N_DROP_TEXT : String = "Select file or Drag and Drop here"
-const VALID_AUDIO_EXTENSION : Array[String] = ["wav", "mp3", "ogg", "flac"]
+const VALID_AUDIO_EXTENSION : Array[String] = ["wav", "mp3", "ogg"]
 
 @onready var song_button : Button = $HBoxContainer/Right/VBoxContainer/Song/SongButton
 @onready var play_song_button : Button = $HBoxContainer/Right/VBoxContainer/Song/PlaySongButton
@@ -85,7 +85,14 @@ func set_song(path : String) -> void:
 		_pop_up_dialog("Não foi possível achar o arquivo: \"" + path + "\"")
 		return
 	
-	var stream = load(path)
+	#var stream = load(path)
+	var stream
+	if path.get_extension() == "mp3":
+		stream = AudioStreamMP3.load_from_file(path)
+	elif path.get_extension() == "wav":
+		stream = AudioStreamWAV.load_from_file(path)
+	elif path.get_extension() == "ogg":
+		stream = AudioStreamOggVorbis.load_from_file(path)
 	
 	if stream is AudioStream:
 		Song.set_song(stream)
@@ -142,13 +149,14 @@ func set_video(path : String) -> void:
 		_pop_up_dialog("Não foi possível achar o arquivo: \"" + path + "\"")
 		return
 	
-	var stream = load(path)
+	var stream = VideoStreamTheora.new()
+	stream.file = path
 	
 	if stream is VideoStream:
 		video_player.stream = stream
 		video_player.play()
 		remove_video_button.disabled = false
-		video_time_sample_text.editable = true
+		#video_time_sample_text.editable = true
 		_video_path = path
 	else:
 		_pop_up_dialog("Não foi possível carregar o vídeo!")
@@ -330,9 +338,11 @@ func is_valid_for_export() -> String:
 		return "The \"sample song time\" can't be empty."
 	elif Global.text_to_time(last_valid_sample_song_text) >= Song.get_duration():
 		return "The \"sample song time\" can't be equal or higher than the song duration."
-	elif video_player.stream != null:
-		if last_valid_sample_video_text.is_empty():
-			return "The \"sample video time\" can't be empty."
-		elif Global.text_to_time(last_valid_sample_video_text) >= video_player.get_stream_length():
-			return "The \"sample video time\" can't be equal or higher than the video duration."
+	#elif video_player.stream != null:
+		#if last_valid_sample_video_text.is_empty():
+			#return "The \"sample video time\" can't be empty."
+		#elif Global.text_to_time(last_valid_sample_video_text) >= video_player.get_stream_length(): ##NOTE CURRENTLY NOT SUPPORTED IN GODOT
+			#return "The \"sample video time\" can't be equal or higher than the video duration."
+			##NOTE CURRENTLY NOT SUPPORTED IN GODOT, THE FOLLOWING LINK HAS AN ADDON
+			## NOTE https://www.youtube.com/watch?v=C9ptuhAB3GI&ab_channel=Voylin%27sGameDevJourney
 	return ""

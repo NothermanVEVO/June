@@ -25,7 +25,6 @@ func _ready() -> void:
 		DirAccess.make_dir_absolute(EDITOR_PATH)
 	if not DirAccess.dir_exists_absolute(SONGS_PATH):
 		DirAccess.make_dir_absolute(SONGS_PATH)
-	
 
 #func _process(delta: float) -> void:
 	##print_orphan_nodes() ## NOTE USE THIS TO CHECK FOR POSSIBLE MEMORY LEAK

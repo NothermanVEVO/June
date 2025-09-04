@@ -42,6 +42,7 @@ confirmation_dialog = NodePath("../ConfirmationDialog")
 
 [node name="Compose" type="Button" parent="Menu/FlowContainer"]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 disabled = true
 text = "Compose"
 
@@ -141,6 +142,8 @@ autowrap_mode = 0
 
 [node name="SpinBox" type="SpinBox" parent="HBoxContainer/Left/VBoxContainer/BPM"]
 layout_mode = 2
+tooltip_text = "Beats per minute.
+Affects the position of the notes."
 min_value = 1.0
 max_value = 1000.0
 value = 60.0
@@ -159,6 +162,7 @@ autowrap_mode = 0
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "Put your name or nickname here."
 placeholder_text = "The name of the creator of the song map..."
 clear_button_enabled = true
 
@@ -175,6 +179,7 @@ autowrap_mode = 0
 [node name="SongTimeSampleText" type="TextEdit" parent="HBoxContainer/Left/VBoxContainer/SongTimeSample"]
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
+tooltip_text = "When this song map get selected, the song will play at this time and last for 15 seconds."
 placeholder_text = "00:00:000"
 editable = false
 scroll_fit_content_width = true
@@ -192,6 +197,7 @@ autowrap_mode = 0
 [node name="VideoTimeSampleText" type="TextEdit" parent="HBoxContainer/Left/VBoxContainer/VideoTimeSample"]
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
+tooltip_text = "Not implemented yet."
 placeholder_text = "00:00:000"
 editable = false
 scroll_fit_content_width = true
@@ -220,6 +226,7 @@ autowrap_mode = 0
 [node name="SongButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Song"]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
+tooltip_text = "Only supports the formats \".mp3\", \".ogg\" and \".wav\"."
 text = "Select file or Drag and Drop here"
 
 [node name="PlaySongButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Song"]
@@ -240,6 +247,7 @@ autowrap_mode = 0
 [node name="IconButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Icon"]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
+tooltip_text = "Supports all basic formats of images."
 text = "Select file or Drag and Drop here"
 icon_alignment = 1
 expand_icon = true
@@ -267,6 +275,7 @@ autowrap_mode = 0
 
 [node name="ImageButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Image"]
 layout_mode = 2
+tooltip_text = "Supports all basic formats of images."
 text = "Select file or Drag and Drop here"
 
 [node name="RemoveImageButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Image"]
@@ -293,6 +302,8 @@ autowrap_mode = 0
 [node name="VideoButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Video"]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
+tooltip_text = "For now, only supports the format \".ogv\".
+There's many easy ways (like sites, or softwares) to convert the video."
 text = "Select file or Drag and Drop here"
 
 [node name="RemoveVideoButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Video"]
