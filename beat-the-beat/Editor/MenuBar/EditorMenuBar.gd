@@ -158,6 +158,15 @@ func _on_stars_value_changed(value: float) -> void:
 
 func _memory_save_song_map() -> void:
 	var song_map := to_resource()
+	if song_map.notes.is_empty() and song_map.long_notes.is_empty(): ## REMOVE EMPTY SONG MAPS
+		var idx := -1
+		for i in range(_saved_song_maps.size()):
+			if SongMap.is_equal(_saved_song_maps[i], song_map):
+				idx = i
+				break
+		if idx >= 0:
+			_saved_song_maps.remove_at(idx)
+		return
 	
 	#print(song_map.get_dictionary())
 	
@@ -324,3 +333,29 @@ func load_song_maps(song_maps : Array[SongMap]) -> void:
 	
 	if _saved_song_maps:
 		load_song_map(_saved_song_maps[0])
+
+func is_valid_for_export() -> String:
+	if _saved_song_maps.is_empty():
+		return "There's no songs maps to export."
+	for song_map in _saved_song_maps:
+		if song_map.notes.is_empty():
+			return "Can't export song map with \"empty notes\". Error in Gear: " + Gear.Type.find_key(song_map.gear_type) + (
+			"; Difficulty: " + SongMap.Difficulty.keys()[song_map.difficulty] + ";")
+		for note in song_map.notes:
+			if not note.is_valid:
+				var error : String = ""
+				match note.type:
+					NoteResource.Type.TAP:
+						error = "Tap Note; Time: " + str(note.start_time) + "; Idx: " + str(note.idx) + ";"
+					NoteResource.Type.HOLD:
+						error = "Hold Note; Start Time: " + str(note.start_time) + "; End Time: " + str(note.end_time) + "; Idx: " + str(note.idx) + ";"
+						if note.end_time <= note.start_time:
+							error += " The End Time can't be equal or lower than the Start Time;"
+				return "Can't export song map with \"wrong note\". Error in Gear: " + Gear.Type.find_key(song_map.gear_type) + (
+					"; Difficulty: " + SongMap.Difficulty.keys()[song_map.difficulty] + "; " + error)
+		for long_note in song_map.long_notes:
+			if not long_note.is_valid:
+				return "Can't export song map with \"wrong long note\". Error in Gear: " + Gear.Type.find_key(song_map.gear_type) + (
+					"; Difficulty: " + SongMap.Difficulty.keys()[song_map.difficulty] + "; Time: " + str(long_note.time) + "; Type: " + 
+					LongNote.Type.keys()[long_note.type] + ";")
+	return ""

@@ -36,7 +36,7 @@ func _file_index_pressed(index : int) -> void:
 		Choices.SAVE:
 			save_file()
 		Choices.EXPORT:
-			pass
+			export_file()
 
 func _confirmation_dialog_confirmed() -> void:
 	match _last_choice:
@@ -63,8 +63,10 @@ func new_file() -> void:
 	_pop_confirmation_dialog("Do you want to create a new file?", "Yes", Choices.NEW)
 
 func open_file() -> void:
+	file_dialog.access = FileDialog.ACCESS_USERDATA
 	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
 	_last_file_dialog_choice = Choices.OPEN
+	file_dialog.root_subfolder = Global.EDITOR_PATH
 	file_dialog.popup()
 
 func _open_file(path : String) -> void:
@@ -85,6 +87,8 @@ func _open_file(path : String) -> void:
 			_pop_confirmation_dialog(validate_wrong, "Ok", Choices.NONE)
 		else:
 			Global.set_window_title(Global.TitleType.EDITOR_SAVED)
+			var song_resource := SongResource.dictionary_to_resource(json_data)
+			current_ID = song_resource.ID
 			Editor.load_resource(SongResource.dictionary_to_resource(json_data))
 	else:
 		_pop_confirmation_dialog("An error occured when trying to read the file.", "Ok", Choices.NONE)
@@ -109,9 +113,32 @@ func save_file() -> void:
 			else:
 				_pop_confirmation_dialog("An error occured while saving the file.", "Ok", Choices.NONE)
 		else:
+			file_dialog.access = FileDialog.ACCESS_USERDATA
 			file_dialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
 			_last_file_dialog_choice = Choices.SAVE
+			file_dialog.root_subfolder = Global.EDITOR_PATH
 			file_dialog.popup()
+
+func _export(path : String) -> void:
+	var is_settings_valid := Editor.editor_settings.is_valid_for_export()
+	if is_settings_valid:
+		_pop_confirmation_dialog(is_settings_valid, "Ok", Choices.NONE)
+		return
+		
+	var is_composer_valid := Editor.editor_composer.editor_menu_bar.is_valid_for_export()
+	if is_composer_valid:
+		_pop_confirmation_dialog(is_composer_valid, "Ok", Choices.NONE)
+		return
+	
+
+func export_file() -> void:
+	#file_dialog.access = FileDialog.ACCESS_FILESYSTEM
+	file_dialog.access = FileDialog.ACCESS_USERDATA
+	file_dialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
+	_last_file_dialog_choice = Choices.EXPORT
+	file_dialog.root_subfolder = ""
+	#file_dialog.popup()
+	_export("")
 
 func _pop_confirmation_dialog(dialog_text : String, ok_button_text : String, choice : Choices) -> void:
 	confirmation_dialog.dialog_text = dialog_text
@@ -126,6 +153,8 @@ func _file_dialog_file(path : String) -> void:
 	elif  _last_file_dialog_choice == Choices.OPEN:
 		_file_path = Global.EDITOR_PATH + "//" + path.get_file()
 		_open_file(_file_path)
+	elif _last_file_dialog_choice == Choices.EXPORT:
+		_export(Global.SONGS_PATH + "//" + path.get_file() + ".json")
 
 static func get_file_path() -> String:
 	return _file_path

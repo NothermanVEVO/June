@@ -249,6 +249,9 @@ func reset() -> void:
 	remove_video_button.disabled = true
 	video_player.stream = null
 	_video_path = ""
+	
+	$HBoxContainer/Left/VBoxContainer/SongTimeSample/SongTimeSampleText.editable = false
+	$HBoxContainer/Left/VBoxContainer/VideoTimeSample/VideoTimeSampleText.editable = false
 
 @warning_ignore("shadowed_variable")
 func load_editor(song : String, author : String, track : String, BPM : int, creator : String, song_time_sample : String, video_time_sample : String, 
@@ -263,6 +266,9 @@ func load_editor(song : String, author : String, track : String, BPM : int, crea
 	$HBoxContainer/Left/VBoxContainer/SongTimeSample/SongTimeSampleText.text = song_time_sample
 	$HBoxContainer/Left/VBoxContainer/VideoTimeSample/VideoTimeSampleText.text = video_time_sample
 	
+	last_valid_sample_song_text = song_time_sample
+	last_valid_sample_video_text = video_time_sample
+	
 	if song_path:
 		set_song(song_path)
 	
@@ -274,7 +280,6 @@ func load_editor(song : String, author : String, track : String, BPM : int, crea
 	
 	if video_path:
 		set_video(video_path)
-	
 
 func get_song_name() -> String:
 	return $HBoxContainer/Left/VBoxContainer/Name/TextEdit.text
@@ -311,3 +316,23 @@ func get_video_path() -> String:
 
 func _on_spin_box_value_changed(value: float) -> void:
 	Song.BPM = roundi(value)
+
+func is_valid_for_export() -> String:
+	if get_song_name().is_empty():
+		return "The \"song\" name can't be empty."
+	elif get_author_name().is_empty():
+		return "The \"author\" name can't be empty."
+	elif get_track_name().is_empty():
+		return "The \"track\" name can't be empty."
+	elif Song.stream == null:
+		return "The \"song\" can't be empty."
+	elif last_valid_sample_song_text.is_empty():
+		return "The \"sample song time\" can't be empty."
+	elif Global.text_to_time(last_valid_sample_song_text) >= Song.get_duration():
+		return "The \"sample song time\" can't be equal or higher than the song duration."
+	elif video_player.stream != null:
+		if last_valid_sample_video_text.is_empty():
+			return "The \"sample video time\" can't be empty."
+		elif Global.text_to_time(last_valid_sample_video_text) >= video_player.get_stream_length():
+			return "The \"sample video time\" can't be equal or higher than the video duration."
+	return ""

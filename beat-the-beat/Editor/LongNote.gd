@@ -2,7 +2,7 @@ extends NinePatchRect
 
 class_name LongNote
 
-enum Type{ANNOTATION, SECTION, SPEED, FADE}
+enum Type{ANNOTATION = 0, SECTION = 1, SPEED = 2, FADE = 3}
 
 const ANNOTATION_TEXTURE := preload("res://assets/annotation.png")
 const SECTION_TEXTURE := preload("res://assets/section.png")

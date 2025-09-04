@@ -64,3 +64,16 @@ func set_window_title(type : TitleType) -> void:
 			DisplayServer.window_set_title("June - Editor - [" + FileMenu.get_file_path() + "]")
 		TitleType.EDITOR_SAVED_CHANGED:
 			DisplayServer.window_set_title("June - Editor - [" + FileMenu.get_file_path() + "] (*)")
+
+func text_to_time(text : String) -> float:
+	var values := text.split(":")
+	values[0] = "00" if not values[0] else "0" + values[0] if values[0].length() == 1 else values[0]
+	values[1] = "00" if not values[1] else "0" + values[1] if values[1].length() == 1 else values[1]
+	values[2] = "000" if not values[2] else values[2] + "00" if values[2].length() == 1 else values[2] + "0" if values[2].length() == 2 else values[2]
+			
+	var minutes : int = str_to_var(values[0])
+	var seconds : int = str_to_var(values[1])
+	var miliseconds : float = str_to_var("0." + values[2])
+	var absolute_seconds : float = minutes * 60 + seconds + (miliseconds + 0.0005) # !!BUG!! THE DECIMAL NUMBER DECREASES IN 0.001, AND INCREASES IN 0.0001 WHEN PUTTING MORE THAN 3 NUMBER IN THE DECIMAL, SOLVE THIS LATER
+	absolute_seconds = absolute_seconds if absolute_seconds <= Song.get_duration() else Song.get_duration()
+	return absolute_seconds

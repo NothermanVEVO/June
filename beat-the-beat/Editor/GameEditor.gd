@@ -365,6 +365,10 @@ func _handle_select() -> void:
 				Song.set_time(clampf(Song.get_time() + mouse_time_difference_y, 0.0, Song.get_duration()))
 			
 			for note in _selected_notes:
+				if note.get_time() + time_difference_y != _get_closest_grid_time_pos(note.get_time() + time_difference_y):
+					changed.emit()
+					break
+			for note in _selected_notes:
 				note.set_time(_get_closest_grid_time_pos(note.get_time() + time_difference_y))
 				gear.update_note_time(note, true)
 			
@@ -498,7 +502,7 @@ func _handle_selected_item_hold() -> void:
 			_last_time_difference_y = temp
 			
 			if not _currently_hold_note.visible:
-				_currently_hold_note.visible = true #NOTE NOT THE BEST WAY, BUT WORKS FOR NOW
+				_currently_hold_note.visible = true ##NOTE NOT THE BEST WAY, BUT WORKS FOR NOW
 				
 			if not time_difference_y or (time_difference_y > 0.0 and get_local_mouse_position().y > _hit_zone_y) or (
 				time_difference_y < 0.0 and get_local_mouse_position().y < 0.0):
@@ -509,6 +513,8 @@ func _handle_selected_item_hold() -> void:
 			_currently_hold_note.pressing_button.connect(_pressing_some_hold_resize_button)
 			_currently_hold_note.set_end_time(mouse_time_pos_y)
 			_currently_hold_note.update_end_time_text()
+			Editor.editor_composer.editor_menu_bar._memory_save_song_map() ## SHOULDN'T BE DOING THIS, BUT WELL...
+			#changed.emit()
 			_currently_hold_note.value_changed.connect((func(): emit_signal("changed")))
 			_last_time_difference_y = 0.0
 	else: # DIDN'T FIND A NOTE HOLD
