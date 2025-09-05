@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://b3ljeq5vwy67a"]
+[gd_scene load_steps=3 format=3 uid="uid://b3ljeq5vwy67a"]
 
 [ext_resource type="Script" uid="uid://cxngxkql6desj" path="res://Editor/EditorSettings.gd" id="1_33eqs"]
 [ext_resource type="Script" uid="uid://cuhkonamt3aus" path="res://Editor/MenuBar/File.gd" id="2_iy5o1"]
-[ext_resource type="PackedScene" uid="uid://dsydydetqa4bx" path="res://Editor/ConfirmationDialog.tscn" id="3_vxgxl"]
 
 [node name="Settings" type="VBoxContainer"]
 anchors_preset = 15
@@ -23,9 +22,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 0
 
-[node name="ConfirmationDialog" parent="Menu/FlowContainer/MenuBar" instance=ExtResource("3_vxgxl")]
-
-[node name="File" type="PopupMenu" parent="Menu/FlowContainer/MenuBar" node_paths=PackedStringArray("confirmation_dialog")]
+[node name="File" type="PopupMenu" parent="Menu/FlowContainer/MenuBar"]
 auto_translate_mode = 1
 title = "File"
 item_count = 4
@@ -38,7 +35,6 @@ item_2/id = 2
 item_3/text = "Export"
 item_3/id = 3
 script = ExtResource("2_iy5o1")
-confirmation_dialog = NodePath("../ConfirmationDialog")
 
 [node name="Compose" type="Button" parent="Menu/FlowContainer"]
 layout_mode = 2
@@ -89,7 +85,7 @@ text = "Name: "
 fit_content = true
 autowrap_mode = 0
 
-[node name="TextEdit" type="LineEdit" parent="HBoxContainer/Left/VBoxContainer/Name"]
+[node name="NameTextEdit" type="LineEdit" parent="HBoxContainer/Left/VBoxContainer/Name"]
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -106,7 +102,7 @@ text = "Author:"
 fit_content = true
 autowrap_mode = 0
 
-[node name="TextEdit" type="LineEdit" parent="HBoxContainer/Left/VBoxContainer/Author"]
+[node name="AuthorTextEdit" type="LineEdit" parent="HBoxContainer/Left/VBoxContainer/Author"]
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -123,7 +119,7 @@ text = "Track:"
 fit_content = true
 autowrap_mode = 0
 
-[node name="TextEdit" type="LineEdit" parent="HBoxContainer/Left/VBoxContainer/Track"]
+[node name="TrackTextEdit" type="LineEdit" parent="HBoxContainer/Left/VBoxContainer/Track"]
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -143,7 +139,7 @@ autowrap_mode = 0
 [node name="SpinBox" type="SpinBox" parent="HBoxContainer/Left/VBoxContainer/BPM"]
 layout_mode = 2
 tooltip_text = "Beats per minute.
-Affects the position of the notes."
+Affects the position of the notes. You can adjust this value as you feel or you can try to find a site or software that does that for you."
 min_value = 1.0
 max_value = 1000.0
 value = 60.0
@@ -158,7 +154,7 @@ text = "Creator:"
 fit_content = true
 autowrap_mode = 0
 
-[node name="TextEdit" type="LineEdit" parent="HBoxContainer/Left/VBoxContainer/Creator"]
+[node name="CreatorTextEdit" type="LineEdit" parent="HBoxContainer/Left/VBoxContainer/Creator"]
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -321,7 +317,11 @@ loop = true
 
 [connection signal="pressed" from="Menu/FlowContainer/Compose" to="." method="_on_compose_pressed"]
 [connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
+[connection signal="text_changed" from="HBoxContainer/Left/VBoxContainer/Name/NameTextEdit" to="." method="_on_name_text_edit_text_changed"]
+[connection signal="text_changed" from="HBoxContainer/Left/VBoxContainer/Author/AuthorTextEdit" to="." method="_on_author_text_edit_text_changed"]
+[connection signal="text_changed" from="HBoxContainer/Left/VBoxContainer/Track/TrackTextEdit" to="." method="_on_track_text_edit_text_changed"]
 [connection signal="value_changed" from="HBoxContainer/Left/VBoxContainer/BPM/SpinBox" to="." method="_on_spin_box_value_changed"]
+[connection signal="text_changed" from="HBoxContainer/Left/VBoxContainer/Creator/CreatorTextEdit" to="." method="_on_creator_text_edit_text_changed"]
 [connection signal="text_changed" from="HBoxContainer/Left/VBoxContainer/SongTimeSample/SongTimeSampleText" to="." method="_on_song_time_sample_text_changed"]
 [connection signal="text_changed" from="HBoxContainer/Left/VBoxContainer/VideoTimeSample/VideoTimeSampleText" to="." method="_on_video_time_sample_text_changed"]
 [connection signal="pressed" from="HBoxContainer/Right/VBoxContainer/Song/SongButton" to="." method="_on_song_button_pressed"]

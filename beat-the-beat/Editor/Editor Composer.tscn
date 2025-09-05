@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://dw4rs74gsagrn"]
+[gd_scene load_steps=19 format=3 uid="uid://dw4rs74gsagrn"]
 
 [ext_resource type="Script" uid="uid://ddx3q78woi7jl" path="res://Editor/SoundComponentsItems.gd" id="1_7fqon"]
 [ext_resource type="Script" uid="uid://3yuoy3etpxip" path="res://Editor/EditorComposer.gd" id="1_g7rpo"]
@@ -8,7 +8,6 @@
 [ext_resource type="Script" uid="uid://b5sxt0fdx3nd3" path="res://Editor/GameEditor.gd" id="2_d6op5"]
 [ext_resource type="Script" uid="uid://cuhkonamt3aus" path="res://Editor/MenuBar/File.gd" id="3_6pnfi"]
 [ext_resource type="Script" uid="uid://cr1l58jmclcj" path="res://Editor/SoundBoard.gd" id="3_ty45h"]
-[ext_resource type="PackedScene" uid="uid://dsydydetqa4bx" path="res://Editor/ConfirmationDialog.tscn" id="3_vl3l7"]
 [ext_resource type="Texture2D" uid="uid://oyfiimbt1x0y" path="res://assets/gameItemsIcons/selectIcon.png" id="6_6pnfi"]
 [ext_resource type="Texture2D" uid="uid://cmb4i22o1gq1y" path="res://assets/gameItemsIcons/unLockIcon.png" id="7_vl3l7"]
 [ext_resource type="Texture2D" uid="uid://ckv44gvcprwo0" path="res://assets/gameItemsIcons/tapIcon.png" id="8_g7rpo"]
@@ -40,9 +39,7 @@ script = ExtResource("1_p8fip")
 layout_mode = 2
 script = ExtResource("2_bnevv")
 
-[node name="ConfirmationDialog" parent="MenuBar/MenuBar" instance=ExtResource("3_vl3l7")]
-
-[node name="File" type="PopupMenu" parent="MenuBar/MenuBar" node_paths=PackedStringArray("confirmation_dialog")]
+[node name="File" type="PopupMenu" parent="MenuBar/MenuBar"]
 title = "File"
 item_count = 4
 item_0/text = "New file"
@@ -54,7 +51,6 @@ item_2/id = 2
 item_3/text = "Export"
 item_3/id = 3
 script = ExtResource("3_6pnfi")
-confirmation_dialog = NodePath("../ConfirmationDialog")
 
 [node name="Edit" type="PopupMenu" parent="MenuBar/MenuBar"]
 auto_translate_mode = 1
@@ -243,6 +239,12 @@ size_flags_horizontal = 3
 
 [node name="Game" type="Button" parent="Middle/Game"]
 layout_mode = 2
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath(".")
+focus_next = NodePath(".")
+focus_previous = NodePath(".")
 flat = true
 script = ExtResource("2_d6op5")
 

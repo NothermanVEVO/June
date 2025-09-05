@@ -77,6 +77,7 @@ static func get_divisor() -> float:
 	return 60.0 / Song.BPM / _snap_divisor_value
 
 func _game_changed() -> void:
+	Editor.changed_editor()
 	#print(to_resource().get_dictionary())
 	var song_map := to_resource()
 	_undo_song_maps.append(song_map)

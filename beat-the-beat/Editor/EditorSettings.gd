@@ -100,6 +100,7 @@ func set_song(path : String) -> void:
 		compose_button.disabled = false
 		song_time_sample_text.editable = true
 		_song_path = path
+		Editor.changed_editor()
 	else:
 		_pop_up_dialog("Não foi possível carregar o aúdio!")
 		return
@@ -121,6 +122,7 @@ func set_icon(path : String) -> void:
 		icon_texture.texture = image_texture
 		remove_icon_button.disabled = false
 		_icon_path = path
+		Editor.changed_editor()
 
 func set_image(path : String) -> void:
 	if not FileAccess.file_exists(path):
@@ -139,6 +141,7 @@ func set_image(path : String) -> void:
 		image_rect_texture.texture = image_texture
 		remove_image_button.disabled = false
 		_image_path = path
+		Editor.changed_editor()
 
 func set_video(path : String) -> void:
 	if path.get_extension() != "ogv":
@@ -158,6 +161,7 @@ func set_video(path : String) -> void:
 		remove_video_button.disabled = false
 		#video_time_sample_text.editable = true
 		_video_path = path
+		Editor.changed_editor()
 	else:
 		_pop_up_dialog("Não foi possível carregar o vídeo!")
 		return
@@ -204,6 +208,7 @@ func _on_song_finished() -> void:
 
 func _on_compose_pressed() -> void:
 	Song.BPM = get_BPM_value()
+	Song.stop()
 	Editor.change_to_composer()
 
 func _on_song_time_sample_text_changed() -> void:
@@ -225,19 +230,19 @@ func _on_video_time_sample_text_changed() -> void:
 		video_time_sample_text.release_focus()
 
 func is_empty() -> bool:
-	return $HBoxContainer/Left/VBoxContainer/Name/TextEdit.text.is_empty() and (
-		$HBoxContainer/Left/VBoxContainer/Author/TextEdit.text.is_empty()) and (
-		$HBoxContainer/Left/VBoxContainer/Track/TextEdit.text.is_empty()) and (
-		$HBoxContainer/Left/VBoxContainer/Creator/TextEdit.text.is_empty()) and (
+	return $HBoxContainer/Left/VBoxContainer/Name/NameTextEdit.text.is_empty() and (
+		$HBoxContainer/Left/VBoxContainer/Author/AuthorTextEdit.text.is_empty()) and (
+		$HBoxContainer/Left/VBoxContainer/Track/TrackTextEdit.text.is_empty()) and (
+		$HBoxContainer/Left/VBoxContainer/Creator/CreatorTextEdit.text.is_empty()) and (
 		last_valid_sample_song_text.is_empty()) and last_valid_sample_video_text.is_empty() and (
 		not Song.stream) and not icon_texture.texture and not image_rect_texture.texture and not video_player.stream
 
 func reset() -> void:
-	$HBoxContainer/Left/VBoxContainer/Name/TextEdit.text = ""
-	$HBoxContainer/Left/VBoxContainer/Author/TextEdit.text = ""
-	$HBoxContainer/Left/VBoxContainer/Track/TextEdit.text = ""
+	$HBoxContainer/Left/VBoxContainer/Name/NameTextEdit.text = ""
+	$HBoxContainer/Left/VBoxContainer/Author/AuthorTextEdit.text = ""
+	$HBoxContainer/Left/VBoxContainer/Track/TrackTextEdit.text = ""
 	$HBoxContainer/Left/VBoxContainer/BPM/SpinBox.value = 60
-	$HBoxContainer/Left/VBoxContainer/Creator/TextEdit.text = ""
+	$HBoxContainer/Left/VBoxContainer/Creator/CreatorTextEdit.text = ""
 	$HBoxContainer/Left/VBoxContainer/SongTimeSample/SongTimeSampleText.text = ""
 	$HBoxContainer/Left/VBoxContainer/VideoTimeSample/VideoTimeSampleText.text = ""
 	compose_button.disabled = true
@@ -266,11 +271,11 @@ func load_editor(song : String, author : String, track : String, BPM : int, crea
 	song_path : String, icon_path : String, image_path : String, video_path : String) -> void:
 	
 	reset()
-	$HBoxContainer/Left/VBoxContainer/Name/TextEdit.text = song
-	$HBoxContainer/Left/VBoxContainer/Author/TextEdit.text = author
-	$HBoxContainer/Left/VBoxContainer/Track/TextEdit.text = track
+	$HBoxContainer/Left/VBoxContainer/Name/NameTextEdit.text = song
+	$HBoxContainer/Left/VBoxContainer/Author/AuthorTextEdit.text = author
+	$HBoxContainer/Left/VBoxContainer/Track/TrackTextEdit.text = track
 	$HBoxContainer/Left/VBoxContainer/BPM/SpinBox.value = BPM
-	$HBoxContainer/Left/VBoxContainer/Creator/TextEdit.text = creator
+	$HBoxContainer/Left/VBoxContainer/Creator/CreatorTextEdit.text = creator
 	$HBoxContainer/Left/VBoxContainer/SongTimeSample/SongTimeSampleText.text = song_time_sample
 	$HBoxContainer/Left/VBoxContainer/VideoTimeSample/VideoTimeSampleText.text = video_time_sample
 	
@@ -290,19 +295,19 @@ func load_editor(song : String, author : String, track : String, BPM : int, crea
 		set_video(video_path)
 
 func get_song_name() -> String:
-	return $HBoxContainer/Left/VBoxContainer/Name/TextEdit.text
+	return $HBoxContainer/Left/VBoxContainer/Name/NameTextEdit.text
 
 func get_author_name() -> String:
-	return $HBoxContainer/Left/VBoxContainer/Author/TextEdit.text
+	return $HBoxContainer/Left/VBoxContainer/Author/AuthorTextEdit.text
 
 func get_track_name() -> String:
-	return $HBoxContainer/Left/VBoxContainer/Track/TextEdit.text
+	return $HBoxContainer/Left/VBoxContainer/Track/TrackTextEdit.text
 
 func get_BPM_value() -> int:
 	return $HBoxContainer/Left/VBoxContainer/BPM/SpinBox.value
 
 func get_creator_name() -> String:
-	return $HBoxContainer/Left/VBoxContainer/Creator/TextEdit.text
+	return $HBoxContainer/Left/VBoxContainer/Creator/CreatorTextEdit.text
 
 func get_song_time_sample() -> String:
 	return $HBoxContainer/Left/VBoxContainer/SongTimeSample/SongTimeSampleText.text
@@ -324,6 +329,7 @@ func get_video_path() -> String:
 
 func _on_spin_box_value_changed(value: float) -> void:
 	Song.BPM = roundi(value)
+	Editor.changed_editor()
 
 func is_valid_for_export() -> String:
 	if get_song_name().is_empty():
@@ -346,3 +352,15 @@ func is_valid_for_export() -> String:
 			##NOTE CURRENTLY NOT SUPPORTED IN GODOT, THE FOLLOWING LINK HAS AN ADDON
 			## NOTE https://www.youtube.com/watch?v=C9ptuhAB3GI&ab_channel=Voylin%27sGameDevJourney
 	return ""
+
+func _on_name_text_edit_text_changed(new_text: String) -> void:
+	Editor.changed_editor()
+
+func _on_author_text_edit_text_changed(new_text: String) -> void:
+	Editor.changed_editor()
+
+func _on_track_text_edit_text_changed(new_text: String) -> void:
+	Editor.changed_editor()
+
+func _on_creator_text_edit_text_changed(new_text: String) -> void:
+	Editor.changed_editor()

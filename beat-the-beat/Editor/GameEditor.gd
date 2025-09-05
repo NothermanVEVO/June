@@ -44,6 +44,9 @@ var _sample_long_section_note : LongNote
 var _sample_long_speed_note : LongNote
 var _sample_long_fade_note : LongNote
 
+static var _holding_time : float = 0.0
+const _HOLDING_DELAY : float = 0.1
+
 signal changed
 
 func _ready() -> void:
@@ -116,7 +119,6 @@ func _process(delta: float) -> void:
 	focus_effect.visible = false
 	queue_redraw() # TODO REMOVE THIS SHIT LATER 
 	
-	#print(_selected_long_notes)
 	if Input.is_action_just_pressed("Add Item") and not _is_mouse_inside_menu():
 		if _selected_notes:
 			var notes := gear.get_global_note_intersected_rects(Rect2(get_global_mouse_position(), Vector2.ZERO))
@@ -133,30 +135,43 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("Add Item"):
 		_mouse_was_pressed_inside = get_global_rect().has_point(get_global_mouse_position())
 	
-	#if Input.is_action_pressed("Add Item") and _mouse_was_pressed_inside: #BUG TODO WARNING NOTE REALLY BUGGED
-		#var mouse_time_difference_y := _get_time_difference_y() # BUG TIME DIFFERENCE IT'S NOT SO EFFICIENT
-		## print(mouse_time_difference_y) # BUG USE THIS TO SEE
-	#
-		#var temp = mouse_time_difference_y
-		#mouse_time_difference_y -= _last_time_difference_y
-		#_last_time_difference_y = temp
-	#
-		#if get_local_mouse_position().y > _hit_zone_y and mouse_time_difference_y < 0 or get_local_mouse_position().y < 0 and mouse_time_difference_y > 0: #MOVE DOWN / MOVE UP
-			#var song := Song.new()
-			#song.set_time(clampf(Song.get_time() + mouse_time_difference_y, 0.0, Song.get_duration()))
-	
 	if GameComponents.get_selected_item_text() == "Power":
 		Global.set_mouse_effect(MouseEffect.Effect.POWER_ITEM)
 	else:
 		Global.set_mouse_effect(MouseEffect.Effect.NONE)
 	
+	if get_global_rect().has_point(get_global_mouse_position()) and not Song.playing:
+		if Input.is_action_just_pressed("Scroll Up"): # SCROLL THE SONG
+			Song.set_time(clampf(Song.get_time() + 0.1, 0.0, Song.get_duration()))
+		elif Input.is_action_just_pressed("Scroll Down"):
+			Song.set_time(clampf(Song.get_time() - 0.1, 0.0, Song.get_duration()))
+	
+	if Input.is_action_just_pressed("ui_right"):
+		Song.set_time(clampf(Song.get_time() + 0.1, 0.0, Song.get_duration()))
+	elif Input.is_action_just_pressed("ui_left"):
+		Song.set_time(clampf(Song.get_time() - 0.1, 0.0, Song.get_duration()))
+	elif Input.is_action_pressed("ui_right"):
+		_holding_time += delta
+		if _holding_time >= _HOLDING_DELAY:
+			_holding_time -= _HOLDING_DELAY
+			Song.set_time(clampf(Song.get_time() + 0.1, 0.0, Song.get_duration()))
+	elif Input.is_action_pressed("ui_left"):
+		_holding_time += delta
+		if _holding_time >= _HOLDING_DELAY:
+			_holding_time -= _HOLDING_DELAY
+			Song.set_time(clampf(Song.get_time() - 0.1, 0.0, Song.get_duration()))
+	
+	if Input.is_action_just_released("ui_right") or Input.is_action_just_released("ui_left"):
+		_holding_time = 0.0
+	
+	if Input.is_action_just_pressed("ui_accept"):
+		if Song.playing:
+			Song.stop()
+		else:
+			Song.play(Song.get_time())
+	
 	if has_focus():
 		focus_effect.visible = true
-		if Input.is_action_just_pressed("Scroll Up"): # SCROLL THE SONG
-			time_slider.value += 0.1
-		elif Input.is_action_just_pressed("Scroll Down"):
-			time_slider.value -= 0.1
-	
 		_handle_selected_item(GameComponents.get_selected_item_text())
 
 func _is_mouse_inside_menu() -> bool:

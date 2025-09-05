@@ -3,29 +3,38 @@ extends PopupMenu
 class_name FileMenu
 
 enum Choices {NEW = 0, OPEN = 1, SAVE = 2, EXPORT = 3, NONE = 4}
-var _last_choice : Choices
-
-@export var confirmation_dialog : ConfirmationDialog
+var _last_choice : Choices = Choices.NONE
 
 static var current_ID : String = ""
 
-var file_dialog := FileDialog.new()
-var _last_file_dialog_choice : Choices
+static var _last_file_dialog_choice : Choices
 
 static var _file_path : String = ""
+
+static var called_for_save : Node
+
+static var dialog_confirmation_id : int
+static var dialog_file_id : int
 
 func _ready() -> void:
 	current_ID = Global.get_UUID()
 	
 	index_pressed.connect(_file_index_pressed)
-	confirmation_dialog.confirmed.connect(_confirmation_dialog_confirmed)
+	DialogConfirmation.confirmed.connect(_confirmation_dialog_confirmed)
 	
-	file_dialog.access = FileDialog.ACCESS_USERDATA
-	file_dialog.root_subfolder = Global.EDITOR_PATH
-	file_dialog.use_native_dialog = true
-	
-	add_child(file_dialog)
-	file_dialog.file_selected.connect(_file_dialog_file)
+	#file_dialog.access = FileDialog.ACCESS_USERDATA
+	#file_dialog.root_subfolder = Global.EDITOR_PATH
+	#file_dialog.use_native_dialog = true
+	#
+	#add_child(file_dialog)
+	DialogFile.file_selected.connect(_file_dialog_file)
+
+func _process(delta: float) -> void:
+	if Input.is_action_just_pressed("Save") and not DialogConfirmation.visible:
+		if _file_path:
+			save_file(_file_path)
+		else:
+			save()
 
 func _file_index_pressed(index : int) -> void:
 	match index:
@@ -34,11 +43,16 @@ func _file_index_pressed(index : int) -> void:
 		Choices.OPEN:
 			open_file()
 		Choices.SAVE:
-			save_file()
+			if _file_path:
+				save_file(_file_path)
+			else:
+				save()
 		Choices.EXPORT:
 			export_file()
 
 func _confirmation_dialog_confirmed() -> void:
+	if DialogConfirmation.get_last_caller() != dialog_confirmation_id:
+		return
 	match _last_choice:
 		Choices.NEW:
 			Editor.editor_composer.editor_menu_bar.reset()
@@ -63,11 +77,8 @@ func new_file() -> void:
 	_pop_confirmation_dialog("Do you want to create a new file?", "Yes", Choices.NEW)
 
 func open_file() -> void:
-	file_dialog.access = FileDialog.ACCESS_USERDATA
-	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+	dialog_file_id = DialogFile.pop_up(FileDialog.FILE_MODE_OPEN_FILE, FileDialog.ACCESS_USERDATA, Global.EDITOR_PATH)
 	_last_file_dialog_choice = Choices.OPEN
-	file_dialog.root_subfolder = Global.EDITOR_PATH
-	file_dialog.popup()
 
 func _open_file(path : String) -> void:
 	if not FileAccess.file_exists(_file_path):
@@ -90,12 +101,13 @@ func _open_file(path : String) -> void:
 			var song_resource := SongResource.dictionary_to_resource(json_data)
 			current_ID = song_resource.ID
 			Editor.load_resource(SongResource.dictionary_to_resource(json_data))
+			Editor.saved_file()
 	else:
 		_pop_confirmation_dialog("An error occured when trying to read the file.", "Ok", Choices.NONE)
 
-func save_file() -> void:
+static func save_file(path : String) -> void:
 	if not Editor.editor_settings.is_empty():
-		if _file_path:
+		if path:
 			var song_resource := Editor.to_resource()
 			for s_map in song_resource.song_maps:
 				for note in s_map.notes:
@@ -103,21 +115,23 @@ func save_file() -> void:
 				for long_note in s_map.long_notes:
 					long_note.is_selected = false
 			song_resource.ID = current_ID
-			var file := FileAccess.open(_file_path, FileAccess.WRITE)
+			var file := FileAccess.open(path, FileAccess.WRITE)
 			if file:
 				var json_string := JSON.stringify(song_resource.get_dictionary(), "\t")
 				file.store_string(json_string)
 				file.close()
 				Global.set_window_title(Global.TitleType.EDITOR_SAVED)
-				_pop_confirmation_dialog("The file was saved with success!", "Ok", Choices.NONE)
+				DialogConfirmation.pop_up("Cancel", "Ok", "The file was saved with success!")
+				Editor.saved_file()
 			else:
-				_pop_confirmation_dialog("An error occured while saving the file.", "Ok", Choices.NONE)
-		else:
-			file_dialog.access = FileDialog.ACCESS_USERDATA
-			file_dialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
-			_last_file_dialog_choice = Choices.SAVE
-			file_dialog.root_subfolder = Global.EDITOR_PATH
-			file_dialog.popup()
+				DialogConfirmation.pop_up("Cancel", "Ok", "An error occured while saving the file.")
+
+static func save() -> void:
+	if Editor.editor_settings.is_empty() and Editor.editor_composer.editor_menu_bar.is_editor_empty():
+		return
+	if not _file_path:
+		dialog_file_id = DialogFile.pop_up(FileDialog.FILE_MODE_SAVE_FILE, FileDialog.ACCESS_USERDATA, Global.EDITOR_PATH)
+		_last_file_dialog_choice = Choices.SAVE
 
 func _export(path : String) -> void:
 	path = path.get_basename()
@@ -147,11 +161,8 @@ func export_file() -> void:
 		_pop_confirmation_dialog(is_composer_valid, "Ok", Choices.NONE)
 		return
 	#file_dialog.access = FileDialog.ACCESS_FILESYSTEM
-	file_dialog.access = FileDialog.ACCESS_USERDATA
-	file_dialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
+	dialog_file_id = DialogFile.pop_up(FileDialog.FILE_MODE_SAVE_FILE, FileDialog.ACCESS_USERDATA, Global.SONGS_PATH)
 	_last_file_dialog_choice = Choices.EXPORT
-	file_dialog.root_subfolder = Global.SONGS_PATH
-	file_dialog.popup()
 
 func _export_song(path : String) -> void:
 	if not Editor.editor_settings.get_song_path():
@@ -190,15 +201,16 @@ func _export_image(path : String) -> void:
 	DirAccess.copy_absolute(Editor.editor_settings.get_image_path(), path + "//video." + Editor.editor_settings.get_image_path().get_extension())
 
 func _pop_confirmation_dialog(dialog_text : String, ok_button_text : String, choice : Choices) -> void:
-	confirmation_dialog.dialog_text = dialog_text
-	confirmation_dialog.ok_button_text = ok_button_text
+	dialog_confirmation_id = DialogConfirmation.pop_up("Cancel", ok_button_text, dialog_text)
 	_last_choice = choice
-	confirmation_dialog.popup()
 
 func _file_dialog_file(path : String) -> void:
+	if DialogFile.get_last_caller() != dialog_file_id:
+		return
+	DialogFile.remove_last_caller()
 	if _last_file_dialog_choice == Choices.SAVE:
 		_file_path = Global.EDITOR_PATH + "//" + path.get_file() + ".json"
-		save_file()
+		save_file(_file_path)
 	elif  _last_file_dialog_choice == Choices.OPEN:
 		_file_path = Global.EDITOR_PATH + "//" + path.get_file()
 		_open_file(_file_path)
