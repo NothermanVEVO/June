@@ -105,10 +105,14 @@ func _open_file(path : String) -> void:
 	else:
 		_pop_confirmation_dialog("An error occured when trying to read the file.", "Ok", Choices.NONE)
 
-static func save_file(path : String) -> void:
+static func save_file(path : String, song_res : SongResource = null) -> void:
 	if not Editor.editor_settings.is_empty():
 		if path:
-			var song_resource := Editor.to_resource()
+			var song_resource : SongResource
+			if song_res:
+				song_resource = song_res
+			else:
+				song_resource = Editor.to_resource()
 			for s_map in song_resource.song_maps:
 				for note in s_map.notes:
 					note.is_selected = false
@@ -141,6 +145,18 @@ func _export(path : String) -> void:
 	else:
 		var error = DirAccess.make_dir_absolute(path)
 		if error == OK:
+			if _file_path:
+				save_file(_file_path)
+			var song_resource := Editor.to_resource()
+			if song_resource.song:
+				song_resource.song = path + "//song." + Editor.editor_settings.get_song_path().get_extension()
+			if song_resource.video:
+				song_resource.video = path + "//video." + Editor.editor_settings.get_video_path().get_extension()
+			if song_resource.icon:
+				song_resource.icon = path + "//icon." + Editor.editor_settings.get_icon_path().get_extension()
+			if song_resource.image:
+				song_resource.image = path + "//image." + Editor.editor_settings.get_image_path().get_extension()
+			save_file(path + "//song_map.json", song_resource)
 			_export_song(path)
 			_export_video(path)
 			_export_icon(path)
@@ -198,7 +214,7 @@ func _export_image(path : String) -> void:
 	if not file:
 		_pop_confirmation_dialog("Wasn't possible to open the image file.", "Ok", Choices.NONE)
 		return
-	DirAccess.copy_absolute(Editor.editor_settings.get_image_path(), path + "//video." + Editor.editor_settings.get_image_path().get_extension())
+	DirAccess.copy_absolute(Editor.editor_settings.get_image_path(), path + "//image." + Editor.editor_settings.get_image_path().get_extension())
 
 func _pop_confirmation_dialog(dialog_text : String, ok_button_text : String, choice : Choices) -> void:
 	dialog_confirmation_id = DialogConfirmation.pop_up("Cancel", ok_button_text, dialog_text)

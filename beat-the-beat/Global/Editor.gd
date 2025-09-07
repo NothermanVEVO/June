@@ -26,7 +26,7 @@ func _ready() -> void:
 	get_tree().set_auto_accept_quit(false)
 
 func _process(delta: float) -> void:
-	print(_is_saved)
+	#print(_is_saved)
 	pass
 
 func is_saved() -> bool:
