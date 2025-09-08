@@ -85,14 +85,7 @@ func set_song(path : String) -> void:
 		_pop_up_dialog("Não foi possível achar o arquivo: \"" + path + "\"")
 		return
 	
-	#var stream = load(path)
-	var stream
-	if path.get_extension() == "mp3":
-		stream = AudioStreamMP3.load_from_file(path)
-	elif path.get_extension() == "wav":
-		stream = AudioStreamWAV.load_from_file(path)
-	elif path.get_extension() == "ogg":
-		stream = AudioStreamOggVorbis.load_from_file(path)
+	var stream = load_music_stream(path)
 	
 	if stream is AudioStream:
 		Song.set_song(stream)
@@ -104,6 +97,19 @@ func set_song(path : String) -> void:
 	else:
 		_pop_up_dialog("Não foi possível carregar o aúdio!")
 		return
+
+static func load_music_stream(path : String):
+	var stream
+	if path.get_extension() == "mp3":
+		stream = AudioStreamMP3.load_from_file(path)
+		return stream
+	elif path.get_extension() == "wav":
+		stream = AudioStreamWAV.load_from_file(path)
+		return stream
+	elif path.get_extension() == "ogg":
+		stream = AudioStreamOggVorbis.load_from_file(path)
+		return stream
+	return null
 
 func set_icon(path : String) -> void:
 	if not FileAccess.file_exists(path):
