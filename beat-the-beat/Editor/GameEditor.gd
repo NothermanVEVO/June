@@ -45,7 +45,7 @@ var _sample_long_speed_note : LongNote
 var _sample_long_fade_note : LongNote
 
 static var _holding_time : float = 0.0
-const _HOLDING_DELAY : float = 0.1
+const _HOLDING_DELAY : float = 0.05
 
 signal changed
 
@@ -140,31 +140,40 @@ func _process(delta: float) -> void:
 	else:
 		Global.set_mouse_effect(MouseEffect.Effect.NONE)
 	
-	if get_global_rect().has_point(get_global_mouse_position()) and not Song.playing:
+	if get_global_rect().has_point(get_global_mouse_position()):
 		if Input.is_action_just_pressed("Scroll Up"): # SCROLL THE SONG
+			if Song.playing:
+				Song.stop()
 			Song.set_time(clampf(Song.get_time() + 0.1, 0.0, Song.get_duration()))
 		elif Input.is_action_just_pressed("Scroll Down"):
+			if Song.playing:
+				Song.stop()
 			Song.set_time(clampf(Song.get_time() - 0.1, 0.0, Song.get_duration()))
 	
-	if Input.is_action_just_pressed("ui_right"):
+	if Input.is_action_just_pressed("ui_right") or Input.is_action_just_pressed("ui_up"):
+		if Song.playing:
+			Song.stop()
 		Song.set_time(clampf(Song.get_time() + 0.1, 0.0, Song.get_duration()))
-	elif Input.is_action_just_pressed("ui_left"):
+	elif Input.is_action_just_pressed("ui_left") or Input.is_action_just_pressed("ui_down"):
+		if Song.playing:
+			Song.stop()
 		Song.set_time(clampf(Song.get_time() - 0.1, 0.0, Song.get_duration()))
-	elif Input.is_action_pressed("ui_right"):
+	elif Input.is_action_pressed("ui_right") or Input.is_action_pressed("ui_up"):
 		_holding_time += delta
 		if _holding_time >= _HOLDING_DELAY:
 			_holding_time -= _HOLDING_DELAY
 			Song.set_time(clampf(Song.get_time() + 0.1, 0.0, Song.get_duration()))
-	elif Input.is_action_pressed("ui_left"):
+	elif Input.is_action_pressed("ui_left") or Input.is_action_pressed("ui_down"):
 		_holding_time += delta
 		if _holding_time >= _HOLDING_DELAY:
 			_holding_time -= _HOLDING_DELAY
 			Song.set_time(clampf(Song.get_time() - 0.1, 0.0, Song.get_duration()))
 	
-	if Input.is_action_just_released("ui_right") or Input.is_action_just_released("ui_left"):
+	if (Input.is_action_just_released("ui_right") or Input.is_action_just_released("ui_left") or 
+		Input.is_action_just_released("ui_up") or Input.is_action_just_released("ui_down")):
 		_holding_time = 0.0
 	
-	if Input.is_action_just_pressed("ui_accept"):
+	if Input.is_action_just_pressed("ui_accept") and Editor.get_current_scene() == Editor.Scenes.COMPOSER:
 		if Song.playing:
 			Song.stop()
 		else:

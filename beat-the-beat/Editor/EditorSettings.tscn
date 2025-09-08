@@ -35,6 +35,7 @@ item_2/id = 2
 item_3/text = "Export"
 item_3/id = 3
 script = ExtResource("2_iy5o1")
+_editor_scene = 1
 
 [node name="Compose" type="Button" parent="Menu/FlowContainer"]
 layout_mode = 2

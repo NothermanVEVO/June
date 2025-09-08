@@ -2,6 +2,8 @@ extends PopupMenu
 
 class_name FileMenu
 
+@export var _editor_scene : Editor.Scenes
+
 enum Choices {NEW = 0, OPEN = 1, SAVE = 2, EXPORT = 3, NONE = 4}
 var _last_choice : Choices = Choices.NONE
 
@@ -15,6 +17,8 @@ static var called_for_save : Node
 
 static var dialog_confirmation_id : int
 static var dialog_file_id : int
+
+static var _last_saved_id : int = -1
 
 func _ready() -> void:
 	current_ID = Global.get_UUID()
@@ -30,7 +34,7 @@ func _ready() -> void:
 	DialogFile.file_selected.connect(_file_dialog_file)
 
 func _process(delta: float) -> void:
-	if Input.is_action_just_pressed("Save") and not DialogConfirmation.visible:
+	if Input.is_action_just_pressed("Save") and not DialogConfirmation.visible and Editor.get_current_scene() == _editor_scene:
 		if _file_path:
 			save_file(_file_path)
 		else:
@@ -62,6 +66,7 @@ func _confirmation_dialog_confirmed() -> void:
 			_file_path = ""
 			current_ID = Global.get_UUID()
 			Global.set_window_title(Global.TitleType.EDITOR_UNSAVED)
+			Editor.saved_file()
 		Choices.OPEN:
 			pass
 		Choices.SAVE:
@@ -130,12 +135,13 @@ static func save_file(path : String, song_res : SongResource = null) -> void:
 			else:
 				DialogConfirmation.pop_up("Cancel", "Ok", "An error occured while saving the file.")
 
-static func save() -> void:
-	if Editor.editor_settings.is_empty() and Editor.editor_composer.editor_menu_bar.is_editor_empty():
-		return
+static func save() -> int:
+	if Editor.editor_settings.is_empty() and EditorMenuBar.is_editor_empty():
+		return -1
 	if not _file_path:
 		dialog_file_id = DialogFile.pop_up(FileDialog.FILE_MODE_SAVE_FILE, FileDialog.ACCESS_USERDATA, Global.EDITOR_PATH)
 		_last_file_dialog_choice = Choices.SAVE
+	return dialog_file_id
 
 func _export(path : String) -> void:
 	path = path.get_basename()
@@ -223,6 +229,7 @@ func _pop_confirmation_dialog(dialog_text : String, ok_button_text : String, cho
 func _file_dialog_file(path : String) -> void:
 	if DialogFile.get_last_caller() != dialog_file_id:
 		return
+	_last_saved_id = dialog_file_id
 	DialogFile.remove_last_caller()
 	if _last_file_dialog_choice == Choices.SAVE:
 		_file_path = Global.EDITOR_PATH + "//" + path.get_file() + ".json"
@@ -235,3 +242,6 @@ func _file_dialog_file(path : String) -> void:
 
 static func get_file_path() -> String:
 	return _file_path
+
+static func get_last_saved_id() -> int:
+	return _last_saved_id

@@ -32,7 +32,7 @@ func _process(delta: float) -> void:
 	queue_redraw() #TODO REMOVE THIS LATER, FOR THE SAKE OF GOD
 
 func _physics_process(delta: float) -> void:
-	#if _notes:sasa~]sa~]
+	#if _notes:
 	match Gear.mode:
 		Gear.Mode.PLAYER:
 			_player_process()
@@ -198,7 +198,7 @@ func get_notes(from : float, to : float) -> Array[Note]:
 			high = mid
 
 	var i := low
-	while i < _notes.size() and _notes[i].get_time() <= to:
+	while i < _notes.size() and (_notes[i].get_time() < to or is_equal_approx( _notes[i].get_time(), to)):
 		result.append(_notes[i])
 		i += 1
 

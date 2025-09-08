@@ -1,5 +1,8 @@
 extends Node
 
+enum Scenes {NONE, SETTINGS, COMPOSER}
+var _current_scene : Scenes
+
 var _editor_menu_bar_scene := load("res://Editor/Editor Composer.tscn")
 @onready var editor_composer : EditorComposer = _editor_menu_bar_scene.instantiate()
 
@@ -11,6 +14,8 @@ var _is_saved : bool = true
 
 var _dialog_confirmation_id : int
 
+signal file_saved
+
 func _ready() -> void:
 	get_tree().root.close_requested.connect(_on_close_requested)
 	DialogConfirmation.confirmed.connect(_confirmation_dialog_confirmed)
@@ -19,6 +24,7 @@ func _ready() -> void:
 	## TEMP, REMOVE LATER
 	get_tree().root.add_child.call_deferred(editor_composer)
 	get_tree().root.add_child.call_deferred(editor_settings)
+	_current_scene = Scenes.SETTINGS
 	editor_composer.visible = false
 	editor_settings.visible = true
 	is_on_editor = true
@@ -29,6 +35,9 @@ func _process(delta: float) -> void:
 	#print(_is_saved)
 	pass
 
+func get_current_scene() -> Scenes:
+	return _current_scene
+
 func is_saved() -> bool:
 	return _is_saved
 
@@ -36,11 +45,13 @@ func changed_editor() -> void:
 	_is_saved = false
 
 func saved_file() -> void:
+	file_saved.emit.call_deferred()
 	_is_saved = true
 
 func change_to_composer() -> void:
 	editor_composer.visible = true
 	editor_settings.visible = false
+	_current_scene = Scenes.COMPOSER
 	Song.set_time(editor_composer.song_time_pos)
 
 func change_to_settings() -> void:
@@ -48,6 +59,7 @@ func change_to_settings() -> void:
 	editor_composer.visible = false
 	editor_settings.visible = true
 	editor_settings.play_song_button.text = "Play"
+	_current_scene = Scenes.SETTINGS
 	Song.set_time(0.0)
 
 func load_resource(song_resource : SongResource) -> void:
@@ -67,14 +79,20 @@ func _on_close_requested() -> void:
 	else:
 		get_tree().quit()
 
-func _confirmation_dialog_confirmed() -> void:
+func _confirmation_dialog_confirmed() -> void: ## QUIT WITH SAVING
+	var saved_id : int
 	if _dialog_confirmation_id != DialogConfirmation.get_last_caller():
 		return
 	if FileMenu.get_file_path():
 		FileMenu.save_file(FileMenu.get_file_path())
+		await file_saved
+		get_tree().quit()
 	else:
-		FileMenu.save()
+		saved_id = FileMenu.save()
+		await file_saved
+		if saved_id == FileMenu.get_last_saved_id():
+			get_tree().quit()
 
-func _confirmation_dialog_canceled() -> void:
+func _confirmation_dialog_canceled() -> void: ## QUIT WITHOUT SAVING
 	if _dialog_confirmation_id == DialogConfirmation.get_last_caller():
 		get_tree().quit()

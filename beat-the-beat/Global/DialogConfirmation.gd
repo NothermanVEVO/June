@@ -13,6 +13,7 @@ func pop_up(cancel_text : String, ok_text : String, dialog : String) -> int:
 	cancel_button_text = cancel_text
 	ok_button_text = ok_text
 	dialog_text = dialog
+	reset_size()
 	popup()
 	return _id
 

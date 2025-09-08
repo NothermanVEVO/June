@@ -51,6 +51,7 @@ item_2/id = 2
 item_3/text = "Export"
 item_3/id = 3
 script = ExtResource("3_6pnfi")
+_editor_scene = 2
 
 [node name="Edit" type="PopupMenu" parent="MenuBar/MenuBar"]
 auto_translate_mode = 1
