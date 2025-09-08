@@ -57,6 +57,14 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "Change"
 
+[node name="Copy" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Copy"
+
+[node name="PanelContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+
 [node name="Cancel" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 10
@@ -65,4 +73,5 @@ text = "Cancel"
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/Replace" to="." method="_on_replace_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/Change" to="." method="_on_change_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/Copy" to="." method="_on_copy_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/Cancel" to="." method="_on_cancel_pressed"]

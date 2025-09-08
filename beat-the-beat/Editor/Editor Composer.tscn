@@ -31,6 +31,7 @@ size_flags_vertical = 3
 script = ExtResource("1_g7rpo")
 
 [node name="MenuBar" type="FlowContainer" parent="."]
+z_index = 2
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 script = ExtResource("1_p8fip")
@@ -334,6 +335,7 @@ scale = Vector2(0.5, 1)
 mouse_default_cursor_shape = 10
 
 [node name="SoundBoard" type="FlowContainer" parent="."]
+z_index = 2
 clip_contents = true
 layout_mode = 2
 size_flags_vertical = 8

@@ -2,7 +2,7 @@ extends PanelContainer
 
 class_name TransferToConfirmation
 
-enum Choices{REPLACE = 0, CHANGE = 1, CANCEL = 2}
+enum Choices{REPLACE = 0, CHANGE = 1, COPY = 2, CANCEL = 3}
 
 var difficulty_left : String = ""
 var difficulty_right : String = ""
@@ -26,6 +26,9 @@ func _on_replace_pressed() -> void:
 
 func _on_change_pressed() -> void:
 	choice_made.emit(Choices.CHANGE)
+
+func _on_copy_pressed() -> void:
+	choice_made.emit(Choices.COPY)
 
 func _on_cancel_pressed() -> void:
 	choice_made.emit(Choices.CANCEL)

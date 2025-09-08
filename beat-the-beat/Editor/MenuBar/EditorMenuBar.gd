@@ -302,6 +302,21 @@ func _transfer_to_confirmation_choice_made(choice : TransferToConfirmation.Choic
 			song_map.difficulty = _transfer_to_difficulty
 			load_song_map(song_map)
 		
+		TransferToConfirmation.Choices.COPY:
+			_memory_save_song_map()
+			
+			song_map.difficulty = _transfer_to_difficulty
+			for s_map in _saved_song_maps:
+				if s_map.difficulty == _transfer_to_difficulty:
+					s_map.copy_song_map(song_map)
+					_transfer_to_confirmation.visible = false
+					_game_changed()
+					load_song_map(s_map)
+					return
+			_game_changed()
+			_saved_song_maps.append(song_map)
+			load_song_map(song_map)
+		
 	_transfer_to_confirmation.visible = false
 
 static func is_editor_empty() -> bool:
