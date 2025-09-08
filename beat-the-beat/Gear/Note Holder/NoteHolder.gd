@@ -64,8 +64,7 @@ func _editor_process() -> void:
 	for note in _last_visible_notes:
 		if not note in notes:
 			note.visible = false
-			_last_visible_notes.erase(note)
-			
+	
 	for note in notes:
 		note.visible = true
 		note.position.x = -width / 2
@@ -198,7 +197,7 @@ func get_notes(from : float, to : float) -> Array[Note]:
 			high = mid
 
 	var i := low
-	while i < _notes.size() and (_notes[i].get_time() < to or is_equal_approx( _notes[i].get_time(), to)):
+	while i < _notes.size() and (_notes[i].get_time() < to or is_equal_approx(_notes[i].get_time(), to)):
 		result.append(_notes[i])
 		i += 1
 
