@@ -39,18 +39,19 @@ func _ready() -> void:
 	
 	z_index = 2
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if visible and (Input.is_action_just_pressed("Add Item") or Input.is_action_just_pressed("Inspect Note")) and not get_global_rect().has_point(get_global_mouse_position()):
 		visible = false
 
+@warning_ignore("shadowed_variable")
 func display(display : bool) -> void:
 	visible = display
 
 func set_annotation(note : String) -> void:
 	_annotation_text.text = note
 
-func set_section(name : String) -> void:
-	_section_text.text = name
+func set_section(text : String) -> void:
+	_section_text.text = text
 
 func set_speed(speed : float) -> void:
 	_speed_spin_box.value = speed
@@ -70,7 +71,7 @@ func get_speed() -> float:
 func get_fade() -> bool:
 	return _fade_check_button.button_pressed
 
-func _on_speed_spin_box_value_changed(value: float) -> void:
+func _on_speed_spin_box_value_changed(_value: float) -> void:
 	speed_value_changed.emit()
 	_speed_spin_box.release_focus()
 

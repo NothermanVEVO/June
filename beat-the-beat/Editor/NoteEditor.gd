@@ -33,7 +33,7 @@ func _ready() -> void:
 	set_selected_highlight(_is_selected)
 	set_invalid_highlight(not _is_valid)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	var mouse_pos := get_global_mouse_position()
 	if get_global_rect().has_point(mouse_pos) and Input.is_action_just_pressed("Inspect Note"):
 		_note_info.set_power_value(powered)

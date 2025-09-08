@@ -46,24 +46,24 @@ func _ready() -> void:
 	_shader_material.shader = Global.HIGHLIGHT_SHADER
 	
 	top_button.position = _end_note.position# + Vector2(0, - Note.height)
-	top_button.size = Vector2(_end_note.size.x, Note.height / 4)
+	top_button.size = Vector2(_end_note.size.x, float(Note.height) / 4)
 	top_button.mouse_default_cursor_shape = Control.CURSOR_VSIZE
 	add_child(top_button)
 	
 	bottom_button.position = _start_note.position# + Vector2(0, - Note.height)
-	bottom_button.size = Vector2(_start_note.size.x, Note.height / 4)
+	bottom_button.size = Vector2(_start_note.size.x, float(Note.height) / 4)
 	bottom_button.mouse_default_cursor_shape = Control.CURSOR_VSIZE
 	add_child(bottom_button)
 	
 	set_selected_highlight(_is_selected)
 	set_invalid_highlight(not _is_valid)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if is_selected():
 		top_button.visible = true
 		bottom_button.visible = true
-		top_button.position = _end_note.position - Vector2(0, Note.height / 8)
-		bottom_button.position = _start_note.position + Vector2(0, Note.height / 4)
+		top_button.position = _end_note.position - Vector2(0, float(Note.height) / 8)
+		bottom_button.position = _start_note.position + Vector2(0, float(Note.height) / 4)
 	else:
 		top_button.visible = false
 		bottom_button.visible = false

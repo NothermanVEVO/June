@@ -12,6 +12,7 @@ signal choice_made(choice : Choices)
 func _ready() -> void:
 	_center()
 
+@warning_ignore("shadowed_variable")
 func set_text(difficulty_left : String, difficulty_right : String) -> void:
 	self.difficulty_left = difficulty_left
 	self.difficulty_right = difficulty_right

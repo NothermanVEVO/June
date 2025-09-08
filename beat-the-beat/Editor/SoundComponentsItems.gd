@@ -8,7 +8,7 @@ var start_minimum_size_x : float
 
 @onready var game_components := $"../Game Components List"
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if is_resizing:
 		custom_minimum_size.x = start_minimum_size_x - (mouse_position_when_down.x - get_global_mouse_position().x)
 		custom_minimum_size.x = MINIMUM_SIZE_X if custom_minimum_size.x < MINIMUM_SIZE_X else custom_minimum_size.x

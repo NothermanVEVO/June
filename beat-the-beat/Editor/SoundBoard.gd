@@ -70,7 +70,7 @@ func _ready() -> void:
 	
 	Song.finished.connect(_song_has_finished)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	
 	## SPEED TEXT AND SLIDER
 	if is_dragging_speed_slider:
@@ -177,7 +177,7 @@ func _on_speed_slider_drag_started() -> void:
 	speed_text.text = str(roundi(speed_slider.value)) + "%"
 	#set_process(true)
 
-func _on_speed_slider_drag_ended(value_changed: bool) -> void:
+func _on_speed_slider_drag_ended(_value_changed: bool) -> void:
 	is_dragging_speed_slider = false
 	speed_text.text = str(roundi(speed_slider.value)) + "%"
 	last_pseudo_valid_speed_text = speed_text.text
@@ -193,7 +193,7 @@ func _on_time_slider_drag_started() -> void:
 	
 	_adjust_time_pos_text(true)
 
-func _on_time_slider_drag_ended(value_changed: bool) -> void:
+func _on_time_slider_drag_ended(_value_changed: bool) -> void:
 	is_dragging_time_slider = false
 	time_text.text = (str(time_slider.value) + "%")
 	last_pseudo_valid_time_text = time_text.text
@@ -235,10 +235,10 @@ func _on_time_percentage_text_changed() -> void:
 		else:
 			#if time_text.text.ends_with(".") or time_text.text.ends_with(".%"):
 				#time_text.text = time_text.text.replace(".", ".0")
-			var str = get_float_number.search(text).strings[0]
-			if str.begins_with("."):
-				str = "0" + str
-			var value : float = str_to_var(str)
+			var string = get_float_number.search(text).strings[0]
+			if string.begins_with("."):
+				string = "0" + string
+			var value : float = str_to_var(string)
 			if value < time_slider.min_value:
 				time_slider.value = time_slider.min_value
 			elif value > time_slider.max_value:
@@ -254,9 +254,9 @@ func _on_time_percentage_text_changed() -> void:
 func _on_time_percentage_focus_exited() -> void:
 	adjust_time()
 
-func is_time_text_valid(str : String) -> bool:
-	var is_valid_1 = valid_time_with_perc.search(str)
-	var is_valid_2 = valid_time.search(str)
+func is_time_text_valid(string : String) -> bool:
+	var is_valid_1 = valid_time_with_perc.search(string)
+	var is_valid_2 = valid_time.search(string)
 	return is_valid_1 or is_valid_2
 
 func adjust_time() -> void:
@@ -272,10 +272,10 @@ func adjust_time() -> void:
 	if is_time_text_valid(text):
 		if time_text.text.ends_with(".") or time_text.text.ends_with(".%"):
 			time_text.text = time_text.text.replace(".", "")
-		var str = get_float_number.search(text).strings[0]
-		if str.begins_with("."):
-			str = "0" + str
-		var value = str_to_var(str)
+		var string = get_float_number.search(text).strings[0]
+		if string.begins_with("."):
+			string = "0" + string
+		var value = str_to_var(string)
 		if value < time_slider.min_value:
 			time_slider.value = time_slider.min_value
 		elif value > time_slider.max_value:
@@ -304,17 +304,19 @@ func _song_has_finished() -> void:
 	$Play.text = "Play"
 
 func _adjust_time_pos_text(split_time_by_temp_time : bool = false) -> void:
+	var splitted_time : Dictionary
 	if split_time_by_temp_time:
-		var splitted_time = split_time(_temp_song_time_pos)
+		splitted_time = split_time(_temp_song_time_pos)
 		time_pos_text.text = "%02d:%02d:%03d" % [splitted_time["minutes"], splitted_time["seconds"], splitted_time["milliseconds"]]
 		last_valid_time_pos_text = time_pos_text.text
 		return
 	
-	var splitted_time = split_time(Song.get_time())
+	splitted_time = split_time(Song.get_time())
 	time_pos_text.text = "%02d:%02d:%03d" % [splitted_time["minutes"], splitted_time["seconds"], splitted_time["milliseconds"]]
 	last_valid_time_pos_text = time_pos_text.text
 
 static func split_time(total_seconds: float) -> Dictionary:
+	@warning_ignore("integer_division")
 	var minutes = int(total_seconds) / 60
 	var seconds = int(total_seconds) % 60
 	var milliseconds = int((total_seconds - int(total_seconds)) * 1000)

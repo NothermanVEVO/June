@@ -7,9 +7,11 @@ const SONGS_PATH : String = "user://songs"
 
 var rng := RandomNumberGenerator.new()
 
+@warning_ignore("unused_signal")
 ## REFERS TO THE SPEED INSIDE THE GEAR CLASS
 signal speed_changed
 
+@warning_ignore("unused_signal")
 ## REFERS TO THE MAX SIZE Y IN THE GEAR CLASS
 signal changed_max_size_y
 

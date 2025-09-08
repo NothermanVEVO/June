@@ -31,7 +31,7 @@ func _ready() -> void:
 	
 	get_tree().set_auto_accept_quit(false)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	#print(_is_saved)
 	pass
 

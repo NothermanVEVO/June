@@ -7,7 +7,7 @@ var _type : int
 
 var _note_holders : Array[NoteHolder]
 
-const width := 500
+const width : float = 500
 
 var _center_screen : bool = true
 
@@ -21,6 +21,7 @@ static var _speed : float = 1.0
 var _long_notes : Array[LongNote]
 var _last_visible_long_notes : Array[LongNote]
 
+@warning_ignore("shadowed_variable")
 func _init(type : Type, mode : Mode, center_screen : bool = true, max_size_y : float = -1) -> void:
 	_type = type
 	self.mode = mode
@@ -34,7 +35,7 @@ func _ready() -> void: #TODO HANDLE ANY POSITION FOR THE GEAR, NOT ONLY THE MIDD
 	
 	_note_holders.clear()
 	
-	NoteHolder.width = width / _type
+	NoteHolder.width = width / float(_type)
 	var initial_x
 	if _center_screen:
 		initial_x = (get_viewport_rect().size.x / 2) - (width / 2) + (NoteHolder.width / 2)
@@ -48,7 +49,7 @@ func _ready() -> void: #TODO HANDLE ANY POSITION FOR THE GEAR, NOT ONLY THE MIDD
 		add_child(note_holder)
 		note_holder.changed_note.connect(_changed_note_from_note_holder)
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if not _long_notes:
 		return
 	
@@ -95,6 +96,7 @@ func add_long_note(long_note : LongNote, validate : bool = false) -> void:
 	var high := _long_notes.size()
 
 	while low < high:
+		@warning_ignore("integer_division")
 		var mid := (low + high) / 2
 		if long_note.get_time() < _long_notes[mid].get_time():
 			high = mid
@@ -123,6 +125,7 @@ func get_long_notes(from : float, to : float) -> Array[LongNote]:
 	var high := _long_notes.size()
 
 	while low < high:
+		@warning_ignore("integer_division")
 		var mid := (low + high) / 2
 		if _long_notes[mid].get_time() < from:
 			low = mid + 1
@@ -143,6 +146,7 @@ func update_long_note(long_note : LongNote, validate : bool = false) -> void:
 	var high := _long_notes.size()
 
 	while low < high:
+		@warning_ignore("integer_division")
 		var mid := (low + high) / 2
 		if long_note.get_time() < _long_notes[mid].get_time():
 			high = mid
@@ -162,14 +166,9 @@ func _validate_long_notes() -> void: # EH FEIO ISSO AQ MAS TO COM PREGUIÇA DE F
 			note.set_invalid_highlight(get_long_notes(note.get_time(), note.get_time()).size() > 1)
 		
 		var fade_notes : Array[LongNote] = []
-		var quant_fade : int = 0
 		for note in _long_notes:
 			if note.get_type() == LongNote.Type.FADE:
 				fade_notes.append(note)
-				if note.fade:
-					quant_fade += 1
-				else:
-					quant_fade -= 1
 		
 		if not fade_notes:
 			return

@@ -14,7 +14,7 @@ func _ready() -> void:
 	modulate.a = 0.0
 
 func _set_position_n_size() -> void:
-	size.x = Gear.get_max_size_y() + Note.height / 2
+	size.x = Gear.get_max_size_y() + float(Note.height) / 2
 	size.y = NoteHolder.width
 	position.x = -size.y / 2
 	#position.y = Gear.get_max_size_y() + Note.height / 2

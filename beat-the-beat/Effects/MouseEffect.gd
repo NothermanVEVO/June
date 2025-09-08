@@ -29,7 +29,7 @@ func set_type(effect : Effect) -> void:
 			_mouse_trail_effect.color_ramp = mouse_power_effect_color_ramp
 	_last_global_mouse_position = get_global_mouse_position()
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if _effect == Effect.NONE:
 		return
 		

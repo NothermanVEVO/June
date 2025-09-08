@@ -28,10 +28,10 @@ func _ready() -> void:
 	position = Vector2(_pos_x, _hit_zone_y)
 	add_child(_key_pressed_gradient)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	queue_redraw() #TODO REMOVE THIS LATER, FOR THE SAKE OF GOD
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	#if _notes:
 	match Gear.mode:
 		Gear.Mode.PLAYER:
@@ -59,7 +59,7 @@ func _editor_process() -> void:
 	
 	var time : float = Song.get_time()
 	
-	var note_size_time = get_time_pos_y(Note.height / 2, Gear.get_max_size_y() + Note.height / 2, Note.height + Note.height / 2, 0, Gear.MAX_TIME_Y())
+	var note_size_time = get_time_pos_y(float(Note.height) / 2, Gear.get_max_size_y() + float(Note.height) / 2, float(Note.height) + float(Note.height) / 2, 0, Gear.MAX_TIME_Y())
 	
 	var notes := get_notes(time - note_size_time, time + Gear.MAX_TIME_Y() + note_size_time / 2)
 	
@@ -70,7 +70,7 @@ func _editor_process() -> void:
 	for note in notes:
 		note.visible = true
 		note.position.x = -width / 2
-		note.position.y = -get_local_pos_y_correct(Note.height / 2, Gear.get_max_size_y() + Note.height / 2, note.get_time(), time, time + Gear.MAX_TIME_Y())
+		note.position.y = -get_local_pos_y_correct(float(Note.height) / 2, Gear.get_max_size_y() + float(Note.height) / 2, note.get_time(), time, time + Gear.MAX_TIME_Y())
 		
 		if note.get_time() < time:
 			var p_time = note.get_time() + (time - note.get_time())
@@ -100,7 +100,7 @@ func _hit() -> void: # NOTE REDO
 	pass
 
 func _calculate_difference(note : Note) -> float:
-	var note_pos = -(note.global_position.y + (Note.height / 2) - global_position.y)
+	var note_pos = -(note.global_position.y + (float(Note.height) / 2) - global_position.y)
 	var result = (note_pos - max_note_distance) / (-max_note_distance) * 100
 	return result if result <= 100.0 else (result - 200)
 
@@ -143,6 +143,7 @@ func add_note(note : Note, validate_note : bool = false) -> void:
 	var high := _notes.size()
 
 	while low < high:
+		@warning_ignore("integer_division")
 		var mid := (low + high) / 2
 		if note.get_time() < _notes[mid].get_time():
 			high = mid
@@ -177,6 +178,7 @@ func update_note(note : Note, validate_note : bool = false) -> void:
 	var high := _notes.size()
 
 	while low < high:
+		@warning_ignore("integer_division")
 		var mid := (low + high) / 2
 		if note.get_time() < _notes[mid].get_time():
 			high = mid
@@ -199,6 +201,7 @@ func get_notes(from : float, to : float) -> Array[Note]:
 			break
 
 	while low < high:
+		@warning_ignore("integer_division")
 		var mid := (low + high) / 2
 		if _notes[mid].get_time() < from:
 			low = mid + 1
@@ -253,12 +256,12 @@ func get_all_notes() -> Array[Note]:
 
 func _draw() -> void:
 	var pos = Vector2.ZERO
-	var rect_size_y = Note.height
+	var rect_size_y = float(Note.height)
 	var pos_x = pos.x - width / 2
 	var pos_y = pos.y - (rect_size_y / 2)
 	draw_rect(Rect2(pos_x, pos_y, width, rect_size_y), Color.BLUE)
-	draw_line(Vector2(pos_x, pos_y), Vector2(pos_x, pos_y - Gear.get_max_size_y() + Note.height / 2), Color.WHITE)
-	draw_line(Vector2(pos_x + width, pos_y), Vector2(pos_x + width, pos_y - Gear.get_max_size_y() + Note.height / 2), Color.WHITE)
+	draw_line(Vector2(pos_x, pos_y), Vector2(pos_x, pos_y - Gear.get_max_size_y() + float(Note.height) / 2), Color.WHITE)
+	draw_line(Vector2(pos_x + width, pos_y), Vector2(pos_x + width, pos_y - Gear.get_max_size_y() + float(Note.height) / 2), Color.WHITE)
 	draw_circle(pos, 5, Color.YELLOW)
 	draw_circle(Vector2(pos.x, pos.y - max_note_distance), 
 		5, Color.RED)

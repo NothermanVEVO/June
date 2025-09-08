@@ -353,14 +353,14 @@ func is_valid_for_export() -> String:
 			## NOTE https://www.youtube.com/watch?v=C9ptuhAB3GI&ab_channel=Voylin%27sGameDevJourney
 	return ""
 
-func _on_name_text_edit_text_changed(new_text: String) -> void:
+func _on_name_text_edit_text_changed(_new_text: String) -> void:
 	Editor.changed_editor()
 
-func _on_author_text_edit_text_changed(new_text: String) -> void:
+func _on_author_text_edit_text_changed(_new_text: String) -> void:
 	Editor.changed_editor()
 
-func _on_track_text_edit_text_changed(new_text: String) -> void:
+func _on_track_text_edit_text_changed(_new_text: String) -> void:
 	Editor.changed_editor()
 
-func _on_creator_text_edit_text_changed(new_text: String) -> void:
+func _on_creator_text_edit_text_changed(_new_text: String) -> void:
 	Editor.changed_editor()

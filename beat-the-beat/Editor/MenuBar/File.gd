@@ -33,7 +33,7 @@ func _ready() -> void:
 	#add_child(file_dialog)
 	DialogFile.file_selected.connect(_file_dialog_file)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Save") and not DialogConfirmation.visible and Editor.get_current_scene() == _editor_scene:
 		if _file_path:
 			save_file(_file_path)

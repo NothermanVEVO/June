@@ -77,8 +77,7 @@ func _ready() -> void:
 	
 	z_index = 1
 
-func _process(delta: float) -> void:
-	#print(material)
+func _process(_delta: float) -> void:
 	_long_note_info.global_position = global_position + get_global_rect().size / 2 - _long_note_info.size / 2
 	if Input.is_action_just_pressed("Inspect Note") and get_global_rect().has_point(get_global_mouse_position()):
 		_long_note_info.display.call_deferred(not _long_note_info.visible)

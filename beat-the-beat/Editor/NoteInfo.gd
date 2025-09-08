@@ -4,8 +4,8 @@ class_name NoteInfo
 
 @onready var _start_time : TextEdit = $"MarginContainer/InfoVBox/Start/Start Time"
 @onready var _end_time : TextEdit = $"MarginContainer/InfoVBox/End/End Time"
-@onready var _sfx : TextEdit = $MarginContainer/InfoVBox/SFX
-@onready var _locked : CheckBox = $MarginContainer/InfoVBox/Locked
+##@onready var _sfx : TextEdit = $MarginContainer/InfoVBox/SFX #WARNING UNUSED
+##@onready var _locked : CheckBox = $MarginContainer/InfoVBox/Locked #WARNING UNUSED
 @onready var _power : CheckBox = $MarginContainer/InfoVBox/Power
 
 @onready var _end_time_container : FlowContainer = $MarginContainer/InfoVBox/End
