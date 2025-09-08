@@ -135,7 +135,7 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("Add Item"):
 		_mouse_was_pressed_inside = get_global_rect().has_point(get_global_mouse_position())
 	
-	if GameComponents.get_selected_item_text() == "Power":
+	if GameComponents.get_selected_item_text() == "Power (G)":
 		Global.set_mouse_effect(MouseEffect.Effect.POWER_ITEM)
 	else:
 		Global.set_mouse_effect(MouseEffect.Effect.NONE)
@@ -550,10 +550,10 @@ func _handle_selected_item_hold() -> void:
 
 func _handle_selected_item_power() -> void:
 	if Input.is_action_just_pressed("Add Item"):
-		changed.emit()
 		var notes := gear.get_global_note_intersected_rects(Rect2(get_global_mouse_position(), Vector2.ZERO))
 		_clicked_on_note = notes.size() >= 1 # IF TRUE, MEANS THAT IT CLICKED ON A NOTE
 		if _clicked_on_note:
+			changed.emit()
 			var closest_note : Note = null
 			for note in notes:
 				if closest_note:
