@@ -179,6 +179,10 @@ func _process(delta: float) -> void:
 		else:
 			Song.play(Song.get_time())
 	
+	sample_tap_note.visible = false
+	if _currently_sample_long_note:
+		_currently_sample_long_note.visible = false
+	
 	if has_focus():
 		focus_effect.visible = true
 		_handle_selected_item(GameComponents.get_selected_item_text())
@@ -217,25 +221,25 @@ func _display_mouse_time_position(display_on_grid : bool = false) -> void:
 
 func _handle_selected_item(item_text : String) -> void:
 	match item_text:
-		"Select":
+		"Select (E)":
 			_handle_select() # TO REVIEW ...
 		"Un/lock":
 			pass
-		"Tap":
+		"Tap (B)":
 			_handle_selected_item_tap() # TO REVIEW ...
-		"Hold":
+		"Hold (V)":
 			_handle_selected_item_hold() # TO REVIEW ...
-		"Power":
+		"Power (G)":
 			_handle_selected_item_power() # TO REVIEW ...
-		"Speed":
+		"Speed (Z)":
 			_handle_long_note(LongNote.Type.SPEED) # TO REVIEW ...
-		"Fade":
+		"Fade (F)":
 			_handle_long_note(LongNote.Type.FADE) # TO REVIEW ...
 		"Sound":
 			pass
-		"Note":
+		"Note (C)":
 			_handle_long_note(LongNote.Type.ANNOTATION) # TO REVIEW ...
-		"Section":
+		"Section (X)":
 			_handle_long_note(LongNote.Type.SECTION) # TO REVIEW ...
 		#_:
 			#print("epa, NÃO ERA PRA ESTAR ENTRANDO AQUI, FICA ESPERTO")
