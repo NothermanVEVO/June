@@ -62,10 +62,9 @@ func _physics_process(_delta: float) -> void:
 func _editor_process() -> void:
 	var long_notes = get_long_notes(Song.get_time(), Song.get_time() + MAX_TIME_Y())
 	
-	for note in _last_visible_long_notes:
-		if not note in long_notes:
-			note.visible = false
-			_last_visible_long_notes.erase(note)
+	for long_note in _last_visible_long_notes:
+		if not long_note in long_notes:
+			long_note.visible = false
 	
 	for long_note in long_notes:
 		long_note.visible = true

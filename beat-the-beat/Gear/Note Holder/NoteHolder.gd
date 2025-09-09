@@ -7,7 +7,6 @@ var _note_action : String = ""
 var _notes : Array[Note]
 
 static var width : float = 0.0
-const max_note_distance : float = 100.0
 
 var _pos_x := 0.0
 static var _hit_zone_y : float = -50.0 # SET THE POSITION OF THE HITZONE #NOTE
@@ -17,6 +16,10 @@ const SECS_SIZE_Y = 5 # SPEED OF THE GAME
 var _last_visible_notes : Array[Note] = []
 
 var _key_pressed_gradient := KeyPressedGradient.new()
+
+var _currently_note_idx : int = 0
+
+const MAX_TIME_HIT : float = 0.5 # THE MAXIMUM HIT RANGE
 
 signal changed_note
 
@@ -32,24 +35,36 @@ func _process(_delta: float) -> void:
 	queue_redraw() #TODO REMOVE THIS LATER, FOR THE SAKE OF GOD
 
 func _physics_process(_delta: float) -> void:
-	#if _notes:
 	match Gear.mode:
 		Gear.Mode.PLAYER:
 			_player_process()
 		Gear.Mode.EDITOR:
 			_editor_process()
-		
-	#if _notes: # NOTE REDO
-		#if _notes[0].global_position.y > global_position.y + max_note_distance:
-			#print("BREAK")
-			#_notes[0].state = Note.State.BREAK
-			#_notes[0].visible = false
-			##_notes[0].queue_free()
-			##_notes.remove_at(0)
 
 func _player_process() -> void:
+	if not _notes:
+		return
+	
+	if _currently_note_idx < _notes.size():
+		if _notes[_currently_note_idx].get_time() < Song.get_time() - MAX_TIME_HIT:
+			_notes[_currently_note_idx].state = Note.State.BREAK
+			print("BREAK")
+			_currently_note_idx += 1
+	
+	var time : float
+	
+	if MusicPlayer.get_current_time() >= MusicPlayer.TIME_TO_START:
+		time = Song.get_time()
+	else:
+		time = MusicPlayer.get_current_time() - MusicPlayer.TIME_TO_START
+	
 	if Input.is_action_just_pressed(_note_action):
-		_hit()
+		_key_pressed_gradient.key_just_pressed()
+		_hit(time)
+	elif Input.is_action_just_released(_note_action):
+		_key_pressed_gradient.key_just_released()
+	
+	display_notes(time)
 
 func _editor_process() -> void:
 	if Input.is_action_just_pressed(_note_action):
@@ -58,7 +73,9 @@ func _editor_process() -> void:
 		_key_pressed_gradient.key_just_released()
 	
 	var time : float = Song.get_time()
-	
+	display_notes(time)
+
+func display_notes(time : float) -> void:
 	var note_size_time = get_time_pos_y(float(Note.height) / 2, Gear.get_max_size_y() + float(Note.height) / 2, float(Note.height) + float(Note.height) / 2, 0, Gear.MAX_TIME_Y())
 	
 	var notes := get_notes(time - note_size_time, time + Gear.MAX_TIME_Y() + note_size_time / 2)
@@ -68,7 +85,9 @@ func _editor_process() -> void:
 			note.visible = false
 	
 	for note in notes:
-		note.visible = true
+		note.visible = note.state == Note.State.TO_HIT
+		if not note.visible:
+			continue
 		note.position.x = -width / 2
 		note.position.y = -get_local_pos_y_correct(float(Note.height) / 2, Gear.get_max_size_y() + float(Note.height) / 2, note.get_time(), time, time + Gear.MAX_TIME_Y())
 		
@@ -89,54 +108,84 @@ func _editor_process() -> void:
 	
 	_last_visible_notes = notes
 
-func _hit() -> void: # NOTE REDO
-	#if _notes:
-		#if abs(_notes[0].global_position.y + (Note.height / 2) - global_position.y) <= max_note_distance:
-			#print(_calculate_round_precision(_notes[0]))
-			#_notes[0].state = Note.State.HITTED
-			#_notes[0].visible = false
-			#_notes[0].queue_free()
-			#_notes.remove_at(0)
-	pass
+func _hit(time : float) -> void:
+	if _currently_note_idx >= _notes.size():
+		return
+	if _notes[_currently_note_idx].get_time() >= time - MAX_TIME_HIT and _notes[_currently_note_idx].get_time() <= time + MAX_TIME_HIT:
+		_notes[_currently_note_idx].state = Note.State.HITTED
+		#print(time)
+		#print(_notes[_currently_note_idx].get_time())
+		_calculate_difference(time, _notes[_currently_note_idx].get_time())
+		print("----------------")
+		_currently_note_idx += 1
+		#print("nothing")
 
-func _calculate_difference(note : Note) -> float:
-	var note_pos = -(note.global_position.y + (float(Note.height) / 2) - global_position.y)
-	var result = (note_pos - max_note_distance) / (-max_note_distance) * 100
-	return result if result <= 100.0 else (result - 200)
+func _calculate_difference(time : float, note_time : float):
+	var difference : float = Global.get_percentage_between(time, time + MAX_TIME_HIT, note_time) * 100
+	var value : int = sign(difference)
+	difference = abs(abs(difference) - 100)
+	print(difference)
+	print(_calculate_round_precision(difference, value))
 
-func _calculate_round_precision(note : Note) -> int:
-	var difference = _calculate_difference(note)
-	var value = sign(difference)  # 1 ou -1
-	difference *= value
-
-	if difference > 90.0:
-		return 100 * value
-	elif difference > 80.0:
+func _calculate_round_precision(difference : float, value : int) -> int:
+	if difference >= 92.5:
+		return 100
+	elif difference >= 82.5 and difference < 92.5:
 		return 90 * value
-	elif difference > 70.0:
+	elif difference >= 72.5 and difference < 82.5:
 		return 80 * value
-	elif difference > 60.0:
+	elif difference >= 62.5 and difference < 72.5:
 		return 70 * value
-	elif difference > 50.0:
+	elif difference >= 52.5 and difference < 62.5:
 		return 60 * value
-	elif difference > 40.0:
+	elif difference >= 42.5 and difference < 52.5:
 		return 50 * value
-	elif difference > 30.0:
+	elif difference >= 32.5 and difference < 42.5:
 		return 40 * value
-	elif difference > 20.0:
+	elif difference >= 22.5 and difference < 32.5:
 		return 30 * value
-	elif difference > 10.0:
+	elif difference >= 12.5 and difference < 22.5:
 		return 20 * value
-	elif difference > 1.0:
-		return 10
-	else:
+	elif difference >= 5.0 and difference < 12.5:
+		return 10 * value
+	elif difference >= 2.5 and difference < 5.0:
+		return 1 * value
+	elif difference >= 0.0 and difference < 2.5:
 		return 0
+	return 0
 
-#func add_note() -> void:
-	#var note = Note.new()
-	#note.global_position.y -= get_viewport_rect().size.y
-	#_notes.append(note)
-	#add_child(note)
+#func _calculate_difference(note : Note) -> float:
+	#var note_pos = -(note.global_position.y + (float(Note.height) / 2) - global_position.y)
+	#var result = (note_pos - max_note_distance) / (-max_note_distance) * 100
+	#return result if result <= 100.0 else (result - 200)
+
+#func _calculate_round_precision(note : Note) -> int:
+	#var difference = _calculate_difference(note)
+	#var value = sign(difference)  # 1 ou -1
+	#difference *= value
+#
+	#if difference > 90.0:
+		#return 100 * value
+	#elif difference > 80.0:
+		#return 90 * value
+	#elif difference > 70.0:
+		#return 80 * value
+	#elif difference > 60.0:
+		#return 70 * value
+	#elif difference > 50.0:
+		#return 60 * value
+	#elif difference > 40.0:
+		#return 50 * value
+	#elif difference > 30.0:
+		#return 40 * value
+	#elif difference > 20.0:
+		#return 30 * value
+	#elif difference > 10.0:
+		#return 20 * value
+	#elif difference > 1.0:
+		#return 10
+	#else:
+		#return 0
 
 func add_note(note : Note, validate_note : bool = false) -> void:
 	var low := 0
@@ -263,8 +312,8 @@ func _draw() -> void:
 	draw_line(Vector2(pos_x, pos_y), Vector2(pos_x, pos_y - Gear.get_max_size_y() + float(Note.height) / 2), Color.WHITE)
 	draw_line(Vector2(pos_x + width, pos_y), Vector2(pos_x + width, pos_y - Gear.get_max_size_y() + float(Note.height) / 2), Color.WHITE)
 	draw_circle(pos, 5, Color.YELLOW)
-	draw_circle(Vector2(pos.x, pos.y - max_note_distance), 
-		5, Color.RED)
+	#draw_circle(Vector2(pos.x, pos.y - max_note_distance), 
+		#5, Color.RED)
 
 static func get_time_pos_y(min_pos_y : float, max_pos_y : float, pos_y : float, min_time : float, max_time : float) -> float:
 	var percentage = Global.get_percentage_between(min_pos_y, max_pos_y, pos_y)

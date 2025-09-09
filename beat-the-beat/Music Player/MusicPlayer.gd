@@ -3,6 +3,8 @@ extends Control
 class_name MusicPlayer
 
 @export var _song_resource_path : String
+@export var _gear_type : Gear.Type = Gear.Type.FOUR_KEYS
+@export var _difficulty : SongMap.Difficulty
 var _song_resource : SongResource
 
 @onready var video : VideoStreamPlayer = $VideoStreamPlayer
@@ -15,27 +17,28 @@ var image_texture : ImageTexture
 
 var _gear : Gear
 
+static var _current_time : float = 0.0
+const TIME_TO_START : float = 4.0
+
 func _ready() -> void:
-	if _song_resource_path:
-		load_song_resource(_song_resource_path)
-	Song.play()
-	video.play()
-	_gear = Gear.new(Gear.Type.FOUR_KEYS, Gear.Mode.EDITOR, false, size.y)
+	_gear = Gear.new(Gear.Type.FOUR_KEYS, Gear.Mode.PLAYER, false, size.y)
+	Gear.set_speed(5)
 	add_child(_gear)
 	_gear.position.x = size.x / 2
 	_gear.position.y = size.y
-	# TEMP ===========
-	#_gear = Gear.new(Gear.Type.SIX_KEYS)
-	#add_child(_gear)
-	# TEMP ===========
-	pass
+	
+	if _song_resource_path:
+		_load_song_resource(_song_resource_path)
+	_load_song_map()
 
 func _physics_process(_delta: float) -> void:
-	#if Input.is_action_just_pressed("ui_accept"):
-		#_gear.add_note_at(0)
-	pass
+	_current_time += _delta
+	if _current_time >= TIME_TO_START:
+		Song.play()
+		video.play()
+		set_physics_process(false)
 
-func load_song_resource(path : String):  ##TODO MAKE A BETTER THING HERE TO RETURN FROM THE GAME
+func _load_song_resource(path : String):  ##TODO MAKE A BETTER THING HERE TO RETURN FROM THE GAME
 	if not FileAccess.file_exists(path):
 		print("Arquivo não existe")
 		return
@@ -63,6 +66,26 @@ func load_song_resource(path : String):  ##TODO MAKE A BETTER THING HERE TO RETU
 			elif _song_resource.image:
 				image_texture = Loader.load_image(_song_resource.image)
 				image.texture = image_texture
+
+func _load_song_map() -> void:
+	if not _song_resource:
+		print("n foi song resource")
+		return
+	if not _gear:
+		print("N foi _gear")
+		return
+	for s_map in _song_resource.song_maps:
+		if s_map.difficulty == _difficulty and s_map.gear_type == _gear_type:
+			print("achou")
+			song_map = s_map
+			break
+	for note in song_map.notes:
+		_gear.add_note_at(note.idx, note.to_note(Gear.Mode.PLAYER))
+	for long_note in song_map.long_notes:
+		_gear.add_long_note(long_note.to_long_note())
+
+static func get_current_time() -> float:
+	return _current_time
 
 func _draw() -> void:
 	draw_circle(get_viewport_rect().size / 2, 5, Color.BLACK)
