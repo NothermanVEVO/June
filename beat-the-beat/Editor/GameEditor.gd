@@ -98,7 +98,7 @@ func _resized() -> void:
 	_hit_zone_y = size.y + NoteHolder.get_hitzone()
 	gear.set_max_size_y(_hit_zone_y)
 	gear.position.x = size.x / 2
-	gear.position.y = size.y# - NoteHolder.get_hitzone()
+	gear.position.y = size.y
 
 func set_gear(type : Gear.Type) -> void:
 	remove_child(gear)

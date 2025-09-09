@@ -21,13 +21,13 @@ func _ready() -> void:
 	DialogConfirmation.confirmed.connect(_confirmation_dialog_confirmed)
 	DialogConfirmation.canceled.connect(_confirmation_dialog_canceled)
 	
-	## TEMP, REMOVE LATER
-	get_tree().root.add_child.call_deferred(editor_composer)
-	get_tree().root.add_child.call_deferred(editor_settings)
-	_current_scene = Scenes.SETTINGS
-	editor_composer.visible = false
-	editor_settings.visible = true
-	is_on_editor = true
+	## TEMP, REMOVE LATER TODO WARNING NOTE BUG
+	#get_tree().root.add_child.call_deferred(editor_composer)
+	#get_tree().root.add_child.call_deferred(editor_settings)
+	#_current_scene = Scenes.SETTINGS
+	#editor_composer.visible = false
+	#editor_settings.visible = true
+	#is_on_editor = true
 	
 	get_tree().set_auto_accept_quit(false)
 

@@ -26,6 +26,7 @@ Editor="*res://Global/Editor.gd"
 Song="*res://Global/Song.gd"
 DialogConfirmation="*res://Global/DialogConfirmation.gd"
 DialogFile="*res://Global/DialogFile.gd"
+Loader="*res://Global/Loader.gd"
 
 [display]
 

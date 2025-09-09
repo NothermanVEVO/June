@@ -85,7 +85,7 @@ func set_song(path : String) -> void:
 		_pop_up_dialog("Não foi possível achar o arquivo: \"" + path + "\"")
 		return
 	
-	var stream = load_music_stream(path)
+	var stream = Loader.load_music_stream(path)
 	
 	if stream is AudioStream:
 		Song.set_song(stream)
@@ -98,33 +98,17 @@ func set_song(path : String) -> void:
 		_pop_up_dialog("Não foi possível carregar o aúdio!")
 		return
 
-static func load_music_stream(path : String):
-	var stream
-	if path.get_extension() == "mp3":
-		stream = AudioStreamMP3.load_from_file(path)
-		return stream
-	elif path.get_extension() == "wav":
-		stream = AudioStreamWAV.load_from_file(path)
-		return stream
-	elif path.get_extension() == "ogg":
-		stream = AudioStreamOggVorbis.load_from_file(path)
-		return stream
-	return null
-
 func set_icon(path : String) -> void:
 	if not FileAccess.file_exists(path):
 		_pop_up_dialog("Não foi possível achar o arquivo: \"" + path + "\"")
 		return
 	
-	var image := Image.new()
-	var error = image.load(path)
+	var image_texture : ImageTexture = Loader.load_image(path)
 	
-	if error != OK:
+	if not image_texture:
 		_pop_up_dialog("Tipo de arquivo inválido!")
 		return
 	else:
-		var image_texture = ImageTexture.new()
-		image_texture.set_image(image)
 		icon_texture.texture = image_texture
 		remove_icon_button.disabled = false
 		_icon_path = path
@@ -135,15 +119,12 @@ func set_image(path : String) -> void:
 		_pop_up_dialog("Não foi possível achar o arquivo: \"" + path + "\"")
 		return
 	
-	var image := Image.new()
-	var error = image.load(path)
+	var image_texture : ImageTexture = Loader.load_image(path)
 	
-	if error != OK:
+	if not image_texture:
 		_pop_up_dialog("Tipo de arquivo inválido!")
 		return
 	else:
-		var image_texture = ImageTexture.new()
-		image_texture.set_image(image)
 		image_rect_texture.texture = image_texture
 		remove_image_button.disabled = false
 		_image_path = path
@@ -158,8 +139,7 @@ func set_video(path : String) -> void:
 		_pop_up_dialog("Não foi possível achar o arquivo: \"" + path + "\"")
 		return
 	
-	var stream = VideoStreamTheora.new()
-	stream.file = path
+	var stream = Loader.load_video_stream(path)
 	
 	if stream is VideoStream:
 		video_player.stream = stream
