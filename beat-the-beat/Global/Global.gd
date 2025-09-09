@@ -7,6 +7,8 @@ const SONGS_PATH : String = "user://songs"
 
 var rng := RandomNumberGenerator.new()
 
+var main_music_player : MusicPlayer
+
 @warning_ignore("unused_signal")
 ## REFERS TO THE SPEED INSIDE THE GEAR CLASS
 signal speed_changed

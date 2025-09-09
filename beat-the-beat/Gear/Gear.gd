@@ -7,7 +7,7 @@ var _type : int
 
 var _note_holders : Array[NoteHolder]
 
-const width : float = 500
+const width : float = 400
 
 var _center_screen : bool = true
 
@@ -280,5 +280,14 @@ func set_max_size_y(max_size_y : float) -> void:
 static func get_max_size_y() -> float:
 	return _max_size_y
 
+func set_hitzone(hitzone : float) -> void:
+	for note_holder in _note_holders:
+		note_holder.set_hitzone(hitzone)
+
 func _draw() -> void:
 	draw_circle(Vector2.ZERO, 10, Color.AQUA)
+	var rect := Rect2(-width / 2, -get_viewport_rect().size.y, width, get_viewport_rect().size.y).abs()
+	print(rect)
+	
+	draw_rect(rect, Color(0, 0, 0, 0.5))
+	

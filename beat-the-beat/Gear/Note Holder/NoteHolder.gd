@@ -116,7 +116,7 @@ func _hit(time : float) -> void:
 		#print(time)
 		#print(_notes[_currently_note_idx].get_time())
 		_calculate_difference(time, _notes[_currently_note_idx].get_time())
-		print("----------------")
+		#print("----------------")
 		_currently_note_idx += 1
 		#print("nothing")
 
@@ -124,8 +124,10 @@ func _calculate_difference(time : float, note_time : float):
 	var difference : float = Global.get_percentage_between(time, time + MAX_TIME_HIT, note_time) * 100
 	var value : int = sign(difference)
 	difference = abs(abs(difference) - 100)
-	print(difference)
-	print(_calculate_round_precision(difference, value))
+	#print(difference)
+	#print(_calculate_round_precision(difference, value))
+	if Global.main_music_player:
+		Global.main_music_player.pop_precision(_calculate_round_precision(difference, value))
 
 func _calculate_round_precision(difference : float, value : int) -> int:
 	if difference >= 92.5:
@@ -153,39 +155,6 @@ func _calculate_round_precision(difference : float, value : int) -> int:
 	elif difference >= 0.0 and difference < 2.5:
 		return 0
 	return 0
-
-#func _calculate_difference(note : Note) -> float:
-	#var note_pos = -(note.global_position.y + (float(Note.height) / 2) - global_position.y)
-	#var result = (note_pos - max_note_distance) / (-max_note_distance) * 100
-	#return result if result <= 100.0 else (result - 200)
-
-#func _calculate_round_precision(note : Note) -> int:
-	#var difference = _calculate_difference(note)
-	#var value = sign(difference)  # 1 ou -1
-	#difference *= value
-#
-	#if difference > 90.0:
-		#return 100 * value
-	#elif difference > 80.0:
-		#return 90 * value
-	#elif difference > 70.0:
-		#return 80 * value
-	#elif difference > 60.0:
-		#return 70 * value
-	#elif difference > 50.0:
-		#return 60 * value
-	#elif difference > 40.0:
-		#return 50 * value
-	#elif difference > 30.0:
-		#return 40 * value
-	#elif difference > 20.0:
-		#return 30 * value
-	#elif difference > 10.0:
-		#return 20 * value
-	#elif difference > 1.0:
-		#return 10
-	#else:
-		#return 0
 
 func add_note(note : Note, validate_note : bool = false) -> void:
 	var low := 0
@@ -296,6 +265,10 @@ func validate_notes(from : float, to : float) -> bool:
 
 static func get_hitzone() -> float:
 	return _hit_zone_y
+
+func set_hitzone(hitzone : float) -> void:
+	_hit_zone_y = hitzone
+	position = Vector2(_pos_x, hitzone)
 
 func get_notes_array() -> Array[Note]:
 	return _notes

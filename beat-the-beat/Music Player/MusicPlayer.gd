@@ -21,15 +21,24 @@ static var _current_time : float = 0.0
 const TIME_TO_START : float = 4.0
 
 func _ready() -> void:
+	resized.connect(_resized)
 	_gear = Gear.new(Gear.Type.FOUR_KEYS, Gear.Mode.PLAYER, false, size.y)
 	Gear.set_speed(5)
 	add_child(_gear)
+	_gear.set_hitzone(-200)
 	_gear.position.x = size.x / 2
 	_gear.position.y = size.y
 	
 	if _song_resource_path:
 		_load_song_resource(_song_resource_path)
 	_load_song_map()
+	
+	Global.main_music_player = self ## TEMP, REMOVE THIS LATER
+
+func _resized() -> void:
+	_gear.set_max_size_y(size.y)
+	_gear.position.x = size.x / 2
+	_gear.position.y = size.y
 
 func _physics_process(_delta: float) -> void:
 	_current_time += _delta
@@ -83,6 +92,13 @@ func _load_song_map() -> void:
 		_gear.add_note_at(note.idx, note.to_note(Gear.Mode.PLAYER))
 	for long_note in song_map.long_notes:
 		_gear.add_long_note(long_note.to_long_note())
+
+func pop_precision(precision : int) -> void:
+	$Precision.visible = true
+	$Precision.text = str(precision) + "% MAX"
+	if $Animations.is_playing():
+		$Animations.play("RESET")
+	$Animations.play("Pop Up Precision")
 
 static func get_current_time() -> float:
 	return _current_time
