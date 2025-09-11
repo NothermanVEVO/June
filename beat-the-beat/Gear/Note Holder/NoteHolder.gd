@@ -19,7 +19,7 @@ var _key_pressed_gradient := KeyPressedGradient.new()
 
 var _currently_note_idx : int = 0
 
-const MAX_TIME_HIT : float = 0.5 # THE MAXIMUM HIT RANGE
+const MAX_TIME_HIT : float = 0.25 # THE MAXIMUM HIT RANGE
 
 signal changed_note
 
@@ -33,8 +33,7 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	queue_redraw() #TODO REMOVE THIS LATER, FOR THE SAKE OF GOD
-
-func _physics_process(_delta: float) -> void:
+	
 	match Gear.mode:
 		Gear.Mode.PLAYER:
 			_player_process()
@@ -48,7 +47,8 @@ func _player_process() -> void:
 	if _currently_note_idx < _notes.size():
 		if _notes[_currently_note_idx].get_time() < Song.get_time() - MAX_TIME_HIT:
 			_notes[_currently_note_idx].state = Note.State.BREAK
-			print("BREAK")
+			if Global.main_music_player:
+				Global.main_music_player.pop_precision(0)
 			_currently_note_idx += 1
 	
 	var time : float
@@ -113,12 +113,8 @@ func _hit(time : float) -> void:
 		return
 	if _notes[_currently_note_idx].get_time() >= time - MAX_TIME_HIT and _notes[_currently_note_idx].get_time() <= time + MAX_TIME_HIT:
 		_notes[_currently_note_idx].state = Note.State.HITTED
-		#print(time)
-		#print(_notes[_currently_note_idx].get_time())
 		_calculate_difference(time, _notes[_currently_note_idx].get_time())
-		#print("----------------")
 		_currently_note_idx += 1
-		#print("nothing")
 
 func _calculate_difference(time : float, note_time : float):
 	var difference : float = Global.get_percentage_between(time, time + MAX_TIME_HIT, note_time) * 100
@@ -127,34 +123,63 @@ func _calculate_difference(time : float, note_time : float):
 	#print(difference)
 	#print(_calculate_round_precision(difference, value))
 	if Global.main_music_player:
-		Global.main_music_player.pop_precision(_calculate_round_precision(difference, value))
+		var precision : int = _calculate_round_precision(difference, value)
+		Global.main_music_player.pop_precision(precision)
+		Global.main_music_player.add_score(MusicPlayer.get_value_of_note() * abs(precision) / 100)
 
-func _calculate_round_precision(difference : float, value : int) -> int:
-	if difference >= 92.5:
+func _calculate_round_precision(difference : float, value : int) -> int: ## YES... EVERYTHING IS A LIE.
+	if difference >= 80.0: ## TO NOT BE SO FRUSTRATING
 		return 100
-	elif difference >= 82.5 and difference < 92.5:
+	elif difference >= 72.5 and difference < 80.0:
 		return 90 * value
-	elif difference >= 72.5 and difference < 82.5:
+	elif difference >= 65.0 and difference < 72.5:
 		return 80 * value
-	elif difference >= 62.5 and difference < 72.5:
+	elif difference >= 57.5 and difference < 65.0:
 		return 70 * value
-	elif difference >= 52.5 and difference < 62.5:
+	elif difference >= 52.5 and difference < 57.5:
 		return 60 * value
-	elif difference >= 42.5 and difference < 52.5:
+	elif difference >= 47.5 and difference < 52.5:
 		return 50 * value
-	elif difference >= 32.5 and difference < 42.5:
+	elif difference >= 42.5 and difference < 47.5:
 		return 40 * value
-	elif difference >= 22.5 and difference < 32.5:
+	elif difference >= 37.5 and difference < 42.5:
 		return 30 * value
-	elif difference >= 12.5 and difference < 22.5:
+	elif difference >= 32.5 and difference < 37.5:
 		return 20 * value
-	elif difference >= 5.0 and difference < 12.5:
+	elif difference >= 25.0 and difference < 32.5:
 		return 10 * value
-	elif difference >= 2.5 and difference < 5.0:
+	elif difference >= 20.0 and difference < 25.0:
 		return 1 * value
-	elif difference >= 0.0 and difference < 2.5:
+	elif difference >= 0.0 and difference < 20.0: ## YOU BETTER NOT TRY TO SPAM
 		return 0
 	return 0
+
+#func _calculate_round_precision(difference : float, value : int) -> int: ## NOTE OLD PRECISION VALUES METHOD
+	#if difference >= 92.5:
+		#return 100
+	#elif difference >= 82.5 and difference < 92.5:
+		#return 90 * value
+	#elif difference >= 72.5 and difference < 82.5:
+		#return 80 * value
+	#elif difference >= 62.5 and difference < 72.5:
+		#return 70 * value
+	#elif difference >= 52.5 and difference < 62.5:
+		#return 60 * value
+	#elif difference >= 42.5 and difference < 52.5:
+		#return 50 * value
+	#elif difference >= 32.5 and difference < 42.5:
+		#return 40 * value
+	#elif difference >= 22.5 and difference < 32.5:
+		#return 30 * value
+	#elif difference >= 12.5 and difference < 22.5:
+		#return 20 * value
+	#elif difference >= 5.0 and difference < 12.5:
+		#return 10 * value
+	#elif difference >= 2.5 and difference < 5.0:
+		#return 1 * value
+	#elif difference >= 0.0 and difference < 2.5:
+		#return 0
+	#return 0
 
 func add_note(note : Note, validate_note : bool = false) -> void:
 	var low := 0
@@ -213,7 +238,8 @@ func get_notes(from : float, to : float) -> Array[Note]:
 	var low := 0
 	var high := _notes.size()
 
-	for note in _notes:
+	for note in _notes: ## THIS IS REALLY BAD :( IMPROVE THIS SHIT LATER, WITH JUST A SMALL AMOUNT OF NOTES, IT ALREADY INCREASES 
+						## THE TIME BY 0.04 ms, WITHOUT THIS THE COST OF THIS FUNCTION IS DIVIDED BY 2
 		if note is HoldNote and (note.get_time() < from and (note.get_time() + note.get_duration()) > from):
 			result.append(note)
 			break

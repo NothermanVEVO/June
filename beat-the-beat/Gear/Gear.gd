@@ -7,7 +7,7 @@ var _type : int
 
 var _note_holders : Array[NoteHolder]
 
-const width : float = 400
+const width : float = 500
 
 var _center_screen : bool = true
 
@@ -49,7 +49,7 @@ func _ready() -> void: #TODO HANDLE ANY POSITION FOR THE GEAR, NOT ONLY THE MIDD
 		add_child(note_holder)
 		note_holder.changed_note.connect(_changed_note_from_note_holder)
 
-func _physics_process(_delta: float) -> void:
+func _process(_delta: float) -> void:
 	if not _long_notes:
 		return
 	
@@ -287,7 +287,6 @@ func set_hitzone(hitzone : float) -> void:
 func _draw() -> void:
 	draw_circle(Vector2.ZERO, 10, Color.AQUA)
 	var rect := Rect2(-width / 2, -get_viewport_rect().size.y, width, get_viewport_rect().size.y).abs()
-	print(rect)
 	
 	draw_rect(rect, Color(0, 0, 0, 0.5))
 	

@@ -1,67 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://ckm76q263gm2s"]
+[gd_scene load_steps=3 format=3 uid="uid://ckm76q263gm2s"]
 
 [ext_resource type="Script" uid="uid://i8p2ri84j03i" path="res://Music Player/MusicPlayer.gd" id="1_glv2v"]
-
-[sub_resource type="Animation" id="Animation_uu6xs"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Precision:theme_override_font_sizes/normal_font_size")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [35]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Precision:modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
-
-[sub_resource type="Animation" id="Animation_glv2v"]
-resource_name = "Pop up"
-length = 1.25
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Precision:theme_override_font_sizes/normal_font_size")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.133333, 1),
-"transitions": PackedFloat32Array(0.31864, 1, 1, 4.28709),
-"update": 0,
-"values": [35, 65, 60, 60]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Precision:modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.1, 1, 1.25),
-"transitions": PackedFloat32Array(0.31864, 1, 1.86607, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_r0du0"]
-_data = {
-&"Pop Up Precision": SubResource("Animation_glv2v"),
-&"RESET": SubResource("Animation_uu6xs")
-}
+[ext_resource type="PackedScene" uid="uid://ygpxmyrvsexw" path="res://Gear/Skins/JuneSkin.tscn" id="2_uu6xs"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -72,6 +12,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_glv2v")
 _song_resource_path = "C:\\Users\\yagon\\AppData\\Roaming\\Beat the Beat\\songs\\So Happy Teste\\song_map.json"
+_gear_skin_scene = ExtResource("2_uu6xs")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 visible = false
@@ -95,36 +36,10 @@ expand = true
 loop = true
 
 [node name="TextureRect" type="TextureRect" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="Precision" type="RichTextLabel" parent="."]
-visible = false
-z_index = 3
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -151.0
-offset_top = -41.5
-offset_right = 151.0
-offset_bottom = 41.5
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/normal_font_size = 35
-text = "100% MAX"
-fit_content = true
-autowrap_mode = 0
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Animations" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_r0du0")
-}

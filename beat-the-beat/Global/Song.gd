@@ -11,7 +11,7 @@ var BPM : int = 0
 func _ready() -> void:
 	finished.connect(_finished)
 
-func _physics_process(_delta: float) -> void:
+func _process(_delta: float) -> void:
 	if _song_finished:
 		_song_finished = false
 	

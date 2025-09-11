@@ -27,10 +27,6 @@ func _init(current_time : float) -> void:
 	position = Vector2(-size / 2)
 	z_index = 1
 
-#func _draw() -> void:
-	#draw_rect(Rect2(-NoteHolder.width / 2, -12.5, NoteHolder.width, 25), Color.BLUE_VIOLET)
-	#draw_circle(Vector2(0, 0), 5 , Color.GREEN)
-
 func set_time(time : float) -> void:
 	_current_time = time
 
@@ -55,3 +51,4 @@ func to_resource() -> NoteResource:
 	var note = self ## KKKKKKKKKKKKKKKKKKKKKKK PILANTRAGEM HEIN
 	end_time = note.get_end_time() if note is HoldNote else end_time
 	return NoteResource.new(_current_time, end_time, _idx, type, powered, _is_valid, _is_selected)
+	
