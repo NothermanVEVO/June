@@ -111,8 +111,8 @@ func _load_song_map() -> void:
 	_count_value_of_notes()
 
 func _count_value_of_notes() -> void:
-	var size : float = _gear.get_all_notes().size()
-	_value_of_note = MusicPlayer.MAXIMUM_SCORE / size
+	var notes_size : float = _gear.get_all_notes().size()
+	_value_of_note = MusicPlayer.MAXIMUM_SCORE / notes_size
 
 static func get_value_of_note() -> float:
 	return _value_of_note

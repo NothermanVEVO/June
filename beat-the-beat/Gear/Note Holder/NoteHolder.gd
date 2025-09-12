@@ -21,6 +21,10 @@ var _currently_note_idx : int = 0
 
 const MAX_TIME_HIT : float = 0.25 # THE MAXIMUM HIT RANGE
 
+var _hitted_hold_note_precision : int = 0
+var _holding_note_time : float = 0.0
+const HOLDING_NOTE_DELAY : float = 0.15
+
 signal changed_note
 
 func _init(note_action : String, pos_x : float) -> void:
@@ -41,15 +45,29 @@ func _process(_delta: float) -> void:
 			_editor_process()
 
 func _player_process() -> void:
-	if not _notes:
-		return
+	#if not _notes:
+		#return
 	
 	if _currently_note_idx < _notes.size():
-		if _notes[_currently_note_idx].get_time() < Song.get_time() - MAX_TIME_HIT:
-			_notes[_currently_note_idx].state = Note.State.BREAK
-			if Global.main_music_player:
-				Global.main_music_player.pop_precision(0)
-			_currently_note_idx += 1
+		if _notes[_currently_note_idx] is HoldNote:
+			if _notes[_currently_note_idx].state == Note.State.HITTED:
+				if _notes[_currently_note_idx].get_end_time() < Song.get_time() - MAX_TIME_HIT:
+					_notes[_currently_note_idx].end_state = Note.State.HITTED
+					if Global.main_music_player:
+						Global.main_music_player.pop_precision(1)
+						Global.main_music_player.add_score(MusicPlayer.get_value_of_note() / 100)
+					_currently_note_idx += 1
+				elif _holding_note_time >= HOLDING_NOTE_DELAY and not _notes[_currently_note_idx].get_end_time() < Song.get_time():
+					if Global.main_music_player:
+						Global.main_music_player.pop_precision(_hitted_hold_note_precision)
+						_holding_note_time = 0.0
+				else:
+					_holding_note_time += get_process_delta_time()
+			elif _notes[_currently_note_idx].get_time() < Song.get_time() - MAX_TIME_HIT:
+				_notes[_currently_note_idx].state = Note.State.BREAK
+				if Global.main_music_player:
+					Global.main_music_player.pop_precision(0)
+				_currently_note_idx += 1
 	
 	var time : float
 	
@@ -63,6 +81,7 @@ func _player_process() -> void:
 		_hit(time)
 	elif Input.is_action_just_released(_note_action):
 		_key_pressed_gradient.key_just_released()
+		_hit_hold_note()
 	
 	display_notes(time)
 
@@ -85,7 +104,7 @@ func display_notes(time : float) -> void:
 			note.visible = false
 	
 	for note in notes:
-		note.visible = note.state == Note.State.TO_HIT
+		note.visible = note.end_state != Note.State.HITTED if note is HoldNote else note.state == Note.State.TO_HIT
 		if not note.visible:
 			continue
 		note.position.x = -width / 2
@@ -113,19 +132,41 @@ func _hit(time : float) -> void:
 		return
 	if _notes[_currently_note_idx].get_time() >= time - MAX_TIME_HIT and _notes[_currently_note_idx].get_time() <= time + MAX_TIME_HIT:
 		_notes[_currently_note_idx].state = Note.State.HITTED
-		_calculate_difference(time, _notes[_currently_note_idx].get_time())
-		_currently_note_idx += 1
+		var precision := _calculate_difference(time, _notes[_currently_note_idx].get_time())
+		if not _notes[_currently_note_idx] is HoldNote and Global.main_music_player:
+			Global.main_music_player.pop_precision(precision)
+			Global.main_music_player.add_score(MusicPlayer.get_value_of_note() * abs(precision) / 100)
+			_currently_note_idx += 1
+		elif _notes[_currently_note_idx] is HoldNote:
+			if Global.main_music_player:
+				Global.main_music_player.pop_precision(precision)
+			_hitted_hold_note_precision = precision
+			if precision > 0 and precision != 100:
+				_notes[_currently_note_idx].set_start_time(Song.get_time())
 
-func _calculate_difference(time : float, note_time : float):
+func _hit_hold_note() -> void:
+	if _currently_note_idx >= _notes.size():
+		return
+	if _notes[_currently_note_idx] is HoldNote and _notes[_currently_note_idx].state == Note.State.HITTED:
+		_notes[_currently_note_idx].end_state = Note.State.HITTED
+		var precision := _calculate_difference(Song.get_time(), _notes[_currently_note_idx].get_end_time())
+		if Song.get_time() < _notes[_currently_note_idx].get_end_time() - MAX_TIME_HIT:
+			precision = 0
+		elif Song.get_time() > _notes[_currently_note_idx].get_end_time():
+			if precision == 0 or Song.get_time() > _notes[_currently_note_idx].get_end_time() + MAX_TIME_HIT: ## DOES THAT WORK? COULDN'T TEST
+				precision = -1
+		if abs(precision) < abs(_hitted_hold_note_precision):
+			_hitted_hold_note_precision = precision
+		Global.main_music_player.pop_precision(_hitted_hold_note_precision)
+		Global.main_music_player.add_score(MusicPlayer.get_value_of_note() * abs(_hitted_hold_note_precision) / 100)
+		_currently_note_idx += 1
+		_holding_note_time = 0.0
+
+func _calculate_difference(time : float, note_time : float) -> int:
 	var difference : float = Global.get_percentage_between(time, time + MAX_TIME_HIT, note_time) * 100
 	var value : int = sign(difference)
 	difference = abs(abs(difference) - 100)
-	#print(difference)
-	#print(_calculate_round_precision(difference, value))
-	if Global.main_music_player:
-		var precision : int = _calculate_round_precision(difference, value)
-		Global.main_music_player.pop_precision(precision)
-		Global.main_music_player.add_score(MusicPlayer.get_value_of_note() * abs(precision) / 100)
+	return _calculate_round_precision(difference, value)
 
 func _calculate_round_precision(difference : float, value : int) -> int: ## YES... EVERYTHING IS A LIE.
 	if difference >= 80.0: ## TO NOT BE SO FRUSTRATING

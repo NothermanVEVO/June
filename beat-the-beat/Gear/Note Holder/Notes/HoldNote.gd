@@ -12,7 +12,6 @@ var _end_note : NinePatchRect = NinePatchRect.new()
 
 var _duration : float
 
-var start_state : State = State.TO_HIT
 var end_state : State = State.TO_HIT
 
 func _init(start_time : float, end_time : float) -> void:
