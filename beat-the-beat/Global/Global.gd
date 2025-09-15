@@ -84,9 +84,11 @@ func set_window_title(type : TitleType) -> void:
 		TitleType.EDITOR_UNSAVED:
 			DisplayServer.window_set_title("June - Editor - Unsaved File")
 		TitleType.EDITOR_SAVED:
-			DisplayServer.window_set_title("June - Editor - [" + FileMenu.get_file_path() + "]")
+			if FileMenu.get_file_path():
+				DisplayServer.window_set_title("June - Editor - [" + FileMenu.get_file_path().get_basename().get_file() + "]")
 		TitleType.EDITOR_SAVED_CHANGED:
-			DisplayServer.window_set_title("June - Editor - [" + FileMenu.get_file_path() + "] (*)")
+			if FileMenu.get_file_path():
+				DisplayServer.window_set_title("June - Editor - [" + FileMenu.get_file_path().get_basename().get_file() + "] (*)")
 
 func text_to_time(text : String) -> float:
 	var values := text.split(":")

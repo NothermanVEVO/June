@@ -1,5 +1,8 @@
 extends Control
 
+func _ready() -> void:
+	Global.set_window_title(Global.TitleType.BASE)
+
 func _on_play_pressed() -> void:
 	pass
 

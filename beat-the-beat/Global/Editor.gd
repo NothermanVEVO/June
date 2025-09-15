@@ -32,9 +32,13 @@ func is_saved() -> bool:
 	return _is_saved
 
 func changed_editor() -> void:
+	if _is_saved:
+		Global.set_window_title(Global.TitleType.EDITOR_UNSAVED)
 	_is_saved = false
 
 func saved_file() -> void:
+	if not _is_saved:
+		Global.set_window_title(Global.TitleType.EDITOR_SAVED)
 	file_saved.emit.call_deferred()
 	_is_saved = true
 

@@ -36,6 +36,7 @@ func _ready() -> void:
 	#add_child(file_dialog)
 	DialogFile.file_selected.connect(_file_dialog_file)
 	_file_path = ""
+	Global.set_window_title(Global.TitleType.EDITOR_UNSAVED)
 
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Save") and not DialogConfirmation.visible and Editor.get_current_scene() == _editor_scene:
@@ -115,7 +116,6 @@ func _open_file(path : String) -> void:
 		if validate_wrong:
 			_pop_confirmation_dialog(validate_wrong, "Ok", Choices.NONE)
 		else:
-			Global.set_window_title(Global.TitleType.EDITOR_SAVED)
 			var song_resource := SongResource.dictionary_to_resource(json_data)
 			current_ID = song_resource.ID
 			Editor.load_resource(SongResource.dictionary_to_resource(json_data))
@@ -142,7 +142,6 @@ static func save_file(path : String, song_res : SongResource = null) -> void:
 				var json_string := JSON.stringify(song_resource.get_dictionary(), "\t")
 				file.store_string(json_string)
 				file.close()
-				Global.set_window_title(Global.TitleType.EDITOR_SAVED)
 				DialogConfirmation.pop_up("Cancel", "Ok", "The file was saved with success!")
 				Editor.saved_file()
 			else:
