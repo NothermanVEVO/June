@@ -36,6 +36,7 @@ func _ready() -> void: #TODO HANDLE ANY POSITION FOR THE GEAR, NOT ONLY THE MIDD
 	_note_holders.clear()
 	
 	NoteHolder.width = width / float(_type)
+	Note.height = NoteHolder.width
 	var initial_x
 	if _center_screen:
 		initial_x = (get_viewport_rect().size.x / 2) - (width / 2) + (NoteHolder.width / 2)
@@ -43,7 +44,8 @@ func _ready() -> void: #TODO HANDLE ANY POSITION FOR THE GEAR, NOT ONLY THE MIDD
 		initial_x = -(width / 2) + (NoteHolder.width / 2)
 	
 	for i in range(_type):
-		var note_holder := NoteHolder.new(str(i + 1) + "_" + str(_type) + "k", initial_x)
+		var note_type : Note.Type = Note.Type.RED if (i == 1 or i == _type - 2) else Note.Type.BLUE
+		var note_holder := NoteHolder.new(str(i + 1) + "_" + str(_type) + "k", initial_x, note_type)
 		initial_x += NoteHolder.width
 		_note_holders.append(note_holder)
 		add_child(note_holder)
@@ -279,10 +281,6 @@ func set_max_size_y(max_size_y : float) -> void:
 
 static func get_max_size_y() -> float:
 	return _max_size_y
-
-func set_hitzone(hitzone : float) -> void:
-	for note_holder in _note_holders:
-		note_holder.set_hitzone(hitzone)
 
 func _draw() -> void:
 	draw_circle(Vector2.ZERO, 10, Color.AQUA)

@@ -11,7 +11,7 @@ static var width : float = 0.0
 var _pos_x := 0.0
 static var _hit_zone_y : float = -50.0 # SET THE POSITION OF THE HITZONE #NOTE
 
-const SECS_SIZE_Y = 5 # SPEED OF THE GAME
+const SECS_SIZE_Y = 4 # SPEED OF THE GAME
 
 var _last_visible_notes : Array[Note] = []
 
@@ -25,23 +25,27 @@ var _hitted_hold_note_precision : int = 0
 var _holding_note_time : float = 0.0
 const HOLDING_NOTE_DELAY : float = 0.15
 
+var _note_type : Note.Type
+
 signal changed_note
 
-func _init(note_action : String, pos_x : float) -> void:
+func _init(note_action : String, pos_x : float, note_type : Note.Type) -> void:
 	_note_action = note_action
 	_pos_x = pos_x
+	_note_type = note_type
 
 func _ready() -> void:
 	position = Vector2(_pos_x, _hit_zone_y)
 	add_child(_key_pressed_gradient)
+	Global.changed_hitzone_y.connect(_changed_hitzone_y)
 
 func _process(_delta: float) -> void:
-	queue_redraw() #TODO REMOVE THIS LATER, FOR THE SAKE OF GOD
 	
 	match Gear.mode:
 		Gear.Mode.PLAYER:
 			_player_process()
 		Gear.Mode.EDITOR:
+			queue_redraw() #TODO REMOVE THIS LATER, FOR THE SAKE OF GOD
 			_editor_process()
 
 func _player_process() -> void:
@@ -63,11 +67,17 @@ func _player_process() -> void:
 						_holding_note_time = 0.0
 				else:
 					_holding_note_time += get_process_delta_time()
-			elif _notes[_currently_note_idx].get_time() < Song.get_time() - MAX_TIME_HIT:
-				_notes[_currently_note_idx].state = Note.State.BREAK
-				if Global.main_music_player:
-					Global.main_music_player.pop_precision(0)
-				_currently_note_idx += 1
+			if _notes[_currently_note_idx].state == Note.State.TO_HIT:
+				if _notes[_currently_note_idx].get_start_time() < Song.get_time() - MAX_TIME_HIT:
+					_notes[_currently_note_idx].end_state = Note.State.BREAK
+					if Global.main_music_player:
+						Global.main_music_player.pop_precision(0)
+					_currently_note_idx += 1
+		elif _notes[_currently_note_idx].get_time() < Song.get_time() - MAX_TIME_HIT:
+			_notes[_currently_note_idx].state = Note.State.BREAK
+			if Global.main_music_player:
+				Global.main_music_player.pop_precision(0)
+			_currently_note_idx += 1
 	
 	var time : float
 	
@@ -104,7 +114,7 @@ func display_notes(time : float) -> void:
 			note.visible = false
 	
 	for note in notes:
-		note.visible = note.end_state != Note.State.HITTED if note is HoldNote else note.state == Note.State.TO_HIT
+		note.visible = (note.end_state != Note.State.HITTED and note.state != Note.State.BREAK) if note is HoldNote else note.state == Note.State.TO_HIT
 		if not note.visible:
 			continue
 		note.position.x = -width / 2
@@ -238,6 +248,12 @@ func add_note(note : Note, validate_note : bool = false) -> void:
 	add_child.call_deferred(note)
 	note.visible = false
 	
+	if not note is NoteEditor and not note is HoldNoteEditor:
+		if note is HoldNote:
+			note.set_type_hold_note(_note_type)
+		else:
+			note.set_note_type(_note_type)
+	
 	if validate_note:
 		if note is HoldNote:
 			validate_notes(note.get_start_time(), note.get_end_time())
@@ -333,9 +349,12 @@ func validate_notes(from : float, to : float) -> bool:
 static func get_hitzone() -> float:
 	return _hit_zone_y
 
-func set_hitzone(hitzone : float) -> void:
+static func set_hitzone(hitzone : float) -> void:
 	_hit_zone_y = hitzone
-	position = Vector2(_pos_x, hitzone)
+	Global.changed_hitzone_y.emit()
+
+func _changed_hitzone_y() -> void:
+	position = Vector2(_pos_x, _hit_zone_y)
 
 func get_notes_array() -> Array[Note]:
 	return _notes
@@ -344,6 +363,8 @@ func get_all_notes() -> Array[Note]:
 	return _notes
 
 func _draw() -> void:
+	if Gear.mode == Gear.Mode.PLAYER:
+		return
 	var pos = Vector2.ZERO
 	var rect_size_y = float(Note.height)
 	var pos_x = pos.x - width / 2

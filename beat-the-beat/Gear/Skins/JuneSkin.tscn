@@ -1,9 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://ygpxmyrvsexw"]
+[gd_scene load_steps=6 format=3 uid="uid://ygpxmyrvsexw"]
 
 [ext_resource type="Script" uid="uid://bhrlpa2ttx82t" path="res://Gear/GearSkin.gd" id="1_g01tw"]
-[ext_resource type="Texture2D" uid="uid://dl8rlopfuo2y1" path="res://concepts/gear_june_v1.png" id="2_2q6lg"]
-[ext_resource type="Texture2D" uid="uid://kpa7nhojwytf" path="res://concepts/gear_june_v4.png" id="3_purct"]
-[ext_resource type="Texture2D" uid="uid://be4r2pronhrsy" path="res://concepts/gear_june_v5.png" id="4_purct"]
+[ext_resource type="Texture2D" uid="uid://b3va8jg46yr6b" path="res://concepts/gear_june_v6.png" id="4_fwqfr"]
 
 [sub_resource type="Animation" id="Animation_glv2v"]
 resource_name = "Pop up"
@@ -91,6 +89,7 @@ _data = {
 }
 
 [node name="Control" type="Control"]
+z_index = 1
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -181,25 +180,9 @@ libraries = {
 &"": SubResource("AnimationLibrary_r0du0")
 }
 
-[node name="NinePatchRect2" type="NinePatchRect" parent="."]
-visible = false
-offset_left = -193.0
-offset_top = -1.0
-offset_right = 1344.0
-offset_bottom = 649.0
-texture = ExtResource("2_2q6lg")
-
 [node name="NinePatchRect" type="NinePatchRect" parent="."]
-visible = false
-offset_left = 709.0
-offset_top = 388.0
-offset_right = 1211.0
-offset_bottom = 1079.0
-texture = ExtResource("3_purct")
-
-[node name="NinePatchRect3" type="NinePatchRect" parent="."]
 layout_mode = 0
-offset_left = 651.0
+offset_left = 678.0
 offset_right = 1265.0
 offset_bottom = 1082.0
-texture = ExtResource("4_purct")
+texture = ExtResource("4_fwqfr")

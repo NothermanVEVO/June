@@ -1,0 +1,80 @@
+[gd_scene load_steps=2 format=3 uid="uid://de7h8h88q4meh"]
+
+[ext_resource type="Script" uid="uid://ddyskrulyqv4k" path="res://Screens/AudioScreen.gd" id="1_wa1wp"]
+
+[node name="AudioScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_wa1wp")
+
+[node name="Audio" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -161.0
+offset_right = 161.0
+offset_bottom = 220.0
+grow_horizontal = 2
+theme_override_constants/margin_top = 15
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Audio"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 150
+text = "Aúdio"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -350.0
+offset_top = -48.0
+offset_right = 350.0
+offset_bottom = 48.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="MainVolumeText" type="RichTextLabel" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 30
+text = "Volume principal: 0%"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MainVolumeSlider" type="HSlider" parent="PanelContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(700, 50)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+
+[node name="Return" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 50
+text = "Voltar"
+
+[connection signal="value_changed" from="PanelContainer/MarginContainer/VBoxContainer/MainVolumeSlider" to="." method="_on_main_volume_slider_value_changed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/Return" to="." method="_on_return_pressed"]

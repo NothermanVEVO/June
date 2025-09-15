@@ -12,7 +12,7 @@ signal value_changed
 func _init(current_time : float) -> void:
 	_current_time = current_time
 	
-	texture = NORMAL_NOTE_IMG
+	texture = NORMAL_NOTE_BLUE_IMG
 	size = Vector2(NoteHolder.width, height)
 	position = Vector2(-size / 2)
 	z_index = 1

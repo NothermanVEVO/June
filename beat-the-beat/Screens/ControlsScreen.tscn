@@ -1,0 +1,245 @@
+[gd_scene load_steps=2 format=3 uid="uid://goy2yfo311tu"]
+
+[ext_resource type="Script" uid="uid://dgo0nl6x8cwg" path="res://Screens/ControlsScreen.gd" id="1_7g0sr"]
+
+[node name="Controls" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_7g0sr")
+
+[node name="Controls" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -161.0
+offset_right = 161.0
+offset_bottom = 220.0
+grow_horizontal = 2
+theme_override_constants/margin_top = 15
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Controls"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 150
+text = "Controles"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_top = -754.0
+offset_right = 300.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/margin_bottom = 50
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
+custom_minimum_size = Vector2(600, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="4" type="PanelContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="4 Buttons" type="MarginContainer" parent="MarginContainer/PanelContainer/VBoxContainer/4"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/4/4 Buttons"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/PanelContainer/VBoxContainer/4/4 Buttons/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 50
+text = "4 Botões"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/4/4 Buttons/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 15
+
+[node name="1_4k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/4/4 Buttons/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+text = "X"
+
+[node name="2_4k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/4/4 Buttons/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+text = "X"
+
+[node name="3_4k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/4/4 Buttons/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+text = "X"
+
+[node name="4_4k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/4/4 Buttons/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+text = "X"
+
+[node name="5 Buttons" type="MarginContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/5 Buttons"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/PanelContainer/VBoxContainer/5 Buttons/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 50
+text = "5 Botões"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/5 Buttons/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 15
+
+[node name="1_5k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/5 Buttons/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+text = "X"
+
+[node name="2_5k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/5 Buttons/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+text = "X"
+
+[node name="3_5k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/5 Buttons/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+text = "X"
+
+[node name="4_5k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/5 Buttons/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+text = "X"
+
+[node name="5_5k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/5 Buttons/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+text = "X"
+
+[node name="6" type="PanelContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="6 Buttons" type="MarginContainer" parent="MarginContainer/PanelContainer/VBoxContainer/6"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 50
+text = "6 Botões"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 15
+
+[node name="1_6k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+text = "X"
+
+[node name="2_6k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+text = "X"
+
+[node name="3_6k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+text = "X"
+
+[node name="4_6k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+text = "X"
+
+[node name="5_6k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+text = "X"
+
+[node name="6_6k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+text = "X"
+
+[node name="Return" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 50
+text = "Voltar"
+
+[connection signal="toggled" from="MarginContainer/PanelContainer/VBoxContainer/4/4 Buttons/VBoxContainer/HBoxContainer/1_4k" to="." method="_on_1_4k_toggled"]
+[connection signal="toggled" from="MarginContainer/PanelContainer/VBoxContainer/4/4 Buttons/VBoxContainer/HBoxContainer/2_4k" to="." method="_on_2_4k_toggled"]
+[connection signal="toggled" from="MarginContainer/PanelContainer/VBoxContainer/4/4 Buttons/VBoxContainer/HBoxContainer/3_4k" to="." method="_on_3_4k_toggled"]
+[connection signal="toggled" from="MarginContainer/PanelContainer/VBoxContainer/4/4 Buttons/VBoxContainer/HBoxContainer/4_4k" to="." method="_on_4_4k_toggled"]
+[connection signal="toggled" from="MarginContainer/PanelContainer/VBoxContainer/5 Buttons/VBoxContainer/HBoxContainer/1_5k" to="." method="_on_1_5k_toggled"]
+[connection signal="toggled" from="MarginContainer/PanelContainer/VBoxContainer/5 Buttons/VBoxContainer/HBoxContainer/2_5k" to="." method="_on_2_5k_toggled"]
+[connection signal="toggled" from="MarginContainer/PanelContainer/VBoxContainer/5 Buttons/VBoxContainer/HBoxContainer/3_5k" to="." method="_on_3_5k_toggled"]
+[connection signal="toggled" from="MarginContainer/PanelContainer/VBoxContainer/5 Buttons/VBoxContainer/HBoxContainer/4_5k" to="." method="_on_4_5k_toggled"]
+[connection signal="toggled" from="MarginContainer/PanelContainer/VBoxContainer/5 Buttons/VBoxContainer/HBoxContainer/5_5k" to="." method="_on_5_5k_toggled"]
+[connection signal="toggled" from="MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer/HBoxContainer/1_6k" to="." method="_on_1_6k_toggled"]
+[connection signal="toggled" from="MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer/HBoxContainer/2_6k" to="." method="_on_2_6k_toggled"]
+[connection signal="toggled" from="MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer/HBoxContainer/3_6k" to="." method="_on_3_6k_toggled"]
+[connection signal="toggled" from="MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer/HBoxContainer/4_6k" to="." method="_on_4_6k_toggled"]
+[connection signal="toggled" from="MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer/HBoxContainer/5_6k" to="." method="_on_5_6k_toggled"]
+[connection signal="toggled" from="MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer/HBoxContainer/6_6k" to="." method="_on_6_6k_toggled"]
+[connection signal="pressed" from="MarginContainer/PanelContainer/VBoxContainer/Return" to="." method="_on_return_pressed"]

@@ -63,6 +63,7 @@ func _ready() -> void:
 	
 	sample_tap_note = Note.new(0)
 	add_child(sample_tap_note)
+	sample_tap_note.set_note_type(Note.Type.BLUE)
 	sample_tap_note.position = Vector2(-10000000, -10000000)
 	sample_tap_note.modulate = Color(1, 1, 1, 0.5)
 	
@@ -112,6 +113,7 @@ func set_gear(type : Gear.Type) -> void:
 	sample_tap_note.position = Vector2(-10000000, -10000000)
 	sample_tap_note.modulate = Color(1, 1, 1, 0.5)
 	add_child(sample_tap_note)
+	sample_tap_note.set_note_type(Note.Type.BLUE)
 	
 	_resized()
 

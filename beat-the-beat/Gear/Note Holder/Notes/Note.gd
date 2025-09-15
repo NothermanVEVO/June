@@ -3,10 +3,13 @@ extends NinePatchRect
 class_name Note
 
 enum State {TO_HIT, HITTED, BREAK}
+enum Type {BLUE, RED}
 
-const NORMAL_NOTE_IMG = preload("res://assets/noteFormated.png")
+#const NORMAL_NOTE_IMG = preload("res://assets/noteFormated.png")
+const NORMAL_NOTE_BLUE_IMG = preload("res://concepts/hit_test_blue.png")
+const NORMAL_NOTE_RED_IMG = preload("res://concepts/hit_test_red.png")
 
-static var height : int = 25
+static var height : int = 125
 
 var _current_time : float
 
@@ -22,7 +25,6 @@ var powered : bool = false
 func _init(current_time : float) -> void:
 	_current_time = current_time
 	
-	texture = NORMAL_NOTE_IMG
 	size = Vector2(NoteHolder.width, height)
 	position = Vector2(-size / 2)
 	z_index = 1
@@ -44,6 +46,12 @@ func set_idx(idx : int) -> void:
 
 func get_idx() -> int:
 	return _idx
+
+func set_note_type(type : Type) -> void:
+	if type == Type.BLUE:
+		texture = NORMAL_NOTE_BLUE_IMG
+	else:
+		texture = NORMAL_NOTE_RED_IMG
 
 func to_resource() -> NoteResource:
 	var end_time := 0.0

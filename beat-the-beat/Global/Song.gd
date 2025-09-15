@@ -10,6 +10,7 @@ var BPM : int = 0
 
 func _ready() -> void:
 	finished.connect(_finished)
+	bus = &"Song"
 
 func _process(_delta: float) -> void:
 	if _song_finished:

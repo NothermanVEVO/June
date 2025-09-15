@@ -1,0 +1,159 @@
+[gd_scene load_steps=2 format=3 uid="uid://dnquj78rnqlvn"]
+
+[ext_resource type="Script" uid="uid://dqxeaf1p2wk20" path="res://Screens/VideoScreen.gd" id="1_54cql"]
+
+[node name="VideoScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_54cql")
+
+[node name="Vídeo" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -161.0
+offset_right = 161.0
+offset_bottom = 220.0
+grow_horizontal = 2
+theme_override_constants/margin_top = 15
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Vídeo"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 150
+text = "Vídeo"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -209.0
+offset_top = -106.0
+offset_right = 209.0
+offset_bottom = 106.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Mode" type="FlowContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+vertical = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Mode"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 30
+text = "Modo"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ModeOptionButton" type="OptionButton" parent="PanelContainer/MarginContainer/VBoxContainer/Mode"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+item_count = 3
+popup/item_0/text = "Janela"
+popup/item_0/id = 0
+popup/item_1/text = "Janela em Tela Cheia"
+popup/item_1/id = 1
+popup/item_2/text = "Tela Cheia"
+popup/item_2/id = 2
+
+[node name="Resolution" type="FlowContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+alignment = 1
+vertical = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Resolution"]
+layout_mode = 2
+text = "Resolução"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="OptionButton" type="OptionButton" parent="PanelContainer/MarginContainer/VBoxContainer/Resolution"]
+layout_mode = 2
+
+[node name="Vsync" type="FlowContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+vertical = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Vsync"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 30
+text = "V-sync"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VsyncOptionButton" type="OptionButton" parent="PanelContainer/MarginContainer/VBoxContainer/Vsync"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+item_count = 2
+popup/item_0/text = "Ativado"
+popup/item_0/id = 0
+popup/item_1/text = "Desativado"
+popup/item_1/id = 1
+
+[node name="MSAA" type="FlowContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+vertical = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/MarginContainer/VBoxContainer/MSAA"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 30
+text = "MSAA"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MSAAOptionButton" type="OptionButton" parent="PanelContainer/MarginContainer/VBoxContainer/MSAA"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+item_count = 4
+popup/item_0/text = "Disabled"
+popup/item_0/id = 0
+popup/item_1/text = "2x"
+popup/item_1/id = 1
+popup/item_2/text = "4x"
+popup/item_2/id = 2
+popup/item_3/text = "8x"
+popup/item_3/id = 3
+
+[node name="Return" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 30
+text = "Voltar"
+
+[connection signal="item_selected" from="PanelContainer/MarginContainer/VBoxContainer/Mode/ModeOptionButton" to="." method="_on_mode_option_button_item_selected"]
+[connection signal="item_selected" from="PanelContainer/MarginContainer/VBoxContainer/Vsync/VsyncOptionButton" to="." method="_on_vsync_option_button_item_selected"]
+[connection signal="item_selected" from="PanelContainer/MarginContainer/VBoxContainer/MSAA/MSAAOptionButton" to="." method="_on_msaa_option_button_item_selected"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/Return" to="." method="_on_return_pressed"]

@@ -2,9 +2,13 @@ extends Note
 
 class_name HoldNote
 
-const START_NOTE_IMG = preload("res://assets/holdStart.png")
-const MIDDLE_NOTE_IMG = preload("res://assets/holdMiddle.png")
-const END_NOTE_IMG = preload("res://assets/holdEnd.png")
+const START_NOTE_BLUE_IMG = preload("res://assets/Notes/JuneRoundNoteV1/Hold/hold_note_bottom_blue.png")
+const MIDDLE_NOTE_BLUE_IMG = preload("res://assets/Notes/JuneRoundNoteV1/Hold/hold_note_middle_blue.png")
+const END_NOTE_BLUE_IMG = preload("res://assets/Notes/JuneRoundNoteV1/Hold/hold_note_top_blue.png")
+
+const START_NOTE_RED_IMG = preload("res://assets/Notes/JuneRoundNoteV1/Hold/hold_note_bottom_red.png")
+const MIDDLE_NOTE_RED_IMG = preload("res://assets/Notes/JuneRoundNoteV1/Hold/hold_note_middle_red.png")
+const END_NOTE_RED_IMG = preload("res://assets/Notes/JuneRoundNoteV1/Hold/hold_note_top_red.png")
 
 var _start_note : NinePatchRect = NinePatchRect.new()
 var _middle_note : NinePatchRect = NinePatchRect.new()
@@ -18,18 +22,17 @@ func _init(start_time : float, end_time : float) -> void:
 	_current_time = start_time
 	_duration = end_time - start_time
 	
-	_start_note.texture = START_NOTE_IMG
-	_middle_note.texture = MIDDLE_NOTE_IMG
-	_end_note.texture = END_NOTE_IMG
-	
 	set_start_time(start_time)
 	
 	add_child(_start_note)
 	add_child(_end_note)
 	add_child(_middle_note)
+	
+	_middle_note.axis_stretch_vertical = NinePatchRect.AXIS_STRETCH_MODE_TILE_FIT
 
 func _ready() -> void:
 	Global.speed_changed.connect(_speed_changed)
+	axis_stretch_vertical = NinePatchRect.AXIS_STRETCH_MODE_TILE
 
 func get_start_time() -> float:
 	return _current_time
@@ -62,6 +65,16 @@ func set_end_time(end_time : float) -> void:
 	
 	_middle_note.position = Vector2(0, floor(_end_note.position.y + _end_note.size.y))
 	_middle_note.size = Vector2(NoteHolder.width, ceil(abs(_middle_note.position.y - _start_note.size.y)))
+
+func set_type_hold_note(type : Type) -> void:
+	if type == Type.BLUE:
+		_start_note.texture = START_NOTE_BLUE_IMG
+		_middle_note.texture = MIDDLE_NOTE_BLUE_IMG
+		_end_note.texture = END_NOTE_BLUE_IMG
+	else:
+		_start_note.texture = START_NOTE_RED_IMG
+		_middle_note.texture = MIDDLE_NOTE_RED_IMG
+		_end_note.texture = END_NOTE_RED_IMG
 
 func _speed_changed() -> void:
 	set_end_time(get_end_time())

@@ -20,13 +20,15 @@ func _init(start_time : float, end_time : float) -> void:
 	set_start_time(start_time)
 	set_end_time(end_time)
 	
-	_start_note.texture = START_NOTE_IMG
-	_middle_note.texture = MIDDLE_NOTE_IMG
-	_end_note.texture = END_NOTE_IMG
+	_start_note.texture = START_NOTE_BLUE_IMG
+	_middle_note.texture = MIDDLE_NOTE_BLUE_IMG
+	_end_note.texture = END_NOTE_BLUE_IMG
 	
 	add_child(_start_note)
 	add_child(_end_note)
 	add_child(_middle_note)
+	
+	_middle_note.axis_stretch_vertical = NinePatchRect.AXIS_STRETCH_MODE_TILE_FIT
 
 func _ready() -> void:
 	Global.speed_changed.connect(_speed_changed)

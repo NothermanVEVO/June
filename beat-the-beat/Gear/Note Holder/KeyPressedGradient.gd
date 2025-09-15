@@ -12,11 +12,13 @@ func _ready() -> void:
 	Global.changed_max_size_y.connect(_set_position_n_size)
 	texture = gradient
 	modulate.a = 0.0
+	Global.changed_hitzone_y.connect(_set_position_n_size)
 
 func _set_position_n_size() -> void:
 	size.x = Gear.get_max_size_y() + float(Note.height) / 2
 	size.y = NoteHolder.width
 	position.x = -size.y / 2
+	position.y = -NoteHolder.get_hitzone()
 	#position.y = Gear.get_max_size_y() + Note.height / 2
 
 func key_just_pressed() -> void:

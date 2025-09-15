@@ -4,6 +4,7 @@ enum TitleType {BASE, EDITOR_UNSAVED, EDITOR_SAVED, EDITOR_SAVED_CHANGED}
 
 const EDITOR_PATH : String = "user://editor"
 const SONGS_PATH : String = "user://songs"
+const SETTINGS_PATH : String = "user://settings.json"
 
 var rng := RandomNumberGenerator.new()
 
@@ -17,9 +18,22 @@ signal speed_changed
 ## REFERS TO THE MAX SIZE Y IN THE GEAR CLASS
 signal changed_max_size_y
 
+@warning_ignore("unused_signal")
+## REFERS TO THE STATIC HITZONE Y IN THE NOTE HOLDER CLASS
+signal changed_hitzone_y
+
 const HIGHLIGHT_SHADER = preload("res://shaders/Highlight.gdshader")
 
 var _mouse_effect : MouseEffect
+
+var _START_SCREEN_SCENE := load("res://Screens/StartScreen.tscn")
+var _EDITOR_SCREEN_SCENE := load("res://Screens/EditorScreen.tscn")
+var _SETTING_SCREEN_SCENE := load("res://Screens/SettingsScreen.tscn")
+var _VIDEO_SCREEN_SCENE := load("res://Screens/VideoScreen.tscn")
+var _AUDIO_SCREEN_SCENE := load("res://Screens/AudioScreen.tscn")
+var _CONTROL_SCREEN_SCENE := load("res://Screens/ControlsScreen.tscn")
+
+var _settings_dictionary : Dictionary
 
 func _ready() -> void:
 	_mouse_effect = MouseEffect.new()
@@ -29,10 +43,16 @@ func _ready() -> void:
 		DirAccess.make_dir_absolute(EDITOR_PATH)
 	if not DirAccess.dir_exists_absolute(SONGS_PATH):
 		DirAccess.make_dir_absolute(SONGS_PATH)
+	if not FileAccess.file_exists(SETTINGS_PATH):
+		_create_settings()
+	else:
+		_load_settings()
 
-#func _process(delta: float) -> void:
-	##print_orphan_nodes() ## NOTE USE THIS TO CHECK FOR POSSIBLE MEMORY LEAK
-	#pass
+func _process(delta: float) -> void:
+	#print_orphan_nodes() ## NOTE USE THIS TO CHECK FOR POSSIBLE MEMORY LEAK
+	#if Input.is_action_just_pressed("1_4k"):
+		#print("oi")
+	pass
 
 func set_mouse_effect(effect : MouseEffect.Effect) -> void:
 	_mouse_effect.set_type(effect)
@@ -80,3 +100,124 @@ func text_to_time(text : String) -> float:
 	var absolute_seconds : float = minutes * 60 + seconds + (miliseconds + 0.0005) # !!BUG!! THE DECIMAL NUMBER DECREASES IN 0.001, AND INCREASES IN 0.0001 WHEN PUTTING MORE THAN 3 NUMBER IN THE DECIMAL, SOLVE THIS LATER
 	absolute_seconds = absolute_seconds if absolute_seconds <= Song.get_duration() else Song.get_duration()
 	return absolute_seconds
+
+func _create_settings() -> void:
+	_settings_dictionary["video_mode"] = VideoScreen.Modes.FULLSCREEN
+	_settings_dictionary["video_vsync"] = VideoScreen.Vsync.ACTIVATED
+	_settings_dictionary["video_msaa"] = VideoScreen.MSAA.DISABLED
+	
+	_settings_dictionary["audio_main_volume"] = 0.5
+	
+	_settings_dictionary["1_4k"] = 83
+	_settings_dictionary["2_4k"] = 68
+	_settings_dictionary["3_4k"] = 75
+	_settings_dictionary["4_4k"] = 76
+	
+	_settings_dictionary["1_5k"] = 83
+	_settings_dictionary["2_5k"] = 68
+	_settings_dictionary["3_5k"] = 74
+	_settings_dictionary["4_5k"] = 75
+	_settings_dictionary["5_5k"] = 76
+	
+	_settings_dictionary["1_6k"] = 83
+	_settings_dictionary["2_6k"] = 68
+	_settings_dictionary["3_6k"] = 70
+	_settings_dictionary["4_6k"] = 74
+	_settings_dictionary["5_6k"] = 75
+	_settings_dictionary["6_6k"] = 76
+	
+	var file := FileAccess.open(SETTINGS_PATH, FileAccess.WRITE)
+	if file:
+		var json_string := JSON.stringify(_settings_dictionary, "\t")
+		file.store_string(json_string)
+		file.close()
+
+func _load_settings() -> void:
+	var file := FileAccess.open(SETTINGS_PATH, FileAccess.READ)
+	if not file:
+		return
+	var content := file.get_as_text()
+	file.close()
+	
+	var json := JSON.new()
+	var result = json.parse(content)
+	if result == OK:
+		_settings_dictionary = json.get_data()
+	
+	_load_video_settings()
+	_load_audio_settings()
+	_load_controls_settings()
+
+func save_settings(dictionary : Dictionary) -> void:
+	_settings_dictionary = dictionary
+	var file := FileAccess.open(SETTINGS_PATH, FileAccess.WRITE)
+	if file:
+		var json_string := JSON.stringify(_settings_dictionary, "\t")
+		file.store_string(json_string)
+		file.close()
+	
+	_load_video_settings()
+	_load_audio_settings()
+	_load_controls_settings()
+
+func get_settings_dictionary() -> Dictionary:
+	return _settings_dictionary
+
+func _load_video_settings() -> void:
+	match int(_settings_dictionary["video_mode"]):
+		VideoScreen.Modes.WINDOW:
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		VideoScreen.Modes.WINDOW_FULLSCREEN: ## I KNOW I KNOW
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+		VideoScreen.Modes.FULLSCREEN: ## I KNOW I KNOW
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	
+	match int(_settings_dictionary["video_vsync"]):
+		VideoScreen.Vsync.ACTIVATED:
+			DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED)
+		VideoScreen.Vsync.DESACTIVATED:
+			DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+	
+	if not get_viewport():
+		return
+	match int(_settings_dictionary["video_msaa"]):
+		VideoScreen.MSAA.DISABLED:
+			get_viewport().msaa_2d = Viewport.MSAA_DISABLED
+		VideoScreen.MSAA.TWO_X:
+			get_viewport().msaa_2d = Viewport.MSAA_2X
+		VideoScreen.MSAA.FOUR_X:
+			get_viewport().msaa_2d = Viewport.MSAA_4X
+		VideoScreen.MSAA.EIGHT_X:
+			get_viewport().msaa_2d = Viewport.MSAA_8X
+
+func _load_audio_settings() -> void:
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Song"), linear_to_db(_settings_dictionary["audio_main_volume"]))
+
+func _load_controls_settings() -> void:
+	## 4 KEYS
+	_rebind_action("1_4k", _settings_dictionary["1_4k"])
+	_rebind_action("2_4k", _settings_dictionary["2_4k"])
+	_rebind_action("3_4k", _settings_dictionary["3_4k"])
+	_rebind_action("4_4k", _settings_dictionary["4_4k"])
+	
+	## 5 KEYS
+	_rebind_action("1_5k", _settings_dictionary["1_5k"])
+	_rebind_action("2_5k", _settings_dictionary["2_5k"])
+	_rebind_action("3_5k", _settings_dictionary["3_5k"])
+	_rebind_action("4_5k", _settings_dictionary["4_5k"])
+	_rebind_action("5_5k", _settings_dictionary["5_5k"])
+	
+	## 6 KEYS
+	_rebind_action("1_6k", _settings_dictionary["1_6k"])
+	_rebind_action("2_6k", _settings_dictionary["2_6k"])
+	_rebind_action("3_6k", _settings_dictionary["3_6k"])
+	_rebind_action("4_6k", _settings_dictionary["4_6k"])
+	_rebind_action("5_6k", _settings_dictionary["5_6k"])
+	_rebind_action("6_6k", _settings_dictionary["6_6k"])
+
+func _rebind_action(action_name : String, physical_keycode : int) -> void:
+	InputMap.erase_action(action_name)
+	InputMap.add_action(action_name)
+	var event := InputEventKey.new()
+	event.physical_keycode = physical_keycode
+	InputMap.action_add_event(action_name, event)

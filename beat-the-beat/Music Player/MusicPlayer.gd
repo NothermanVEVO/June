@@ -35,8 +35,8 @@ func _ready() -> void:
 	_gear = Gear.new(Gear.Type.FOUR_KEYS, Gear.Mode.PLAYER, false, size.y)
 	Gear.set_speed(5)
 	set_speed(Gear.get_speed())
+	NoteHolder.set_hitzone(-325)
 	add_child(_gear)
-	_gear.set_hitzone(-325)
 	_gear.position.x = size.x / 2
 	_gear.position.y = size.y
 	

@@ -4,7 +4,7 @@ class_name FileMenu
 
 @export var _editor_scene : Editor.Scenes
 
-enum Choices {NEW = 0, OPEN = 1, SAVE = 2, EXPORT = 3, NONE = 4}
+enum Choices {NEW = 0, OPEN = 1, SAVE = 2, EXPORT = 3, QUIT = 4, NONE = 5}
 var _last_choice : Choices = Choices.NONE
 
 static var current_ID : String = ""
@@ -20,11 +20,14 @@ static var dialog_file_id : int
 
 static var _last_saved_id : int = -1
 
+static var _quit_on_save_id : int = -1
+
 func _ready() -> void:
 	current_ID = Global.get_UUID()
 	
 	index_pressed.connect(_file_index_pressed)
 	DialogConfirmation.confirmed.connect(_confirmation_dialog_confirmed)
+	DialogConfirmation.canceled.connect(_confirmation_dialog_canceled)
 	
 	#file_dialog.access = FileDialog.ACCESS_USERDATA
 	#file_dialog.root_subfolder = Global.EDITOR_PATH
@@ -32,6 +35,7 @@ func _ready() -> void:
 	#
 	#add_child(file_dialog)
 	DialogFile.file_selected.connect(_file_dialog_file)
+	_file_path = ""
 
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Save") and not DialogConfirmation.visible and Editor.get_current_scene() == _editor_scene:
@@ -53,6 +57,8 @@ func _file_index_pressed(index : int) -> void:
 				save()
 		Choices.EXPORT:
 			export_file()
+		Choices.QUIT:
+			_quit()
 
 func _confirmation_dialog_confirmed() -> void:
 	if DialogConfirmation.get_last_caller() != dialog_confirmation_id:
@@ -67,14 +73,21 @@ func _confirmation_dialog_confirmed() -> void:
 			current_ID = Global.get_UUID()
 			Global.set_window_title(Global.TitleType.EDITOR_UNSAVED)
 			Editor.saved_file()
-		Choices.OPEN:
-			pass
-		Choices.SAVE:
-			pass
-		Choices.EXPORT:
-			pass
-		Choices.NONE:
-			pass
+		Choices.QUIT:
+			if _file_path:
+				save_file(_file_path)
+				Editor.is_on_editor = false
+				get_tree().change_scene_to_packed(Global._START_SCREEN_SCENE)
+			else:
+				_quit_on_save_id = save()
+
+func _confirmation_dialog_canceled() -> void:
+	if DialogConfirmation.get_last_caller() != dialog_confirmation_id:
+		return
+	match _last_choice:
+		Choices.QUIT:
+			Editor.is_on_editor = false
+			get_tree().change_scene_to_packed(Global._START_SCREEN_SCENE)
 
 func new_file() -> void:
 	if EditorMenuBar.is_editor_empty() and Editor.editor_settings.is_empty():
@@ -222,8 +235,15 @@ func _export_image(path : String) -> void:
 		return
 	DirAccess.copy_absolute(Editor.editor_settings.get_image_path(), path + "//image." + Editor.editor_settings.get_image_path().get_extension())
 
-func _pop_confirmation_dialog(dialog_text : String, ok_button_text : String, choice : Choices) -> void:
-	dialog_confirmation_id = DialogConfirmation.pop_up("Cancel", ok_button_text, dialog_text)
+func _quit() -> void:
+	if not Editor.is_saved():
+		_pop_confirmation_dialog("Do you want to save before leaving?", "Save and Quit", Choices.QUIT, "Quit without saving")
+	else:
+		Editor.is_on_editor = false
+		get_tree().change_scene_to_packed(Global._START_SCREEN_SCENE)
+
+func _pop_confirmation_dialog(dialog_text : String, ok_button_text : String, choice : Choices, cancel_text : String = "Cancel") -> void:
+	dialog_confirmation_id = DialogConfirmation.pop_up(cancel_text, ok_button_text, dialog_text)
 	_last_choice = choice
 
 func _file_dialog_file(path : String) -> void:
@@ -234,6 +254,9 @@ func _file_dialog_file(path : String) -> void:
 	if _last_file_dialog_choice == Choices.SAVE:
 		_file_path = Global.EDITOR_PATH + "//" + path.get_file() + ".json"
 		save_file(_file_path)
+		if _quit_on_save_id == dialog_file_id:
+			Editor.is_on_editor = false
+			get_tree().change_scene_to_packed(Global._START_SCREEN_SCENE)
 	elif  _last_file_dialog_choice == Choices.OPEN:
 		_file_path = Global.EDITOR_PATH + "//" + path.get_file()
 		_open_file(_file_path)
