@@ -318,6 +318,7 @@ autoplay = true
 expand = true
 loop = true
 
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
 [connection signal="pressed" from="Menu/FlowContainer/Compose" to="." method="_on_compose_pressed"]
 [connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
 [connection signal="text_changed" from="HBoxContainer/Left/VBoxContainer/Name/NameTextEdit" to="." method="_on_name_text_edit_text_changed"]

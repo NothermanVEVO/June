@@ -128,6 +128,9 @@ func _create_settings() -> void:
 	_settings_dictionary["5_6k"] = 75
 	_settings_dictionary["6_6k"] = 76
 	
+	_settings_dictionary["video"] = true
+	_settings_dictionary["particles"] = true
+	
 	var file := FileAccess.open(SETTINGS_PATH, FileAccess.WRITE)
 	if file:
 		var json_string := JSON.stringify(_settings_dictionary, "\t")

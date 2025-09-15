@@ -375,3 +375,27 @@ func is_valid_for_export() -> String:
 					"; Difficulty: " + SongMap.Difficulty.keys()[song_map.difficulty] + "; Time: " + str(long_note.time) + "; Type: " + 
 					LongNote.Type.keys()[long_note.type] + ";")
 	return ""
+
+func _on_test_pressed() -> void:
+	for song_map in _saved_song_maps:
+		if song_map.gear_type == _gear_type_value and song_map.difficulty == _difficulty_type_value:
+			Editor.editor_music_player.load_by_vars(_gear_type_value, song_map, Song.stream, 
+				Editor.editor_settings.get_video_stream(), Editor.editor_settings.get_image_texture())
+			Editor.editor_composer.visible = false
+			Editor.editor_music_player.visible = true
+			if not has_signal("quit_request"):
+				Editor.editor_music_player.quit_request.connect(_change_music_player_to_composer)
+			game.set_gear(_gear_type_value)
+			Gear.mode = Gear.Mode.PLAYER
+			Editor.editor_music_player.start()
+			return
+	print("not found")
+
+func _change_music_player_to_composer() -> void:
+	Editor.editor_music_player.reset()
+	Editor.editor_composer.visible = true
+	Editor.editor_music_player.visible = false
+	game.set_gear(_gear_type_value)
+	for song_map in _saved_song_maps:
+		if song_map.gear_type == _gear_type_value and song_map.difficulty == _difficulty_type_value:
+			load_song_map(song_map)

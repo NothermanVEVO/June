@@ -76,6 +76,16 @@ func _pop_up_dialog(dialog : String) -> void:
 	duplicate_accept_dialog.confirmed.connect(duplicate_accept_dialog.queue_free)
 	duplicate_accept_dialog.popup()
 
+func get_video_stream():
+	if _video_path:
+		return Loader.load_video_stream(_video_path)
+	return null
+
+func get_image_texture():
+	if image_rect_texture:
+		return image_rect_texture.texture
+	return null
+
 func set_song(path : String) -> void:
 	if not path.get_extension() in VALID_AUDIO_EXTENSION:
 		_pop_up_dialog("Só é aceito audios nos formatos " + str(VALID_AUDIO_EXTENSION))
@@ -350,3 +360,12 @@ func _on_track_text_edit_text_changed(_new_text: String) -> void:
 
 func _on_creator_text_edit_text_changed(_new_text: String) -> void:
 	Editor.changed_editor()
+
+func _on_visibility_changed() -> void:
+	if not video_player or not video_player.stream:
+		return
+	if visible and _video_path:
+		set_video(_video_path)
+		video_player.play()
+	else:
+		video_player.stream = null

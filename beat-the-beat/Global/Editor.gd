@@ -3,9 +3,9 @@ extends Node
 enum Scenes {NONE, SETTINGS, COMPOSER}
 var _current_scene : Scenes
 
-@onready var editor_composer : EditorComposer
-
-@onready var editor_settings : SettingsEditor
+var editor_composer : EditorComposer
+var editor_settings : SettingsEditor
+var editor_music_player : MusicPlayer
 
 var is_on_editor : bool = false
 var _is_saved : bool = true

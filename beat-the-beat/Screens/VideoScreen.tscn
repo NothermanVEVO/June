@@ -147,6 +147,16 @@ popup/item_2/id = 2
 popup/item_3/text = "8x"
 popup/item_3/id = 3
 
+[node name="Video" type="CheckBox" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Video"
+
+[node name="Particles" type="CheckBox" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Particulas"
+
 [node name="Return" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
@@ -156,4 +166,6 @@ text = "Voltar"
 [connection signal="item_selected" from="PanelContainer/MarginContainer/VBoxContainer/Mode/ModeOptionButton" to="." method="_on_mode_option_button_item_selected"]
 [connection signal="item_selected" from="PanelContainer/MarginContainer/VBoxContainer/Vsync/VsyncOptionButton" to="." method="_on_vsync_option_button_item_selected"]
 [connection signal="item_selected" from="PanelContainer/MarginContainer/VBoxContainer/MSAA/MSAAOptionButton" to="." method="_on_msaa_option_button_item_selected"]
+[connection signal="toggled" from="PanelContainer/MarginContainer/VBoxContainer/Video" to="." method="_on_video_toggled"]
+[connection signal="toggled" from="PanelContainer/MarginContainer/VBoxContainer/Particles" to="." method="_on_particles_toggled"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/Return" to="." method="_on_return_pressed"]

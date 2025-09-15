@@ -104,6 +104,7 @@ func _resized() -> void:
 func set_gear(type : Gear.Type) -> void:
 	remove_child(gear)
 	gear.queue_free()
+	NoteHolder.set_hitzone(-50)
 	gear = Gear.new(type, Gear.Mode.EDITOR, false, size.y)
 	add_child(gear)
 	
@@ -120,6 +121,9 @@ func set_gear(type : Gear.Type) -> void:
 func _process(delta: float) -> void:
 	focus_effect.visible = false
 	queue_redraw() # TODO REMOVE THIS SHIT LATER 
+	
+	if not Editor.editor_composer.visible:
+		return
 	
 	if Input.is_action_just_pressed("Add Item") and not _is_mouse_inside_menu():
 		if _selected_notes:

@@ -88,8 +88,8 @@ _data = {
 &"RESET": SubResource("Animation_uu6xs")
 }
 
-[node name="Control" type="Control"]
-z_index = 1
+[node name="JuneSkin" type="Control"]
+z_index = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

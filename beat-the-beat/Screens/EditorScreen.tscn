@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://cg202f062k22g"]
+[gd_scene load_steps=5 format=3 uid="uid://cg202f062k22g"]
 
 [ext_resource type="PackedScene" uid="uid://b3ljeq5vwy67a" path="res://Editor/EditorSettings.tscn" id="1_amgi0"]
 [ext_resource type="Script" uid="uid://bibtyxlxo3gt" path="res://Screens/EditorScreen.gd" id="1_c0e1o"]
 [ext_resource type="PackedScene" uid="uid://dw4rs74gsagrn" path="res://Editor/Editor Composer.tscn" id="2_c0e1o"]
+[ext_resource type="PackedScene" uid="uid://ckm76q263gm2s" path="res://Music Player/MusicPlayer.tscn" id="4_kikt4"]
 
 [node name="EditorScreen" type="Control"]
 layout_mode = 3
@@ -17,5 +18,9 @@ script = ExtResource("1_c0e1o")
 layout_mode = 1
 
 [node name="Editor Composer" parent="." instance=ExtResource("2_c0e1o")]
+visible = false
+layout_mode = 1
+
+[node name="MusicPlayer" parent="." instance=ExtResource("4_kikt4")]
 visible = false
 layout_mode = 1
