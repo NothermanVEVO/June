@@ -336,10 +336,10 @@ func is_valid_for_export() -> String:
 		return "The \"track\" name can't be empty."
 	elif Song.stream == null:
 		return "The \"song\" can't be empty."
-	elif last_valid_sample_song_text.is_empty():
-		return "The \"sample song time\" can't be empty."
-	elif Global.text_to_time(last_valid_sample_song_text) >= Song.get_duration():
-		return "The \"sample song time\" can't be equal or higher than the song duration."
+	#elif last_valid_sample_song_text.is_empty():
+		#return "The \"sample song time\" can't be empty."
+	#elif Global.text_to_time(last_valid_sample_song_text) >= Song.get_duration():
+		#return "The \"sample song time\" can't be equal or higher than the song duration."
 	#elif video_player.stream != null:
 		#if last_valid_sample_video_text.is_empty():
 			#return "The \"sample video time\" can't be empty."
