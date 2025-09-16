@@ -66,21 +66,22 @@ func _physics_process(delta: float) -> void:
 	elif Input.is_action_just_pressed("Restart"):
 		_holding_time = 0.0
 		restart()
-	elif Input.is_action_just_pressed("Decrease Speed"):
-		Gear.set_speed(clampf(Gear.get_speed() - 0.1, 1.0, 10.0))
-	elif Input.is_action_just_pressed("Increase Speed"):
-		Gear.set_speed(clampf(Gear.get_speed() + 0.1, 1.0, 10.0))
-	elif Input.is_action_pressed("Decrease Speed") and not _pause_screen.visible:
-		_holding_time += delta
-		if _holding_time >= _HOLDING_DELAY:
-			_holding_time -= _HOLDING_DELAY / 4
+	if not _pause_screen.visible:
+		if Input.is_action_just_pressed("Decrease Speed"):
 			Gear.set_speed(clampf(Gear.get_speed() - 0.1, 1.0, 10.0))
-	elif Input.is_action_pressed("Increase Speed"):
-		_holding_time += delta
-		if _holding_time >= _HOLDING_DELAY:
-			_holding_time -= _HOLDING_DELAY / 4
+		elif Input.is_action_just_pressed("Increase Speed"):
 			Gear.set_speed(clampf(Gear.get_speed() + 0.1, 1.0, 10.0))
-	elif Input.is_action_just_released("Decrease Speed") or Input.is_action_just_released("Increase Speed"):
+		elif Input.is_action_pressed("Decrease Speed") and not _pause_screen.visible:
+			_holding_time += delta
+			if _holding_time >= _HOLDING_DELAY:
+				_holding_time -= _HOLDING_DELAY / 4
+				Gear.set_speed(clampf(Gear.get_speed() - 0.1, 1.0, 10.0))
+		elif Input.is_action_pressed("Increase Speed"):
+			_holding_time += delta
+			if _holding_time >= _HOLDING_DELAY:
+				_holding_time -= _HOLDING_DELAY / 4
+				Gear.set_speed(clampf(Gear.get_speed() + 0.1, 1.0, 10.0))
+	if Input.is_action_just_released("Decrease Speed") or Input.is_action_just_released("Increase Speed"):
 		_holding_time = 0.0
 
 func _process(_delta: float) -> void:
@@ -129,8 +130,9 @@ func _create_gear() -> void:
 func load_by_vars(gear_type : Gear.Type, song_map : SongMap, song, video_stream = null, texture = null) -> void:
 	_gear_type = gear_type
 	_song_map = song_map
-	_create_gear()
 	Song.set_song(song)
+	Song.set_time(0.0)
+	_create_gear()
 	if Global.get_settings_dictionary()["video"]:
 		video.stream = video_stream
 	if not video.stream:
@@ -138,6 +140,7 @@ func load_by_vars(gear_type : Gear.Type, song_map : SongMap, song, video_stream 
 
 func _load_song_map() -> void:
 	if not _song_map or _song_map.gear_type != _gear_type:
+		print("deu merda")
 		return
 	for note in _song_map.notes:
 		_gear.add_note_at(note.idx, note.to_note(Gear.Mode.PLAYER))

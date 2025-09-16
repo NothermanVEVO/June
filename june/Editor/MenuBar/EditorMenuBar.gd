@@ -21,6 +21,8 @@ static var _stars_value : int = 1
 
 static var _saved_song_maps : Array[SongMap] = []
 
+const MAX_SIZE_ARRAY : int = 100
+
 static var _undo_song_maps : Array[SongMap] = []
 static var _redo_song_maps : Array[SongMap] = []
 
@@ -91,6 +93,8 @@ func _game_changed() -> void:
 	Editor.changed_editor()
 	#print(to_resource().get_dictionary())
 	var song_map := to_resource()
+	if _undo_song_maps.size() >= MAX_SIZE_ARRAY:
+		_undo_song_maps.pop_front()
 	_undo_song_maps.append(song_map)
 	
 	undo.disabled = false

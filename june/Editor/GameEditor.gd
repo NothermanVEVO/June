@@ -47,6 +47,9 @@ var _sample_long_fade_note : LongNote
 static var _holding_time : float = 0.0
 const _HOLDING_DELAY : float = 0.05
 
+static var _holding_speed_time : float = 0.0
+const _HOLDING_SPEED_DELAY : float = 0.30
+
 var _copied_notes : Array[Note] = []
 
 signal changed
@@ -194,6 +197,24 @@ func _process(delta: float) -> void:
 		else:
 			Song.play(Song.get_time())
 	
+	if has_focus():
+		if Input.is_action_just_pressed("Decrease Speed"):
+			Gear.set_speed(clampf(Gear.get_speed() - 0.1, 1.0, 10.0))
+		elif Input.is_action_just_pressed("Increase Speed"):
+			Gear.set_speed(clampf(Gear.get_speed() + 0.1, 1.0, 10.0))
+		elif Input.is_action_pressed("Decrease Speed"):
+			_holding_speed_time += delta
+			if _holding_speed_time >= _HOLDING_SPEED_DELAY:
+				_holding_speed_time -= _HOLDING_SPEED_DELAY / 4
+				Gear.set_speed(clampf(Gear.get_speed() - 0.1, 1.0, 10.0))
+		elif Input.is_action_pressed("Increase Speed"):
+			_holding_speed_time += delta
+			if _holding_speed_time >= _HOLDING_SPEED_DELAY:
+				_holding_speed_time -= _HOLDING_SPEED_DELAY / 4
+				Gear.set_speed(clampf(Gear.get_speed() + 0.1, 1.0, 10.0))
+		elif Input.is_action_just_released("Decrease Speed") or Input.is_action_just_released("Increase Speed"):
+			_holding_speed_time = 0.0
+	
 	sample_tap_note.visible = false
 	if _currently_sample_long_note:
 		_currently_sample_long_note.visible = false
@@ -215,8 +236,7 @@ func _display_mouse_time_position(display_on_grid : bool = false) -> void:
 	
 	_mouse_time_container.visible = true
 	var mouse_time_pos_y
-	var result = _get_limited_by_gear_local_mouse_position()
-	var mouse_pos : Vector2 = result["position"]
+	var mouse_pos : Vector2 = _get_limited_by_gear_local_mouse_position()["position"]
 	if display_on_grid:
 		mouse_time_pos_y = _get_closest_grid_time_to_mouse()
 	else:
@@ -232,7 +252,7 @@ func _display_mouse_time_position(display_on_grid : bool = false) -> void:
 		if display_on_grid:
 			mouse_pos.y = NoteHolder.get_local_pos_y(_hit_zone_y - float(Note.height) / 2, - float(Note.height) / 2, mouse_time_pos_y, Song.get_time(), Song.get_time() + Gear.MAX_TIME_Y())
 		position_y = clampf(mouse_pos.y, 0.0, _hit_zone_y)
-		_mouse_time_container.position = Vector2(position_x, position_y)
+		_mouse_time_container.position = Vector2(position_x, position_y + global_position.y)
 
 func _handle_selected_item(item_text : String) -> void:
 	match item_text:
@@ -345,7 +365,6 @@ func _handle_select() -> void:
 				var distance = note_hold_idx - _last_note_holder_idx
 				if not ((leftest_note.get_idx() + distance < 0) or (leftest_note.get_idx() + distance > gear.get_type() - 1) or (
 					rightest_note.get_idx() + distance < 0) or (rightest_note.get_idx() + distance > gear.get_type() - 1)):
-					
 					_had_time_difference = true
 					changed.emit()
 					for note in _selected_notes:

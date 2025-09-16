@@ -107,7 +107,7 @@ func _editor_process() -> void:
 func display_notes(time : float) -> void:
 	var note_size_time = get_time_pos_y(float(Note.height) / 2, Gear.get_max_size_y() + float(Note.height) / 2, float(Note.height) + float(Note.height) / 2, 0, Gear.MAX_TIME_Y())
 	
-	var notes := get_notes(time - note_size_time, time + Gear.MAX_TIME_Y() + note_size_time / 2)
+	var notes := get_notes(time - note_size_time, time + Gear.MAX_TIME_Y() + note_size_time)
 	
 	for note in _last_visible_notes:
 		if not note in notes:
@@ -372,7 +372,7 @@ func _draw() -> void:
 	#draw_rect(Rect2(pos_x, pos_y, width, rect_size_y), Color.BLUE)
 	draw_line(Vector2(pos_x, pos.y), Vector2(pos_x, pos.y - Gear.get_max_size_y() - float(Note.height) / 2), Color.WHITE, 1, true)
 	draw_line(Vector2(pos_x + width, pos.y), Vector2(pos_x + width, pos.y - Gear.get_max_size_y() - float(Note.height) / 2), Color.WHITE, 1, true)
-	draw_line(pos - Vector2(width / 2, 0), pos + Vector2(width / 2, 0), Color.YELLOW, 4)
+	draw_line(pos - Vector2(width / 2, 0), pos + Vector2(width / 2, 0), Color.YELLOW, 10)
 	#draw_circle(pos, 5, Color.YELLOW)
 	#draw_circle(Vector2(pos.x, pos.y - max_note_distance), 
 		#5, Color.RED)
