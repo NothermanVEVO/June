@@ -39,6 +39,10 @@ func _ready() -> void:
 	_transfer_to_confirmation.visible = false
 	_transfer_to_confirmation.choice_made.connect(_transfer_to_confirmation_choice_made)
 	$"../TransferToHolder".add_child.call_deferred(_transfer_to_confirmation)
+	_load_really_specific_editor_music_player.call_deferred()
+
+func _load_really_specific_editor_music_player() -> void:
+	Editor.editor_music_player.quit_request.connect(_change_music_player_to_composer)
 
 func _process(delta: float) -> void:
 	if not _undo_song_maps.is_empty():
@@ -383,8 +387,6 @@ func _on_test_pressed() -> void:
 				Editor.editor_settings.get_video_stream(), Editor.editor_settings.get_image_texture())
 			Editor.editor_composer.visible = false
 			Editor.editor_music_player.visible = true
-			if not has_signal("quit_request"):
-				Editor.editor_music_player.quit_request.connect(_change_music_player_to_composer)
 			game.set_gear(_gear_type_value)
 			Gear.mode = Gear.Mode.PLAYER
 			Editor.editor_music_player.start()

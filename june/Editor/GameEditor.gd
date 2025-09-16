@@ -47,6 +47,8 @@ var _sample_long_fade_note : LongNote
 static var _holding_time : float = 0.0
 const _HOLDING_DELAY : float = 0.05
 
+var _copied_notes : Array[Note] = []
+
 signal changed
 
 func _ready() -> void:
@@ -119,11 +121,11 @@ func set_gear(type : Gear.Type) -> void:
 	_resized()
 
 func _process(delta: float) -> void:
-	focus_effect.visible = false
-	queue_redraw() # TODO REMOVE THIS SHIT LATER 
-	
 	if not Editor.editor_composer.visible:
 		return
+	
+	focus_effect.visible = false
+	queue_redraw() # TODO REMOVE THIS SHIT LATER 
 	
 	if Input.is_action_just_pressed("Add Item") and not _is_mouse_inside_menu():
 		if _selected_notes:
@@ -131,10 +133,15 @@ func _process(delta: float) -> void:
 			if not notes:
 				_clear_selected_notes()
 	
-		if _selected_long_notes and not _is_mouse_inside_menu():
+		if _selected_long_notes:
 			var long_notes := gear.get_global_long_note_intersected_rects(Rect2(get_global_mouse_position(), Vector2.ZERO))
 			if not long_notes:
 				_clear_selected_long_notes()
+	
+	if Input.is_action_just_pressed("Copy"):
+		_copied_notes = _selected_notes.duplicate()
+	if Input.is_action_just_pressed("Paste"):
+		_paste()
 	
 	_display_mouse_time_position()
 	
@@ -147,7 +154,7 @@ func _process(delta: float) -> void:
 		Global.set_mouse_effect(MouseEffect.Effect.NONE)
 	
 	if get_global_rect().has_point(get_global_mouse_position()):
-		if Input.is_action_just_pressed("Scroll Up"): # SCROLL THE SONG
+		if Input.is_action_just_pressed("Scroll Up"):
 			if Song.playing:
 				Song.stop()
 			Song.set_time(clampf(Song.get_time() + 0.1, 0.0, Song.get_duration()))
@@ -272,11 +279,16 @@ func _handle_select() -> void:
 		var closest_note : Note = null
 		for note in notes:
 			if closest_note:
+				if note.is_selected():
+					closest_note = note
+					break
 				if note.get_local_mouse_position().distance_squared_to(_start_mouse_click_position) < (
 				closest_note.get_local_mouse_position().distance_squared_to(_start_mouse_click_position)):
 					closest_note = note
 			else:
 				closest_note = note
+				if closest_note.is_selected():
+					break
 		
 		if _clicked_on_note:
 			_last_drag_mouse_position = _get_limited_by_gear_local_mouse_position()["position"]
@@ -572,7 +584,6 @@ func _handle_selected_item_power() -> void:
 
 func _handle_long_note(type : LongNote.Type) -> void:
 	if not get_rect().has_point(get_local_mouse_position()) or _is_any_note_with_display_info():
-		_currently_sample_long_note.visible = false
 		return
 	
 	match type:
@@ -613,6 +624,18 @@ func _handle_long_note(type : LongNote.Type) -> void:
 	else: # DIDN'T FIND A NOTE HOLD
 		_currently_sample_long_note.visible = false
 
+func _paste() -> void:
+	if _copied_notes:
+		for note in _copied_notes:
+			if not is_instance_valid(note):
+				_copied_notes.clear()
+				return
+	changed.emit()
+	for note in _copied_notes:
+		if note is HoldNoteEditor:
+			gear.add_note_at(note.get_idx(), HoldNoteEditor.new(note.get_start_time(), note.get_end_time()), true)
+		else:
+			gear.add_note_at(note.get_idx(), NoteEditor.new(note.get_time()), true)
 
 func _get_time_difference_y() -> float:
 	var mouse_pos : Vector2 = get_local_mouse_position()
@@ -743,7 +766,7 @@ func _draw() -> void:
 	for i in (n_grids + 1):
 		var pos_y = NoteHolder.get_local_pos_y(_hit_zone_y - float(Note.height) / 2, - float(Note.height) / 2, start_time_pos + (value * i), Song.get_time(), Song.get_time() + Gear.MAX_TIME_Y())
 		pos_y += float(Note.height) / 2
-		draw_line(Vector2(left_x, pos_y), Vector2(right_x, pos_y), Color.WHITE, 1)
+		draw_line(Vector2(left_x, pos_y), Vector2(right_x, pos_y), Color.WHITE, 1, true)
 
 func _on_mouse_entered() -> void:
 	_is_mouse_inside = true

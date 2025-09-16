@@ -366,13 +366,14 @@ func _draw() -> void:
 	if Gear.mode == Gear.Mode.PLAYER:
 		return
 	var pos = Vector2.ZERO
-	var rect_size_y = float(Note.height)
+	#var rect_size_y = float(Note.height)
 	var pos_x = pos.x - width / 2
-	var pos_y = pos.y - (rect_size_y / 2)
-	draw_rect(Rect2(pos_x, pos_y, width, rect_size_y), Color.BLUE)
-	draw_line(Vector2(pos_x, pos_y), Vector2(pos_x, pos_y - Gear.get_max_size_y() + float(Note.height) / 2), Color.WHITE)
-	draw_line(Vector2(pos_x + width, pos_y), Vector2(pos_x + width, pos_y - Gear.get_max_size_y() + float(Note.height) / 2), Color.WHITE)
-	draw_circle(pos, 5, Color.YELLOW)
+	#var pos_y = pos.y - (rect_size_y / 2)
+	#draw_rect(Rect2(pos_x, pos_y, width, rect_size_y), Color.BLUE)
+	draw_line(Vector2(pos_x, pos.y), Vector2(pos_x, pos.y - Gear.get_max_size_y() - float(Note.height) / 2), Color.WHITE, 1, true)
+	draw_line(Vector2(pos_x + width, pos.y), Vector2(pos_x + width, pos.y - Gear.get_max_size_y() - float(Note.height) / 2), Color.WHITE, 1, true)
+	draw_line(pos - Vector2(width / 2, 0), pos + Vector2(width / 2, 0), Color.YELLOW, 4)
+	#draw_circle(pos, 5, Color.YELLOW)
 	#draw_circle(Vector2(pos.x, pos.y - max_note_distance), 
 		#5, Color.RED)
 

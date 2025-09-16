@@ -49,6 +49,7 @@ grow_vertical = 2
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 60
+disabled = true
 text = "Jogar"
 
 [node name="Editor" type="Button" parent="VBoxContainer"]
