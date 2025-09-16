@@ -26,25 +26,25 @@ func _ready() -> void:
 	var dict := Global.get_settings_dictionary()
 	
 	## 4 KEYS
-	first_four_keys_button.text = OS.get_keycode_string(dict[first_four_keys_button.name])
-	second_four_keys_button.text = OS.get_keycode_string(dict[second_four_keys_button.name])
-	third_four_keys_button.text = OS.get_keycode_string(dict[third_four_keys_button.name])
-	fourth_four_keys_button.text = OS.get_keycode_string(dict[fourth_four_keys_button.name])
+	first_four_keys_button.text = char(dict[first_four_keys_button.name])
+	second_four_keys_button.text = char(dict[second_four_keys_button.name])
+	third_four_keys_button.text = char(dict[third_four_keys_button.name])
+	fourth_four_keys_button.text = char(dict[fourth_four_keys_button.name])
 	
 	## 5 KEYS
-	first_five_keys_button.text = OS.get_keycode_string(dict[first_five_keys_button.name])
-	second_five_keys_button.text = OS.get_keycode_string(dict[second_five_keys_button.name])
-	third_five_keys_button.text = OS.get_keycode_string(dict[third_five_keys_button.name])
-	fourth_five_keys_button.text = OS.get_keycode_string(dict[fourth_five_keys_button.name])
-	fifth_five_keys_button.text = OS.get_keycode_string(dict[fifth_five_keys_button.name])
+	first_five_keys_button.text = char(dict[first_five_keys_button.name])
+	second_five_keys_button.text = char(dict[second_five_keys_button.name])
+	third_five_keys_button.text = char(dict[third_five_keys_button.name])
+	fourth_five_keys_button.text = char(dict[fourth_five_keys_button.name])
+	fifth_five_keys_button.text = char(dict[fifth_five_keys_button.name])
 	
 	## 6 KEYS
-	first_six_keys_button.text = OS.get_keycode_string(dict[first_six_keys_button.name])
-	second_six_keys_button.text = OS.get_keycode_string(dict[second_six_keys_button.name])
-	third_six_keys_button.text = OS.get_keycode_string(dict[third_six_keys_button.name])
-	fourth_six_keys_button.text = OS.get_keycode_string(dict[fourth_six_keys_button.name])
-	fifth_six_keys_button.text = OS.get_keycode_string(dict[fifth_six_keys_button.name])
-	sixth_six_keys_button.text = OS.get_keycode_string(dict[sixth_six_keys_button.name])
+	first_six_keys_button.text = char(dict[first_six_keys_button.name])
+	second_six_keys_button.text = char(dict[second_six_keys_button.name])
+	third_six_keys_button.text = char(dict[third_six_keys_button.name])
+	fourth_six_keys_button.text = char(dict[fourth_six_keys_button.name])
+	fifth_six_keys_button.text = char(dict[fifth_six_keys_button.name])
+	sixth_six_keys_button.text = char(dict[sixth_six_keys_button.name])
 
 func _on_return_pressed() -> void:
 	get_tree().change_scene_to_packed(Global._SETTING_SCREEN_SCENE)
@@ -74,7 +74,7 @@ func _handle_binding_event(toggled_on : bool, button_toggled : Button) -> void:
 		#set_process_unhandled_key_input(true)
 	else:
 		var dict := Global.get_settings_dictionary()
-		button_toggled.text = OS.get_keycode_string(dict[button_toggled.name])
+		button_toggled.text = char(dict[button_toggled.name])
 		_button_toggled_on.release_focus()
 		_button_toggled_on = null
 

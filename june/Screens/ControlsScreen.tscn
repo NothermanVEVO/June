@@ -81,28 +81,28 @@ size_flags_horizontal = 4
 theme_override_constants/separation = 15
 
 [node name="1_4k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/4/4 Buttons/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(75, 115)
 layout_mode = 2
 theme_override_font_sizes/font_size = 75
 toggle_mode = true
-text = "X"
 
 [node name="2_4k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/4/4 Buttons/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(75, 115)
 layout_mode = 2
 theme_override_font_sizes/font_size = 75
 toggle_mode = true
-text = "X"
 
 [node name="3_4k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/4/4 Buttons/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(75, 115)
 layout_mode = 2
 theme_override_font_sizes/font_size = 75
 toggle_mode = true
-text = "X"
 
 [node name="4_4k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/4/4 Buttons/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(75, 115)
 layout_mode = 2
 theme_override_font_sizes/font_size = 75
 toggle_mode = true
-text = "X"
 
 [node name="5 Buttons" type="MarginContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
@@ -129,34 +129,34 @@ size_flags_horizontal = 4
 theme_override_constants/separation = 15
 
 [node name="1_5k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/5 Buttons/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(75, 115)
 layout_mode = 2
 theme_override_font_sizes/font_size = 75
 toggle_mode = true
-text = "X"
 
 [node name="2_5k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/5 Buttons/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(75, 115)
 layout_mode = 2
 theme_override_font_sizes/font_size = 75
 toggle_mode = true
-text = "X"
 
 [node name="3_5k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/5 Buttons/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(75, 115)
 layout_mode = 2
 theme_override_font_sizes/font_size = 75
 toggle_mode = true
-text = "X"
 
 [node name="4_5k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/5 Buttons/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(75, 115)
 layout_mode = 2
 theme_override_font_sizes/font_size = 75
 toggle_mode = true
-text = "X"
 
 [node name="5_5k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/5 Buttons/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(75, 115)
 layout_mode = 2
 theme_override_font_sizes/font_size = 75
 toggle_mode = true
-text = "X"
 
 [node name="6" type="PanelContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
@@ -186,40 +186,40 @@ size_flags_horizontal = 4
 theme_override_constants/separation = 15
 
 [node name="1_6k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(75, 115)
 layout_mode = 2
 theme_override_font_sizes/font_size = 75
 toggle_mode = true
-text = "X"
 
 [node name="2_6k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(75, 115)
 layout_mode = 2
 theme_override_font_sizes/font_size = 75
 toggle_mode = true
-text = "X"
 
 [node name="3_6k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(75, 115)
 layout_mode = 2
 theme_override_font_sizes/font_size = 75
 toggle_mode = true
-text = "X"
 
 [node name="4_6k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(75, 115)
 layout_mode = 2
 theme_override_font_sizes/font_size = 75
 toggle_mode = true
-text = "X"
 
 [node name="5_6k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(75, 115)
 layout_mode = 2
 theme_override_font_sizes/font_size = 75
 toggle_mode = true
-text = "X"
 
 [node name="6_6k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(75, 115)
 layout_mode = 2
 theme_override_font_sizes/font_size = 75
 toggle_mode = true
-text = "X"
 
 [node name="Return" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
