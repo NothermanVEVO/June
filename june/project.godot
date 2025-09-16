@@ -12,14 +12,14 @@ config_version=5
 
 config/name="June"
 config/description="Um jogo de ritmo onde você pode criar seu próprio mapa musical."
-config/version="BETA 1.1.2"
+config/version="0.1.2"
 config/tags=PackedStringArray("rythm")
 run/main_scene="uid://drjxg7k7qdwwx"
 config/use_custom_user_dir=true
 config/features=PackedStringArray("4.4", "GL Compatibility")
 boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/show_image=false
-config/icon="res://icon.svg"
+config/icon="uid://b6tnrk3ngahh2"
 
 [autoload]
 
