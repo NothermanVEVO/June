@@ -51,6 +51,8 @@ static var _holding_speed_time : float = 0.0
 const _HOLDING_SPEED_DELAY : float = 0.30
 
 var _copied_notes : Array[Note] = []
+var _gear_type_copied_notes : int = -1
+var _song_time_when_copied : float = 0.0
 
 signal changed
 
@@ -144,7 +146,23 @@ func _process(delta: float) -> void:
 				_clear_selected_long_notes()
 	
 	if Input.is_action_just_pressed("Copy"):
-		_copied_notes = _selected_notes.duplicate()
+		if _selected_notes:
+			_gear_type_copied_notes = gear.get_type()
+			_song_time_when_copied = Song.get_time()
+			for note in _copied_notes:
+				note.queue_free()
+			_copied_notes.clear()
+		for note in _selected_notes:
+			if note is HoldNoteEditor:
+				var new_note := HoldNoteEditor.new(note.get_start_time(), note.get_end_time())
+				new_note.powered = note.powered
+				new_note.set_idx(note.get_idx())
+				_copied_notes.append(new_note)
+			else:
+				var new_note := NoteEditor.new(note.get_time())
+				new_note.powered = note.powered
+				new_note.set_idx(note.get_idx())
+				_copied_notes.append(new_note)
 	if Input.is_action_just_pressed("Paste"):
 		_paste()
 	
@@ -484,9 +502,14 @@ func _handle_select() -> void:
 			rect.size = (get_global_mouse_position() - (_start_mouse_click_position + global_position))
 			rect = rect.abs()
 			_clear_selected_notes()
-			_selected_notes = gear.get_global_note_intersected_rects(rect)
-			for notes in _selected_notes:
-				notes.set_selected_highlight(true)
+			var intersected_notes := gear.get_global_note_intersected_rects(rect)
+			for note in intersected_notes:
+				#if not note.visible or (note is HoldNoteEditor and (note.get_start_time() > Song.get_time() + Gear.MAX_TIME_Y() or note.get_end_time() < Song.get_time())
+				#) or (note is NoteEditor and (note.get_time() > Song.get_time() + Gear.MAX_TIME_Y() or note.get_time() < Song.get_time())):
+					#pass
+				#else:
+					_selected_notes.append(note)
+					note.set_selected_highlight(true)
 			_mouse_selection.set_rect(Rect2(0, 0, 0, 0))
 
 func _handle_selected_item_tap() -> void:
@@ -646,17 +669,40 @@ func _handle_long_note(type : LongNote.Type) -> void:
 		_currently_sample_long_note.visible = false
 
 func _paste() -> void:
-	if _copied_notes:
-		for note in _copied_notes:
-			if not is_instance_valid(note):
-				_copied_notes.clear()
-				return
+	if not _copied_notes or gear.get_type() != _gear_type_copied_notes:
+		return
 	changed.emit()
+	_clear_selected_notes()
+	var time_copied_difference := Song.get_time() - _song_time_when_copied
+	var highest_grid_time := _get_highest_grid_time()
+	var highest_time : float = 0.0
+	
+	for note in _copied_notes:
+		if note is HoldNoteEditor and note.get_end_time() + time_copied_difference > highest_time:
+			highest_time = note.get_end_time() + time_copied_difference
+		elif note is NoteEditor and note.get_time() + time_copied_difference > highest_time:
+			highest_time = note.get_time() + time_copied_difference
+	
+	if highest_time > highest_grid_time:
+		time_copied_difference -= highest_time - highest_grid_time
+	
 	for note in _copied_notes:
 		if note is HoldNoteEditor:
-			gear.add_note_at(note.get_idx(), HoldNoteEditor.new(note.get_start_time(), note.get_end_time()), true)
+			var new_note := HoldNoteEditor.new(_get_closest_grid_time_pos(note.get_start_time() + time_copied_difference), _get_closest_grid_time_pos(note.get_end_time() + time_copied_difference))
+			new_note.powered = note.powered
+			if new_note.get_end_time() > highest_grid_time:
+				new_note.set_time(new_note.get_start_time() - (highest_grid_time - new_note.get_end_time()))
+			new_note.set_selected_highlight(true)
+			gear.add_note_at(note.get_idx(), new_note, true)
+			_selected_notes.append(new_note)
 		else:
-			gear.add_note_at(note.get_idx(), NoteEditor.new(note.get_time()), true)
+			var new_note := NoteEditor.new(_get_closest_grid_time_pos(note.get_time() + time_copied_difference))
+			new_note.powered = note.powered
+			if new_note.get_time() > highest_grid_time:
+				new_note.set_time(highest_grid_time)
+			new_note.set_selected_highlight(true)
+			gear.add_note_at(note.get_idx(), new_note, true)
+			_selected_notes.append(new_note)
 
 func _get_time_difference_y() -> float:
 	var mouse_pos : Vector2 = get_local_mouse_position()

@@ -56,6 +56,12 @@ func _set_highlight(highlight : bool) -> void:
 func set_selected_highlight(selected : bool) -> void:
 	_is_selected = selected
 	_set_highlight(selected)
+	
+	if selected:
+		z_index = 2
+	else:
+		z_index = 1
+	
 	if selected:
 		if _is_valid:
 			_shader_material.set_shader_parameter("shade_color", Vector4(1.0, 1.0, 1.0, 0.5))

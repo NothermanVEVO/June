@@ -64,7 +64,7 @@ func _process(_delta: float) -> void:
 	if is_selected():
 		top_button.visible = true
 		bottom_button.visible = true
-		top_button.position = _end_note.position - Vector2(0, float(Note.height) / 8)
+		top_button.position = _end_note.position# + Vector2(0, float(Note.height))
 		bottom_button.position = _start_note.position + Vector2(0, float(Note.height) / 4)
 	else:
 		top_button.visible = false
@@ -107,6 +107,12 @@ func _set_highlight(highlight : bool) -> void:
 func set_selected_highlight(selected : bool) -> void:
 	_is_selected = selected
 	_set_highlight(selected)
+	
+	if selected:
+		z_index = 2
+	else:
+		z_index = 1
+	
 	if selected:
 		if _is_valid:
 			_shader_material.set_shader_parameter("shade_color", Vector4(1.0, 1.0, 1.0, 0.5))

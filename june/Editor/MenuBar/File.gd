@@ -59,6 +59,9 @@ func _file_index_pressed(index : int) -> void:
 		Choices.EXPORT:
 			export_file()
 		Choices.QUIT:
+			if Editor.editor_composer and Editor.editor_composer.editor_menu_bar and Editor.editor_composer.editor_menu_bar.game and Editor.editor_composer.editor_menu_bar.game._copied_notes: ## AVOIDS MEMORY LEAK
+				for note in Editor.editor_composer.editor_menu_bar.game._copied_notes:
+					note.queue_free()
 			_quit()
 
 func _confirmation_dialog_confirmed() -> void:

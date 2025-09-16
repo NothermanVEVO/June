@@ -244,6 +244,9 @@ func get_global_note_intersected_rects(rect : Rect2) -> Array[Note]:
 	var array : Array[Note] = []
 	for note_holder in _note_holders:
 		for note in note_holder.get_notes_array():
+			if not note.visible or (note is HoldNoteEditor and (note.get_start_time() > Song.get_time() + Gear.MAX_TIME_Y() or note.get_end_time() < Song.get_time())
+				) or (note is NoteEditor and (note.get_time() > Song.get_time() + Gear.MAX_TIME_Y() or note.get_time() < Song.get_time())):
+					continue
 			if note is HoldNote and rect.intersects(note.get_global_hold_rect(), true):
 				array.append(note)
 			elif rect.intersects(note.get_global_rect(), true):
