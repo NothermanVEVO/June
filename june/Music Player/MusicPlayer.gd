@@ -29,6 +29,9 @@ var current_score : float = 0.0
 
 static var _value_of_note : float
 
+var _holding_time : float = 0.0
+const _HOLDING_DELAY : float = 0.30
+
 signal quit_request
 
 func _ready() -> void:
@@ -54,8 +57,31 @@ func _speed_changed() -> void:
 	set_speed(Gear.get_speed())
 
 func _physics_process(delta: float) -> void:
+	if not visible:
+		_holding_time = 0.0
+		return
 	if Input.is_action_just_pressed("Escape"):
+		_holding_time = 0.0
 		pause()
+	elif Input.is_action_just_pressed("Restart"):
+		_holding_time = 0.0
+		restart()
+	elif Input.is_action_just_pressed("Decrease Speed"):
+		Gear.set_speed(clampf(Gear.get_speed() - 0.1, 1.0, 10.0))
+	elif Input.is_action_just_pressed("Increase Speed"):
+		Gear.set_speed(clampf(Gear.get_speed() + 0.1, 1.0, 10.0))
+	elif Input.is_action_pressed("Decrease Speed") and not _pause_screen.visible:
+		_holding_time += delta
+		if _holding_time >= _HOLDING_DELAY:
+			_holding_time -= _HOLDING_DELAY / 4
+			Gear.set_speed(clampf(Gear.get_speed() - 0.1, 1.0, 10.0))
+	elif Input.is_action_pressed("Increase Speed"):
+		_holding_time += delta
+		if _holding_time >= _HOLDING_DELAY:
+			_holding_time -= _HOLDING_DELAY / 4
+			Gear.set_speed(clampf(Gear.get_speed() + 0.1, 1.0, 10.0))
+	elif Input.is_action_just_released("Decrease Speed") or Input.is_action_just_released("Increase Speed"):
+		_holding_time = 0.0
 
 func _process(_delta: float) -> void:
 	_current_time += _delta

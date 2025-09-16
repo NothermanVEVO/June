@@ -14,3 +14,7 @@ func _on_restart_pressed() -> void:
 
 func _on_quit_pressed() -> void:
 	quit_pressed.emit()
+
+func _on_visibility_changed() -> void:
+	if visible and $MarginContainer/VBoxContainer/Resume:
+		$MarginContainer/VBoxContainer/Resume.grab_focus()

@@ -122,6 +122,8 @@ func set_gear(type : Gear.Type) -> void:
 
 func _process(delta: float) -> void:
 	if not Editor.editor_composer.visible:
+		if GameComponents.get_selected_item_text() == "Power (G)":
+			Global.set_mouse_effect(MouseEffect.Effect.NONE)
 		return
 	
 	focus_effect.visible = false
@@ -186,7 +188,7 @@ func _process(delta: float) -> void:
 		Input.is_action_just_released("ui_up") or Input.is_action_just_released("ui_down")):
 		_holding_time = 0.0
 	
-	if Input.is_action_just_pressed("ui_accept") and Editor.get_current_scene() == Editor.Scenes.COMPOSER:
+	if Input.is_action_just_pressed("ui_accept") and Editor.get_current_scene() == Editor.Scenes.COMPOSER and has_focus():
 		if Song.playing:
 			Song.stop()
 		else:

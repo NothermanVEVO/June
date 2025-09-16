@@ -40,6 +40,9 @@ func _ready() -> void:
 	_transfer_to_confirmation.choice_made.connect(_transfer_to_confirmation_choice_made)
 	$"../TransferToHolder".add_child.call_deferred(_transfer_to_confirmation)
 	_load_really_specific_editor_music_player.call_deferred()
+	
+	Gear.set_speed(1.0)
+	Global.speed_changed.connect(_speed_changed)
 
 func _load_really_specific_editor_music_player() -> void:
 	Editor.editor_music_player.quit_request.connect(_change_music_player_to_composer)
@@ -73,6 +76,10 @@ static func get_snap_divisor_value() -> int:
 
 func _on_speed_value_changed(value: float) -> void:
 	Gear.set_speed(value)
+
+func _speed_changed() -> void:
+	if $FlowContainer/Speed:
+		$FlowContainer/Speed.value = Gear.get_speed()
 
 func _on_snap_divisor_item_selected(index: int) -> void:
 	_snap_divisor_value = Divisors.values()[index]

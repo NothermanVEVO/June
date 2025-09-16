@@ -1,5 +1,9 @@
 extends Control
 
+func _process(_delta: float) -> void:
+	if Input.is_action_just_pressed("Escape"):
+		_on_return_pressed()
+
 func _on_video_pressed() -> void:
 	get_tree().change_scene_to_packed(Global._VIDEO_SCREEN_SCENE)
 

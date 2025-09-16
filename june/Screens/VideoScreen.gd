@@ -28,6 +28,10 @@ func _ready() -> void:
 	video_check_box.button_pressed = dict["video"]
 	particles_check_box.button_pressed = dict["particles"]
 
+func _process(_delta: float) -> void:
+	if Input.is_action_just_pressed("Escape"):
+		_on_return_pressed()
+
 func set_mode(mode : Modes) -> void:
 	_mode = mode
 	var dict := Global.get_settings_dictionary()

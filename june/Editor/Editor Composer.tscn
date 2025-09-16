@@ -187,7 +187,7 @@ vertical_alignment = 1
 
 [node name="Speed" type="SpinBox" parent="MenuBar/FlowContainer"]
 layout_mode = 2
-tooltip_text = "Define the fall speed of the notes.
+tooltip_text = "Define the fall speed of the notes, can also work like a zoom in the Composer.
 
 Note: Doesn't change their actual position.
 

@@ -20,6 +20,8 @@ extends Control
 
 var _button_toggled_on : Button
 
+const INVALID_PHYSICAL_KEYCODE : Array[int] = [4194305, 49, 50, 4194336] ## [ESCAPE, 1, 2, F5].
+
 func _ready() -> void:
 	var dict := Global.get_settings_dictionary()
 	
@@ -48,16 +50,20 @@ func _on_return_pressed() -> void:
 	get_tree().change_scene_to_packed(Global._SETTING_SCREEN_SCENE)
 
 func _unhandled_key_input(event: InputEvent) -> void:
-	if _button_toggled_on:
+	if Input.is_action_just_pressed("Escape") and not _button_toggled_on:
+		_on_return_pressed()
+	if _button_toggled_on and event is InputEventKey:
+		if event.physical_keycode in INVALID_PHYSICAL_KEYCODE:
+			_button_toggled_on.button_pressed = false
+			return
 		InputMap.erase_action(_button_toggled_on.name)
 		InputMap.add_action(_button_toggled_on.name)
 		InputMap.action_add_event(_button_toggled_on.name, event)
-		if event is InputEventKey:
-			var dict := Global.get_settings_dictionary()
-			dict[_button_toggled_on.name] = event.physical_keycode
-			Global.save_settings(dict)
+		var dict := Global.get_settings_dictionary()
+		dict[_button_toggled_on.name] = event.physical_keycode
+		Global.save_settings(dict)
 		_button_toggled_on.button_pressed = false
-		set_process_unhandled_key_input(false)
+		#set_process_unhandled_key_input(false)
 
 func _handle_binding_event(toggled_on : bool, button_toggled : Button) -> void:
 	if toggled_on:
@@ -65,10 +71,11 @@ func _handle_binding_event(toggled_on : bool, button_toggled : Button) -> void:
 		if _button_toggled_on and _button_toggled_on.button_pressed:
 			_button_toggled_on.button_pressed = false
 		_button_toggled_on = button_toggled
-		set_process_unhandled_key_input(true)
+		#set_process_unhandled_key_input(true)
 	else:
 		var dict := Global.get_settings_dictionary()
 		button_toggled.text = OS.get_keycode_string(dict[button_toggled.name])
+		_button_toggled_on.release_focus()
 		_button_toggled_on = null
 
 ## 4 KEYS
