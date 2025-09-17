@@ -71,6 +71,8 @@ func _ready() -> void:
 	Song.finished.connect(_song_has_finished)
 
 func _process(_delta: float) -> void:
+	if not Editor.editor_composer.visible:
+		return
 	
 	## SPEED TEXT AND SLIDER
 	if is_dragging_speed_slider:

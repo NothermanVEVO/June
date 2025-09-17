@@ -186,24 +186,25 @@ func _process(delta: float) -> void:
 				Song.stop()
 			Song.set_time(clampf(Song.get_time() - 0.1, 0.0, Song.get_duration()))
 	
-	if Input.is_action_just_pressed("ui_right") or Input.is_action_just_pressed("ui_up"):
-		if Song.playing:
-			Song.stop()
-		Song.set_time(clampf(Song.get_time() + 0.1, 0.0, Song.get_duration()))
-	elif Input.is_action_just_pressed("ui_left") or Input.is_action_just_pressed("ui_down"):
-		if Song.playing:
-			Song.stop()
-		Song.set_time(clampf(Song.get_time() - 0.1, 0.0, Song.get_duration()))
-	elif Input.is_action_pressed("ui_right") or Input.is_action_pressed("ui_up"):
-		_holding_time += delta
-		if _holding_time >= _HOLDING_DELAY:
-			_holding_time -= _HOLDING_DELAY
+	if has_focus():
+		if Input.is_action_just_pressed("ui_right") or Input.is_action_just_pressed("ui_up"):
+			if Song.playing:
+				Song.stop()
 			Song.set_time(clampf(Song.get_time() + 0.1, 0.0, Song.get_duration()))
-	elif Input.is_action_pressed("ui_left") or Input.is_action_pressed("ui_down"):
-		_holding_time += delta
-		if _holding_time >= _HOLDING_DELAY:
-			_holding_time -= _HOLDING_DELAY
+		elif Input.is_action_just_pressed("ui_left") or Input.is_action_just_pressed("ui_down"):
+			if Song.playing:
+				Song.stop()
 			Song.set_time(clampf(Song.get_time() - 0.1, 0.0, Song.get_duration()))
+		elif Input.is_action_pressed("ui_right") or Input.is_action_pressed("ui_up"):
+			_holding_time += delta
+			if _holding_time >= _HOLDING_DELAY:
+				_holding_time -= _HOLDING_DELAY
+				Song.set_time(clampf(Song.get_time() + 0.1, 0.0, Song.get_duration()))
+		elif Input.is_action_pressed("ui_left") or Input.is_action_pressed("ui_down"):
+			_holding_time += delta
+			if _holding_time >= _HOLDING_DELAY:
+				_holding_time -= _HOLDING_DELAY
+				Song.set_time(clampf(Song.get_time() - 0.1, 0.0, Song.get_duration()))
 	
 	if (Input.is_action_just_released("ui_right") or Input.is_action_just_released("ui_left") or 
 		Input.is_action_just_released("ui_up") or Input.is_action_just_released("ui_down")):

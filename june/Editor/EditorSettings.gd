@@ -167,6 +167,7 @@ func _on_icon_button_pressed() -> void:
 	_last_called_file = Files.ICON
 
 func _on_remove_button_pressed() -> void:
+	_icon_path = ""
 	icon_texture.texture = null
 	remove_icon_button.disabled = true
 
@@ -175,6 +176,7 @@ func _on_video_button_pressed() -> void:
 	_last_called_file = Files.VIDEO
 
 func _on_remove_video_button_pressed() -> void:
+	_video_path = ""
 	video_player.stream = null
 	remove_video_button.disabled = true
 	video_time_sample_text.editable = false
@@ -184,6 +186,7 @@ func _on_image_button_pressed() -> void:
 	_last_called_file = Files.IMAGE
 
 func _on_remove_image_button_pressed() -> void:
+	_image_path = ""
 	image_rect_texture.texture = null
 	remove_image_button.disabled = true
 

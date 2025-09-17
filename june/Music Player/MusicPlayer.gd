@@ -87,14 +87,15 @@ func _physics_process(delta: float) -> void:
 func _process(_delta: float) -> void:
 	_current_time += _delta
 	if _current_time >= TIME_TO_START:
-		if Song.stream_paused:
-			Song.stream_paused = false
-		Song.play()
-		
 		if video.stream and Global.get_settings_dictionary()["video"]:
 			if video.paused:
 				video.paused = false
 			video.play() ## THIS USES A BUNCH OF FPS!
+		
+		if Song.stream_paused:
+			Song.stream_paused = false
+		Song.pitch_scale = 1.0
+		Song.play()
 		set_process(false)
 
 func start() -> void:
@@ -150,6 +151,7 @@ func _load_song_map() -> void:
 
 func restart() -> void:
 	_current_time = 0.0
+	Song.stop()
 	Song.set_time(0.0)
 	if video.stream:
 		video.stop()

@@ -1,8 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://bai3fxfsudic4"]
-
-[ext_resource type="Texture2D" uid="uid://jbdjck4yyw14" path="res://concepts/hit_test.png" id="1_o02vu"]
-
-[node name="NinePatchRect" type="NinePatchRect"]
-offset_right = 200.0
-offset_bottom = 200.0
-texture = ExtResource("1_o02vu")
