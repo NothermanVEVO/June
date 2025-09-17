@@ -6,3 +6,4 @@ colors = PackedColorArray(0.270012, 0.623801, 0.892762, 1, 0, 0.316667, 1, 0)
 [resource]
 gradient = SubResource("Gradient_5qsrq")
 width = 256
+fill_to = Vector2(0.85654, 0)

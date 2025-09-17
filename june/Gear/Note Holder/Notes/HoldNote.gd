@@ -33,6 +33,7 @@ func _init(start_time : float, end_time : float) -> void:
 func _ready() -> void:
 	Global.speed_changed.connect(_speed_changed)
 	axis_stretch_vertical = NinePatchRect.AXIS_STRETCH_MODE_TILE
+	Global.changed_max_size_y.connect(_changed_max_size_y)
 
 func get_start_time() -> float:
 	return _current_time
@@ -77,4 +78,7 @@ func set_type_hold_note(type : Type) -> void:
 		_end_note.texture = END_NOTE_RED_IMG
 
 func _speed_changed() -> void:
+	set_end_time(get_end_time())
+
+func _changed_max_size_y() -> void:
 	set_end_time(get_end_time())

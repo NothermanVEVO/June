@@ -22,12 +22,16 @@ var _idx : int
 
 var powered : bool = false
 
+enum Fever {NONE = 0, X1 = 20, X2 = 40, X3 = 60, X4 = 80, X5 = 100, ZONE = 120, MAX_ZONE = 140}
+const FEVER_VALUE : float = 1.0
+
 func _init(current_time : float) -> void:
 	_current_time = current_time
 	
 	size = Vector2(NoteHolder.width, height)
 	position = Vector2(-size / 2)
-	z_index = 1
+	z_as_relative = false
+	z_index = 5
 
 func set_time(time : float) -> void:
 	_current_time = time

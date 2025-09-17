@@ -59,6 +59,8 @@ func _ready() -> void:
 	
 	set_selected_highlight(_is_selected)
 	set_invalid_highlight(not _is_valid)
+	
+	Global.changed_max_size_y.connect(_changed_max_size_y)
 
 func _process(_delta: float) -> void:
 	if is_selected():
@@ -153,3 +155,6 @@ func has_mouse_on_info() -> bool:
 	if not _note_info:
 		return false
 	return _note_info.visible and _note_info.has_mouse()
+
+func _changed_max_size_y() -> void:
+	set_end_time(get_end_time())

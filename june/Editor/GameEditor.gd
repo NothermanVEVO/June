@@ -801,7 +801,7 @@ func _get_closest_grid_time_to_mouse() -> float:
 		time_pos += value - rest
 	return time_pos
 
-func _get_highest_grid_time() -> float:
+func _get_highest_grid_time() -> float: ## OXI?? ISSO FUNFA COMO?
 	return floor(Song.get_duration() / EditorMenuBar.get_divisor()) * EditorMenuBar.get_divisor()
 
 func _get_closest_grid_time_pos(time_pos : float) -> float:

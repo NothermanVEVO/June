@@ -17,6 +17,9 @@ var _last_visible_notes : Array[Note] = []
 
 var _key_pressed_gradient := KeyPressedGradient.new()
 
+const _hit_effect_scene := preload("res://Effects/HitEffect.tscn")
+var _hit_effect : HitEffect
+
 var _currently_note_idx : int = 0
 
 const MAX_TIME_HIT : float = 0.25 # THE MAXIMUM HIT RANGE
@@ -38,6 +41,9 @@ func _ready() -> void:
 	position = Vector2(_pos_x, _hit_zone_y)
 	add_child(_key_pressed_gradient)
 	Global.changed_hitzone_y.connect(_changed_hitzone_y)
+	
+	_hit_effect = _hit_effect_scene.instantiate()
+	add_child(_hit_effect)
 
 func _process(_delta: float) -> void:
 	
@@ -64,6 +70,7 @@ func _player_process() -> void:
 				elif _holding_note_time >= HOLDING_NOTE_DELAY and not _notes[_currently_note_idx].get_end_time() < Song.get_time():
 					if Global.main_music_player:
 						Global.main_music_player.pop_precision(_hitted_hold_note_precision)
+						_hit_effect.play_effect(99)
 						_holding_note_time = 0.0
 				else:
 					_holding_note_time += get_process_delta_time()
@@ -145,11 +152,13 @@ func _hit(time : float) -> void:
 		var precision := _calculate_difference(time, _notes[_currently_note_idx].get_time())
 		if not _notes[_currently_note_idx] is HoldNote and Global.main_music_player:
 			Global.main_music_player.pop_precision(precision)
+			_hit_effect.play_effect(99)
 			Global.main_music_player.add_score(MusicPlayer.get_value_of_note() * abs(precision) / 100)
 			_currently_note_idx += 1
 		elif _notes[_currently_note_idx] is HoldNote:
 			if Global.main_music_player:
 				Global.main_music_player.pop_precision(precision)
+				_hit_effect.play_effect(99)
 			_hitted_hold_note_precision = precision
 			if precision > 0 and precision != 100:
 				_notes[_currently_note_idx].set_start_time(Song.get_time())
@@ -168,6 +177,7 @@ func _hit_hold_note() -> void:
 		if abs(precision) < abs(_hitted_hold_note_precision):
 			_hitted_hold_note_precision = precision
 		Global.main_music_player.pop_precision(_hitted_hold_note_precision)
+		_hit_effect.play_effect(99)
 		Global.main_music_player.add_score(MusicPlayer.get_value_of_note() * abs(_hitted_hold_note_precision) / 100)
 		_currently_note_idx += 1
 		_holding_note_time = 0.0

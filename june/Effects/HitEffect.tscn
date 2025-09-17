@@ -1,0 +1,52 @@
+[gd_scene load_steps=5 format=3 uid="uid://cbwvslm62p7lc"]
+
+[ext_resource type="Script" uid="uid://bl4xlpbad30vp" path="res://Effects/HitEffect.gd" id="1_q18cl"]
+[ext_resource type="Texture2D" uid="uid://fssjb14427a5" path="res://concepts/hit_effect_test_v3.png" id="2_q18cl"]
+
+[sub_resource type="Curve" id="Curve_q18cl"]
+_limits = [-200.0, 200.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.99999, 123.596), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_q18cl"]
+colors = PackedColorArray(0.286275, 1, 1, 1, 1, 1, 1, 1)
+
+[node name="HitEffect" type="Node2D"]
+z_index = 5
+script = ExtResource("1_q18cl")
+
+[node name="Star" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 1
+texture = ExtResource("2_q18cl")
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+spread = 180.0
+gravity = Vector2(0, 0)
+angular_velocity_min = -180.0
+angular_velocity_max = -180.0
+
+[node name="Explosion" type="CPUParticles2D" parent="."]
+scale = Vector2(10, 10)
+emitting = false
+amount = 100
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+lifetime_randomness = 0.5
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 70.0
+initial_velocity_max = 70.0
+angular_velocity_min = -720.0
+angular_velocity_max = 720.0
+linear_accel_min = -100.0
+linear_accel_max = -100.0
+linear_accel_curve = SubResource("Curve_q18cl")
+radial_accel_min = -100.0
+radial_accel_max = -100.0
+tangential_accel_min = -100.0
+tangential_accel_max = -100.0
+scale_amount_max = 15.0
+color_ramp = SubResource("Gradient_q18cl")

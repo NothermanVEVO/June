@@ -13,7 +13,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_p82ld")
-_song_resource_path = "C:\\Users\\Noth\\AppData\\Roaming\\Beat the Beat\\songs\\So Happy Teste\\song_map.json"
 _gear_skin_scene = ExtResource("2_3cmtn")
 
 [node name="ColorRect" type="ColorRect" parent="."]

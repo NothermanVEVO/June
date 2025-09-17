@@ -2,12 +2,12 @@ extends Control
 
 class_name MusicPlayer
 
-@export var _song_resource_path : String
+#@export var _song_resource_path : String
 @export var _gear_type : Gear.Type = Gear.Type.FOUR_KEYS
 @export var _difficulty : SongMap.Difficulty
 @export var _gear_skin_scene : PackedScene
 var _gear_skin : GearSkin
-var _song_resource : SongResource
+#var _song_resource : SongResource
 
 @onready var video : VideoStreamPlayer = $VideoStreamPlayer
 @onready var image : TextureRect = $TextureRect
@@ -31,6 +31,9 @@ static var _value_of_note : float
 
 var _holding_time : float = 0.0
 const _HOLDING_DELAY : float = 0.30
+
+var _current_fever_score : float = 0.0
+var _perfect_state : bool = true
 
 signal quit_request
 
@@ -107,6 +110,7 @@ func start() -> void:
 
 func _create_gear() -> void:
 	current_score = 0.0
+	_current_fever_score = 0.0
 	
 	if _gear_skin:
 		remove_child(_gear_skin)
@@ -132,6 +136,7 @@ func load_by_vars(gear_type : Gear.Type, song_map : SongMap, song, video_stream 
 	_gear_type = gear_type
 	_song_map = song_map
 	Song.set_song(song)
+	Song.stop()
 	Song.set_time(0.0)
 	_create_gear()
 	if Global.get_settings_dictionary()["video"]:
@@ -189,6 +194,46 @@ static func get_current_time() -> float:
 
 func pop_precision(precision : int) -> void:
 	_gear_skin.pop_precision(precision)
+	_calculate_fever(precision)
+
+func _calculate_fever(precision : int) -> void:
+	if precision == 0:
+		_current_fever_score = 0
+		_gear_skin.set_fever_value(_current_fever_score, Note.Fever.NONE)
+		return
+	
+	_current_fever_score += Note.FEVER_VALUE * abs(precision) / 100.0
+	
+	if _current_fever_score >= 0.0 and _current_fever_score < Note.Fever.X1: ## NONE
+		_gear_skin.set_fever_value(Global.get_percentage_between(0.0, Note.Fever.X1, _current_fever_score) * 100, Note.Fever.X1)
+	elif _current_fever_score >= Note.Fever.X1 and _current_fever_score < Note.Fever.X2: ## 1X
+		_gear_skin.set_fever_value(Global.get_percentage_between(Note.Fever.X1, Note.Fever.X2, _current_fever_score) * 100, Note.Fever.X2)
+	elif _current_fever_score >= Note.Fever.X2 and _current_fever_score < Note.Fever.X3: ## 2X
+		_gear_skin.set_fever_value(Global.get_percentage_between(Note.Fever.X2, Note.Fever.X3, _current_fever_score) * 100, Note.Fever.X3)
+	elif _current_fever_score >= Note.Fever.X3 and _current_fever_score < Note.Fever.X4: ## 3X
+		_gear_skin.set_fever_value(Global.get_percentage_between(Note.Fever.X3, Note.Fever.X4, _current_fever_score) * 100, Note.Fever.X4)
+	elif _current_fever_score >= Note.Fever.X4 and _current_fever_score < Note.Fever.X5: ## 4X
+		_gear_skin.set_fever_value(Global.get_percentage_between(Note.Fever.X4, Note.Fever.X5, _current_fever_score) * 100, Note.Fever.X5)
+	elif _current_fever_score >= Note.Fever.X5 and _current_fever_score < Note.Fever.ZONE: ## 5X
+		_gear_skin.set_fever_value(Global.get_percentage_between(Note.Fever.X5, Note.Fever.ZONE, _current_fever_score) * 100, Note.Fever.ZONE)
+	elif _current_fever_score >= Note.Fever.ZONE and _current_fever_score < Note.Fever.MAX_ZONE: ## ZONE
+		_gear_skin.set_fever_value(Global.get_percentage_between(Note.Fever.ZONE, Note.Fever.MAX_ZONE, _current_fever_score) * 100, Note.Fever.MAX_ZONE)
+	elif _current_fever_score >= Note.Fever.MAX_ZONE:
+		_current_fever_score = Note.Fever.X5 + (_current_fever_score - Note.Fever.ZONE)
+	
+	#elif _current_fever_score >= Note.Fever.X1 and _current_fever_score < Note.Fever.X2: ## ZONE
+		#pass
+	#if _current_fever_score > Note.Fever.X5 and not _perfect_state:
+		#_current_fever_score = Note.Fever.X4 + (_current_fever_score - Note.Fever.X5)
+		#_perfect_state = true
+	#if _current_fever_score > Note.Fever.ZONE:
+		#_current_fever_score = Note.Fever.X5 + (_current_fever_score - Note.Fever.ZONE)
+	#
+	#if _current_fever_score > Note.Fever.X5 and precision < 100 and _current_fever_score <= Note.Fever.ZONE: ## IS IN THE ZONE
+		#_current_fever_score = Note.Fever.X4 + (_current_fever_score - Note.Fever.X5)
+	#if _current_fever_score > Note.Fever.X4 and precision < 100 and _current_fever_score <= Note.Fever.X5: ## IS IN THE 5X
+		#_perfect_state = false
+	#_gear_skin.set_fever_score(_current_fever_score)
 
 func set_speed(speed : float) -> void:
 	if _gear_skin:

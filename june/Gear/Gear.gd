@@ -287,7 +287,7 @@ static func get_max_size_y() -> float:
 
 func _draw() -> void:
 	draw_circle(Vector2.ZERO, 10, Color.AQUA)
-	var rect := Rect2(-width / 2, -get_viewport_rect().size.y, width, get_viewport_rect().size.y).abs()
-	
-	draw_rect(rect, Color(0, 0, 0, 0.5))
+	#var rect := Rect2(-width / 2, -get_viewport_rect().size.y, width, get_viewport_rect().size.y).abs()
+	#
+	#draw_rect(rect, Color(0, 0, 0, 0.5))
 	

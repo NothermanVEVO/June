@@ -30,7 +30,7 @@ func set_type(effect : Effect) -> void:
 	_last_global_mouse_position = get_global_mouse_position()
 
 func _process(_delta: float) -> void:
-	if _effect == Effect.NONE:
+	if _effect == Effect.NONE or not Global.get_settings_dictionary()["particles"]:
 		return
 		
 	if get_global_mouse_position() != _last_global_mouse_position:
