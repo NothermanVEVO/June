@@ -116,7 +116,8 @@ func _process(_delta: float) -> void:
 			time_text.text = "%.1f" % (Song.get_time() * 100 / Song.get_duration()) + "%"
 		if not time_pos_text.has_focus():
 			_adjust_time_pos_text()
-	Song.pitch_scale = speed_slider.value / 100
+	if is_dragging_speed_slider:
+		Song.pitch_scale = speed_slider.value / 100
 
 # CHECK IF THE TEXT IN THE SPEED TEXT IS VALID
 func is_speed_text_valid() -> bool:

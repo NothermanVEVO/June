@@ -32,8 +32,9 @@ func _ready() -> void:
 	set_invalid_highlight(not _is_valid)
 
 func _process(_delta: float) -> void:
-	var mouse_pos := get_global_mouse_position()
-	if get_global_rect().has_point(mouse_pos) and Input.is_action_just_pressed("Inspect Note"):
+	if not visible:
+		return
+	if Input.is_action_just_pressed("Inspect Note") and get_global_rect().has_point(get_global_mouse_position()):
 		_note_info.set_power_value(powered)
 		#if _note_info.global_position.y - _note_info.size.y < _min_global_pos_y:
 			#_note_info.position = Vector2(get_local_mouse_position().x, get_local_mouse_position().y)
@@ -41,8 +42,8 @@ func _process(_delta: float) -> void:
 			#_note_info.position = Vector2(get_local_mouse_position().x, get_local_mouse_position().y - _note_info.size.y)
 		_note_info.position = Vector2(get_local_mouse_position().x, get_local_mouse_position().y - _note_info.size.y)
 		_note_info.visible = true
-	elif _note_info.visible and not _note_info.get_global_rect().has_point(mouse_pos) and (
-			Input.is_action_just_pressed("Add Item") or Input.is_action_just_pressed("Inspect Note")):
+	elif _note_info.visible and (Input.is_action_just_pressed("Add Item") or Input.is_action_just_pressed("Inspect Note")
+	) and not _note_info.get_global_rect().has_point(get_global_mouse_position()):
 		_note_info.visible = false
 
 func _set_highlight(highlight : bool) -> void:

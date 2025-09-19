@@ -61,25 +61,26 @@ func _ready() -> void:
 	Global.changed_max_size_y.connect(_changed_max_size_y)
 
 func _process(_delta: float) -> void:
+	if not visible:
+		return
 	if is_selected():
 		top_button.visible = true
 		bottom_button.visible = true
 		top_button.position = _end_note.position# + Vector2(0, float(Note.height))
 		bottom_button.position = _start_note.position + Vector2(0, float(Note.height) / 4)
+		if top_button.button_pressed:
+			pressing_button.emit(self, true)
+		elif bottom_button.button_pressed:
+			pressing_button.emit(self, false)
 	else:
 		top_button.visible = false
 		bottom_button.visible = false
 	
 	var mouse_pos := get_global_mouse_position()
 	
-	if top_button.button_pressed:
-		pressing_button.emit(self, true)
-	elif bottom_button.button_pressed:
-		pressing_button.emit(self, false)
-	
 	var rect := Rect2(_end_note.global_position, Vector2(_start_note.size.x, _start_note.size.y + _middle_note.size.y + _end_note.size.y))
 	
-	if rect.has_point(mouse_pos) and Input.is_action_just_pressed("Inspect Note"):
+	if Input.is_action_just_pressed("Inspect Note") and rect.has_point(mouse_pos):
 		_note_info.set_power_value(powered)
 		#if mouse_pos.y - _note_info.size.y < _min_global_pos_y:
 			#_note_info.global_position = Vector2(mouse_pos.x, mouse_pos.y)
@@ -87,8 +88,8 @@ func _process(_delta: float) -> void:
 			#_note_info.global_position = Vector2(mouse_pos.x, mouse_pos.y - _note_info.size.y)
 		_note_info.global_position = Vector2(mouse_pos.x, mouse_pos.y - _note_info.size.y)
 		_note_info.visible = true
-	elif _note_info.visible and not _note_info.get_global_rect().has_point(mouse_pos) and (
-			Input.is_action_just_pressed("Add Item") or Input.is_action_just_pressed("Inspect Note")):
+	elif _note_info.visible and (Input.is_action_just_pressed("Add Item") or Input.is_action_just_pressed("Inspect Note")
+	) and not _note_info.get_global_rect().has_point(mouse_pos):
 		_note_info.visible = false
 
 func get_global_hold_rect() -> Rect2:

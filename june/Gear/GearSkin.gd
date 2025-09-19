@@ -34,6 +34,8 @@ const _ZONE_FEVER_GRADIENT_TEXTURE := preload("res://Effects/Fever/Fever_ZONE.tr
 @onready var _fever_line_left : TextureRect = $Gear/Control/Base/FeverLineLeft
 @onready var _fever_line_right : TextureRect = $Gear/Control/Base/FeverLineRight
 
+@onready var _fever_star_effect_animation : AnimationPlayer = $"Fever Star Effect"
+
 var _bpm : float
 var _last_time_beat : float = 0.0
 
@@ -81,12 +83,14 @@ func set_fever_value(value : float, fever : Note.Fever) -> void:
 	match fever:
 		Note.Fever.NONE:
 			if _current_fever != fever:
+				_fever_star_effect_animation.play("RESET")
 				_current_fever = fever
 				fever_gradient.texture = null
 				_fever_line_left.visible = false
 				_fever_line_right.visible = false
 		Note.Fever.X1:
 			if _current_fever != fever:
+				_fever_star_effect_animation.play("RESET")
 				_current_fever = fever
 				fever_gradient.texture = null
 				_fever_line_left.visible = false
@@ -94,6 +98,7 @@ func set_fever_value(value : float, fever : Note.Fever) -> void:
 			fever_bar.texture_progress = _FIRST_FEVER_TEXTURE
 		Note.Fever.X2:
 			if _current_fever != fever:
+				_fever_star_effect_animation.play("Fever 1X")
 				_current_fever = fever
 				fever_gradient.texture = _FIRST_FEVER_GRADIENT_TEXTURE
 				_fever_line_left.visible = true
@@ -101,6 +106,7 @@ func set_fever_value(value : float, fever : Note.Fever) -> void:
 			fever_bar.texture_progress = _SECOND_FEVER_TEXTURE
 		Note.Fever.X3:
 			if _current_fever != fever:
+				_fever_star_effect_animation.play("Fever 2X")
 				_current_fever = fever
 				fever_gradient.texture = _SECOND_FEVER_GRADIENT_TEXTURE
 				_fever_line_left.visible = true
@@ -108,6 +114,7 @@ func set_fever_value(value : float, fever : Note.Fever) -> void:
 			fever_bar.texture_progress = _THIRD_FEVER_TEXTURE
 		Note.Fever.X4:
 			if _current_fever != fever:
+				_fever_star_effect_animation.play("Fever 3X")
 				_current_fever = fever
 				fever_gradient.texture = _THIRD_FEVER_GRADIENT_TEXTURE
 				_fever_line_left.visible = true
@@ -115,6 +122,7 @@ func set_fever_value(value : float, fever : Note.Fever) -> void:
 			fever_bar.texture_progress = _FOURTH_FEVER_TEXTURE
 		Note.Fever.X5:
 			if _current_fever != fever:
+				_fever_star_effect_animation.play("Fever 4X")
 				_current_fever = fever
 				fever_gradient.texture = _FOURTH_FEVER_GRADIENT_TEXTURE
 				_fever_line_left.visible = true
@@ -122,6 +130,7 @@ func set_fever_value(value : float, fever : Note.Fever) -> void:
 			fever_bar.texture_progress = _FIFTH_FEVER_TEXTURE
 		Note.Fever.ZONE:
 			if _current_fever != fever:
+				_fever_star_effect_animation.play("Fever 5X")
 				_current_fever = fever
 				fever_gradient.texture = _FIFTH_FEVER_GRADIENT_TEXTURE
 				_fever_line_left.visible = true
@@ -129,6 +138,7 @@ func set_fever_value(value : float, fever : Note.Fever) -> void:
 			fever_bar.texture_progress = _ZONE_FEVER_TEXTURE
 		Note.Fever.MAX_ZONE:
 			if _current_fever != fever:
+				_fever_star_effect_animation.play("Fever Zone")
 				_current_fever = fever
 				fever_gradient.texture = _ZONE_FEVER_GRADIENT_TEXTURE
 				_fever_line_left.visible = true
