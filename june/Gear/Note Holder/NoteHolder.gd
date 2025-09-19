@@ -281,6 +281,16 @@ func remove_note(note : Note, validate_note : bool = false, free : bool = false)
 		validate_notes(0.0, Song.get_duration()) # EH FEIO FAZER ISSO AQ, PREGUIÇOSO
 		changed_note.emit()
 
+func remove_note_at_time(time : float, type : NoteResource.Type, validate_note : bool = false, free : bool = false) -> void:
+	var notes_at_time := get_notes(time, time)
+	for note in notes_at_time:
+		if type == NoteResource.Type.TAP and not note is HoldNote and note is Note:
+			remove_note(note, validate_note, free)
+			return
+		elif type == NoteResource.Type.HOLD and note is HoldNote:
+			remove_note(note, validate_note, free)
+			return
+
 func update_note(note : Note, validate_note : bool = false) -> void:
 	_notes.erase(note)
 	

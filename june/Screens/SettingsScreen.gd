@@ -1,5 +1,8 @@
 extends Control
 
+func _ready() -> void:
+	$VBoxContainer/Video.grab_focus()
+
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Escape"):
 		_on_return_pressed()

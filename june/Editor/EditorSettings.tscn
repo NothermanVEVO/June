@@ -24,28 +24,30 @@ size_flags_horizontal = 0
 
 [node name="File" type="PopupMenu" parent="Menu/FlowContainer/MenuBar"]
 auto_translate_mode = 1
-title = "File"
+title = "Arquivo"
 item_count = 5
-item_0/text = "New file"
+item_0/text = "Novo"
 item_0/id = 0
-item_1/text = "Open file"
+item_1/text = "Abrir"
 item_1/id = 1
-item_2/text = "Save file"
+item_2/text = "Salvar"
 item_2/id = 2
-item_3/text = "Export"
+item_3/text = "Exportar"
 item_3/id = 3
-item_4/text = "Quit"
+item_4/text = "Sair"
 item_4/id = 4
 script = ExtResource("2_iy5o1")
 _editor_scene = 1
 
 [node name="Compose" type="Button" parent="Menu/FlowContainer"]
 layout_mode = 2
+tooltip_text = "Você precisar escolher uma música para começar a compor."
 mouse_default_cursor_shape = 2
 disabled = true
-text = "Compose"
+text = "Compor"
 
 [node name="Test" type="Button" parent="Menu/FlowContainer"]
+visible = false
 layout_mode = 2
 disabled = true
 text = "Test"
@@ -84,7 +86,7 @@ layout_mode = 2
 [node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/Name"]
 layout_mode = 2
 size_flags_vertical = 4
-text = "Name: "
+text = "Nome: "
 fit_content = true
 autowrap_mode = 0
 
@@ -92,7 +94,7 @@ autowrap_mode = 0
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "The name of the song here..."
+placeholder_text = "O nome da música aqui..."
 clear_button_enabled = true
 
 [node name="Author" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer"]
@@ -101,7 +103,7 @@ layout_mode = 2
 [node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/Author"]
 layout_mode = 2
 size_flags_vertical = 4
-text = "Author:"
+text = "Autor:"
 fit_content = true
 autowrap_mode = 0
 
@@ -109,7 +111,7 @@ autowrap_mode = 0
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "The name of the author of the song here..."
+placeholder_text = "O nome do autor da música aqui..."
 clear_button_enabled = true
 
 [node name="Track" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer"]
@@ -118,7 +120,7 @@ layout_mode = 2
 [node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/Track"]
 layout_mode = 2
 size_flags_vertical = 4
-text = "Track:"
+text = "Coleção:"
 fit_content = true
 autowrap_mode = 0
 
@@ -126,7 +128,11 @@ autowrap_mode = 0
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "The name of the track that the song belongs..."
+tooltip_text = "A coleção seria o pacote em que a música seria separado na tela de seleção, se a música for de autores 
+diferentes e álbuns diferentes, elas ainda pode estar em uma mesma coleção. 
+Exemplo: Eu posso chamar um coleção de NCS (No Copyright Sounds) e juntar várias músicas nessa coleção, 
+por mais que sejam de autores diferentes. Sacou?"
+placeholder_text = "Nome da coleção aqui..."
 clear_button_enabled = true
 
 [node name="BPM" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer"]
@@ -141,8 +147,9 @@ autowrap_mode = 0
 
 [node name="SpinBox" type="SpinBox" parent="HBoxContainer/Left/VBoxContainer/BPM"]
 layout_mode = 2
-tooltip_text = "Beats per minute.
-Affects the position of the notes. You can adjust this value as you feel or you can try to find a site or software that does that for you."
+tooltip_text = "Batidas por minuto.
+Afeta a posição de como você pode colar as notas, além de sincronizar melhor com a música. 
+Você pode ajustar manualmente e ir testando ou pode tentar encontrar um site ou software que faça isso por você."
 min_value = 1.0
 max_value = 1000.0
 value = 60.0
@@ -153,7 +160,7 @@ layout_mode = 2
 [node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/Creator"]
 layout_mode = 2
 size_flags_vertical = 4
-text = "Creator:"
+text = "Criador:"
 fit_content = true
 autowrap_mode = 0
 
@@ -161,8 +168,8 @@ autowrap_mode = 0
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 size_flags_horizontal = 3
-tooltip_text = "Put your name or nickname here."
-placeholder_text = "The name of the creator of the song map..."
+tooltip_text = "Coloque o seu nome ou apelido aqui."
+placeholder_text = "O nome do criador do Song Map aqui..."
 clear_button_enabled = true
 
 [node name="SongTimeSample" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer"]
@@ -171,19 +178,21 @@ layout_mode = 2
 [node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/SongTimeSample"]
 layout_mode = 2
 size_flags_vertical = 4
-text = "Song time sample:"
+text = "Tempo de amostra da música:"
 fit_content = true
 autowrap_mode = 0
 
 [node name="SongTimeSampleText" type="TextEdit" parent="HBoxContainer/Left/VBoxContainer/SongTimeSample"]
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
-tooltip_text = "When this song map get selected, the song will play at this time and last for 15 seconds."
+tooltip_text = "Na tela de seleção de mapas, quando esse mapa estiver em foco, vai começar a tocar a música 
+a partir do momento que você colocar aqui, e tocará por uns 20 segundos, repetindo o ciclo."
 placeholder_text = "00:00:000"
 editable = false
 scroll_fit_content_width = true
 
 [node name="VideoTimeSample" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer"]
+visible = false
 layout_mode = 2
 
 [node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/VideoTimeSample"]
@@ -218,20 +227,20 @@ layout_mode = 2
 [node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Right/VBoxContainer/Song"]
 layout_mode = 2
 size_flags_vertical = 4
-text = "Song: "
+text = "Música: "
 fit_content = true
 autowrap_mode = 0
 
 [node name="SongButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Song"]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
-tooltip_text = "Only supports the formats \".mp3\", \".ogg\" and \".wav\"."
-text = "Select file or Drag and Drop here"
+tooltip_text = "Só aceita nos formatos \".mp3\", \".ogg\" and \".wav\"."
+text = "Selecione um arquivo ou arraste e solte aqui"
 
 [node name="PlaySongButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Song"]
 layout_mode = 2
 disabled = true
-text = "Play"
+text = "Tocar"
 
 [node name="Icon" type="HBoxContainer" parent="HBoxContainer/Right/VBoxContainer"]
 layout_mode = 2
@@ -239,22 +248,22 @@ layout_mode = 2
 [node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Right/VBoxContainer/Icon"]
 layout_mode = 2
 size_flags_vertical = 4
-text = "Icon: "
+text = "Ícone: "
 fit_content = true
 autowrap_mode = 0
 
 [node name="IconButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Icon"]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
-tooltip_text = "Supports all basic formats of images."
-text = "Select file or Drag and Drop here"
+tooltip_text = "Suporta todos os tipos básicos de imagens."
+text = "Selecione um arquivo ou arraste e solte aqui"
 icon_alignment = 1
 expand_icon = true
 
 [node name="RemoveIconButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Icon"]
 layout_mode = 2
 disabled = true
-text = "Remove"
+text = "Remover"
 
 [node name="IconTexture" type="TextureRect" parent="HBoxContainer/Right/VBoxContainer/Icon"]
 custom_minimum_size = Vector2(100, 50)
@@ -268,19 +277,19 @@ layout_mode = 2
 [node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Right/VBoxContainer/Image"]
 layout_mode = 2
 size_flags_vertical = 4
-text = "Image: "
+text = "Imagem: "
 fit_content = true
 autowrap_mode = 0
 
 [node name="ImageButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Image"]
 layout_mode = 2
-tooltip_text = "Supports all basic formats of images."
-text = "Select file or Drag and Drop here"
+tooltip_text = "Suporta todos os tipos básicos de imagens."
+text = "Selecione um arquivo ou arraste e solte aqui"
 
 [node name="RemoveImageButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Image"]
 layout_mode = 2
 disabled = true
-text = "Remove"
+text = "Remover"
 
 [node name="ImageTexture" type="TextureRect" parent="HBoxContainer/Right/VBoxContainer/Image"]
 custom_minimum_size = Vector2(100, 50)
@@ -294,21 +303,22 @@ layout_mode = 2
 [node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Right/VBoxContainer/Video"]
 layout_mode = 2
 size_flags_vertical = 4
-text = "Video: "
+text = "Vídeo: "
 fit_content = true
 autowrap_mode = 0
 
 [node name="VideoButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Video"]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
-tooltip_text = "For now, only supports the format \".ogv\".
-There's many easy ways (like sites, or softwares) to convert the video."
-text = "Select file or Drag and Drop here"
+tooltip_text = "Por agora só suporta vídeos no formato \".ogv\".
+Há diversos sites e aplicativos que podem fazer a conversão bem simples de outros tipos de arquivo 
+de vídeo para \".ogv\" de graça."
+text = "Selecione um arquivo ou arraste e solte aqui"
 
 [node name="RemoveVideoButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Video"]
 layout_mode = 2
 disabled = true
-text = "Remove"
+text = "Remover"
 
 [node name="VideoPlayer" type="VideoStreamPlayer" parent="HBoxContainer/Right/VBoxContainer/Video"]
 custom_minimum_size = Vector2(100, 0)

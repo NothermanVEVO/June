@@ -41,32 +41,32 @@ layout_mode = 2
 script = ExtResource("2_bnevv")
 
 [node name="File" type="PopupMenu" parent="MenuBar/MenuBar"]
-title = "File"
+title = "Arquivo"
 size = Vector2i(100, 143)
 item_count = 5
-item_0/text = "New file"
+item_0/text = "Novo"
 item_0/id = 0
-item_1/text = "Open file"
+item_1/text = "Abrir"
 item_1/id = 1
-item_2/text = "Save file"
+item_2/text = "Salvar"
 item_2/id = 2
-item_3/text = "Export"
+item_3/text = "Exportar"
 item_3/id = 3
-item_4/text = "Quit"
+item_4/text = "Sair"
 item_4/id = 4
 script = ExtResource("3_6pnfi")
 _editor_scene = 2
 
 [node name="Edit" type="PopupMenu" parent="MenuBar/MenuBar"]
 auto_translate_mode = 1
-title = "Edit"
+title = "Editar"
 size = Vector2i(106, 100)
 item_count = 3
-item_0/text = "Settings"
+item_0/text = "Configurações"
 item_0/id = 0
-item_1/text = "Power selected ones"
+item_1/text = "Efeito de Poder nos selecionados"
 item_1/id = 1
-item_2/text = "Clear gear"
+item_2/text = "Limpar Gear"
 item_2/id = 2
 
 [node name="Compose" type="Button" parent="MenuBar"]
@@ -77,7 +77,7 @@ text = "Compose"
 [node name="Test" type="Button" parent="MenuBar"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
-text = "Test"
+text = "Testar"
 
 [node name="Undo" type="Button" parent="MenuBar"]
 layout_mode = 2
@@ -103,17 +103,17 @@ vertical = true
 layout_mode = 2
 selected = 0
 item_count = 5
-popup/item_0/text = "4 Buttons"
+popup/item_0/text = "4 Botões"
 popup/item_0/id = 4
 popup/item_1/id = 0
 popup/item_1/disabled = true
 popup/item_1/separator = true
-popup/item_2/text = "5 Buttons"
+popup/item_2/text = "5 Botões"
 popup/item_2/id = 5
 popup/item_3/id = 0
 popup/item_3/disabled = true
 popup/item_3/separator = true
-popup/item_4/text = "6 Buttons"
+popup/item_4/text = "6 Botões"
 popup/item_4/id = 6
 
 [node name="Difficulty" type="OptionButton" parent="MenuBar/FlowContainer2"]
@@ -136,12 +136,12 @@ popup/item_6/text = "Maximus"
 popup/item_6/id = 3
 
 [node name="Stars" type="SpinBox" parent="MenuBar/FlowContainer2"]
-custom_minimum_size = Vector2(100, 0)
+custom_minimum_size = Vector2(125, 0)
 layout_mode = 2
 min_value = 1.0
 max_value = 30.0
 value = 1.0
-suffix = "Stars"
+suffix = "Estrelas"
 
 [node name="FlowContainer" type="FlowContainer" parent="MenuBar"]
 layout_mode = 2
@@ -151,7 +151,7 @@ vertical = true
 [node name="RichTextLabel2" type="RichTextLabel" parent="MenuBar/FlowContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-text = " Snap Divisor: "
+text = "Grid: "
 fit_content = true
 autowrap_mode = 0
 horizontal_alignment = 1
@@ -159,9 +159,9 @@ vertical_alignment = 1
 
 [node name="SnapDivisor" type="OptionButton" parent="MenuBar/FlowContainer"]
 layout_mode = 2
-tooltip_text = "Make a grid based on the BPM.
+tooltip_text = "Faz uma grid baseado no BPM.
 
-1/1 - 1/16: Divide the BPM."
+1/1 - ... - 1/16: Divisões extras da grid baseado no BPM."
 selected = 0
 item_count = 6
 popup/item_0/text = "1/1"
@@ -180,7 +180,7 @@ popup/item_5/id = 5
 [node name="RichTextLabel" type="RichTextLabel" parent="MenuBar/FlowContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-text = " Speed: "
+text = " Velocidade: "
 fit_content = true
 autowrap_mode = 0
 horizontal_alignment = 1
@@ -188,12 +188,12 @@ vertical_alignment = 1
 
 [node name="Speed" type="SpinBox" parent="MenuBar/FlowContainer"]
 layout_mode = 2
-tooltip_text = "Define the fall speed of the notes, can also work like a zoom in the Composer.
+tooltip_text = "Define a velocidade de queda das notas. Também pode funcionar como um zoom no Compositor.
 
-Note: Doesn't change their actual position.
+Velocidade mínima: 1.0
+Velocidade máxima: 10.0
 
-Minimum Speed: 1.0
-Maximum Speed: 10.0"
+Observação: Não altera a posição real delas."
 min_value = 1.0
 max_value = 10.0
 step = 0.1
@@ -295,35 +295,35 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.0
 item_count = 14
-item_0/text = "---- TOOLS ----"
+item_0/text = "---- Ferramentas ----"
 item_0/selectable = false
-item_1/text = "Select (E)"
+item_1/text = "Selecionar (E)"
 item_1/icon = ExtResource("6_6pnfi")
-item_2/text = "Un/lock ...TODO"
+item_2/text = "Un/lock"
 item_2/icon = ExtResource("7_vl3l7")
 item_2/disabled = true
-item_3/text = "---- NOTES ----"
+item_3/text = "---- Notas ----"
 item_3/selectable = false
 item_4/text = "Tap (B)"
 item_4/icon = ExtResource("8_g7rpo")
 item_5/text = "Hold (V)"
 item_5/icon = ExtResource("9_fp4jx")
-item_6/text = "---- EFFECTS ----"
+item_6/text = "---- Efeitos ----"
 item_6/selectable = false
-item_7/text = "Power (G)"
+item_7/text = "Poder (G)"
 item_7/icon = ExtResource("10_6548f")
-item_8/text = "Speed (Z)"
+item_8/text = "Velocidade (Z)"
 item_8/icon = ExtResource("11_p5hb3")
 item_9/text = "Fade (F)"
 item_9/icon = ExtResource("12_4las8")
-item_10/text = "Sound ...TODO"
+item_10/text = "Som"
 item_10/icon = ExtResource("13_1a345")
 item_10/disabled = true
-item_11/text = "---- ANNOTATION ----"
+item_11/text = "---- Anotações ----"
 item_11/selectable = false
-item_12/text = "Note (C)"
+item_12/text = "Comentário (C)"
 item_12/icon = ExtResource("14_nlio8")
-item_13/text = "Section (X)"
+item_13/text = "Seção (X)"
 item_13/icon = ExtResource("15_lhgse")
 script = ExtResource("1_sakc5")
 

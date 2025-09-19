@@ -89,6 +89,10 @@ func get_all_notes() -> Array[Note]:
 			notes.append(note)
 	return notes
 
+func validate_all_note_holders() -> void:
+	for note_holder in _note_holders:
+		note_holder.validate_notes(0.0, Song.get_time())
+
 func add_long_note(long_note : LongNote, validate : bool = false) -> void:
 	if long_note.get_type() == LongNote.Type.FADE:
 		long_note.value_changed.connect(_fade_note_value_changed)
@@ -120,6 +124,46 @@ func remove_long_note(long_note : LongNote, free : bool = false, validate : bool
 	if validate:
 		_validate_long_notes()
 
+func remove_long_note_from_time(time : float, type : LongNote.Type, note_value, free : bool = false, validate : bool = false) -> void:
+	var _lg_notes := get_long_notes(time, time)
+	for long_note in _lg_notes:
+		if type == LongNote.Type.ANNOTATION and long_note.get_annotation() == note_value:
+			_long_notes.erase(long_note)
+			_last_visible_long_notes.erase(long_note)
+			remove_child.call_deferred(long_note)
+			if free:
+				long_note.call_deferred("queue_free")
+			if validate:
+				_validate_long_notes()
+			break
+		elif type == LongNote.Type.SECTION and long_note.get_section() == note_value:
+			_long_notes.erase(long_note)
+			_last_visible_long_notes.erase(long_note)
+			remove_child.call_deferred(long_note)
+			if free:
+				long_note.call_deferred("queue_free")
+			if validate:
+				_validate_long_notes()
+			break
+		elif type == LongNote.Type.SPEED and long_note.get_speed() == float(note_value):
+			_long_notes.erase(long_note)
+			_last_visible_long_notes.erase(long_note)
+			remove_child.call_deferred(long_note)
+			if free:
+				long_note.call_deferred("queue_free")
+			if validate:
+				_validate_long_notes()
+			break
+		elif type == LongNote.Type.FADE and long_note.get_fade() == str_to_var(note_value):
+			_long_notes.erase(long_note)
+			_last_visible_long_notes.erase(long_note)
+			remove_child.call_deferred(long_note)
+			if free:
+				long_note.call_deferred("queue_free")
+			if validate:
+				_validate_long_notes()
+			break
+
 func get_long_notes(from : float, to : float) -> Array[LongNote]:
 	var result : Array[LongNote] = []
 	var low := 0
@@ -134,7 +178,7 @@ func get_long_notes(from : float, to : float) -> Array[LongNote]:
 			high = mid
 
 	var i := low
-	while i < _long_notes.size() and _long_notes[i].get_time() <= to:
+	while i < _long_notes.size() and (_long_notes[i].get_time() < to or is_equal_approx(_long_notes[i].get_time(), to)):
 		result.append(_long_notes[i])
 		i += 1
 
@@ -230,6 +274,9 @@ func add_note_at(idx : int, note : Note, validate_note : bool = false) -> void:
 
 func remove_note_at(idx : int, note : Note, validate_note : bool = false, free : bool = false) -> void:
 	_note_holders[idx].remove_note(note, validate_note, free)
+
+func remove_note_at_time(time : float, idx : int, type : NoteResource.Type, validate_note : bool = false, free : bool = false) -> void:
+	_note_holders[idx].remove_note_at_time(time, type, validate_note, free)
 
 func get_type() -> int:
 	return _type

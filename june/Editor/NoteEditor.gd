@@ -5,8 +5,6 @@ class_name NoteEditor
 @onready var _note_info_scene : PackedScene = preload("res://Editor/NoteInfo.tscn")
 var _note_info : NoteInfo
 
-var _shader_material = ShaderMaterial.new()
-
 signal value_changed
 
 func _init(current_time : float) -> void:

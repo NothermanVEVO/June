@@ -75,3 +75,90 @@ static func validate_dictionary(dictionary : Dictionary) -> String:
 		if validate_wrong:
 			return  validate_wrong
 	return  ""
+
+static func compare_to(original : SongMap, new : SongMap) -> Dictionary:
+	var dict : Dictionary
+	dict["to_remove_note"] = []
+	dict["to_add_note"] = []
+	dict["to_add_long_note"] = []
+	dict["to_remove_long_note"] = []
+	
+	var temp_original_notes := original.notes.duplicate()
+	for new_note in new.notes:
+		var found_note := false
+		for original_note in temp_original_notes:
+			if new_note.idx == original_note.idx and new_note.type == original_note.type:
+				if new_note.type == NoteResource.Type.TAP and new_note.start_time == original_note.start_time:
+					found_note = true
+					temp_original_notes.erase(original_note)
+					break
+				elif new_note.type == NoteResource.Type.HOLD and new_note.start_time == original_note.start_time and new_note.end_time == original_note.end_time:
+					found_note = true
+					temp_original_notes.erase(original_note)
+					break
+		if not found_note:
+			dict["to_add_note"].append(new_note)
+	
+	var temp_original_long_notes := original.long_notes.duplicate()
+	for new_long_note in new.long_notes:
+		var found_note := false
+		for original_long_note in temp_original_long_notes:
+			if new_long_note.type == original_long_note.type and new_long_note.time == original_long_note.time:
+				if new_long_note.type == LongNote.Type.ANNOTATION and new_long_note.value == original_long_note.value:
+					found_note = true
+					temp_original_long_notes.erase(original_long_note)
+					break
+				elif new_long_note.type == LongNote.Type.SECTION and new_long_note.value == original_long_note.value:
+					found_note = true
+					temp_original_long_notes.erase(original_long_note)
+					break
+				elif new_long_note.type == LongNote.Type.SPEED and new_long_note.value == original_long_note.value:
+					found_note = true
+					temp_original_long_notes.erase(original_long_note)
+					break
+				elif new_long_note.type == LongNote.Type.FADE and new_long_note.value == original_long_note.value:
+					found_note = true
+					original.notes.erase(original_long_note)
+					break
+		if not found_note:
+			dict["to_add_long_note"].append(new_long_note)
+	
+	for original_note in original.notes:
+		var found_note := false
+		for new_note in new.notes:
+			if new_note.idx == original_note.idx and new_note.type == original_note.type:
+				if new_note.type == NoteResource.Type.TAP and new_note.start_time == original_note.start_time:
+					found_note = true
+					new.notes.erase(new_note)
+					break
+				elif new_note.type == NoteResource.Type.HOLD and new_note.start_time == original_note.start_time and new_note.end_time == original_note.end_time:
+					found_note = true
+					new.notes.erase(new_note)
+					break
+		if not found_note:
+			dict["to_remove_note"].append(original_note)
+	
+	for original_long_note in original.long_notes:
+		var found_note := false
+		for new_long_note in new.long_notes:
+			if new_long_note.type == original_long_note.type and new_long_note.time == original_long_note.time:
+				if new_long_note.type == LongNote.Type.ANNOTATION and new_long_note.value == original_long_note.value:
+					found_note = true
+					new.long_notes.erase(new_long_note)
+					break
+				elif new_long_note.type == LongNote.Type.SECTION and new_long_note.value == original_long_note.value:
+					found_note = true
+					new.long_notes.erase(new_long_note)
+					break
+				elif new_long_note.type == LongNote.Type.SPEED and new_long_note.value == original_long_note.value:
+					found_note = true
+					new.long_notes.erase(new_long_note)
+					break
+				elif new_long_note.type == LongNote.Type.FADE and new_long_note.value == original_long_note.value:
+					found_note = true
+					new.long_notes.erase(new_long_note)
+					break
+		if not found_note:
+			dict["to_remove_long_note"].append(original_long_note)
+	
+	return dict

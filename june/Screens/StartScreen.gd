@@ -2,6 +2,7 @@ extends Control
 
 func _ready() -> void:
 	Global.set_window_title(Global.TitleType.BASE)
+	$VBoxContainer/Play.grab_focus()
 
 func _on_play_pressed() -> void:
 	pass

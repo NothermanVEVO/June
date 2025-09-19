@@ -40,6 +40,8 @@ var last_valid_sample_video_text : String = ""
 var time_regex := RegEx.new()
 
 func _ready() -> void:
+	$HBoxContainer/Left/VBoxContainer/Name/NameTextEdit.grab_focus()
+	
 	get_tree().root.files_dropped.connect(_on_files_dropped)
 	time_regex.compile("^\\d{2}:[0-5]\\d:\\d{3}$")
 	Song.finished.connect(_on_song_finished)
@@ -332,13 +334,13 @@ func _on_spin_box_value_changed(value: float) -> void:
 
 func is_valid_for_export() -> String:
 	if get_song_name().is_empty():
-		return "The \"song\" name can't be empty."
+		return "O nome da música não pode estar vazio."
 	elif get_author_name().is_empty():
-		return "The \"author\" name can't be empty."
-	elif get_track_name().is_empty():
-		return "The \"track\" name can't be empty."
+		return "O nome do autor não pode estar vazio."
+	#elif get_track_name().is_empty():
+		#return "The \"track\" name can't be empty."
 	elif Song.stream == null:
-		return "The \"song\" can't be empty."
+		return "A música não pode estar vazia."
 	#elif last_valid_sample_song_text.is_empty():
 		#return "The \"sample song time\" can't be empty."
 	#elif Global.text_to_time(last_valid_sample_song_text) >= Song.get_duration():
@@ -365,10 +367,12 @@ func _on_creator_text_edit_text_changed(_new_text: String) -> void:
 	Editor.changed_editor()
 
 func _on_visibility_changed() -> void:
-	if not video_player or not video_player.stream:
-		return
 	if visible and _video_path:
 		set_video(_video_path)
 		video_player.play()
+		return
+	elif not video_player or not video_player.stream:
+		return
 	else:
+		video_player.stop()
 		video_player.stream = null

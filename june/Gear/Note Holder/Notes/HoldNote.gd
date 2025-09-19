@@ -34,6 +34,15 @@ func _ready() -> void:
 	Global.speed_changed.connect(_speed_changed)
 	axis_stretch_vertical = NinePatchRect.AXIS_STRETCH_MODE_TILE
 	Global.changed_max_size_y.connect(_changed_max_size_y)
+	
+	_shader_material.shader = _SHINE_HIGHLIGHT
+	_shader_material.set_shader_parameter("is_horizontal", true)
+	_shader_material.set_shader_parameter("size_effect", 5.0)
+	_shader_material.set_shader_parameter("speed", -1.0)
+	_shader_material.set_shader_parameter("highlight_strength", 0.1)
+	_start_note.material = _shader_material
+	_middle_note.material = _shader_material
+	_end_note.material = _shader_material
 
 func get_start_time() -> float:
 	return _current_time

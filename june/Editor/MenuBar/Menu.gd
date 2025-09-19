@@ -9,9 +9,9 @@ class_name Menu
 var transfer_to := PopupMenu.new()
 
 func _ready() -> void:
-	transfer_to.name = "Transfer To"
+	transfer_to.name = "Transferir para"
 	edit_menu.add_child(transfer_to)
-	edit_menu.add_submenu_item("Transfer to", "Transfer To")
+	edit_menu.add_submenu_item("Transfer to", "Transferir para")
 	
 	transfer_to.add_item("Facil")
 	transfer_to.add_item("Normal")
@@ -23,12 +23,12 @@ func _ready() -> void:
 
 func edit_menu_index_pressed(index : int) -> void:
 	match edit_menu.get_item_text(index):
-		"Settings":
+		"Configurações":
 			Song.stop()
 			Editor.change_to_settings()
-		"Power selected ones":
+		"Efeito de Poder nos selecionados":
 			editor_menu_bar.power_selected_ones()
-		"Clear gear":
+		"Limpar Gear":
 			editor_menu_bar.clear_gear()
 
 func transfer_to_index_pressed(index : int) -> void:

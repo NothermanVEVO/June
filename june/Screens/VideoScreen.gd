@@ -21,6 +21,8 @@ static var _msaa : MSAA
 @onready var particles_check_box : CheckBox = $PanelContainer/MarginContainer/VBoxContainer/Particles
 
 func _ready() -> void:
+	mode_option_button.grab_focus()
+	
 	var dict := Global.get_settings_dictionary()
 	mode_option_button.select(dict["video_mode"])
 	vsync_option_button.select(dict["video_vsync"])

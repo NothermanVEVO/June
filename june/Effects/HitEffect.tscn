@@ -26,6 +26,7 @@ spread = 180.0
 gravity = Vector2(0, 0)
 angular_velocity_min = -180.0
 angular_velocity_max = -180.0
+color = Color(1, 4, 4, 1)
 
 [node name="Explosion" type="CPUParticles2D" parent="."]
 scale = Vector2(10, 10)
@@ -49,4 +50,5 @@ radial_accel_max = -100.0
 tangential_accel_min = -100.0
 tangential_accel_max = -100.0
 scale_amount_max = 15.0
+color = Color(1, 4, 4, 1)
 color_ramp = SubResource("Gradient_q18cl")

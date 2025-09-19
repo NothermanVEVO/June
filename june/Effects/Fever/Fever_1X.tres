@@ -6,4 +6,5 @@ colors = PackedColorArray(0.105882, 0.890196, 0.803922, 0.666667, 0.517647, 0.82
 
 [resource]
 gradient = SubResource("Gradient_u7dcu")
+height = 192
 fill_from = Vector2(1, 0.723502)

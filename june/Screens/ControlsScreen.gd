@@ -23,6 +23,8 @@ var _button_toggled_on : Button
 const INVALID_PHYSICAL_KEYCODE : Array[int] = [4194305, 49, 50, 4194336] ## [ESCAPE, 1, 2, F5].
 
 func _ready() -> void:
+	first_four_keys_button.grab_focus()
+	
 	var dict := Global.get_settings_dictionary()
 	
 	## 4 KEYS

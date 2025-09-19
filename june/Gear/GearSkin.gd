@@ -31,6 +31,9 @@ const _FOURTH_FEVER_GRADIENT_TEXTURE := preload("res://Effects/Fever/Fever_4X.tr
 const _FIFTH_FEVER_GRADIENT_TEXTURE := preload("res://Effects/Fever/Fever_5X.tres")
 const _ZONE_FEVER_GRADIENT_TEXTURE := preload("res://Effects/Fever/Fever_ZONE.tres")
 
+@onready var _fever_line_left : TextureRect = $Gear/Control/Base/FeverLineLeft
+@onready var _fever_line_right : TextureRect = $Gear/Control/Base/FeverLineRight
+
 var _bpm : float
 var _last_time_beat : float = 0.0
 
@@ -80,40 +83,56 @@ func set_fever_value(value : float, fever : Note.Fever) -> void:
 			if _current_fever != fever:
 				_current_fever = fever
 				fever_gradient.texture = null
+				_fever_line_left.visible = false
+				_fever_line_right.visible = false
 		Note.Fever.X1:
 			if _current_fever != fever:
 				_current_fever = fever
 				fever_gradient.texture = null
+				_fever_line_left.visible = false
+				_fever_line_right.visible = false
 			fever_bar.texture_progress = _FIRST_FEVER_TEXTURE
 		Note.Fever.X2:
 			if _current_fever != fever:
 				_current_fever = fever
 				fever_gradient.texture = _FIRST_FEVER_GRADIENT_TEXTURE
+				_fever_line_left.visible = true
+				_fever_line_right.visible = true
 			fever_bar.texture_progress = _SECOND_FEVER_TEXTURE
 		Note.Fever.X3:
 			if _current_fever != fever:
 				_current_fever = fever
 				fever_gradient.texture = _SECOND_FEVER_GRADIENT_TEXTURE
+				_fever_line_left.visible = true
+				_fever_line_right.visible = true
 			fever_bar.texture_progress = _THIRD_FEVER_TEXTURE
 		Note.Fever.X4:
 			if _current_fever != fever:
 				_current_fever = fever
 				fever_gradient.texture = _THIRD_FEVER_GRADIENT_TEXTURE
+				_fever_line_left.visible = true
+				_fever_line_right.visible = true
 			fever_bar.texture_progress = _FOURTH_FEVER_TEXTURE
 		Note.Fever.X5:
 			if _current_fever != fever:
 				_current_fever = fever
 				fever_gradient.texture = _FOURTH_FEVER_GRADIENT_TEXTURE
+				_fever_line_left.visible = true
+				_fever_line_right.visible = true
 			fever_bar.texture_progress = _FIFTH_FEVER_TEXTURE
 		Note.Fever.ZONE:
 			if _current_fever != fever:
 				_current_fever = fever
 				fever_gradient.texture = _FIFTH_FEVER_GRADIENT_TEXTURE
+				_fever_line_left.visible = true
+				_fever_line_right.visible = true
 			fever_bar.texture_progress = _ZONE_FEVER_TEXTURE
 		Note.Fever.MAX_ZONE:
 			if _current_fever != fever:
 				_current_fever = fever
 				fever_gradient.texture = _ZONE_FEVER_GRADIENT_TEXTURE
+				_fever_line_left.visible = true
+				_fever_line_right.visible = true
 			fever_bar.texture_progress = _ZONE_FEVER_TEXTURE
 
 func set_score(score : int) -> void:

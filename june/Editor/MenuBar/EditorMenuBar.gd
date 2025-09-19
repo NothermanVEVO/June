@@ -26,6 +26,9 @@ const MAX_SIZE_ARRAY : int = 100
 static var _undo_song_maps : Array[SongMap] = []
 static var _redo_song_maps : Array[SongMap] = []
 
+static var _undo_notes_select_states : Array[NoteResource]
+static var _redo_notes_select_states : Array[NoteResource]
+
 static var _holding_time : float = 0.0
 const _FIRST_HOLDING_TIME_DELAY = 0.3
 const _HOLDING_TIME_DELAY = 0.1
@@ -205,34 +208,93 @@ func to_resource() -> SongMap:
 	return SongMap.new(game.gear.get_type(), _difficulty_type_value, _stars_value, notes_resource, long_notes_resource)
 
 func load_song_map(song_map : SongMap) -> void:
+	if song_map.gear_type == _gear_type_value:
+		for note_resource in song_map.notes:
+			if not note_resource.is_selected:
+				for note in game._selected_notes:
+					if note.get_time() == note_resource.start_time and note.get_idx() == note_resource.idx and (
+						(note_resource.type == NoteResource.Type.HOLD and note is HoldNote and note.get_end_time() == note_resource.end_time) or
+						(note_resource.type == NoteResource.Type.TAP and note is Note)):
+						game._selected_notes.erase(note)
+						note.set_selected_highlight(false)
+						break
+		
+		var dict := SongMap.compare_to(to_resource(), song_map)
+		
+		for note_resource in dict["to_remove_note"]:
+			if note_resource.is_selected:
+				for note in game._selected_notes:
+					if note.get_time() == note_resource.start_time and note.get_idx() == note_resource.idx and (
+						(note_resource.type == NoteResource.Type.HOLD and note is HoldNote and note.get_end_time() == note_resource.end_time) or
+						(note_resource.type == NoteResource.Type.TAP and note is Note)):
+						game._selected_notes.erase(note)
+						break
+			game.gear.remove_note_at_time(note_resource.start_time, note_resource.idx, note_resource.type, true, true)
+	
+		for note_resource in dict["to_add_note"]:
+			var note = note_resource.to_note(song_map.gear_type)
+			game.gear.add_note_at(note_resource.idx, note, true)
+			if note is HoldNoteEditor:
+				note.pressing_button.connect(game._pressing_some_hold_resize_button)
+			if note._is_selected:
+				game._selected_notes.append(note)
+		
+		for long_note_resource in dict["to_remove_long_note"]:
+			if long_note_resource.is_selected:
+				for long_note in game._selected_long_notes:
+					if long_note_resource.type == LongNote.Type.ANNOTATION and long_note.get_annotation() == long_note_resource.value:
+						game._selected_long_notes.erase(long_note)
+						break
+					elif long_note_resource.type == LongNote.Type.SECTION and long_note.get_section() == long_note_resource.value:
+						game._selected_long_notes.erase(long_note)
+						break
+					elif long_note_resource.type == LongNote.Type.SPEED and long_note.get_speed() == float(long_note_resource.value):
+						game._selected_long_notes.erase(long_note)
+						break
+					elif long_note_resource.type == LongNote.Type.FADE and long_note.get_fade() == str_to_var(long_note_resource.value):
+						game._selected_long_notes.erase(long_note)
+						break
+			game.gear.remove_long_note_from_time(long_note_resource.time, long_note_resource.type, long_note_resource.value, true, true)
+		
+		for long_note_resource in dict["to_add_long_note"]:
+			var long_nt = long_note_resource.to_long_note()
+			long_nt.set_selected_highlight(false)
+			game.gear.add_long_note(long_nt, true)
+			long_nt.value_changed.connect(_game_changed)
+			#if long_nt._is_selected:
+				#game._selected_long_notes.append(long_nt)
+	else:
+		game.set_gear(song_map.gear_type)
+		
+		var notes : Array = song_map.notes
+		game._selected_notes.clear()
+		for note in notes:
+			var nt = note.to_note(song_map.gear_type)
+			game.gear.add_note_at(note.idx, nt, true)
+			if nt is HoldNoteEditor:
+				nt.pressing_button.connect(game._pressing_some_hold_resize_button)
+			if nt._is_selected:
+				game._selected_notes.append(nt)
+		
+		var long_notes : Array = song_map.long_notes
+		game._selected_long_notes.clear()
+		for long_note in long_notes:
+			var long_nt = long_note.to_long_note()
+			game.gear.add_long_note(long_nt, true)
+			long_nt.value_changed.connect(_game_changed)
+			if long_nt._is_selected:
+				game._selected_long_notes.append(long_nt)
+	
+	game.gear.validate_all_note_holders()
+	
 	_difficulty.select(_difficulty.get_item_index(song_map.difficulty))
 	_difficulty_type_value = song_map.difficulty
 	
-	game.set_gear(song_map.gear_type)
 	_gear_type_value = song_map.gear_type
 	_gear_type.select(_gear_type.get_item_index(_gear_type_value))
 	
 	_stars_value = song_map.stars
 	_stars.value = _stars_value
-	
-	var notes : Array = song_map.notes
-	game._selected_notes.clear()
-	for note in notes:
-		var nt = note.to_note(song_map.gear_type)
-		game.gear.add_note_at(note.idx, nt, true)
-		if nt is HoldNoteEditor:
-			nt.pressing_button.connect(game._pressing_some_hold_resize_button)
-		if nt._is_selected:
-			game._selected_notes.append(nt)
-	
-	var long_notes : Array = song_map.long_notes
-	game._selected_long_notes.clear()
-	for long_note in long_notes:
-		var long_nt = long_note.to_long_note()
-		game.gear.add_long_note(long_nt, true)
-		long_nt.value_changed.connect(_game_changed)
-		if long_nt._is_selected:
-			game._selected_long_notes.append(long_nt)
 
 func power_selected_ones() -> void:
 	var song_map = to_resource()

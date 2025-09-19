@@ -5,8 +5,6 @@ class_name HoldNoteEditor
 @onready var _note_info_scene : PackedScene = preload("res://Editor/NoteInfo.tscn")
 var _note_info : NoteInfo
 
-var _shader_material = ShaderMaterial.new()
-
 var top_button := Button.new()
 var bottom_button := Button.new()
 

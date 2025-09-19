@@ -1,16 +1,20 @@
-[gd_scene load_steps=18 format=3 uid="uid://ygpxmyrvsexw"]
+[gd_scene load_steps=26 format=3 uid="uid://ygpxmyrvsexw"]
 
 [ext_resource type="Script" uid="uid://bhrlpa2ttx82t" path="res://Gear/GearSkin.gd" id="1_g01tw"]
+[ext_resource type="Shader" uid="uid://cv72bkw7c1m1g" path="res://shaders/Shine.gdshader" id="2_dtqx8"]
 [ext_resource type="Texture2D" uid="uid://cpk0lm4w8uvow" path="res://assets/Gear/JuneV1/hitzone.png" id="2_syavq"]
 [ext_resource type="Texture2D" uid="uid://dl300l016j3bx" path="res://assets/Gear/JuneV1/base.png" id="3_u7dcu"]
 [ext_resource type="Texture2D" uid="uid://dqutdg0big8xa" path="res://assets/Gear/JuneV1/base_superior.png" id="4_dtqx8"]
 [ext_resource type="Texture2D" uid="uid://b3va8jg46yr6b" path="res://concepts/gear_june_v6.png" id="4_fwqfr"]
 [ext_resource type="Texture2D" uid="uid://dcjxsuc735wn6" path="res://assets/Gear/JuneV1/base_estrela_vazia.png" id="5_dh8pw"]
+[ext_resource type="Shader" uid="uid://dtfiqt80nwowp" path="res://shaders/RepeatFever.gdshader" id="5_ofatc"]
 [ext_resource type="Texture2D" uid="uid://4ivwdoufdycq" path="res://assets/Gear/JuneV1/base_estrela_1x.png" id="6_ofatc"]
+[ext_resource type="Texture2D" uid="uid://cqcandpylxxcr" path="res://concepts/fever_lines_v3.png" id="6_xxuof"]
 [ext_resource type="Texture2D" uid="uid://cjh1l8pbid44" path="res://assets/Gear/JuneV1/lateral.png" id="7_xxuof"]
 [ext_resource type="Texture2D" uid="uid://dqulx1iiig8lu" path="res://assets/Gear/JuneV1/vida_empty.png" id="8_omd5l"]
 [ext_resource type="Texture2D" uid="uid://gorgahqlk7wg" path="res://assets/Gear/JuneV1/vida_full.png" id="9_2ksjx"]
 [ext_resource type="Texture2D" uid="uid://dg28uyvkauras" path="res://assets/Gear/JuneV1/estrela.png" id="10_u7dcu"]
+[ext_resource type="PackedScene" uid="uid://cbwvslm62p7lc" path="res://Effects/HitEffect.tscn" id="16_2ksjx"]
 
 [sub_resource type="Animation" id="Animation_glv2v"]
 resource_name = "Pop up"
@@ -133,6 +137,35 @@ _data = {
 &"RESET": SubResource("Animation_dtqx8")
 }
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dh8pw"]
+shader = ExtResource("2_dtqx8")
+shader_parameter/size_effect = 0.3
+shader_parameter/speed = -0.2
+shader_parameter/highlight_strength = 0.4
+shader_parameter/color_mode_toggle = false
+shader_parameter/is_horizontal = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ofatc"]
+shader = ExtResource("5_ofatc")
+shader_parameter/direction_up = false
+shader_parameter/speed = 0.5
+shader_parameter/seed = -2.135
+shader_parameter/randomness = 0.1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xxuof"]
+shader = ExtResource("5_ofatc")
+shader_parameter/direction_up = false
+shader_parameter/speed = 0.55
+shader_parameter/seed = 3.335
+shader_parameter/randomness = 0.1
+
+[sub_resource type="Environment" id="Environment_apgu0"]
+background_mode = 3
+tonemap_white = 16.0
+glow_enabled = true
+glow_intensity = 0.1
+glow_hdr_threshold = 0.17
+
 [node name="JuneSkin" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -241,6 +274,7 @@ grow_vertical = 2
 [node name="Hitzone" type="NinePatchRect" parent="Gear"]
 z_index = 4
 z_as_relative = false
+material = SubResource("ShaderMaterial_dh8pw")
 layout_mode = 0
 offset_left = 709.0
 offset_top = 741.0
@@ -273,6 +307,7 @@ grow_vertical = 2
 color = Color(0, 0, 0, 0.498039)
 
 [node name="FeverGradient" type="TextureRect" parent="Gear/Control/Base"]
+modulate = Color(1.1, 1.1, 1.1, 1)
 z_index = 3
 z_as_relative = false
 layout_mode = 1
@@ -281,6 +316,34 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="FeverLineLeft" type="TextureRect" parent="Gear/Control/Base"]
+visible = false
+modulate = Color(1, 1, 1, 0.0392157)
+z_index = 3
+z_as_relative = false
+texture_repeat = 2
+material = SubResource("ShaderMaterial_ofatc")
+layout_mode = 0
+offset_left = 1.0
+offset_right = 69.0
+offset_bottom = 829.0
+texture = ExtResource("6_xxuof")
+
+[node name="FeverLineRight" type="TextureRect" parent="Gear/Control/Base"]
+visible = false
+modulate = Color(1, 1, 1, 0.0392157)
+z_index = 3
+z_as_relative = false
+texture_repeat = 2
+material = SubResource("ShaderMaterial_xxuof")
+layout_mode = 0
+offset_left = 493.0
+offset_top = 1.0
+offset_right = 561.0
+offset_bottom = 830.0
+texture = ExtResource("6_xxuof")
+flip_h = true
 
 [node name="Superior Base" type="NinePatchRect" parent="Gear/Control"]
 layout_mode = 0
@@ -338,9 +401,15 @@ metadata/_edit_use_anchors_ = true
 
 [node name="NinePatchRect" type="NinePatchRect" parent="."]
 visible = false
-modulate = Color(1, 1, 1, 0.517647)
 layout_mode = 0
-offset_left = 678.0
-offset_right = 1265.0
-offset_bottom = 1082.0
+offset_left = 60.0
+offset_top = -1163.0
+offset_right = 647.0
+offset_bottom = -81.0
 texture = ExtResource("4_fwqfr")
+
+[node name="HitEffect" parent="." instance=ExtResource("16_2ksjx")]
+visible = false
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_apgu0")

@@ -96,7 +96,7 @@ func _confirmation_dialog_canceled() -> void:
 func new_file() -> void:
 	if EditorMenuBar.is_editor_empty() and Editor.editor_settings.is_empty():
 		return
-	_pop_confirmation_dialog("Do you want to create a new file?", "Yes", Choices.NEW)
+	_pop_confirmation_dialog("Você quer criar um novo arquivo?", "Yes", Choices.NEW)
 
 func open_file() -> void:
 	dialog_file_id = DialogFile.pop_up(FileDialog.FILE_MODE_OPEN_FILE, FileDialog.ACCESS_USERDATA, Global.EDITOR_PATH)
@@ -104,7 +104,7 @@ func open_file() -> void:
 
 func _open_file(path : String) -> void:
 	if not FileAccess.file_exists(_file_path):
-		_pop_confirmation_dialog("The file doesn't exists!", "Ok", Choices.NONE)
+		_pop_confirmation_dialog("Esse arquivo não existe!", "Ok", Choices.NONE)
 		return
 	
 	var file := FileAccess.open(path, FileAccess.READ)
@@ -124,7 +124,7 @@ func _open_file(path : String) -> void:
 			Editor.load_resource(SongResource.dictionary_to_resource(json_data))
 			Editor.saved_file()
 	else:
-		_pop_confirmation_dialog("An error occured when trying to read the file.", "Ok", Choices.NONE)
+		_pop_confirmation_dialog("Ocorreu um erro ao tentar ler o arquivo.", "Ok", Choices.NONE)
 
 static func save_file(path : String, song_res : SongResource = null) -> void:
 	if not Editor.editor_settings.is_empty():
@@ -145,10 +145,10 @@ static func save_file(path : String, song_res : SongResource = null) -> void:
 				var json_string := JSON.stringify(song_resource.get_dictionary(), "\t")
 				file.store_string(json_string)
 				file.close()
-				DialogConfirmation.pop_up("Cancel", "Ok", "The file was saved with success!")
+				DialogConfirmation.pop_up("Cancelar", "Ok", "O arquivo foi salvo com sucesso!")
 				Editor.saved_file()
 			else:
-				DialogConfirmation.pop_up("Cancel", "Ok", "An error occured while saving the file.")
+				DialogConfirmation.pop_up("Cancelar", "Ok", "Ocorreu um erro ao tentar salvar o arquivo.")
 
 static func save() -> int:
 	if Editor.editor_settings.is_empty() and EditorMenuBar.is_editor_empty():
@@ -161,7 +161,7 @@ static func save() -> int:
 func _export(path : String) -> void:
 	path = path.get_basename()
 	if DirAccess.dir_exists_absolute(path):
-		_pop_confirmation_dialog("This name already exists.", "Ok", Choices.NONE)
+		_pop_confirmation_dialog("Esse nome já existe.", "Ok", Choices.NONE)
 		return
 	else:
 		var error = DirAccess.make_dir_absolute(path)
@@ -182,9 +182,9 @@ func _export(path : String) -> void:
 			_export_video(path)
 			_export_icon(path)
 			_export_image(path)
-			_pop_confirmation_dialog("Song map exported successfully!", "Ok", Choices.NONE)
+			_pop_confirmation_dialog("O Song Map foi exportado com sucesso.", "Ok", Choices.NONE)
 		else:
-			_pop_confirmation_dialog("An error occured while trying to create the folder.", "Ok", Choices.NONE)
+			_pop_confirmation_dialog("Ocorreu um erro ao tentar criar o Song Map.", "Ok", Choices.NONE)
 	pass
 
 func export_file() -> void:
@@ -206,7 +206,7 @@ func _export_song(path : String) -> void:
 		return
 	var file := FileAccess.open(Editor.editor_settings.get_song_path(), FileAccess.READ)
 	if not file:
-		_pop_confirmation_dialog("Wasn't possible to open the song file.", "Ok", Choices.NONE)
+		_pop_confirmation_dialog("Não foi possível abrir o arquivo de música.", "Ok", Choices.NONE)
 		return
 	DirAccess.copy_absolute(Editor.editor_settings.get_song_path(), path + "//song." + Editor.editor_settings.get_song_path().get_extension())
 
@@ -215,7 +215,7 @@ func _export_video(path : String) -> void:
 		return
 	var file := FileAccess.open(Editor.editor_settings.get_video_path(), FileAccess.READ)
 	if not file:
-		_pop_confirmation_dialog("Wasn't possible to open the video file.", "Ok", Choices.NONE)
+		_pop_confirmation_dialog("Não foi possível abrir o arquivo de video.", "Ok", Choices.NONE)
 		return
 	DirAccess.copy_absolute(Editor.editor_settings.get_video_path(), path + "//video." + Editor.editor_settings.get_video_path().get_extension())
 
@@ -224,7 +224,7 @@ func _export_icon(path : String) -> void:
 		return
 	var file := FileAccess.open(Editor.editor_settings.get_icon_path(), FileAccess.READ)
 	if not file:
-		_pop_confirmation_dialog("Wasn't possible to open the icon file.", "Ok", Choices.NONE)
+		_pop_confirmation_dialog("Não foi possível abrir o arquivo do ícone.", "Ok", Choices.NONE)
 		return
 	DirAccess.copy_absolute(Editor.editor_settings.get_icon_path(), path + "//icon." + Editor.editor_settings.get_icon_path().get_extension())
 
@@ -233,18 +233,20 @@ func _export_image(path : String) -> void:
 		return
 	var file := FileAccess.open(Editor.editor_settings.get_image_path(), FileAccess.READ)
 	if not file:
-		_pop_confirmation_dialog("Wasn't possible to open the image file.", "Ok", Choices.NONE)
+		_pop_confirmation_dialog("Não foi possível abrir o arquivo de imagem.", "Ok", Choices.NONE)
 		return
 	DirAccess.copy_absolute(Editor.editor_settings.get_image_path(), path + "//image." + Editor.editor_settings.get_image_path().get_extension())
 
 func _quit() -> void:
+	if Song.stream:
+		Song.stop()
 	if not Editor.is_saved():
-		_pop_confirmation_dialog("Do you want to save before leaving?", "Save and Quit", Choices.QUIT, "Quit without saving")
+		_pop_confirmation_dialog("Você deseja salvar antes de sair?", "Salvar e sair", Choices.QUIT, "Sair sem salvar")
 	else:
 		Editor.is_on_editor = false
 		get_tree().change_scene_to_packed(Global._START_SCREEN_SCENE)
 
-func _pop_confirmation_dialog(dialog_text : String, ok_button_text : String, choice : Choices, cancel_text : String = "Cancel") -> void:
+func _pop_confirmation_dialog(dialog_text : String, ok_button_text : String, choice : Choices, cancel_text : String = "Cancelar") -> void:
 	dialog_confirmation_id = DialogConfirmation.pop_up(cancel_text, ok_button_text, dialog_text)
 	_last_choice = choice
 

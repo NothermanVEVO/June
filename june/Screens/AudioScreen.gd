@@ -5,6 +5,8 @@ class_name AudioScreen
 static var _main_volume_percentage : float
 
 func _ready() -> void:
+	$PanelContainer/MarginContainer/VBoxContainer/MainVolumeSlider.grab_focus()
+	
 	var dict := Global.get_settings_dictionary()
 	$PanelContainer/MarginContainer/VBoxContainer/MainVolumeSlider.value = dict["audio_main_volume"]
 	set_main_volume_percentage(dict["audio_main_volume"] * 100)

@@ -77,7 +77,7 @@ func to_resource() -> SongResource:
 
 func _on_close_requested() -> void:
 	if not _is_saved:
-		_dialog_confirmation_id = DialogConfirmation.pop_up("Quit without saving", "Save and quit", "You have unsaved changes.")
+		_dialog_confirmation_id = DialogConfirmation.pop_up("Sair sem salvar", "Salvar e sair", "Você tem modificações não salvas.")
 	else:
 		get_tree().quit()
 
