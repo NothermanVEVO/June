@@ -129,7 +129,7 @@ func set_gear(type : Gear.Type) -> void:
 
 func _process(delta: float) -> void:
 	if not Editor.editor_composer.visible:
-		if GameComponents.get_selected_item_text() == "Power (G)":
+		if GameComponents.get_selected_item_text() == "Poder (G)":
 			Global.set_mouse_effect(MouseEffect.Effect.NONE)
 		return
 	
@@ -173,7 +173,7 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("Add Item"):
 		_mouse_was_pressed_inside = get_global_rect().has_point(get_global_mouse_position())
 	
-	if GameComponents.get_selected_item_text() == "Power (G)":
+	if GameComponents.get_selected_item_text() == "Poder (G)":
 		Global.set_mouse_effect(MouseEffect.Effect.POWER_ITEM)
 	else:
 		Global.set_mouse_effect(MouseEffect.Effect.NONE)
@@ -277,7 +277,7 @@ func _display_mouse_time_position(display_on_grid : bool = false) -> void:
 
 func _handle_selected_item(item_text : String) -> void:
 	match item_text:
-		"Select (E)":
+		"Selecionar (E)":
 			_handle_select() # TO REVIEW ...
 		"Un/lock":
 			pass
@@ -285,17 +285,17 @@ func _handle_selected_item(item_text : String) -> void:
 			_handle_selected_item_tap() # TO REVIEW ...
 		"Hold (V)":
 			_handle_selected_item_hold() # TO REVIEW ...
-		"Power (G)":
+		"Poder (G)":
 			_handle_selected_item_power() # TO REVIEW ...
-		"Speed (Z)":
+		"Velocidade (Z)":
 			_handle_long_note(LongNote.Type.SPEED) # TO REVIEW ...
 		"Fade (F)":
 			_handle_long_note(LongNote.Type.FADE) # TO REVIEW ...
-		"Sound":
+		"Som":
 			pass
-		"Note (C)":
+		"Comentário (C)":
 			_handle_long_note(LongNote.Type.ANNOTATION) # TO REVIEW ...
-		"Section (X)":
+		"Seção (X)":
 			_handle_long_note(LongNote.Type.SECTION) # TO REVIEW ...
 		#_:
 			#print("epa, NÃO ERA PRA ESTAR ENTRANDO AQUI, FICA ESPERTO")

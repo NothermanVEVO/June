@@ -64,7 +64,7 @@ func _on_msaa_option_button_item_selected(index: int) -> void:
 	set_msaa(index)
 
 func _on_return_pressed() -> void:
-	get_tree().change_scene_to_packed(Global._SETTING_SCREEN_SCENE)
+	get_tree().change_scene_to_packed(Global.SETTING_SCREEN_SCENE)
 
 func _on_video_toggled(toggled_on: bool) -> void:
 	var dict := Global.get_settings_dictionary()

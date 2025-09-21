@@ -24,10 +24,20 @@ var _last_visible_long_notes : Array[LongNote]
 var _number_of_last_processed_signals_received : int = 0
 signal last_note_was_processed
 
+var _currently_long_note_idx : int = 0
+static var _game_speed := 1.0
+
+var _speed_tween : Tween
+
+signal fade_out
+signal fade_in
+signal section_changed(title : String)
+
 @warning_ignore("shadowed_variable")
 func _init(type : Type, mode : Mode, center_screen : bool = true, max_size_y : float = -1) -> void:
 	_type = type
 	self.mode = mode
+	_game_speed = 1.0
 	_center_screen = center_screen
 	if max_size_y >= 0:
 		_max_size_y = max_size_y
@@ -61,9 +71,39 @@ func _process(_delta: float) -> void:
 	
 	match mode:
 		Mode.PLAYER:
-			pass
+			_player_process()
 		Mode.EDITOR:
 			_editor_process()
+
+func _player_process() -> void:
+	if _currently_long_note_idx >= _long_notes.size():
+		return
+	
+	if _long_notes[_currently_long_note_idx].get_time() <= Song.get_time():
+		match _long_notes[_currently_long_note_idx].get_type():
+			LongNote.Type.SECTION:
+				section_changed.emit(_long_notes[_currently_long_note_idx].get_section())
+			LongNote.Type.SPEED:
+				_fade_change_speed()
+			LongNote.Type.FADE:
+				if _long_notes[_currently_long_note_idx].fade:
+					fade_in.emit()
+				else:
+					fade_out.emit()
+		_currently_long_note_idx += 1
+
+func _fade_change_speed() -> void:
+	var target_speed = _long_notes[_currently_long_note_idx].get_speed()
+
+	if _speed_tween and _speed_tween.is_running():
+		_speed_tween.kill()
+
+	_speed_tween = create_tween()
+	_speed_tween.tween_method(_set_game_speed, _game_speed, target_speed, 0.3)
+
+func _set_game_speed(speed : float) -> void:
+	_game_speed = speed
+	Global.speed_changed.emit()
 
 func _editor_process() -> void:
 	var long_notes = get_long_notes(Song.get_time(), Song.get_time() + MAX_TIME_Y())
@@ -270,7 +310,7 @@ static func get_speed() -> float:
 	return _speed
 
 static func MAX_TIME_Y() -> float:
-	return NoteHolder.SECS_SIZE_Y / _speed
+	return clampf(NoteHolder.SECS_SIZE_Y / _speed / _game_speed, NoteHolder.SECS_SIZE_Y / 10, NoteHolder.SECS_SIZE_Y)
 
 func add_note_at(idx : int, note : Note, validate_note : bool = false) -> void:
 	note.set_idx(idx)

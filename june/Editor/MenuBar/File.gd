@@ -83,7 +83,7 @@ func _confirmation_dialog_confirmed() -> void:
 			if _file_path:
 				save_file(_file_path)
 				Editor.is_on_editor = false
-				get_tree().change_scene_to_packed(Global._START_SCREEN_SCENE)
+				get_tree().change_scene_to_packed(Global.START_SCREEN_SCENE)
 			else:
 				_quit_on_save_id = save()
 
@@ -93,7 +93,7 @@ func _confirmation_dialog_canceled() -> void:
 	match _last_choice:
 		Choices.QUIT:
 			Editor.is_on_editor = false
-			get_tree().change_scene_to_packed(Global._START_SCREEN_SCENE)
+			get_tree().change_scene_to_packed(Global.START_SCREEN_SCENE)
 
 func new_file() -> void:
 	if EditorMenuBar.is_editor_empty() and Editor.editor_settings.is_empty():
@@ -246,7 +246,7 @@ func _quit() -> void:
 		_pop_confirmation_dialog("Você deseja salvar antes de sair?", "Salvar e sair", Choices.QUIT, "Sair sem salvar")
 	else:
 		Editor.is_on_editor = false
-		get_tree().change_scene_to_packed(Global._START_SCREEN_SCENE)
+		get_tree().change_scene_to_packed(Global.START_SCREEN_SCENE)
 
 func _pop_confirmation_dialog(dialog_text : String, ok_button_text : String, choice : Choices, cancel_text : String = "Cancelar") -> void:
 	dialog_confirmation_id = DialogConfirmation.pop_up(cancel_text, ok_button_text, dialog_text)
@@ -262,7 +262,7 @@ func _file_dialog_file(path : String) -> void:
 		save_file(_file_path)
 		if _quit_on_save_id == dialog_file_id:
 			Editor.is_on_editor = false
-			get_tree().change_scene_to_packed(Global._START_SCREEN_SCENE)
+			get_tree().change_scene_to_packed(Global.START_SCREEN_SCENE)
 	elif  _last_file_dialog_choice == Choices.OPEN:
 		_file_path = Global.EDITOR_PATH + "//" + path.get_file()
 		_open_file(_file_path)

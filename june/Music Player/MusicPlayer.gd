@@ -37,6 +37,15 @@ var _perfect_state : bool = true
 
 var _current_combo : int = 0
 
+var fade_tween : Tween
+
+var _section_dict : Dictionary
+const DEFAULT_SECTION_TITLE : String = "<\\DEFAULT_VALUE\\>"
+var _current_section_title : String
+
+signal game_started
+signal game_ended(score : int, combo : int, section : Dictionary)
+
 signal quit_request
 
 func _ready() -> void:
@@ -89,6 +98,7 @@ func _physics_process(delta: float) -> void:
 func _process(_delta: float) -> void:
 	_current_time += _delta
 	if _current_time >= TIME_TO_START:
+		game_started.emit()
 		if video.stream and Global.get_settings_dictionary()["video"]:
 			if video.paused:
 				video.paused = false
@@ -101,6 +111,9 @@ func _process(_delta: float) -> void:
 func start() -> void:
 	if not World.environment:
 		World.load_glow_environment()
+	_section_dict.clear()
+	_current_section_title = DEFAULT_SECTION_TITLE
+	_section_dict[_current_section_title] = _default_precision_dictionary()
 	_perfect_state = true
 	_current_combo = 0
 	_gear_skin.set_combo(0)
@@ -128,6 +141,9 @@ func _create_gear() -> void:
 	
 	_gear = Gear.new(_gear_type, Gear.Mode.PLAYER, false, size.y)
 	_gear.last_note_was_processed.connect(_last_note_was_processed)
+	_gear.section_changed.connect(_gear_section_changed)
+	_gear.fade_out.connect(_gear_fade_out)
+	_gear.fade_in.connect(_gear_fade_in)
 	set_speed(Gear.get_speed())
 	add_child(_gear)
 	move_child(_pause_screen, get_child_count() - 1)
@@ -155,6 +171,8 @@ func _load_song_map() -> void:
 	for note in _song_map.notes:
 		_gear.add_note_at(note.idx, note.to_note(Gear.Mode.PLAYER))
 	for long_note in _song_map.long_notes:
+		if long_note.type == LongNote.Type.ANNOTATION:
+			continue
 		_gear.add_long_note(long_note.to_long_note())
 	_count_value_of_notes()
 
@@ -190,6 +208,49 @@ func reset() -> void:
 	video.stream = null
 	image.texture = null
 
+func _gear_section_changed(title : String) -> void:
+	_current_section_title = title
+	_section_dict[_current_section_title] = _default_precision_dictionary()
+	
+func _gear_fade_out() -> void:
+	if _current_time < TIME_TO_START:
+		await game_started
+	if fade_tween:
+		fade_tween.kill()
+	fade_tween = create_tween()
+	fade_tween.tween_property(_gear_skin, "modulate:a", 0.0, 1) \
+		.set_trans(Tween.TRANS_SINE) \
+		.set_ease(Tween.EASE_OUT)
+	
+	fade_tween.parallel().tween_property(_gear, "modulate:a", 0.0, 1) \
+		.set_trans(Tween.TRANS_SINE) \
+		.set_ease(Tween.EASE_OUT)
+	
+func _gear_fade_in() -> void:
+	if fade_tween:
+		fade_tween.kill()
+	fade_tween = create_tween()
+	fade_tween.tween_property(_gear_skin, "modulate:a", 1.0, 1) \
+		.set_trans(Tween.TRANS_SINE) \
+		.set_ease(Tween.EASE_IN)
+	fade_tween.parallel().tween_property(_gear, "modulate:a", 1, 1) \
+		.set_trans(Tween.TRANS_SINE) \
+		.set_ease(Tween.EASE_IN)
+
+func _default_precision_dictionary() -> Dictionary:
+	return {"100": 0,
+			"90": 0,
+			"80": 0,
+			"70": 0,
+			"60": 0,
+			"50": 0,
+			"40": 0,
+			"30": 0,
+			"20": 0,
+			"10": 0,
+			"1": 0,
+			"0": 0}
+
 func _count_value_of_notes() -> void:
 	var notes_size : float = _gear.get_all_notes().size()
 	_value_of_note = MusicPlayer.MAXIMUM_SCORE / notes_size
@@ -205,6 +266,7 @@ func pop_precision(precision : int) -> void:
 	_calculate_fever(precision)
 
 func _calculate_fever(precision : int) -> void:
+	_register_precision_in_section_dict(precision)
 	if precision == 0:
 		_perfect_state = true
 		_gear_skin.set_combo(0)
@@ -251,6 +313,10 @@ func _calculate_fever(precision : int) -> void:
 	
 	_gear_skin.set_combo(_current_combo)
 
+func _register_precision_in_section_dict(precision : int) -> void:
+	precision = abs(precision)
+	_section_dict[_current_section_title][str(precision)] += 1
+
 func set_speed(speed : float) -> void:
 	if _gear_skin:
 		_gear_skin.set_speed(speed)
@@ -266,7 +332,7 @@ func _draw() -> void:
 	draw_circle(get_viewport_rect().size / 2, 5, Color.BLACK)
 
 func _last_note_was_processed() -> void:
-	print("foi pressionada")
+	print(_section_dict)
 
 #func load_by_path(path : String):  ##TODO MAKE A BETTER THING HERE TO RETURN FROM THE GAME ## I WAS PROBABLY MEANING A ERROR MESSAGE
 	#if not FileAccess.file_exists(path):

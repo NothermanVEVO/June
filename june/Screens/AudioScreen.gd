@@ -40,4 +40,4 @@ func _on_sfx_volume_slider_value_changed(value: float) -> void:
 	_sfx_volume_text.text = "Efeitos sonoros: " + ("%0.1f" % (dict["audio_sfx"] * 100)) + "%"
 
 func _on_return_pressed() -> void:
-	get_tree().change_scene_to_packed(Global._SETTING_SCREEN_SCENE)
+	get_tree().change_scene_to_packed(Global.SETTING_SCREEN_SCENE)

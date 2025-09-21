@@ -10,6 +10,8 @@ var stars : int
 var notes : Array[NoteResource]
 var long_notes : Array[LongNoteResource]
 
+const MAXIMUM_VALUE_HIGH_N_LOW : float = 1000000000.0
+
 @warning_ignore("shadowed_variable")
 func _init(gear_type : Gear.Type, difficulty : Difficulty, stars : int, notes : Array[NoteResource], long_notes : Array[LongNoteResource]) -> void:
 	self.gear_type = gear_type
@@ -76,16 +78,20 @@ static func validate_dictionary(dictionary : Dictionary) -> String:
 			return  validate_wrong
 	return  ""
 
-static func compare_to(original : SongMap, new : SongMap) -> Dictionary:
+static func compare_to(original : SongMap, new : SongMap, get_lowest_n_highest_note : bool = false) -> Dictionary:
 	var dict : Dictionary
 	dict["to_remove_note"] = []
 	dict["to_add_note"] = []
 	dict["to_add_long_note"] = []
 	dict["to_remove_long_note"] = []
+	if get_lowest_n_highest_note:
+		dict["highest_note"] = -MAXIMUM_VALUE_HIGH_N_LOW
+		dict["lowest_note"] = MAXIMUM_VALUE_HIGH_N_LOW
 	
 	var temp_original_notes := original.notes.duplicate()
 	for new_note in new.notes:
 		var found_note := false
+		
 		for original_note in temp_original_notes:
 			if new_note.idx == original_note.idx and new_note.type == original_note.type:
 				if new_note.type == NoteResource.Type.TAP and new_note.start_time == original_note.start_time:
@@ -97,11 +103,19 @@ static func compare_to(original : SongMap, new : SongMap) -> Dictionary:
 					temp_original_notes.erase(original_note)
 					break
 		if not found_note:
+			if get_lowest_n_highest_note:
+				var duration = (new_note.end_time - new_note.start_time) if new_note.end_time > new_note.start_time else 0.0
+				if new_note.start_time + duration > dict["highest_note"]:
+					dict["highest_note"] = new_note.start_time + duration
+				if new_note.start_time < dict["lowest_note"]:
+					dict["lowest_note"] = new_note.start_time
+			
 			dict["to_add_note"].append(new_note)
 	
 	var temp_original_long_notes := original.long_notes.duplicate()
 	for new_long_note in new.long_notes:
 		var found_note := false
+		
 		for original_long_note in temp_original_long_notes:
 			if new_long_note.type == original_long_note.type and new_long_note.time == original_long_note.time:
 				if new_long_note.type == LongNote.Type.ANNOTATION and new_long_note.value == original_long_note.value:
@@ -118,13 +132,20 @@ static func compare_to(original : SongMap, new : SongMap) -> Dictionary:
 					break
 				elif new_long_note.type == LongNote.Type.FADE and new_long_note.value == original_long_note.value:
 					found_note = true
-					original.notes.erase(original_long_note)
+					temp_original_long_notes.erase(original_long_note)
 					break
 		if not found_note:
+			if get_lowest_n_highest_note:
+				if new_long_note.time > dict["highest_note"]:
+					dict["highest_note"] = new_long_note.time
+				if new_long_note.time < dict["lowest_note"]:
+					dict["lowest_note"] = new_long_note.time
+			
 			dict["to_add_long_note"].append(new_long_note)
 	
 	for original_note in original.notes:
 		var found_note := false
+		
 		for new_note in new.notes:
 			if new_note.idx == original_note.idx and new_note.type == original_note.type:
 				if new_note.type == NoteResource.Type.TAP and new_note.start_time == original_note.start_time:
@@ -136,10 +157,18 @@ static func compare_to(original : SongMap, new : SongMap) -> Dictionary:
 					new.notes.erase(new_note)
 					break
 		if not found_note:
+			if get_lowest_n_highest_note:
+				var duration = (original_note.end_time - original_note.start_time) if original_note.end_time > original_note.start_time else 0.0
+				if original_note.start_time + duration > dict["highest_note"]:
+					dict["highest_note"] = original_note.start_time + duration
+				if original_note.start_time < dict["lowest_note"]:
+					dict["lowest_note"] = original_note.start_time
+			
 			dict["to_remove_note"].append(original_note)
 	
 	for original_long_note in original.long_notes:
 		var found_note := false
+		
 		for new_long_note in new.long_notes:
 			if new_long_note.type == original_long_note.type and new_long_note.time == original_long_note.time:
 				if new_long_note.type == LongNote.Type.ANNOTATION and new_long_note.value == original_long_note.value:
@@ -159,6 +188,12 @@ static func compare_to(original : SongMap, new : SongMap) -> Dictionary:
 					new.long_notes.erase(new_long_note)
 					break
 		if not found_note:
+			if get_lowest_n_highest_note:
+				if original_long_note.time > dict["highest_note"]:
+					dict["highest_note"] = original_long_note.time
+				if original_long_note.time < dict["lowest_note"]:
+					dict["lowest_note"] = original_long_note.time
+			
 			dict["to_remove_long_note"].append(original_long_note)
 	
 	return dict

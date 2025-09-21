@@ -49,7 +49,7 @@ func _ready() -> void:
 	sixth_six_keys_button.text = char(dict[sixth_six_keys_button.name])
 
 func _on_return_pressed() -> void:
-	get_tree().change_scene_to_packed(Global._SETTING_SCREEN_SCENE)
+	get_tree().change_scene_to_packed(Global.SETTING_SCREEN_SCENE)
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("Escape") and not _button_toggled_on:

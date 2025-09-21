@@ -114,7 +114,7 @@ func _on_undo_pressed() -> void:
 	
 	var song_map : SongMap = _undo_song_maps.pop_back()
 	_redo_song_maps.append(to_resource())
-	load_song_map(song_map)
+	load_song_map(song_map, true)
 	#print(song_map.get_dictionary())
 	redo.disabled = false
 	if _undo_song_maps.is_empty():
@@ -130,7 +130,7 @@ func _on_redo_pressed() -> void:
 	
 	var song_map : SongMap = _redo_song_maps.pop_back()
 	_undo_song_maps.append(to_resource())
-	load_song_map(song_map)
+	load_song_map(song_map, true)
 	#print(song_map.get_dictionary())
 	undo.disabled = false
 	if _redo_song_maps.is_empty():
@@ -146,9 +146,11 @@ func _on_gear_type_item_selected(index: int) -> void:
 	for sound_map in _saved_song_maps:
 		if sound_map.gear_type == _gear_type_value and sound_map.difficulty == _difficulty_type_value:
 			#print(sound_map.get_dictionary())
+			game.set_gear(_gear_type_value)
+			_stars.value = _stars_value
 			load_song_map(sound_map)
 			return
-			
+	
 	game.set_gear(_gear_type_value)
 	_stars_value = 1
 	_stars.value = _stars_value
@@ -207,7 +209,7 @@ func to_resource() -> SongMap:
 	
 	return SongMap.new(game.gear.get_type(), _difficulty_type_value, _stars_value, notes_resource, long_notes_resource)
 
-func load_song_map(song_map : SongMap) -> void:
+func load_song_map(song_map : SongMap, focus_on_note : bool = false) -> void:
 	if song_map.gear_type == _gear_type_value:
 		for note_resource in song_map.notes:
 			if not note_resource.is_selected:
@@ -219,7 +221,15 @@ func load_song_map(song_map : SongMap) -> void:
 						note.set_selected_highlight(false)
 						break
 		
-		var dict := SongMap.compare_to(to_resource(), song_map)
+		var dict := SongMap.compare_to(to_resource(), song_map, focus_on_note)
+		
+		if focus_on_note:
+			if dict["lowest_note"] == SongMap.MAXIMUM_VALUE_HIGH_N_LOW: ## DIDN'T FIND A NOTE
+				return
+			
+			var center_time = (dict["highest_note"] + dict["lowest_note"]) / 2
+			
+			Song.set_time(clampf(center_time - Gear.MAX_TIME_Y() / 2, 0.0, Song.get_duration()))
 		
 		for note_resource in dict["to_remove_note"]:
 			if note_resource.is_selected:

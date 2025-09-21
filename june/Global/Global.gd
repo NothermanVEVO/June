@@ -26,12 +26,12 @@ const HIGHLIGHT_SHADER = preload("res://shaders/Highlight.gdshader")
 
 var _mouse_effect : MouseEffect
 
-var _START_SCREEN_SCENE := load("res://Screens/StartScreen.tscn")
-var _EDITOR_SCREEN_SCENE := load("res://Screens/EditorScreen.tscn")
-var _SETTING_SCREEN_SCENE := load("res://Screens/SettingsScreen.tscn")
-var _VIDEO_SCREEN_SCENE := load("res://Screens/VideoScreen.tscn")
-var _AUDIO_SCREEN_SCENE := load("res://Screens/AudioScreen.tscn")
-var _CONTROL_SCREEN_SCENE := load("res://Screens/ControlsScreen.tscn")
+var START_SCREEN_SCENE := load("res://Screens/StartScreen.tscn")
+var EDITOR_SCREEN_SCENE := load("res://Screens/EditorScreen.tscn")
+var SETTING_SCREEN_SCENE := load("res://Screens/SettingsScreen.tscn")
+var VIDEO_SCREEN_SCENE := load("res://Screens/VideoScreen.tscn")
+var AUDIO_SCREEN_SCENE := load("res://Screens/AudioScreen.tscn")
+var CONTROL_SCREEN_SCENE := load("res://Screens/ControlsScreen.tscn")
 
 const SHINE_HIGHLIGHT := preload("res://shaders/Shine.gdshader")
 
@@ -50,6 +50,7 @@ func _ready() -> void:
 	else:
 		_load_settings()
 
+@warning_ignore("unused_parameter")
 func _process(delta: float) -> void:
 	#print_orphan_nodes() ## NOTE USE THIS TO CHECK FOR POSSIBLE MEMORY LEAK
 	#if Input.is_action_just_pressed("1_4k"):
