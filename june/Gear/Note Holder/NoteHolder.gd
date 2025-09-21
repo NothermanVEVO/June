@@ -30,7 +30,11 @@ const HOLDING_NOTE_DELAY : float = 0.15
 
 var _note_type : Note.Type
 
+var _note_size_time : float = 0.0
+
 signal changed_note
+
+signal last_note_was_processed
 
 func _init(note_action : String, pos_x : float, note_type : Note.Type) -> void:
 	_note_action = note_action
@@ -44,6 +48,11 @@ func _ready() -> void:
 	
 	_hit_effect = _hit_effect_scene.instantiate()
 	add_child(_hit_effect)
+	
+	Global.changed_max_size_y.connect(_calculate_note_size_time)
+	Global.speed_changed.connect(_calculate_note_size_time)
+	
+	_calculate_note_size_time()
 
 func _process(_delta: float) -> void:
 	
@@ -57,7 +66,6 @@ func _process(_delta: float) -> void:
 func _player_process() -> void:
 	#if not _notes:
 		#return
-	
 	if _currently_note_idx < _notes.size():
 		if _notes[_currently_note_idx] is HoldNote:
 			if _notes[_currently_note_idx].state == Note.State.HITTED:
@@ -67,6 +75,7 @@ func _player_process() -> void:
 						Global.main_music_player.pop_precision(1)
 						Global.main_music_player.add_score(MusicPlayer.get_value_of_note() / 100)
 					_currently_note_idx += 1
+					_check_for_last_note_processed()
 				elif _holding_note_time >= HOLDING_NOTE_DELAY and not _notes[_currently_note_idx].get_end_time() < Song.get_time():
 					if Global.main_music_player:
 						Global.main_music_player.pop_precision(_hitted_hold_note_precision)
@@ -80,11 +89,13 @@ func _player_process() -> void:
 					if Global.main_music_player:
 						Global.main_music_player.pop_precision(0)
 					_currently_note_idx += 1
+					_check_for_last_note_processed()
 		elif _notes[_currently_note_idx].get_time() < Song.get_time() - MAX_TIME_HIT:
 			_notes[_currently_note_idx].state = Note.State.BREAK
 			if Global.main_music_player:
 				Global.main_music_player.pop_precision(0)
 			_currently_note_idx += 1
+			_check_for_last_note_processed()
 	
 	var time : float
 	
@@ -102,8 +113,12 @@ func _player_process() -> void:
 	
 	display_notes(time)
 
+func _check_for_last_note_processed() -> void:
+	if _currently_note_idx >= _notes.size():
+		last_note_was_processed.emit()
+
 func _editor_process() -> void:
-	if Input.is_action_just_pressed(_note_action):
+	if not Input.is_action_just_pressed("Save") and Input.is_action_just_pressed(_note_action):
 		_key_pressed_gradient.key_just_pressed()
 	elif Input.is_action_just_released(_note_action):
 		_key_pressed_gradient.key_just_released()
@@ -111,11 +126,11 @@ func _editor_process() -> void:
 	var time : float = Song.get_time()
 	display_notes(time)
 
+func _calculate_note_size_time() -> void:
+	_note_size_time = get_time_pos_y(float(Note.height) / 2, Gear.get_max_size_y() + float(Note.height) / 2, float(Note.height) + float(Note.height) / 2, 0, Gear.MAX_TIME_Y())
+
 func display_notes(time : float) -> void:
-	var note_size_time = get_time_pos_y(float(Note.height) / 2, Gear.get_max_size_y() + float(Note.height) / 2, float(Note.height) + float(Note.height) / 2, 0, Gear.MAX_TIME_Y())
-	
-	var notes := get_notes(time - note_size_time, time + Gear.MAX_TIME_Y() + note_size_time)
-	
+	var notes := get_notes(time - _note_size_time, time + Gear.MAX_TIME_Y() + _note_size_time)
 	for note in _last_visible_notes:
 		if not note in notes:
 			note.visible = false
@@ -155,13 +170,19 @@ func _hit(time : float) -> void:
 			_hit_effect.play_effect(99)
 			Global.main_music_player.add_score(MusicPlayer.get_value_of_note() * abs(precision) / 100)
 			_currently_note_idx += 1
+			_check_for_last_note_processed()
 		elif _notes[_currently_note_idx] is HoldNote:
 			if Global.main_music_player:
 				Global.main_music_player.pop_precision(precision)
-				_hit_effect.play_effect(99)
+			if precision == 0:
+				_notes[_currently_note_idx].state == Note.State.BREAK
+				_currently_note_idx += 1
+				_check_for_last_note_processed()
+				return
+			_hit_effect.play_effect(99)
 			_hitted_hold_note_precision = precision
-			if precision > 0 and precision != 100:
-				_notes[_currently_note_idx].set_start_time(Song.get_time())
+			#if precision > 0 and precision != 100: ## DOES THAT WORK?? WORK AT THIS IN THE FUTURE TODO
+				#_notes[_currently_note_idx].set_start_time(Song.get_time())
 
 func _hit_hold_note() -> void:
 	if _currently_note_idx >= _notes.size():
@@ -180,6 +201,7 @@ func _hit_hold_note() -> void:
 		_hit_effect.play_effect(99)
 		Global.main_music_player.add_score(MusicPlayer.get_value_of_note() * abs(_hitted_hold_note_precision) / 100)
 		_currently_note_idx += 1
+		_check_for_last_note_processed()
 		_holding_note_time = 0.0
 
 func _calculate_difference(time : float, note_time : float) -> int:
@@ -281,13 +303,13 @@ func remove_note(note : Note, validate_note : bool = false, free : bool = false)
 		validate_notes(0.0, Song.get_duration()) # EH FEIO FAZER ISSO AQ, PREGUIÇOSO
 		changed_note.emit()
 
-func remove_note_at_time(time : float, type : NoteResource.Type, validate_note : bool = false, free : bool = false) -> void:
+func remove_note_at_time(time : float, end_time : float, type : NoteResource.Type, validate_note : bool = false, free : bool = false) -> void:
 	var notes_at_time := get_notes(time, time)
 	for note in notes_at_time:
 		if type == NoteResource.Type.TAP and not note is HoldNote and note is Note:
 			remove_note(note, validate_note, free)
 			return
-		elif type == NoteResource.Type.HOLD and note is HoldNote:
+		elif type == NoteResource.Type.HOLD and note is HoldNote and note.get_start_time() == time and note.get_end_time() == end_time:
 			remove_note(note, validate_note, free)
 			return
 

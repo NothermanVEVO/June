@@ -46,6 +46,8 @@ var song_was_playing : bool = false
 static var _temp_song_time_pos : float = 0.0
 var _song_finished : bool = false
 
+var _last_song_time : float = 0.0
+
 func _ready() -> void:
 	## SPEED TEXT AND SLIDER
 	valid_speed_text_with_perc.compile("^[0-9]+%$")
@@ -111,13 +113,16 @@ func _process(_delta: float) -> void:
 		_temp_song_time_pos = 0.0
 		_song_finished = false
 	else: # THE SONG IS PAUSED
-		time_slider.value = Song.get_time() * 100 / Song.get_duration()
-		if not time_text.has_focus():
-			time_text.text = "%.1f" % (Song.get_time() * 100 / Song.get_duration()) + "%"
-		if not time_pos_text.has_focus():
-			_adjust_time_pos_text()
+		if _last_song_time != Song.get_time():
+			time_slider.value = Song.get_time() * 100 / Song.get_duration()
+			if not time_text.has_focus():
+				time_text.text = "%.1f" % (Song.get_time() * 100 / Song.get_duration()) + "%"
+			if not time_pos_text.has_focus():
+				_adjust_time_pos_text()
 	if is_dragging_speed_slider:
 		Song.pitch_scale = speed_slider.value / 100
+		
+	_last_song_time = Song.get_time()
 
 # CHECK IF THE TEXT IN THE SPEED TEXT IS VALID
 func is_speed_text_valid() -> bool:

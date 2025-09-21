@@ -121,6 +121,7 @@ popup/item_1/text = "Desativado"
 popup/item_1/id = 1
 
 [node name="MSAA" type="FlowContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+visible = false
 layout_mode = 2
 alignment = 1
 vertical = true
@@ -149,13 +150,23 @@ popup/item_3/id = 3
 
 [node name="Video" type="CheckBox" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
+tooltip_text = "Ativa ou desativa o vídeo se o song map possuir. Rodar o vídeo usa bastante do processamento, 
+desative caso esteja com baixa perfomance."
 theme_override_font_sizes/font_size = 30
-text = "Video"
+text = "Vídeo"
 
 [node name="Particles" type="CheckBox" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
+tooltip_text = "São efeitos para melhorar o visual do jogo, tem um custo baixa na perfomance quando comparado ao Vídeo e o Glow."
 theme_override_font_sizes/font_size = 30
-text = "Particulas"
+text = "Partículas"
+
+[node name="Glow" type="CheckBox" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+tooltip_text = "Esse é um efeito para melhorar o visual do jogo, mas tem um custo alto no desempenho. 
+Desative caso esteja com baixa perfomance."
+theme_override_font_sizes/font_size = 30
+text = "Glow"
 
 [node name="Return" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -168,4 +179,5 @@ text = "Voltar"
 [connection signal="item_selected" from="PanelContainer/MarginContainer/VBoxContainer/MSAA/MSAAOptionButton" to="." method="_on_msaa_option_button_item_selected"]
 [connection signal="toggled" from="PanelContainer/MarginContainer/VBoxContainer/Video" to="." method="_on_video_toggled"]
 [connection signal="toggled" from="PanelContainer/MarginContainer/VBoxContainer/Particles" to="." method="_on_particles_toggled"]
+[connection signal="toggled" from="PanelContainer/MarginContainer/VBoxContainer/Glow" to="." method="_on_glow_toggled"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/Return" to="." method="_on_return_pressed"]

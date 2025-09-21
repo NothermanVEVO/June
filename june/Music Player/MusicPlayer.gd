@@ -35,6 +35,8 @@ const _HOLDING_DELAY : float = 0.30
 var _current_fever_score : float = 0.0
 var _perfect_state : bool = true
 
+var _current_combo : int = 0
+
 signal quit_request
 
 func _ready() -> void:
@@ -63,9 +65,6 @@ func _physics_process(delta: float) -> void:
 	if not visible:
 		_holding_time = 0.0
 		return
-	if Input.is_action_just_pressed("Escape"):
-		_holding_time = 0.0
-		pause()
 	elif Input.is_action_just_pressed("Restart"):
 		_holding_time = 0.0
 		restart()
@@ -95,14 +94,18 @@ func _process(_delta: float) -> void:
 				video.paused = false
 			video.play() ## THIS USES A BUNCH OF FPS!
 		
-		if Song.stream_paused:
-			Song.stream_paused = false
 		Song.pitch_scale = 1.0
 		Song.play()
 		set_process(false)
 
 func start() -> void:
+	if not World.environment:
+		World.load_glow_environment()
+	_perfect_state = true
+	_current_combo = 0
+	_gear_skin.set_combo(0)
 	set_process(true)
+	Song.stream_paused = false
 	_current_time = 0.0
 	_pause_screen.visible = false
 	_gear.set_max_size_y(size.y)
@@ -124,6 +127,7 @@ func _create_gear() -> void:
 		_gear.queue_free()
 	
 	_gear = Gear.new(_gear_type, Gear.Mode.PLAYER, false, size.y)
+	_gear.last_note_was_processed.connect(_last_note_was_processed)
 	set_speed(Gear.get_speed())
 	add_child(_gear)
 	move_child(_pause_screen, get_child_count() - 1)
@@ -164,16 +168,20 @@ func restart() -> void:
 	start()
 
 func pause() -> void:
-	_pause_screen.visible = not _pause_screen.visible
+	_holding_time = 0.0
 	if _current_time < TIME_TO_START:
+		_pause_screen.visible = not _pause_screen.visible
 		set_process(not is_processing())
 		return
-	Song.stream_paused = not Song.stream_paused
+	Song.stream_paused = not _pause_screen.visible
 	if video.stream and Global.get_settings_dictionary()["video"]:
-		video.paused = not video.paused
+		video.paused = not _pause_screen.visible
+	_pause_screen.visible = not _pause_screen.visible
 
 func _quit() -> void:
 	Song.set_time(0)
+	Song.stop()
+	World.unload()
 	quit_request.emit()
 
 func reset() -> void:
@@ -198,42 +206,50 @@ func pop_precision(precision : int) -> void:
 
 func _calculate_fever(precision : int) -> void:
 	if precision == 0:
+		_perfect_state = true
+		_gear_skin.set_combo(0)
+		_current_combo = 0
 		_current_fever_score = 0
 		_gear_skin.set_fever_value(_current_fever_score, Note.Fever.NONE)
 		return
 	
 	_current_fever_score += Note.FEVER_VALUE * abs(precision) / 100.0
 	
+	if precision != 100:
+		_perfect_state = false
+	
 	if _current_fever_score >= 0.0 and _current_fever_score < Note.Fever.X1: ## NONE
 		_gear_skin.set_fever_value(Global.get_percentage_between(0.0, Note.Fever.X1, _current_fever_score) * 100, Note.Fever.X1)
+		_current_combo += 1
 	elif _current_fever_score >= Note.Fever.X1 and _current_fever_score < Note.Fever.X2: ## 1X
 		_gear_skin.set_fever_value(Global.get_percentage_between(Note.Fever.X1, Note.Fever.X2, _current_fever_score) * 100, Note.Fever.X2)
+		_current_combo += 1
 	elif _current_fever_score >= Note.Fever.X2 and _current_fever_score < Note.Fever.X3: ## 2X
 		_gear_skin.set_fever_value(Global.get_percentage_between(Note.Fever.X2, Note.Fever.X3, _current_fever_score) * 100, Note.Fever.X3)
+		_current_combo += 2
 	elif _current_fever_score >= Note.Fever.X3 and _current_fever_score < Note.Fever.X4: ## 3X
 		_gear_skin.set_fever_value(Global.get_percentage_between(Note.Fever.X3, Note.Fever.X4, _current_fever_score) * 100, Note.Fever.X4)
+		_current_combo += 3
 	elif _current_fever_score >= Note.Fever.X4 and _current_fever_score < Note.Fever.X5: ## 4X
 		_gear_skin.set_fever_value(Global.get_percentage_between(Note.Fever.X4, Note.Fever.X5, _current_fever_score) * 100, Note.Fever.X5)
+		_current_combo += 4
 	elif _current_fever_score >= Note.Fever.X5 and _current_fever_score < Note.Fever.ZONE: ## 5X
 		_gear_skin.set_fever_value(Global.get_percentage_between(Note.Fever.X5, Note.Fever.ZONE, _current_fever_score) * 100, Note.Fever.ZONE)
+		_current_combo += 5
 	elif _current_fever_score >= Note.Fever.ZONE and _current_fever_score < Note.Fever.MAX_ZONE: ## ZONE
-		_gear_skin.set_fever_value(Global.get_percentage_between(Note.Fever.ZONE, Note.Fever.MAX_ZONE, _current_fever_score) * 100, Note.Fever.MAX_ZONE)
+		if not _perfect_state: ## RETURNS TO 5X
+			_current_fever_score = Note.Fever.X5 + (_current_fever_score - Note.Fever.ZONE)
+			_gear_skin.set_fever_value(Global.get_percentage_between(Note.Fever.X5, Note.Fever.ZONE, _current_fever_score) * 100, Note.Fever.ZONE, true, _gear_skin._current_fever == Note.Fever.MAX_ZONE)
+			_current_combo += 5
+		else:
+			_gear_skin.set_fever_value(Global.get_percentage_between(Note.Fever.ZONE, Note.Fever.MAX_ZONE, _current_fever_score) * 100, Note.Fever.MAX_ZONE)
+			_current_combo += 10
+		_perfect_state = true
 	elif _current_fever_score >= Note.Fever.MAX_ZONE:
 		_current_fever_score = Note.Fever.X5 + (_current_fever_score - Note.Fever.ZONE)
+		_gear_skin.set_fever_value(Global.get_percentage_between(Note.Fever.ZONE, Note.Fever.MAX_ZONE, _current_fever_score) * 100, Note.Fever.MAX_ZONE, true)
 	
-	#elif _current_fever_score >= Note.Fever.X1 and _current_fever_score < Note.Fever.X2: ## ZONE
-		#pass
-	#if _current_fever_score > Note.Fever.X5 and not _perfect_state:
-		#_current_fever_score = Note.Fever.X4 + (_current_fever_score - Note.Fever.X5)
-		#_perfect_state = true
-	#if _current_fever_score > Note.Fever.ZONE:
-		#_current_fever_score = Note.Fever.X5 + (_current_fever_score - Note.Fever.ZONE)
-	#
-	#if _current_fever_score > Note.Fever.X5 and precision < 100 and _current_fever_score <= Note.Fever.ZONE: ## IS IN THE ZONE
-		#_current_fever_score = Note.Fever.X4 + (_current_fever_score - Note.Fever.X5)
-	#if _current_fever_score > Note.Fever.X4 and precision < 100 and _current_fever_score <= Note.Fever.X5: ## IS IN THE 5X
-		#_perfect_state = false
-	#_gear_skin.set_fever_score(_current_fever_score)
+	_gear_skin.set_combo(_current_combo)
 
 func set_speed(speed : float) -> void:
 	if _gear_skin:
@@ -248,6 +264,9 @@ func _set_score(score : int) -> void:
 
 func _draw() -> void:
 	draw_circle(get_viewport_rect().size / 2, 5, Color.BLACK)
+
+func _last_note_was_processed() -> void:
+	print("foi pressionada")
 
 #func load_by_path(path : String):  ##TODO MAKE A BETTER THING HERE TO RETURN FROM THE GAME ## I WAS PROBABLY MEANING A ERROR MESSAGE
 	#if not FileAccess.file_exists(path):

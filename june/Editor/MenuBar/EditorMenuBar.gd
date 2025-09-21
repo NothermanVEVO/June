@@ -229,7 +229,7 @@ func load_song_map(song_map : SongMap) -> void:
 						(note_resource.type == NoteResource.Type.TAP and note is Note)):
 						game._selected_notes.erase(note)
 						break
-			game.gear.remove_note_at_time(note_resource.start_time, note_resource.idx, note_resource.type, true, true)
+			game.gear.remove_note_at_time(note_resource.start_time, note_resource.end_time, note_resource.idx, note_resource.type, true, true)
 	
 		for note_resource in dict["to_add_note"]:
 			var note = note_resource.to_note(song_map.gear_type)
@@ -423,7 +423,8 @@ func load_song_maps(song_maps : Array[SongMap]) -> void:
 	
 	for s_map in song_maps:
 		_saved_song_maps.append(s_map)
-	
+
+func load_first_song_map() -> void:
 	if _saved_song_maps:
 		load_song_map(_saved_song_maps[0])
 
@@ -474,3 +475,4 @@ func _change_music_player_to_composer() -> void:
 	for song_map in _saved_song_maps:
 		if song_map.gear_type == _gear_type_value and song_map.difficulty == _difficulty_type_value:
 			load_song_map(song_map)
+			return

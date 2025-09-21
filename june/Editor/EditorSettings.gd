@@ -88,14 +88,14 @@ func get_image_texture():
 		return image_rect_texture.texture
 	return null
 
-func set_song(path : String) -> void:
+func set_song(path : String) -> int:
 	if not path.get_extension() in VALID_AUDIO_EXTENSION:
 		_pop_up_dialog("Só é aceito audios nos formatos " + str(VALID_AUDIO_EXTENSION))
-		return
+		return -1
 	
 	if not FileAccess.file_exists(path):
 		_pop_up_dialog("Não foi possível achar o arquivo: \"" + path + "\"")
-		return
+		return -1
 	
 	var stream = Loader.load_music_stream(path)
 	
@@ -106,50 +106,53 @@ func set_song(path : String) -> void:
 		song_time_sample_text.editable = true
 		_song_path = path
 		Editor.changed_editor()
+		return 0
 	else:
 		_pop_up_dialog("Não foi possível carregar o aúdio!")
-		return
+		return -1
 
-func set_icon(path : String) -> void:
+func set_icon(path : String) -> int:
 	if not FileAccess.file_exists(path):
 		_pop_up_dialog("Não foi possível achar o arquivo: \"" + path + "\"")
-		return
+		return -1
 	
 	var image_texture : ImageTexture = Loader.load_image(path)
 	
 	if not image_texture:
 		_pop_up_dialog("Tipo de arquivo inválido!")
-		return
+		return -1
 	else:
 		icon_texture.texture = image_texture
 		remove_icon_button.disabled = false
 		_icon_path = path
 		Editor.changed_editor()
+		return 0
 
-func set_image(path : String) -> void:
+func set_image(path : String) -> int:
 	if not FileAccess.file_exists(path):
 		_pop_up_dialog("Não foi possível achar o arquivo: \"" + path + "\"")
-		return
+		return -1
 	
 	var image_texture : ImageTexture = Loader.load_image(path)
 	
 	if not image_texture:
 		_pop_up_dialog("Tipo de arquivo inválido!")
-		return
+		return -1
 	else:
 		image_rect_texture.texture = image_texture
 		remove_image_button.disabled = false
 		_image_path = path
 		Editor.changed_editor()
+		return 0
 
-func set_video(path : String) -> void:
+func set_video(path : String) -> int:
 	if path.get_extension() != "ogv":
 		_pop_up_dialog("Só é aceito vídeos em formato \".ogv\"")
-		return
+		return -1
 	
 	if not FileAccess.file_exists(path):
 		_pop_up_dialog("Não foi possível achar o arquivo: \"" + path + "\"")
-		return
+		return -1
 	
 	var stream = Loader.load_video_stream(path)
 	
@@ -160,9 +163,10 @@ func set_video(path : String) -> void:
 		#video_time_sample_text.editable = true
 		_video_path = path
 		Editor.changed_editor()
+		return 0
 	else:
 		_pop_up_dialog("Não foi possível carregar o vídeo!")
-		return
+		return -1
 
 func _on_icon_button_pressed() -> void:
 	file_dialog.popup()
@@ -269,7 +273,7 @@ func reset() -> void:
 
 @warning_ignore("shadowed_variable")
 func load_editor(song : String, author : String, track : String, BPM : int, creator : String, song_time_sample : String, video_time_sample : String, 
-	song_path : String, icon_path : String, image_path : String, video_path : String) -> void:
+	song_path : String, icon_path : String, image_path : String, video_path : String) -> int:
 	
 	reset()
 	$HBoxContainer/Left/VBoxContainer/Name/NameTextEdit.text = song
@@ -283,17 +287,24 @@ func load_editor(song : String, author : String, track : String, BPM : int, crea
 	last_valid_sample_song_text = song_time_sample
 	last_valid_sample_video_text = video_time_sample
 	
+	var valid := 0
+	
 	if song_path:
-		set_song(song_path)
+		valid = -1 if set_song(song_path) == -1 else valid
 	
 	if icon_path:
-		set_icon(icon_path)
+		valid = -1 if set_icon(icon_path) == -1 else valid
 	
 	if image_path:
-		set_image(image_path)
+		valid = -1 if set_image(image_path) == -1 else valid
 	
 	if video_path:
-		set_video(video_path)
+		valid = -1 if set_video(video_path) == -1 else valid
+	
+	if valid == -1:
+		reset()
+		return -1
+	return 0
 
 func get_song_name() -> String:
 	return $HBoxContainer/Left/VBoxContainer/Name/NameTextEdit.text

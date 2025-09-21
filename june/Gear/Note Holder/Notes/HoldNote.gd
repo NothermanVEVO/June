@@ -35,7 +35,7 @@ func _ready() -> void:
 	axis_stretch_vertical = NinePatchRect.AXIS_STRETCH_MODE_TILE
 	Global.changed_max_size_y.connect(_changed_max_size_y)
 	
-	_shader_material.shader = _SHINE_HIGHLIGHT
+	_shader_material.shader = Global.SHINE_HIGHLIGHT
 	_shader_material.set_shader_parameter("is_horizontal", true)
 	_shader_material.set_shader_parameter("size_effect", 5.0)
 	_shader_material.set_shader_parameter("speed", -1.0)

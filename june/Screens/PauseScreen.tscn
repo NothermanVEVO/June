@@ -3,7 +3,8 @@
 [ext_resource type="Script" uid="uid://t3e5fqlprtkk" path="res://Screens/PauseScreen.gd" id="1_e3ko5"]
 
 [node name="PauseScreen" type="Control"]
-z_index = 5
+process_mode = 3
+z_index = 8
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

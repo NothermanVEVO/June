@@ -1,0 +1,4 @@
+[gd_resource type="GradientTexture2D" format=3 uid="uid://fdtb5hhn6jtu"]
+
+[resource]
+fill_from = Vector2(1, 1)

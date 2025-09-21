@@ -19,6 +19,7 @@ static var _msaa : MSAA
 @onready var msaa_option_button : OptionButton = $PanelContainer/MarginContainer/VBoxContainer/MSAA/MSAAOptionButton
 @onready var video_check_box : CheckBox = $PanelContainer/MarginContainer/VBoxContainer/Video
 @onready var particles_check_box : CheckBox = $PanelContainer/MarginContainer/VBoxContainer/Particles
+@onready var glow_check_box : CheckBox = $PanelContainer/MarginContainer/VBoxContainer/Glow
 
 func _ready() -> void:
 	mode_option_button.grab_focus()
@@ -29,6 +30,7 @@ func _ready() -> void:
 	msaa_option_button.select(dict["video_msaa"])
 	video_check_box.button_pressed = dict["video"]
 	particles_check_box.button_pressed = dict["particles"]
+	glow_check_box.button_pressed = dict["glow"]
 
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Escape"):
@@ -74,4 +76,10 @@ func _on_particles_toggled(toggled_on: bool) -> void:
 	var dict := Global.get_settings_dictionary()
 	if dict["particles"] != toggled_on:
 		dict["particles"] = toggled_on
+		Global.save_settings(dict)
+
+func _on_glow_toggled(toggled_on: bool) -> void:
+	var dict := Global.get_settings_dictionary()
+	if dict["glow"] != toggled_on:
+		dict["glow"] = toggled_on
 		Global.save_settings(dict)

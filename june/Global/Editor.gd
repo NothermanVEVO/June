@@ -47,6 +47,7 @@ func change_to_composer() -> void:
 		return
 	editor_composer.visible = true
 	editor_settings.visible = false
+	editor_composer.editor_menu_bar.load_first_song_map()
 	_current_scene = Scenes.COMPOSER
 	Song.set_time(editor_composer.song_time_pos)
 
@@ -54,6 +55,7 @@ func change_to_settings() -> void:
 	if not editor_composer or not editor_settings:
 		return
 	editor_composer.song_time_pos = Song.get_time()
+	editor_composer.editor_menu_bar.game.set_gear(Gear.Type.FOUR_KEYS)
 	editor_composer.visible = false
 	editor_settings.visible = true
 	editor_settings.play_song_button.text = "Play"
@@ -63,10 +65,15 @@ func change_to_settings() -> void:
 func load_resource(song_resource : SongResource) -> void:
 	if not editor_composer or not editor_settings:
 		return
-	editor_settings.load_editor(song_resource.name, song_resource.author, song_resource.track, song_resource.BPM, song_resource.creator, 
+	var valid = editor_settings.load_editor(song_resource.name, song_resource.author, song_resource.track, song_resource.BPM, song_resource.creator, 
 	song_resource.song_time_sample, song_resource.video_time_sample, song_resource.song, song_resource.icon, song_resource.image, song_resource.video)
 	
+	if valid == -1:
+		return
+	
 	editor_composer.editor_menu_bar.load_song_maps(song_resource.song_maps)
+	if editor_composer.visible:
+		editor_composer.editor_menu_bar.load_first_song_map()
 
 func to_resource() -> SongResource:
 	if not editor_composer or not editor_settings:

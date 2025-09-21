@@ -29,6 +29,8 @@ Song="*res://Global/Song.gd"
 DialogConfirmation="*res://Global/DialogConfirmation.gd"
 DialogFile="*res://Global/DialogFile.gd"
 Loader="*res://Global/Loader.gd"
+World="*res://Global/World.gd"
+Sfx="*res://Global/SFX.gd"
 
 [display]
 

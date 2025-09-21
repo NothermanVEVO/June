@@ -39,6 +39,8 @@ func _ready() -> void:
 	Global.set_window_title(Global.TitleType.EDITOR_UNSAVED)
 
 func _process(_delta: float) -> void:
+	if not Editor.editor_settings.visible and not Editor.editor_composer.visible:
+		return
 	if Input.is_action_just_pressed("Save") and not DialogConfirmation.visible and Editor.get_current_scene() == _editor_scene:
 		if _file_path:
 			save_file(_file_path)

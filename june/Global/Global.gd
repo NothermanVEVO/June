@@ -33,6 +33,8 @@ var _VIDEO_SCREEN_SCENE := load("res://Screens/VideoScreen.tscn")
 var _AUDIO_SCREEN_SCENE := load("res://Screens/AudioScreen.tscn")
 var _CONTROL_SCREEN_SCENE := load("res://Screens/ControlsScreen.tscn")
 
+const SHINE_HIGHLIGHT := preload("res://shaders/Shine.gdshader")
+
 var _settings_dictionary : Dictionary
 
 func _ready() -> void:
@@ -130,6 +132,7 @@ func _create_settings() -> void:
 	
 	_settings_dictionary["video"] = true
 	_settings_dictionary["particles"] = true
+	_settings_dictionary["glow"] = true
 	
 	var file := FileAccess.open(SETTINGS_PATH, FileAccess.WRITE)
 	if file:

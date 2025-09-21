@@ -10,7 +10,6 @@ const NORMAL_NOTE_BLUE_IMG = preload("res://concepts/hit_test_blue.png")
 const NORMAL_NOTE_RED_IMG = preload("res://concepts/hit_test_red.png")
 
 var _shader_material = ShaderMaterial.new()
-const _SHINE_HIGHLIGHT := preload("res://shaders/Shine.gdshader")
 
 static var height : int = 125
 
@@ -37,7 +36,7 @@ func _init(current_time : float) -> void:
 	z_index = 5
 
 func _ready() -> void:
-	_shader_material.shader = _SHINE_HIGHLIGHT
+	_shader_material.shader = Global.SHINE_HIGHLIGHT
 	_shader_material.set_shader_parameter("is_horizontal", true)
 	_shader_material.set_shader_parameter("size_effect", 5.0)
 	_shader_material.set_shader_parameter("speed", -1.0)

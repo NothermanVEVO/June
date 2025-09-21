@@ -21,6 +21,9 @@ static var _speed : float = 1.0
 var _long_notes : Array[LongNote]
 var _last_visible_long_notes : Array[LongNote]
 
+var _number_of_last_processed_signals_received : int = 0
+signal last_note_was_processed
+
 @warning_ignore("shadowed_variable")
 func _init(type : Type, mode : Mode, center_screen : bool = true, max_size_y : float = -1) -> void:
 	_type = type
@@ -46,6 +49,7 @@ func _ready() -> void: #TODO HANDLE ANY POSITION FOR THE GEAR, NOT ONLY THE MIDD
 	for i in range(_type):
 		var note_type : Note.Type = Note.Type.RED if (i == 1 or i == _type - 2) else Note.Type.BLUE
 		var note_holder := NoteHolder.new(str(i + 1) + "_" + str(_type) + "k", initial_x, note_type)
+		note_holder.last_note_was_processed.connect(_note_holders_last_processed_notes)
 		initial_x += NoteHolder.width
 		_note_holders.append(note_holder)
 		add_child(note_holder)
@@ -275,8 +279,8 @@ func add_note_at(idx : int, note : Note, validate_note : bool = false) -> void:
 func remove_note_at(idx : int, note : Note, validate_note : bool = false, free : bool = false) -> void:
 	_note_holders[idx].remove_note(note, validate_note, free)
 
-func remove_note_at_time(time : float, idx : int, type : NoteResource.Type, validate_note : bool = false, free : bool = false) -> void:
-	_note_holders[idx].remove_note_at_time(time, type, validate_note, free)
+func remove_note_at_time(time : float, end_time : float, idx : int, type : NoteResource.Type, validate_note : bool = false, free : bool = false) -> void:
+	_note_holders[idx].remove_note_at_time(time, end_time, type, validate_note, free)
 
 func get_type() -> int:
 	return _type
@@ -331,6 +335,11 @@ func set_max_size_y(max_size_y : float) -> void:
 
 static func get_max_size_y() -> float:
 	return _max_size_y
+
+func _note_holders_last_processed_notes() -> void:
+	_number_of_last_processed_signals_received += 1
+	if _number_of_last_processed_signals_received >= _note_holders.size():
+		last_note_was_processed.emit()
 
 func _draw() -> void:
 	draw_circle(Vector2.ZERO, 10, Color.AQUA)

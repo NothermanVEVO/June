@@ -2,9 +2,10 @@
 
 [sub_resource type="Gradient" id="Gradient_5qsrq"]
 interpolation_mode = 2
-colors = PackedColorArray(0.1, 1, 0.805, 0.266667, 0.1, 1, 0.805, 0)
+colors = PackedColorArray(0.101961, 1, 0.85098, 0.313726, 0.1, 1, 0.805, 0)
 
 [resource]
 gradient = SubResource("Gradient_5qsrq")
 height = 192
-fill_from = Vector2(1, 1)
+fill_from = Vector2(0, 1)
+fill_to = Vector2(0, 0.145299)

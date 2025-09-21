@@ -1,20 +1,104 @@
-[gd_scene load_steps=41 format=3 uid="uid://ygpxmyrvsexw"]
+[gd_scene load_steps=59 format=3 uid="uid://ygpxmyrvsexw"]
 
 [ext_resource type="Script" uid="uid://bhrlpa2ttx82t" path="res://Gear/GearSkin.gd" id="1_g01tw"]
+[ext_resource type="FontFile" uid="uid://ccptv2g4gl5oq" path="res://assets/fonts/Baby Donuts.ttf" id="2_apgu0"]
 [ext_resource type="Shader" uid="uid://cv72bkw7c1m1g" path="res://shaders/Shine.gdshader" id="2_dtqx8"]
 [ext_resource type="Texture2D" uid="uid://cpk0lm4w8uvow" path="res://assets/Gear/JuneV1/hitzone.png" id="2_syavq"]
+[ext_resource type="Texture2D" uid="uid://by3va5hlqgxw8" path="res://Effects/Fever/Fever_1X.tres" id="3_apgu0"]
 [ext_resource type="Texture2D" uid="uid://dl300l016j3bx" path="res://assets/Gear/JuneV1/base.png" id="3_u7dcu"]
+[ext_resource type="Texture2D" uid="uid://bpptmsa3sg5ol" path="res://Effects/Fever/Fever_2X.tres" id="3_xxcan"]
 [ext_resource type="Texture2D" uid="uid://dqutdg0big8xa" path="res://assets/Gear/JuneV1/base_superior.png" id="4_dtqx8"]
+[ext_resource type="Texture2D" uid="uid://c0isb1l3l7nqs" path="res://Effects/Fever/Fever_3X.tres" id="4_jii80"]
 [ext_resource type="Texture2D" uid="uid://dcjxsuc735wn6" path="res://assets/Gear/JuneV1/base_estrela_vazia.png" id="5_dh8pw"]
+[ext_resource type="Texture2D" uid="uid://vo5tci103lyl" path="res://Effects/Fever/Fever_4X.tres" id="5_kmhpc"]
 [ext_resource type="Shader" uid="uid://dtfiqt80nwowp" path="res://shaders/RepeatFever.gdshader" id="5_ofatc"]
+[ext_resource type="Texture2D" uid="uid://7qeum1cohu75" path="res://Effects/Fever/Fever_5X.tres" id="6_1nofc"]
 [ext_resource type="Texture2D" uid="uid://4ivwdoufdycq" path="res://assets/Gear/JuneV1/base_estrela_1x.png" id="6_ofatc"]
 [ext_resource type="Texture2D" uid="uid://cqcandpylxxcr" path="res://concepts/fever_lines_v3.png" id="6_xxuof"]
+[ext_resource type="Texture2D" uid="uid://3dofocgs81ew" path="res://Effects/Fever/Fever_ZONE.tres" id="7_vvqmb"]
 [ext_resource type="Texture2D" uid="uid://cjh1l8pbid44" path="res://assets/Gear/JuneV1/lateral.png" id="7_xxuof"]
 [ext_resource type="Texture2D" uid="uid://dqulx1iiig8lu" path="res://assets/Gear/JuneV1/vida_empty.png" id="8_omd5l"]
 [ext_resource type="Texture2D" uid="uid://gorgahqlk7wg" path="res://assets/Gear/JuneV1/vida_full.png" id="9_2ksjx"]
 [ext_resource type="Texture2D" uid="uid://jjdh5jcmxe4c" path="res://concepts/light.png" id="10_2ksjx"]
 [ext_resource type="Texture2D" uid="uid://dg28uyvkauras" path="res://assets/Gear/JuneV1/estrela.png" id="10_u7dcu"]
 [ext_resource type="Texture2D" uid="uid://c630b24qjtr8u" path="res://concepts/hit_effect_small_desaturated.png" id="11_2ksjx"]
+[ext_resource type="FontFile" uid="uid://dmudawe2at5ci" path="res://assets/fonts/Warm Winter.ttf" id="14_xxcan"]
+
+[sub_resource type="Gradient" id="Gradient_jii80"]
+offsets = PackedFloat32Array(0, 0.831169, 0.993506)
+colors = PackedColorArray(0.933172, 0.669321, 0, 1, 1, 1, 1, 1, 1.92523e-07, 0.803892, 0.960422, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_kmhpc"]
+gradient = SubResource("Gradient_jii80")
+fill_from = Vector2(1, 1)
+
+[sub_resource type="Gradient" id="Gradient_1nofc"]
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_vvqmb"]
+gradient = SubResource("Gradient_1nofc")
+fill_from = Vector2(1, 1)
+
+[sub_resource type="Animation" id="Animation_54wux"]
+resource_name = "Pop"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ComboText:theme_override_font_sizes/normal_font_size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0666667, 0.1),
+"transitions": PackedFloat32Array(0.116629, 0.233258, 1),
+"update": 0,
+"values": [80, 82, 80]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.0666667, 0.1),
+"transitions": PackedFloat32Array(0.0980732, 0.0947322, 1),
+"update": 0,
+"values": [Vector2(1.05, 1), Vector2(1.05, 1), Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_r2g2g"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ComboText:theme_override_font_sizes/normal_font_size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [80]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jii80"]
+_data = {
+&"Pop": SubResource("Animation_54wux"),
+&"RESET": SubResource("Animation_r2g2g")
+}
 
 [sub_resource type="Animation" id="Animation_glv2v"]
 resource_name = "Pop up"
@@ -29,7 +113,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.1, 0.133333, 1),
 "transitions": PackedFloat32Array(0.31864, 1, 1, 4.28709),
 "update": 0,
-"values": [35, 65, 60, 60]
+"values": [35, 105, 100, 100]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -165,9 +249,18 @@ _data = {
 [sub_resource type="Gradient" id="Gradient_apgu0"]
 colors = PackedColorArray(0.498559, 0.914807, 1, 1, 3, 3, 3, 1)
 
+[sub_resource type="Gradient" id="Gradient_u7dcu"]
+offsets = PackedFloat32Array(0, 0.51634, 1)
+colors = PackedColorArray(0.105882, 0.890196, 0.803922, 0.666667, 0.517647, 0.823529, 0.803922, 0.0588235, 0.517647, 0.823529, 0.803922, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_54wux"]
+gradient = SubResource("Gradient_u7dcu")
+height = 192
+fill_from = Vector2(1, 0.723502)
+
 [sub_resource type="Animation" id="Animation_xxcan"]
 resource_name = "Fever 1X"
-length = 0.1
+length = 1.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -228,13 +321,73 @@ tracks/4/keys = {
 "update": 1,
 "values": [true]
 }
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:theme_override_font_sizes/normal_font_size")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.866667, 1.5),
+"transitions": PackedFloat32Array(0.233259, 1, 1),
+"update": 0,
+"values": [130, 300, 300]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel/TextureRect:texture")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [SubResource("GradientTexture2D_54wux")]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:modulate")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.866667, 1.5),
+"transitions": PackedFloat32Array(0.233258, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 2, 1), Color(1, 1, 2, 1), Color(1, 1, 1, 0)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:visible")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:text")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["1X"]
+}
 
 [sub_resource type="Gradient" id="Gradient_54wux"]
 colors = PackedColorArray(0.27042, 1, 0.412806, 1, 3, 3, 3, 1)
 
 [sub_resource type="Animation" id="Animation_nhmow"]
 resource_name = "Fever 2X"
-length = 0.1
+length = 1.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -295,13 +448,73 @@ tracks/4/keys = {
 "update": 1,
 "values": [true]
 }
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:theme_override_font_sizes/normal_font_size")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.866667, 1.5),
+"transitions": PackedFloat32Array(0.233259, 1, 1),
+"update": 0,
+"values": [130, 300, 300]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [true]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:modulate")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.866667, 1.5),
+"transitions": PackedFloat32Array(0.233258, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 2, 1, 1), Color(1, 2, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel/TextureRect:texture")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("3_xxcan")]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:text")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["2X"]
+}
 
 [sub_resource type="Gradient" id="Gradient_r2g2g"]
 colors = PackedColorArray(4, 4, 0.2, 1, 3, 3, 3, 1)
 
 [sub_resource type="Animation" id="Animation_jii80"]
 resource_name = "Fever 3X"
-length = 0.1
+length = 1.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -362,13 +575,73 @@ tracks/4/keys = {
 "update": 1,
 "values": [true]
 }
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:theme_override_font_sizes/normal_font_size")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.866667, 1.5),
+"transitions": PackedFloat32Array(0.233259, 1, 1),
+"update": 0,
+"values": [130, 300, 300]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.866667, 1.5),
+"transitions": PackedFloat32Array(0.233258, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(2, 2, 1, 1), Color(2, 2, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [true]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel/TextureRect:texture")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("4_jii80")]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:text")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["3X"]
+}
 
 [sub_resource type="Gradient" id="Gradient_kmhpc"]
 colors = PackedColorArray(2.89, 0.447, 0.106, 1, 3, 3, 3, 1)
 
 [sub_resource type="Animation" id="Animation_1nofc"]
 resource_name = "Fever 4X"
-length = 0.1
+length = 1.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -429,13 +702,73 @@ tracks/4/keys = {
 "update": 1,
 "values": [true]
 }
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:theme_override_font_sizes/normal_font_size")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.866667, 1.5),
+"transitions": PackedFloat32Array(0.233259, 1, 1),
+"update": 0,
+"values": [130, 300, 300]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.866667, 1.5),
+"transitions": PackedFloat32Array(0.233258, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(4, 2, 1, 1), Color(4, 2, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [true]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel/TextureRect:texture")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("5_kmhpc")]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:text")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["4X"]
+}
 
 [sub_resource type="Gradient" id="Gradient_xxcan"]
 colors = PackedColorArray(4, 0.106, 0.29, 1, 3, 3, 3, 1)
 
 [sub_resource type="Animation" id="Animation_vvqmb"]
 resource_name = "Fever 5X"
-length = 0.1
+length = 1.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -496,13 +829,73 @@ tracks/4/keys = {
 "update": 1,
 "values": [true]
 }
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:theme_override_font_sizes/normal_font_size")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.866667, 1.5),
+"transitions": PackedFloat32Array(0.233259, 1, 1),
+"update": 0,
+"values": [130, 300, 300]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.866667, 1.5),
+"transitions": PackedFloat32Array(0.233258, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(2, 1, 1, 1), Color(2, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [true]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel/TextureRect:texture")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("6_1nofc")]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:text")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["5X"]
+}
 
 [sub_resource type="Gradient" id="Gradient_nhmow"]
 colors = PackedColorArray(4, 0.106, 4, 1, 3, 3, 3, 1)
 
 [sub_resource type="Animation" id="Animation_0dwk1"]
 resource_name = "Fever Zone"
-length = 0.1
+length = 1.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -562,6 +955,66 @@ tracks/4/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:theme_override_font_sizes/normal_font_size")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.866667, 1.5),
+"transitions": PackedFloat32Array(0.233259, 1, 1),
+"update": 0,
+"values": [130, 300, 300]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.866667, 1.5),
+"transitions": PackedFloat32Array(0.233258, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(2, 1, 2, 1), Color(2, 1, 2, 1), Color(1, 1, 1, 0)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel/TextureRect:texture")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("7_vvqmb")]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:text")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["ZONE"]
 }
 
 [sub_resource type="Gradient" id="Gradient_2ksjx"]
@@ -629,9 +1082,122 @@ tracks/4/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:theme_override_font_sizes/normal_font_size")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [130]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel/TextureRect:texture")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("3_apgu0")]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:modulate")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:visible")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:text")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [""]
+}
+
+[sub_resource type="Animation" id="Animation_kmhpc"]
+resource_name = "5X JUST SHINE"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Gear/Control/Fever Effect Star/PointLight2D:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.890196, 0.105882, 0.290196, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Gear/Control/Fever Effect Star/PointLight2D:enabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Gear/Control/Fever Effect Star/Explosion:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_najma"]
 _data = {
+&"5X JUST SHINE": SubResource("Animation_kmhpc"),
 &"Fever 1X": SubResource("Animation_xxcan"),
 &"Fever 2X": SubResource("Animation_nhmow"),
 &"Fever 3X": SubResource("Animation_jii80"),
@@ -663,9 +1229,9 @@ shader_parameter/speed = 0.55
 shader_parameter/seed = 3.335
 shader_parameter/randomness = 0.1
 
-[sub_resource type="Curve" id="Curve_xxcan"]
+[sub_resource type="Curve" id="Curve_xxuof"]
 _limits = [-200.0, 200.0, 0.0, 1.0]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.99999, 123.596), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.511364, 200), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 3
 
 [node name="JuneSkin" type="Control"]
@@ -695,6 +1261,7 @@ grow_vertical = 2
 theme_override_constants/separation = -15
 
 [node name="Speed" type="RichTextLabel" parent="Precision"]
+clip_children = 2
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/normal_font_size = 25
@@ -704,12 +1271,23 @@ autowrap_mode = 0
 horizontal_alignment = 2
 vertical_alignment = 1
 
+[node name="TextureRect" type="TextureRect" parent="Precision/Speed"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_kmhpc")
+
 [node name="MarginContainer" type="MarginContainer" parent="Precision"]
 layout_mode = 2
 theme_override_constants/margin_right = 7
 
 [node name="Percentage" type="RichTextLabel" parent="Precision/MarginContainer"]
+clip_children = 2
 layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("2_apgu0")
 theme_override_font_sizes/normal_font_size = 60
 text = "100% MAX"
 fit_content = true
@@ -717,7 +1295,15 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="TextureRect" type="TextureRect" parent="Precision/MarginContainer/Percentage"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Base" type="MarginContainer" parent="."]
 z_index = 6
 layout_mode = 1
 anchors_preset = -1
@@ -732,11 +1318,11 @@ size_flags_vertical = 10
 theme_override_constants/margin_right = 26
 theme_override_constants/margin_bottom = 26
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Base"]
 layout_mode = 2
 theme_override_constants/separation = -5
 
-[node name="Score" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
+[node name="Score" type="RichTextLabel" parent="Base/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 25
 text = "Score: 0"
@@ -744,17 +1330,56 @@ fit_content = true
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Base/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 
-[node name="Speed" type="RichTextLabel" parent="MarginContainer/VBoxContainer/MarginContainer"]
+[node name="Speed" type="RichTextLabel" parent="Base/VBoxContainer/MarginContainer"]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 20
 text = "Speed: 0.0x"
 fit_content = true
 autowrap_mode = 0
 vertical_alignment = 1
+
+[node name="Combo" type="MarginContainer" parent="."]
+z_index = 6
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -52.5
+offset_right = 52.5
+offset_bottom = 23.0
+grow_horizontal = 2
+theme_override_constants/margin_top = 87
+
+[node name="ComboText" type="RichTextLabel" parent="Combo"]
+modulate = Color(1, 1, 1, 0.705882)
+clip_children = 2
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("2_apgu0")
+theme_override_font_sizes/normal_font_size = 80
+text = "COMBO 60000"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="Combo/ComboText"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_vvqmb")
+
+[node name="ComboAnimation" type="AnimationPlayer" parent="."]
+root_node = NodePath("../Combo")
+libraries = {
+&"": SubResource("AnimationLibrary_jii80")
+}
 
 [node name="TextAnimation" type="AnimationPlayer" parent="."]
 libraries = {
@@ -890,7 +1515,6 @@ scale = Vector2(10, 10)
 emitting = false
 amount = 50
 texture = ExtResource("11_2ksjx")
-lifetime = 0.5
 one_shot = true
 explosiveness = 1.0
 lifetime_randomness = 0.5
@@ -903,15 +1527,48 @@ angular_velocity_min = -720.0
 angular_velocity_max = 720.0
 linear_accel_min = -100.0
 linear_accel_max = -100.0
-linear_accel_curve = SubResource("Curve_xxcan")
 radial_accel_min = -100.0
 radial_accel_max = -100.0
-tangential_accel_min = -100.0
-tangential_accel_max = -100.0
+radial_accel_curve = SubResource("Curve_xxuof")
+tangential_accel_min = -10.0
+tangential_accel_max = 10.0
 scale_amount_min = 0.0
 scale_amount_max = 0.5
 color = Color(1.106, 4.89, 4.8, 1)
 color_ramp = SubResource("Gradient_2ksjx")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Gear/Control/Fever Effect Star"]
+visible = false
+modulate = Color(1, 1, 1, 0)
+clip_children = 2
+z_index = 10
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 10
+theme_override_fonts/normal_font = ExtResource("14_xxcan")
+theme_override_font_sizes/normal_font_size = 130
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="Gear/Control/Fever Effect Star/RichTextLabel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_apgu0")
 
 [node name="Side" type="NinePatchRect" parent="Gear/Control"]
 layout_mode = 0

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dudy8af4gjeil"
+path="res://.godot/imported/Fever Impact 5.wav-4c507482a7bc9cc155a1d05630dbd97c.sample"
+
+[deps]
+
+source_file="res://assets/sfx/Fever Impact 5.wav"
+dest_files=["res://.godot/imported/Fever Impact 5.wav-4c507482a7bc9cc155a1d05630dbd97c.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2
