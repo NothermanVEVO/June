@@ -17,7 +17,7 @@ signal file_saved
 func _ready() -> void:
 	get_tree().root.close_requested.connect(_on_close_requested)
 	DialogConfirmation.confirmed.connect(_confirmation_dialog_confirmed)
-	DialogConfirmation.canceled.connect(_confirmation_dialog_canceled)
+	DialogConfirmation.custom_action.connect(_confirmation_dialog_canceled)
 	
 	get_tree().set_auto_accept_quit(false)
 
@@ -84,7 +84,7 @@ func to_resource() -> SongResource:
 
 func _on_close_requested() -> void:
 	if not _is_saved:
-		_dialog_confirmation_id = DialogConfirmation.pop_up("Sair sem salvar", "Salvar e sair", "Você tem modificações não salvas.")
+		_dialog_confirmation_id = DialogConfirmation.pop_up("Cancelar", "Salvar e sair", "Você tem modificações não salvas.", "Sair sem salvar")
 	else:
 		get_tree().quit()
 
@@ -102,6 +102,6 @@ func _confirmation_dialog_confirmed() -> void: ## QUIT WITH SAVING
 		if saved_id == FileMenu.get_last_saved_id():
 			get_tree().quit()
 
-func _confirmation_dialog_canceled() -> void: ## QUIT WITHOUT SAVING
+func _confirmation_dialog_canceled(custom_action : StringName) -> void: ## QUIT WITHOUT SAVING
 	if _dialog_confirmation_id == DialogConfirmation.get_last_caller():
 		get_tree().quit()

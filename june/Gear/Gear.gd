@@ -168,6 +168,7 @@ func remove_long_note(long_note : LongNote, free : bool = false, validate : bool
 	if validate:
 		_validate_long_notes()
 
+## WHY ARE YOU DOING THIS LIKE THIS???
 func remove_long_note_from_time(time : float, type : LongNote.Type, note_value, free : bool = false, validate : bool = false) -> void:
 	var _lg_notes := get_long_notes(time, time)
 	for long_note in _lg_notes:
@@ -265,27 +266,20 @@ func _validate_long_notes() -> void: # EH FEIO ISSO AQ MAS TO COM PREGUIÇA DE F
 		_validate_fade_notes(fade_notes)
 
 func _validate_fade_notes(fade_notes : Array[LongNote]) -> void: # DOESN'T WORK PERFECT LIKE INTENDED IF SOME LONG NOTES IN THE SAME TIME POS
-	var valid_fade_notes_idxs : Array[int] = []
-	var j_limit := fade_notes.size() - 1
-	for i in range(0, fade_notes.size(), 1):
-		if valid_fade_notes_idxs.has(i):
-			continue
+	for i in range(0, fade_notes.size(), 2):
+		var found_pair := false
 		if not fade_notes[i].fade: # FADE OUT
-			var found_fade_in := false
-			for j in range(j_limit, i, -1):
-				if fade_notes[j].fade:
-					j_limit -= 1
-					found_fade_in = not fade_notes[i].get_time() == fade_notes[j].get_time()
-					if found_fade_in:
-						valid_fade_notes_idxs.append(j)
-					var notes := get_notes_between(fade_notes[i].get_time(), fade_notes[j].get_time())
+			if i + 1 < fade_notes.size():
+				if fade_notes[i + 1].fade: # FADE IN
+					fade_notes[i].set_invalid_highlight(false)
+					fade_notes[i + 1].set_invalid_highlight(false)
+					found_pair = true
+					var notes := get_notes_between(fade_notes[i].get_time(), fade_notes[i + 1].get_time())
 					for note in notes:
 						note.set_invalid_highlight(true)
-					break
 				else:
-					fade_notes[j].set_invalid_highlight(true)
-			fade_notes[i].set_invalid_highlight(not found_fade_in)
-		else:
+					fade_notes[i + 1].set_invalid_highlight(true)
+		elif not found_pair:
 			fade_notes[i].set_invalid_highlight(true)
 
 func get_global_long_note_intersected_rects(rect : Rect2) -> LongNote:

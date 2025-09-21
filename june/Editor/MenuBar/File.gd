@@ -27,7 +27,7 @@ func _ready() -> void:
 	
 	index_pressed.connect(_file_index_pressed)
 	DialogConfirmation.confirmed.connect(_confirmation_dialog_confirmed)
-	DialogConfirmation.canceled.connect(_confirmation_dialog_canceled)
+	DialogConfirmation.custom_action.connect(_confirmation_dialog_canceled)
 	
 	#file_dialog.access = FileDialog.ACCESS_USERDATA
 	#file_dialog.root_subfolder = Global.EDITOR_PATH
@@ -87,7 +87,7 @@ func _confirmation_dialog_confirmed() -> void:
 			else:
 				_quit_on_save_id = save()
 
-func _confirmation_dialog_canceled() -> void:
+func _confirmation_dialog_canceled(custom_action : StringName) -> void:
 	if DialogConfirmation.get_last_caller() != dialog_confirmation_id:
 		return
 	match _last_choice:
@@ -248,8 +248,8 @@ func _quit() -> void:
 		Editor.is_on_editor = false
 		get_tree().change_scene_to_packed(Global.START_SCREEN_SCENE)
 
-func _pop_confirmation_dialog(dialog_text : String, ok_button_text : String, choice : Choices, cancel_text : String = "Cancelar") -> void:
-	dialog_confirmation_id = DialogConfirmation.pop_up(cancel_text, ok_button_text, dialog_text)
+func _pop_confirmation_dialog(dialog_text : String, ok_button_text : String, choice : Choices, custom_button_text : String = "", cancel_text : String = "Cancelar") -> void:
+	dialog_confirmation_id = DialogConfirmation.pop_up(cancel_text, ok_button_text, dialog_text, custom_button_text)
 	_last_choice = choice
 
 func _file_dialog_file(path : String) -> void:
