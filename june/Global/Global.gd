@@ -111,6 +111,7 @@ func _create_settings() -> void:
 	_settings_dictionary["video_msaa"] = VideoScreen.MSAA.DISABLED
 	
 	_settings_dictionary["audio_main_volume"] = 0.5
+	_settings_dictionary["audio_sfx"] = 1
 	
 	_settings_dictionary["1_4k"] = 83
 	_settings_dictionary["2_4k"] = 68
@@ -152,6 +153,8 @@ func _load_settings() -> void:
 	if result == OK:
 		_settings_dictionary = json.get_data()
 	
+	_adjust_settings_dictionary()
+	
 	_load_video_settings()
 	_load_audio_settings()
 	_load_controls_settings()
@@ -163,13 +166,68 @@ func save_settings(dictionary : Dictionary) -> void:
 		var json_string := JSON.stringify(_settings_dictionary, "\t")
 		file.store_string(json_string)
 		file.close()
-	
-	_load_video_settings()
-	_load_audio_settings()
-	_load_controls_settings()
+		
+		_load_video_settings()
+		_load_audio_settings()
+		_load_controls_settings()
 
 func get_settings_dictionary() -> Dictionary:
 	return _settings_dictionary
+
+func _adjust_settings_dictionary() -> void:
+	if not _settings_dictionary.has("video_mode"):
+		_settings_dictionary["video_mode"] = VideoScreen.Modes.FULLSCREEN
+	if not _settings_dictionary.has("video_vsync"):
+		_settings_dictionary["video_vsync"] = VideoScreen.Vsync.ACTIVATED
+	if not _settings_dictionary.has("video_msaa"):
+		_settings_dictionary["video_msaa"] = VideoScreen.MSAA.DISABLED
+	
+	if not _settings_dictionary.has("audio_main_volume"):
+		_settings_dictionary["audio_main_volume"] = 0.5
+	if not _settings_dictionary.has("audio_sfx"):
+		_settings_dictionary["audio_sfx"] = 1
+	
+	if not _settings_dictionary.has("1_4k"):
+		_settings_dictionary["1_4k"] = 83
+	if not _settings_dictionary.has("2_4k"):
+		_settings_dictionary["2_4k"] = 68
+	if not _settings_dictionary.has("3_4k"):
+		_settings_dictionary["3_4k"] = 75
+	if not _settings_dictionary.has("4_4k"):
+		_settings_dictionary["4_4k"] = 76
+	
+	if not _settings_dictionary.has("1_5k"):
+		_settings_dictionary["1_5k"] = 83
+	if not _settings_dictionary.has("2_5k"):
+		_settings_dictionary["2_5k"] = 68
+	if not _settings_dictionary.has("3_5k"):
+		_settings_dictionary["3_5k"] = 74
+	if not _settings_dictionary.has("4_5k"):
+		_settings_dictionary["4_5k"] = 75
+	if not _settings_dictionary.has("5_5k"):
+		_settings_dictionary["5_5k"] = 76
+	
+	if not _settings_dictionary.has("1_6k"):
+		_settings_dictionary["1_6k"] = 83
+	if not _settings_dictionary.has("2_6k"):
+		_settings_dictionary["2_6k"] = 68
+	if not _settings_dictionary.has("3_6k"):
+		_settings_dictionary["3_6k"] = 70
+	if not _settings_dictionary.has("4_6k"):
+		_settings_dictionary["4_6k"] = 74
+	if not _settings_dictionary.has("5_6k"):
+		_settings_dictionary["5_6k"] = 75
+	if not _settings_dictionary.has("6_6k"):
+		_settings_dictionary["6_6k"] = 76
+	
+	if not _settings_dictionary.has("video"):
+		_settings_dictionary["video"] = true
+	if not _settings_dictionary.has("particles"):
+		_settings_dictionary["particles"] = true
+	if not _settings_dictionary.has("glow"):
+		_settings_dictionary["glow"] = true
+	
+	save_settings(_settings_dictionary)
 
 func _load_video_settings() -> void:
 	match int(_settings_dictionary["video_mode"]):
@@ -200,6 +258,7 @@ func _load_video_settings() -> void:
 
 func _load_audio_settings() -> void:
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Song"), linear_to_db(_settings_dictionary["audio_main_volume"]))
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Sound Effect"), linear_to_db(_settings_dictionary["audio_sfx"]))
 
 func _load_controls_settings() -> void:
 	## 4 KEYS

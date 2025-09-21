@@ -187,8 +187,6 @@ func set_fever_value(value : float, fever : Note.Fever, hit_again : bool = false
 					_fever_star_effect_animation.play("Fever 5X")
 					Sfx.play_fever_impact()
 				if _no_effect:
-					_fever_star_effect_animation.play("RESET")
-					_explosion_particles.restart()
 					_fever_star_effect_animation.play("5X JUST SHINE")
 				_current_fever = fever
 				fever_gradient.texture = _FIFTH_FEVER_GRADIENT_TEXTURE

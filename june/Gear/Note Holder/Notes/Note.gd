@@ -24,7 +24,7 @@ var _idx : int
 
 var powered : bool = false
 
-enum Fever {NONE = 0, X1 = 20, X2 = 40, X3 = 60, X4 = 80, X5 = 100, ZONE = 120, MAX_ZONE = 140}
+enum Fever {NONE = 0, X1 = 40, X2 = 80, X3 = 120, X4 = 160, X5 = 200, ZONE = 240, MAX_ZONE = 280}
 const FEVER_VALUE : float = 1.0
 
 func _init(current_time : float) -> void:

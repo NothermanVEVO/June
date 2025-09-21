@@ -7,7 +7,7 @@ signal restart_pressed
 signal quit_pressed
 
 func _process(delta: float) -> void:
-	if Input.is_action_just_pressed("Escape"):
+	if Input.is_action_just_pressed("Escape") and Editor.editor_music_player.visible:
 		_on_resume_pressed()
 
 func _on_resume_pressed() -> void:
@@ -29,8 +29,6 @@ func _on_quit_pressed() -> void:
 func _on_visibility_changed() -> void:
 	if visible and $MarginContainer/VBoxContainer/Resume:
 		get_tree().paused = true
-		Song.stream_paused = true
 		$MarginContainer/VBoxContainer/Resume.grab_focus()
 	if is_inside_tree() and not visible:
 		get_tree().paused = false
-		Song.stream_paused = false

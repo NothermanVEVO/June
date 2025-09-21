@@ -174,8 +174,8 @@ func pause() -> void:
 		set_process(not is_processing())
 		return
 	Song.stream_paused = not _pause_screen.visible
-	if video.stream and Global.get_settings_dictionary()["video"]:
-		video.paused = not _pause_screen.visible
+	#if video.stream and Global.get_settings_dictionary()["video"]:
+		#video.paused = not _pause_screen.visible # NOTE The get_tree().paused already works at the video
 	_pause_screen.visible = not _pause_screen.visible
 
 func _quit() -> void:
@@ -246,7 +246,7 @@ func _calculate_fever(precision : int) -> void:
 			_current_combo += 10
 		_perfect_state = true
 	elif _current_fever_score >= Note.Fever.MAX_ZONE:
-		_current_fever_score = Note.Fever.X5 + (_current_fever_score - Note.Fever.ZONE)
+		_current_fever_score = Note.Fever.ZONE + (_current_fever_score - Note.Fever.MAX_ZONE)
 		_gear_skin.set_fever_value(Global.get_percentage_between(Note.Fever.ZONE, Note.Fever.MAX_ZONE, _current_fever_score) * 100, Note.Fever.MAX_ZONE, true)
 	
 	_gear_skin.set_combo(_current_combo)

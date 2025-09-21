@@ -88,6 +88,7 @@ func _player_process() -> void:
 					_notes[_currently_note_idx].end_state = Note.State.BREAK
 					if Global.main_music_player:
 						Global.main_music_player.pop_precision(0)
+					_notes[_currently_note_idx].modulate.a = 0.5
 					_currently_note_idx += 1
 					_check_for_last_note_processed()
 		elif _notes[_currently_note_idx].get_time() < Song.get_time() - MAX_TIME_HIT:
@@ -136,7 +137,7 @@ func display_notes(time : float) -> void:
 			note.visible = false
 	
 	for note in notes:
-		note.visible = (note.end_state != Note.State.HITTED and note.state != Note.State.BREAK) if note is HoldNote else note.state == Note.State.TO_HIT
+		note.visible = note.end_state != Note.State.HITTED if note is HoldNote else note.state == Note.State.TO_HIT
 		if not note.visible:
 			continue
 		note.position.x = -width / 2
@@ -175,6 +176,7 @@ func _hit(time : float) -> void:
 			if Global.main_music_player:
 				Global.main_music_player.pop_precision(precision)
 			if precision == 0:
+				_notes[_currently_note_idx].modulate.a = 0.5
 				_notes[_currently_note_idx].state == Note.State.BREAK
 				_currently_note_idx += 1
 				_check_for_last_note_processed()
@@ -191,6 +193,8 @@ func _hit_hold_note() -> void:
 		_notes[_currently_note_idx].end_state = Note.State.HITTED
 		var precision := _calculate_difference(Song.get_time(), _notes[_currently_note_idx].get_end_time())
 		if Song.get_time() < _notes[_currently_note_idx].get_end_time() - MAX_TIME_HIT:
+			_notes[_currently_note_idx].modulate.a = 0.5
+			_notes[_currently_note_idx].end_state = Note.State.BREAK
 			precision = 0
 		elif Song.get_time() > _notes[_currently_note_idx].get_end_time():
 			if precision == 0 or Song.get_time() > _notes[_currently_note_idx].get_end_time() + MAX_TIME_HIT: ## DOES THAT WORK? COULDN'T TEST
