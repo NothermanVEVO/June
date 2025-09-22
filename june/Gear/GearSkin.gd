@@ -54,6 +54,9 @@ const STAR_ROTATION_SPEED : float = PI / 32
 
 var _current_fever : Note.Fever = Note.Fever.NONE
 
+@onready var _finalization_animation : AnimationPlayer = $FinalizationAnimation
+enum Finalization{CLEAR, MAX_COMBO, PERFECT_COMBO}
+
 func _ready() -> void:
 	_bpm = 60.0 / Song.BPM
 	
@@ -62,10 +65,11 @@ func _ready() -> void:
 	_shader_material.set_shader_parameter("speed", -1.0)
 	_shader_material.set_shader_parameter("highlight_strength", 4)
 	
-	if Global.get_settings_dictionary()["particles"]:
-		_fever_star_effect_animation.play("RESET")
-		beat_animation.play("RESET")
-		text_animation.play("RESET")
+	#if Global.get_settings_dictionary()["particles"]:
+	_fever_star_effect_animation.play("RESET")
+	beat_animation.play("RESET")
+	text_animation.play("RESET")
+	_finalization_animation.play("RESET")
 
 func _process(delta: float) -> void:
 	if Song.get_time() >= _last_time_beat + _bpm:
@@ -218,3 +222,7 @@ func set_combo(combo : int) -> void:
 	if _combo_animation.is_playing():
 		_combo_animation.play("RESET")
 	_combo_animation.play("Pop")
+
+func play_finalization(finalization : Finalization) -> void:
+	Sfx.play_finalization()
+	_finalization_animation.play(str(Finalization.keys()[finalization]))
