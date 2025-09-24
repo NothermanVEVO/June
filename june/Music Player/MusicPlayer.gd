@@ -359,7 +359,8 @@ func _last_note_was_processed() -> void:
 			break
 	if perfect:
 		_gear_skin.play_finalization(GearSkin.Finalization.PERFECT_COMBO)
-	wait_for_song_to_finish(_current_uuid)
+	if autoload:
+		wait_for_song_to_finish(_current_uuid)
 
 func wait_for_song_to_finish(id : String) -> void:
 	#print("to perando")
