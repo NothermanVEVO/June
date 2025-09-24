@@ -31,6 +31,8 @@ DialogFile="*res://Global/DialogFile.gd"
 Loader="*res://Global/Loader.gd"
 World="*res://Global/World.gd"
 Sfx="*res://Global/SFX.gd"
+Game="*res://Global/Game.gd"
+Transition="*res://Global/Transition.gd"
 
 [display]
 

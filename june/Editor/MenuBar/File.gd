@@ -134,14 +134,15 @@ static func save_file(path : String, song_res : SongResource = null) -> void:
 			var song_resource : SongResource
 			if song_res:
 				song_resource = song_res
+				song_resource.ID = Global.get_UUID()
 			else:
 				song_resource = Editor.to_resource()
+				song_resource.ID = current_ID
 			for s_map in song_resource.song_maps:
 				for note in s_map.notes:
 					note.is_selected = false
 				for long_note in s_map.long_notes:
 					long_note.is_selected = false
-			song_resource.ID = current_ID
 			var file := FileAccess.open(path, FileAccess.WRITE)
 			if file:
 				var json_string := JSON.stringify(song_resource.get_dictionary(), "\t")

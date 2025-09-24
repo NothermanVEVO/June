@@ -14,15 +14,11 @@ func load_music_stream(path : String):
 	return null
 
 func load_image(path : String):
-	var image := Image.new()
-	var error = image.load(path)
-	
-	if error != OK:
+	if not FileAccess.file_exists(path):
 		return null
-	else:
-		var image_texture = ImageTexture.new()
-		image_texture.set_image(image)
-		return image_texture
+	var image := Image.load_from_file(path)
+	
+	return ImageTexture.create_from_image(image)
 
 func load_video_stream(path : String):
 	var stream = VideoStreamTheora.new()

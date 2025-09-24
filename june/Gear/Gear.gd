@@ -18,7 +18,7 @@ static var _max_size_y : float = -1
 
 static var _speed : float = 1.0
 
-var _long_notes : Array[LongNote]
+var _long_notes : Array[LongNote] = []
 var _last_visible_long_notes : Array[LongNote]
 
 var _number_of_last_processed_signals_received : int = 0
@@ -26,6 +26,8 @@ signal last_note_was_processed
 
 var _currently_long_note_idx : int = 0
 static var _game_speed := 1.0
+
+static var _time_after_song_finished : float = 0.0
 
 var _speed_tween : Tween
 
@@ -38,6 +40,7 @@ func _init(type : Type, mode : Mode, center_screen : bool = true, max_size_y : f
 	_type = type
 	self.mode = mode
 	_game_speed = 1.0
+	_time_after_song_finished = 0.0
 	_center_screen = center_screen
 	if max_size_y >= 0:
 		_max_size_y = max_size_y
@@ -66,9 +69,6 @@ func _ready() -> void: #TODO HANDLE ANY POSITION FOR THE GEAR, NOT ONLY THE MIDD
 		note_holder.changed_note.connect(_changed_note_from_note_holder)
 
 func _process(_delta: float) -> void:
-	if not _long_notes:
-		return
-	
 	match mode:
 		Mode.PLAYER:
 			_player_process()
@@ -76,6 +76,9 @@ func _process(_delta: float) -> void:
 			_editor_process()
 
 func _player_process() -> void:
+	if Song.is_finished():
+		_time_after_song_finished += get_process_delta_time()
+	
 	if _currently_long_note_idx >= _long_notes.size():
 		return
 	
@@ -87,7 +90,11 @@ func _player_process() -> void:
 				_fade_change_speed()
 			LongNote.Type.FADE:
 				if _long_notes[_currently_long_note_idx].fade:
-					fade_in.emit()
+					for note_holder in _note_holders:
+						if note_holder.get_notes(Song.get_time(), Song.get_duration()).size() > 0:
+							fade_in.emit()
+							_currently_long_note_idx += 1
+							return
 				else:
 					fade_out.emit()
 		_currently_long_note_idx += 1
@@ -106,6 +113,9 @@ func _set_game_speed(speed : float) -> void:
 	Global.speed_changed.emit()
 
 func _editor_process() -> void:
+	if not _long_notes:
+		return
+	
 	var long_notes = get_long_notes(Song.get_time(), Song.get_time() + MAX_TIME_Y())
 	
 	for long_note in _last_visible_long_notes:
@@ -119,6 +129,9 @@ func _editor_process() -> void:
 		long_note.position.y = time_pos_y
 	
 	_last_visible_long_notes = long_notes
+
+static func get_time_after_song_finished() -> float:
+	return _time_after_song_finished
 
 func get_all_long_notes() -> Array[LongNote]:
 	return _long_notes
@@ -279,6 +292,8 @@ func _validate_fade_notes(fade_notes : Array[LongNote]) -> void: # DOESN'T WORK 
 						note.set_invalid_highlight(true)
 				else:
 					fade_notes[i + 1].set_invalid_highlight(true)
+			else:
+				fade_notes[i].set_invalid_highlight(true)
 		elif not found_pair:
 			fade_notes[i].set_invalid_highlight(true)
 
@@ -372,7 +387,13 @@ static func get_max_size_y() -> float:
 
 func _note_holders_last_processed_notes() -> void:
 	_number_of_last_processed_signals_received += 1
-	if _number_of_last_processed_signals_received >= _note_holders.size():
+	
+	var number_of_empty_note_holders := 0
+	for note_holder in _note_holders:
+		if note_holder.is_empty():
+			number_of_empty_note_holders += 1
+	
+	if _number_of_last_processed_signals_received >= _note_holders.size() - number_of_empty_note_holders:
 		last_note_was_processed.emit()
 
 func _draw() -> void:

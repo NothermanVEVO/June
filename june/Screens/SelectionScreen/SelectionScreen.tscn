@@ -1,0 +1,102 @@
+[gd_scene load_steps=3 format=3 uid="uid://b4s84ahuhqyry"]
+
+[ext_resource type="Script" uid="uid://dxc8dk3ynt2dc" path="res://Screens/SelectionScreen/Songs.gd" id="1_y8xdi"]
+[ext_resource type="PackedScene" uid="uid://bmhuy5v7e77dw" path="res://Screens/SelectionScreen/TabButtons/TabButton.tscn" id="2_y8xdi"]
+
+[node name="SelectionScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+volume_db = -80.0
+expand = true
+loop = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Quit" type="Button" parent="VBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 35
+text = "Voltar"
+
+[node name="Songs" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("1_y8xdi")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Songs"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Songs/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="SelectedSong" type="TabContainer" parent="VBoxContainer/Songs/HBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(700, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 40
+tab_alignment = 1
+current_tab = 0
+
+[node name="4 Botões" parent="VBoxContainer/Songs/HBoxContainer/MarginContainer/SelectedSong" instance=ExtResource("2_y8xdi")]
+layout_mode = 2
+gear_type = 4
+
+[node name="5 Botões" parent="VBoxContainer/Songs/HBoxContainer/MarginContainer/SelectedSong" instance=ExtResource("2_y8xdi")]
+visible = false
+layout_mode = 2
+gear_type = 5
+metadata/_tab_index = 1
+
+[node name="6 Botões" parent="VBoxContainer/Songs/HBoxContainer/MarginContainer/SelectedSong" instance=ExtResource("2_y8xdi")]
+visible = false
+layout_mode = 2
+gear_type = 6
+metadata/_tab_index = 2
+
+[node name="Songs" type="MarginContainer" parent="VBoxContainer/Songs/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/Songs/HBoxContainer/Songs"]
+layout_mode = 2
+follow_focus = true
+horizontal_scroll_mode = 0
+
+[node name="SongsContainer" type="VBoxContainer" parent="VBoxContainer/Songs/HBoxContainer/Songs/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[connection signal="pressed" from="VBoxContainer/MarginContainer/Quit" to="VBoxContainer/Songs" method="_on_quit_pressed"]
+[connection signal="tab_changed" from="VBoxContainer/Songs/HBoxContainer/MarginContainer/SelectedSong" to="VBoxContainer/Songs" method="_on_selected_song_tab_changed"]

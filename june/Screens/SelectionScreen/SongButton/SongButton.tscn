@@ -1,0 +1,55 @@
+[gd_scene load_steps=3 format=3 uid="uid://4nfrkkxuyin"]
+
+[ext_resource type="Script" uid="uid://dhkivk3pgyfcd" path="res://Screens/SelectionScreen/SongButton/SongButton.gd" id="1_rjb7l"]
+[ext_resource type="Texture2D" uid="uid://cdycxrdrlr8to" path="res://icon.svg" id="1_ycx0p"]
+
+[node name="SongButton" type="Button"]
+custom_minimum_size = Vector2(0, 150)
+script = ExtResource("1_rjb7l")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="HSplitContainer" type="HSplitContainer" parent="HBoxContainer"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+dragging_enabled = false
+dragger_visibility = 1
+
+[node name="Icon" type="TextureRect" parent="HBoxContainer"]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+texture = ExtResource("1_ycx0p")
+expand_mode = 1
+
+[node name="Texts" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SongName" type="RichTextLabel" parent="HBoxContainer/Texts"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_font_sizes/normal_font_size = 45
+text = " So Happy"
+scroll_active = false
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="AuthorName" type="RichTextLabel" parent="HBoxContainer/Texts"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_font_sizes/normal_font_size = 35
+text = "	 Raven & Kreyn"
+autowrap_mode = 0

@@ -5,6 +5,7 @@ enum TitleType {BASE, EDITOR_UNSAVED, EDITOR_SAVED, EDITOR_SAVED_CHANGED}
 const EDITOR_PATH : String = "user://editor"
 const SONGS_PATH : String = "user://songs"
 const SETTINGS_PATH : String = "user://settings.json"
+const SAVE_PATH : String = "user://save.json"
 
 var rng := RandomNumberGenerator.new()
 
@@ -27,11 +28,13 @@ const HIGHLIGHT_SHADER = preload("res://shaders/Highlight.gdshader")
 var _mouse_effect : MouseEffect
 
 var START_SCREEN_SCENE := load("res://Screens/StartScreen.tscn")
+var SELECTION_SCREEN_SCENE := load("res://Screens/SelectionScreen/SelectionScreen.tscn")
 var EDITOR_SCREEN_SCENE := load("res://Screens/EditorScreen.tscn")
 var SETTING_SCREEN_SCENE := load("res://Screens/SettingsScreen.tscn")
 var VIDEO_SCREEN_SCENE := load("res://Screens/VideoScreen.tscn")
 var AUDIO_SCREEN_SCENE := load("res://Screens/AudioScreen.tscn")
 var CONTROL_SCREEN_SCENE := load("res://Screens/ControlsScreen.tscn")
+var MUSIC_PLAYER_SCENE := load("res://Music Player/MusicPlayer.tscn")
 
 const SHINE_HIGHLIGHT := preload("res://shaders/Shine.gdshader")
 
@@ -49,12 +52,12 @@ func _ready() -> void:
 		_create_settings()
 	else:
 		_load_settings()
+	if not FileAccess.file_exists(SAVE_PATH):
+		create_save({})
 
 @warning_ignore("unused_parameter")
 func _process(delta: float) -> void:
 	#print_orphan_nodes() ## NOTE USE THIS TO CHECK FOR POSSIBLE MEMORY LEAK
-	#if Input.is_action_just_pressed("1_4k"):
-		#print("oi")
 	pass
 
 func set_mouse_effect(effect : MouseEffect.Effect) -> void:
@@ -71,11 +74,11 @@ func get_UUID() -> String:
 	var middle := ""
 	var end := ""
 	
-	for i in range(6):
+	for i in range(12):
 		begin += values.substr(rng.randi_range(0, values.length() - 1), 1)
-	for i in range(4):
-		middle += values.substr(rng.randi_range(0, values.length() - 1), 1)
 	for i in range(10):
+		middle += values.substr(rng.randi_range(0, values.length() - 1), 1)
+	for i in range(16):
 		end += values.substr(rng.randi_range(0, values.length() - 1), 1)
 	
 	return begin + "-" + middle + "-" + end
@@ -105,6 +108,48 @@ func text_to_time(text : String) -> float:
 	var absolute_seconds : float = minutes * 60 + seconds + (miliseconds + 0.0005) # !!BUG!! THE DECIMAL NUMBER DECREASES IN 0.001, AND INCREASES IN 0.0001 WHEN PUTTING MORE THAN 3 NUMBER IN THE DECIMAL, SOLVE THIS LATER
 	absolute_seconds = absolute_seconds if absolute_seconds <= Song.get_duration() else Song.get_duration()
 	return absolute_seconds
+
+func create_save(dictionary : Dictionary) -> void:
+	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
+	if file:
+		var json_string := JSON.stringify(dictionary, "\t")
+		file.store_string(json_string)
+		file.close()
+
+func get_save() -> Dictionary:
+	var file := FileAccess.open(SAVE_PATH, FileAccess.READ)
+	if not file:
+		return {}
+	var content := file.get_as_text()
+	file.close()
+	
+	var json := JSON.new()
+	var result = json.parse(content)
+	if result == OK:
+		return json.get_data()
+	return {}
+
+func save_sample() -> Dictionary:
+	return {
+		"4 buttons": {
+			"FACIL": {"combo": 0.0, "score": 0.0},
+			"NORMAL": {"combo": 0.0, "score": 0.0},
+			"HARD": {"combo": 0.0, "score": 0.0},
+			"MAXIMUS": {"combo": 0.0, "score": 0.0}
+		},
+		"5 buttons": {
+			"FACIL": {"combo": 0.0, "score": 0.0},
+			"NORMAL": {"combo": 0.0, "score": 0.0},
+			"HARD": {"combo": 0.0, "score": 0.0},
+			"MAXIMUS": {"combo": 0.0, "score": 0.0}
+		},
+		"6 buttons": {
+			"FACIL": {"combo": 0.0, "score": 0.0},
+			"NORMAL": {"combo": 0.0, "score": 0.0},
+			"HARD": {"combo": 0.0, "score": 0.0},
+			"MAXIMUS": {"combo": 0.0, "score": 0.0}
+		}
+	}
 
 func _create_settings() -> void:
 	_settings_dictionary["video_mode"] = VideoScreen.Modes.FULLSCREEN

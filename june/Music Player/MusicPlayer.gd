@@ -3,6 +3,7 @@ extends Control
 class_name MusicPlayer
 
 #@export var _song_resource_path : String
+@export var autoload : bool = true
 @export var _gear_type : Gear.Type = Gear.Type.FOUR_KEYS
 @export var _difficulty : SongMap.Difficulty
 @export var _gear_skin_scene : PackedScene
@@ -45,8 +46,9 @@ var _current_section_title : String
 
 var _fade_out_reseted : bool = true
 
+var _current_uuid : String = ""
+
 signal game_started
-signal game_ended(score : int, combo : int, section : Dictionary)
 
 signal quit_request
 
@@ -62,6 +64,10 @@ func _ready() -> void:
 	_pause_screen.resume_pressed.connect(pause)
 	_pause_screen.restart_pressed.connect(restart)
 	_pause_screen.quit_pressed.connect(_quit)
+	
+	if autoload:
+		Game.load_music_player(self)
+		_pause_screen.quit_pressed.connect(Game.change_back_to_selection)
 
 func _resized() -> void:
 	if _gear:
@@ -114,6 +120,7 @@ func start() -> void:
 	if not World.environment:
 		World.load_glow_environment()
 	_fade_out_reseted = true
+	_current_uuid = Global.get_UUID()
 	_section_dict.clear()
 	_current_section_title = DEFAULT_SECTION_TITLE
 	_section_dict[_current_section_title] = _default_precision_dictionary()
@@ -339,6 +346,7 @@ func _draw() -> void:
 
 func _last_note_was_processed() -> void:
 	#print(_section_dict)
+	#print("foi")
 	var perfect : bool = true
 	for section in _section_dict.values():
 		if _section_has_break(section):
@@ -351,6 +359,16 @@ func _last_note_was_processed() -> void:
 			break
 	if perfect:
 		_gear_skin.play_finalization(GearSkin.Finalization.PERFECT_COMBO)
+	wait_for_song_to_finish(_current_uuid)
+
+func wait_for_song_to_finish(id : String) -> void:
+	#print("to perando")
+	if not Song.is_finished():
+		await Song.finished
+	#print(id)
+	#print(_current_uuid)
+	if self and id == _current_uuid:
+		Game.game_ended.emit(current_score, _current_combo, _section_dict)
 
 func _section_has_break(section : Dictionary) -> bool:
 	return section["0"] > 0

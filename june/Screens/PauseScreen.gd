@@ -7,8 +7,12 @@ signal restart_pressed
 signal quit_pressed
 
 func _process(delta: float) -> void:
-	if Input.is_action_just_pressed("Escape") and Editor.editor_music_player.visible:
-		_on_resume_pressed()
+	if Input.is_action_just_pressed("Escape"):
+		if Editor.editor_music_player:
+			if Editor.editor_music_player.visible:
+				_on_resume_pressed()
+		else:
+			_on_resume_pressed()
 
 func _on_resume_pressed() -> void:
 	get_tree().paused = false

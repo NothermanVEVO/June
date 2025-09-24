@@ -5,7 +5,7 @@ func _ready() -> void:
 	$VBoxContainer/Play.grab_focus()
 
 func _on_play_pressed() -> void:
-	pass
+	get_tree().change_scene_to_packed(Global.SELECTION_SCREEN_SCENE)
 
 func _on_editor_pressed() -> void:
 	get_tree().change_scene_to_packed(Global.EDITOR_SCREEN_SCENE)

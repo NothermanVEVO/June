@@ -13,13 +13,13 @@ func _ready() -> void:
 	bus = &"Song"
 
 func _process(_delta: float) -> void:
-	if _song_finished:
-		_song_finished = false
 	
 	if playing:
+		_song_finished = false
 		_current_time = get_playback_position()
 
 func _finished() -> void:
+	Song.set_time(get_duration())
 	_song_finished = true
 
 @warning_ignore("shadowed_variable_base_class")
@@ -34,7 +34,7 @@ func set_time(time : float) -> void:
 func get_time() -> float:
 	return _current_time
 
-func is_song_finished() -> bool:
+func is_finished() -> bool:
 	return _song_finished
 
 func get_duration() -> float:
