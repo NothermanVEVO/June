@@ -9,6 +9,10 @@ class_name AudioScreen
 @onready var _sfx_volume_slider : HSlider = $PanelContainer/MarginContainer/VBoxContainer/SFXVolume/SFXVolumeSlider
 
 func _ready() -> void:
+	Song.finished.connect(func():
+		Song.play()
+	)
+	
 	_main_volume_slider.grab_focus()
 	
 	var dict := Global.get_settings_dictionary()

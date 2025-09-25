@@ -31,6 +31,10 @@ var _currently_playing_uuid : String = ""
 var _request_background_id : int = 0
 
 func _ready() -> void:
+	Song.finished.connect(func():
+		Song.play()
+	)
+	
 	for child in selected_song_container.get_children(true):
 		if not child is TabButton and child is TabBar:
 			tab_bar_selection = child

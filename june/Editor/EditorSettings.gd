@@ -301,10 +301,11 @@ func load_editor(song : String, author : String, track : String, BPM : int, crea
 	if video_path:
 		valid = -1 if set_video(video_path) == -1 else valid
 	
-	if valid == -1:
-		reset()
-		return -1
-	return 0
+	#if valid == -1:
+		#reset()
+		#return -1
+	#return 0
+	return valid
 
 func get_song_name() -> String:
 	return $HBoxContainer/Left/VBoxContainer/Name/NameTextEdit.text

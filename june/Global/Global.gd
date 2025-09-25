@@ -206,6 +206,7 @@ func _load_settings() -> void:
 	
 	_adjust_settings_dictionary()
 	
+	_load_game_settings()
 	_load_video_settings()
 	_load_audio_settings()
 	_load_controls_settings()
@@ -218,6 +219,7 @@ func save_settings(dictionary : Dictionary) -> void:
 		file.store_string(json_string)
 		file.close()
 		
+		_load_game_settings()
 		_load_video_settings()
 		_load_audio_settings()
 		_load_controls_settings()

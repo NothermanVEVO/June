@@ -71,14 +71,7 @@ func _confirmation_dialog_confirmed() -> void:
 		return
 	match _last_choice:
 		Choices.NEW:
-			Editor.editor_composer.editor_menu_bar.reset()
-			Editor.editor_settings.reset()
-			Editor.editor_composer.visible = false
-			Editor.editor_settings.visible = true
-			_file_path = ""
-			current_ID = Global.get_UUID()
-			Global.set_window_title(Global.TitleType.EDITOR_UNSAVED)
-			Editor.saved_file()
+			_new_file()
 		Choices.QUIT:
 			if _file_path:
 				save_file(_file_path)
@@ -100,6 +93,16 @@ func new_file() -> void:
 		return
 	_pop_confirmation_dialog("Você quer criar um novo arquivo?", "Yes", Choices.NEW)
 
+func _new_file() -> void:
+	Editor.editor_composer.editor_menu_bar.reset()
+	Editor.editor_settings.reset()
+	Editor.editor_composer.visible = false
+	Editor.editor_settings.visible = true
+	_file_path = ""
+	current_ID = Global.get_UUID()
+	Global.set_window_title(Global.TitleType.EDITOR_UNSAVED)
+	Editor.saved_file()
+
 func open_file() -> void:
 	dialog_file_id = DialogFile.pop_up(FileDialog.FILE_MODE_OPEN_FILE, FileDialog.ACCESS_USERDATA, Global.EDITOR_PATH)
 	_last_file_dialog_choice = Choices.OPEN
@@ -108,6 +111,8 @@ func _open_file(path : String) -> void:
 	if not FileAccess.file_exists(_file_path):
 		_pop_confirmation_dialog("Esse arquivo não existe!", "Ok", Choices.NONE)
 		return
+	
+	_new_file()
 	
 	var file := FileAccess.open(path, FileAccess.READ)
 	var content := file.get_as_text()

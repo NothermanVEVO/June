@@ -68,8 +68,8 @@ func load_resource(song_resource : SongResource) -> void:
 	var valid = editor_settings.load_editor(song_resource.name, song_resource.author, song_resource.track, song_resource.BPM, song_resource.creator, 
 	song_resource.song_time_sample, song_resource.video_time_sample, song_resource.song, song_resource.icon, song_resource.image, song_resource.video)
 	
-	if valid == -1:
-		return
+	#if valid == -1:
+		#return
 	
 	editor_composer.editor_menu_bar.load_song_maps(song_resource.song_maps)
 	if editor_composer.visible:

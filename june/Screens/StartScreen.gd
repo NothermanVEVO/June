@@ -3,6 +3,8 @@ extends Control
 func _ready() -> void:
 	Global.set_window_title(Global.TitleType.BASE)
 	$VBoxContainer/VBoxContainer/Play.grab_focus()
+	
+	Song.stop()
 
 func _on_play_pressed() -> void:
 	get_tree().change_scene_to_packed(Global.SELECTION_SCREEN_SCENE)

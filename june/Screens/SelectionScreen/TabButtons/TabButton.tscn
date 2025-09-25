@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://bmhuy5v7e77dw"]
+[gd_scene load_steps=3 format=3 uid="uid://bmhuy5v7e77dw"]
 
 [ext_resource type="Script" uid="uid://kjw8oqre4jcs" path="res://Screens/SelectionScreen/TabButtons/TabButton.gd" id="1_tgpue"]
 [ext_resource type="Theme" uid="uid://cflls7t5oklv0" path="res://themes/SongSelectionTab.tres" id="2_417wl"]
-[ext_resource type="Theme" uid="uid://oe21uoww8ls3" path="res://themes/JuneThemeV1.tres" id="2_ofutj"]
 
 [node name="Botões" type="TabBar"]
 focus_neighbor_bottom = NodePath("MarginContainer/VBoxContainer/Settings")
@@ -187,7 +186,7 @@ expand_mode = 1
 layout_mode = 2
 size_flags_vertical = 10
 mouse_default_cursor_shape = 2
-theme = ExtResource("2_ofutj")
+theme = ExtResource("2_417wl")
 theme_override_font_sizes/font_size = 30
 text = "Configurações"
 

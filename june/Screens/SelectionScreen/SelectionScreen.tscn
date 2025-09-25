@@ -1,6 +1,5 @@
-[gd_scene load_steps=8 format=3 uid="uid://b4s84ahuhqyry"]
+[gd_scene load_steps=7 format=3 uid="uid://b4s84ahuhqyry"]
 
-[ext_resource type="Theme" uid="uid://oe21uoww8ls3" path="res://themes/JuneThemeV1.tres" id="1_22iex"]
 [ext_resource type="PackedScene" uid="uid://dj8t1madbd5pe" path="res://Background/AnimatedBackgroundV1.tscn" id="1_oa44x"]
 [ext_resource type="Script" uid="uid://dxc8dk3ynt2dc" path="res://Screens/SelectionScreen/Songs.gd" id="1_y8xdi"]
 [ext_resource type="Shader" uid="uid://dmve0qmdyygvc" path="res://shaders/DualKawaseUp.gdshader" id="2_oa44x"]
@@ -63,7 +62,7 @@ theme_override_constants/margin_bottom = 10
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 0
-theme = ExtResource("1_22iex")
+theme = ExtResource("2_y1arh")
 theme_override_font_sizes/font_size = 35
 text = "Voltar"
 

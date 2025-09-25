@@ -44,6 +44,11 @@ func _init(type : Type, mode : Mode, center_screen : bool = true, max_size_y : f
 	_center_screen = center_screen
 	if max_size_y >= 0:
 		_max_size_y = max_size_y
+	var dict := Global.get_settings_dictionary()
+	if dict["game_gear_position"] == GameSettingsScreen.GearPositions.LEFT:
+		position.x -= 625
+	elif dict["game_gear_position"] == GameSettingsScreen.GearPositions.RIGHT:
+		position.x += 625
 
 func _ready() -> void: #TODO HANDLE ANY POSITION FOR THE GEAR, NOT ONLY THE MIDDLE
 	if _max_size_y < 0:
@@ -57,7 +62,8 @@ func _ready() -> void: #TODO HANDLE ANY POSITION FOR THE GEAR, NOT ONLY THE MIDD
 	if _center_screen:
 		initial_x = (get_viewport_rect().size.x / 2) - (width / 2) + (NoteHolder.width / 2)
 	else:
-		initial_x = -(width / 2) + (NoteHolder.width / 2)
+		var position_difference := 0.0 if mode == Mode.EDITOR else position.x
+		initial_x = -(width / 2) + (NoteHolder.width / 2) + position_difference
 	
 	for i in range(_type):
 		var note_type : Note.Type = Note.Type.RED if (i == 1 or i == _type - 2) else Note.Type.BLUE
@@ -397,8 +403,9 @@ func _note_holders_last_processed_notes() -> void:
 		last_note_was_processed.emit()
 
 func _draw() -> void:
-	draw_circle(Vector2.ZERO, 10, Color.AQUA)
+	#draw_circle(Vector2.ZERO, 10, Color.AQUA)
 	#var rect := Rect2(-width / 2, -get_viewport_rect().size.y, width, get_viewport_rect().size.y).abs()
 	#
 	#draw_rect(rect, Color(0, 0, 0, 0.5))
+	pass
 	

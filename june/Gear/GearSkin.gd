@@ -2,18 +2,18 @@ extends Control
 
 class_name GearSkin
 
-@onready var precision_container : VBoxContainer = $Precision
-@onready var precision_speed_text : RichTextLabel = $Precision/Speed
-@onready var precision_percentage_text : RichTextLabel = $Precision/MarginContainer/Percentage
+@onready var precision_container : VBoxContainer = $FullGear/Precision
+@onready var precision_speed_text : RichTextLabel = $FullGear/Precision/Speed
+@onready var precision_percentage_text : RichTextLabel = $FullGear/Precision/MarginContainer/Percentage
 
-@onready var text_animation : AnimationPlayer = $TextAnimation
-@onready var beat_animation : AnimationPlayer = $BeatAnimation
+@onready var text_animation : AnimationPlayer = $FullGear/TextAnimation
+@onready var beat_animation : AnimationPlayer = $FullGear/BeatAnimation
 
-@onready var score_text : RichTextLabel = $Base/VBoxContainer/Score
-@onready var speed_text : RichTextLabel = $Base/VBoxContainer/MarginContainer/Speed
+@onready var score_text : RichTextLabel = $FullGear/Base/VBoxContainer/Score
+@onready var speed_text : RichTextLabel = $FullGear/Base/VBoxContainer/MarginContainer/Speed
 
-@onready var fever_bar : TextureProgressBar = $Gear/Control/FeverBar
-@onready var star : NinePatchRect = $Gear/Control/Star
+@onready var fever_bar : TextureProgressBar = $FullGear/Gear/Control/FeverBar
+@onready var star : NinePatchRect = $FullGear/Gear/Control/Star
 
 const _FIRST_FEVER_TEXTURE := preload("res://assets/Gear/JuneV1/base_estrela_1x.png")
 const _SECOND_FEVER_TEXTURE := preload("res://assets/Gear/JuneV1/base_estrela_2x.png")
@@ -22,7 +22,7 @@ const _FOURTH_FEVER_TEXTURE := preload("res://assets/Gear/JuneV1/base_estrela_4x
 const _FIFTH_FEVER_TEXTURE := preload("res://assets/Gear/JuneV1/base_estrela_5x.png")
 const _ZONE_FEVER_TEXTURE := preload("res://assets/Gear/JuneV1/base_estrela_zona.png")
 
-@onready var fever_gradient : TextureRect = $Gear/Control/Base/FeverGradient
+@onready var fever_gradient : TextureRect = $FullGear/Gear/Control/Base/FeverGradient
 
 const _FIRST_FEVER_GRADIENT_TEXTURE := preload("res://Effects/Fever/Fever_1X.tres")
 const _SECOND_FEVER_GRADIENT_TEXTURE := preload("res://Effects/Fever/Fever_2X.tres")
@@ -31,21 +31,21 @@ const _FOURTH_FEVER_GRADIENT_TEXTURE := preload("res://Effects/Fever/Fever_4X.tr
 const _FIFTH_FEVER_GRADIENT_TEXTURE := preload("res://Effects/Fever/Fever_5X.tres")
 const _ZONE_FEVER_GRADIENT_TEXTURE := preload("res://Effects/Fever/Fever_ZONE.tres")
 
-@onready var _fever_line_left : TextureRect = $Gear/Control/Base/FeverLineLeft
-@onready var _fever_line_right : TextureRect = $Gear/Control/Base/FeverLineRight
+@onready var _fever_line_left : TextureRect = $FullGear/Gear/Control/Base/FeverLineLeft
+@onready var _fever_line_right : TextureRect = $FullGear/Gear/Control/Base/FeverLineRight
 
-@onready var _fever_star_effect_animation : AnimationPlayer = $"Fever Star Effect"
+@onready var _fever_star_effect_animation : AnimationPlayer = $FullGear/"Fever Star Effect"
 
-@onready var _combo_animation : AnimationPlayer = $ComboAnimation
+@onready var _combo_animation : AnimationPlayer = $FullGear/ComboAnimation
 
-@onready var _precision_texture_rect : TextureRect = $Precision/MarginContainer/Percentage/TextureRect
+@onready var _precision_texture_rect : TextureRect = $FullGear/Precision/MarginContainer/Percentage/TextureRect
 var _shader_material := ShaderMaterial.new()
 
 const _100_PRECISION_GRADIENT := preload("res://Effects/JuneGearV1Letter/100 MAX.tres")
 const _90_PRECISION_GRADIENT := preload("res://Effects/JuneGearV1Letter/90 MAX.tres")
 const _BREAK_PRECISION_GRADIENT := preload("res://Effects/JuneGearV1Letter/BREAK.tres")
 
-@onready var _explosion_particles : CPUParticles2D = $"Gear/Control/Fever Effect Star/Explosion"
+@onready var _explosion_particles : CPUParticles2D = $"FullGear/Gear/Control/Fever Effect Star/Explosion"
 
 var _bpm : float
 var _last_time_beat : float = 0.0
@@ -54,7 +54,7 @@ const STAR_ROTATION_SPEED : float = PI / 32
 
 var _current_fever : Note.Fever = Note.Fever.NONE
 
-@onready var _finalization_animation : AnimationPlayer = $FinalizationAnimation
+@onready var _finalization_animation : AnimationPlayer = $FullGear/FinalizationAnimation
 enum Finalization{CLEAR, MAX_COMBO, PERFECT_COMBO}
 
 func _ready() -> void:
@@ -70,6 +70,15 @@ func _ready() -> void:
 	beat_animation.play("RESET")
 	text_animation.play("RESET")
 	_finalization_animation.play("RESET")
+	
+	var dict := Global.get_settings_dictionary()
+	
+	if dict["game_gear_position"] == GameSettingsScreen.GearPositions.LEFT:
+		$FullGear.position.x -= 625
+	elif dict["game_gear_position"] == GameSettingsScreen.GearPositions.RIGHT:
+		$FullGear.position.x += 625
+	
+	$FullGear/Gear/Control/Base/Background.color.a = 1 - dict["game_gear_transparency"]
 
 func _process(delta: float) -> void:
 	if Song.get_time() >= _last_time_beat + _bpm:
@@ -218,7 +227,7 @@ func set_speed(speed : float) -> void:
 	speed_text.text = "Speed: " + str(speed) + "x"
 
 func set_combo(combo : int) -> void:
-	$Combo/ComboText.text = "COMBO " + str(combo)
+	$FullGear/Combo/ComboText.text = "COMBO " + str(combo)
 	if _combo_animation.is_playing():
 		_combo_animation.play("RESET")
 	_combo_animation.play("Pop")

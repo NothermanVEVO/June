@@ -22,6 +22,10 @@ static var _msaa : MSAA
 @onready var glow_check_box : CheckBox = $PanelContainer/MarginContainer/VBoxContainer/Glow
 
 func _ready() -> void:
+	Song.finished.connect(func():
+		Song.play()
+	)
+	
 	mode_option_button.grab_focus()
 	
 	var dict := Global.get_settings_dictionary()

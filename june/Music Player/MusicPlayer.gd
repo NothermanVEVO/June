@@ -66,6 +66,7 @@ func _ready() -> void:
 	_pause_screen.quit_pressed.connect(_quit)
 	
 	if autoload:
+		Gear.set_speed(Game.speed)
 		Game.load_music_player(self)
 		_pause_screen.quit_pressed.connect(Game.change_to_selection)
 
