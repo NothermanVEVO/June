@@ -28,6 +28,8 @@ var _last_difficulty_button : Button
 signal load_difficulty_save(difficulty : SongMap.Difficulty)
 signal play_difficulty(difficulty : SongMap.Difficulty)
 
+signal settings_pressed
+
 func _on_focus_entered() -> void:
 	facil.grab_focus()
 
@@ -149,7 +151,7 @@ func _process(delta: float) -> void:
 func has_difficulty() -> bool:
 	return not (facil.disabled and normal.disabled and hard.disabled and maximus.disabled)
 
-func get_difficulty_selected() -> SongMap.Difficulty: ## MAKE SURE TO USE HAS_DIFFICULTY() FIRST
+func get_default_difficulty() -> SongMap.Difficulty: ## MAKE SURE TO USE HAS_DIFFICULTY() FIRST
 	if not facil.disabled:
 		return SongMap.Difficulty.FACIL
 	if not normal.disabled:
@@ -157,6 +159,18 @@ func get_difficulty_selected() -> SongMap.Difficulty: ## MAKE SURE TO USE HAS_DI
 	elif not hard.disabled:
 		return SongMap.Difficulty.HARD
 	elif not maximus.disabled:
+		return SongMap.Difficulty.MAXIMUS
+	else:
+		return SongMap.Difficulty.FACIL
+
+func get_difficulty_selected() -> SongMap.Difficulty: ## MAKE SURE TO USE HAS_DIFFICULTY() FIRST
+	if not facil.disabled and facil.button_pressed:
+		return SongMap.Difficulty.FACIL
+	if not normal.disabled and normal.button_pressed:
+		return SongMap.Difficulty.NORMAL
+	elif not hard.disabled and hard.button_pressed:
+		return SongMap.Difficulty.HARD
+	elif not maximus.disabled and maximus.button_pressed:
 		return SongMap.Difficulty.MAXIMUS
 	else:
 		return SongMap.Difficulty.FACIL
@@ -217,3 +231,6 @@ func _on_maximus_focus_entered() -> void:
 			maximus.get_global_rect().has_point(get_global_mouse_position()))) ## MANO...
 			_last_difficulty_button.button_pressed = false
 			_last_difficulty_button = maximus
+
+func _on_settings_pressed() -> void:
+	settings_pressed.emit()

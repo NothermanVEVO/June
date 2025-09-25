@@ -1,15 +1,26 @@
-[gd_scene load_steps=3 format=3 uid="uid://b3ljeq5vwy67a"]
+[gd_scene load_steps=4 format=3 uid="uid://b3ljeq5vwy67a"]
 
 [ext_resource type="Script" uid="uid://cxngxkql6desj" path="res://Editor/EditorSettings.gd" id="1_33eqs"]
+[ext_resource type="PackedScene" uid="uid://dj8t1madbd5pe" path="res://Background/AnimatedBackgroundV1.tscn" id="1_vxgxl"]
 [ext_resource type="Script" uid="uid://cuhkonamt3aus" path="res://Editor/MenuBar/File.gd" id="2_iy5o1"]
 
 [node name="Settings" type="VBoxContainer"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+offset_right = 1920.0
+offset_bottom = 280.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_33eqs")
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="AnimatedBackground" parent="Node2D" instance=ExtResource("1_vxgxl")]
+custom_minimum_size = Vector2(1920, 1080)
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+grow_horizontal = 1
+grow_vertical = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Menu" type="MarginContainer" parent="."]
 layout_mode = 2

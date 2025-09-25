@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://goy2yfo311tu"]
+[gd_scene load_steps=4 format=3 uid="uid://goy2yfo311tu"]
 
 [ext_resource type="Script" uid="uid://dgo0nl6x8cwg" path="res://Screens/ControlsScreen.gd" id="1_7g0sr"]
+[ext_resource type="PackedScene" uid="uid://dj8t1madbd5pe" path="res://Background/AnimatedBackgroundV1.tscn" id="2_1vdph"]
+[ext_resource type="Theme" uid="uid://oe21uoww8ls3" path="res://themes/JuneThemeV1.tres" id="2_i7urc"]
 
 [node name="Controls" type="Control"]
 layout_mode = 3
@@ -10,6 +12,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_7g0sr")
+
+[node name="AnimatedBackground" parent="." instance=ExtResource("2_1vdph")]
+layout_mode = 1
 
 [node name="Controls" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -83,24 +88,28 @@ theme_override_constants/separation = 15
 [node name="1_4k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/4/4 Buttons/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(75, 115)
 layout_mode = 2
+theme = ExtResource("2_i7urc")
 theme_override_font_sizes/font_size = 75
 toggle_mode = true
 
 [node name="2_4k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/4/4 Buttons/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(75, 115)
 layout_mode = 2
+theme = ExtResource("2_i7urc")
 theme_override_font_sizes/font_size = 75
 toggle_mode = true
 
 [node name="3_4k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/4/4 Buttons/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(75, 115)
 layout_mode = 2
+theme = ExtResource("2_i7urc")
 theme_override_font_sizes/font_size = 75
 toggle_mode = true
 
 [node name="4_4k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/4/4 Buttons/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(75, 115)
 layout_mode = 2
+theme = ExtResource("2_i7urc")
 theme_override_font_sizes/font_size = 75
 toggle_mode = true
 
@@ -131,30 +140,35 @@ theme_override_constants/separation = 15
 [node name="1_5k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/5 Buttons/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(75, 115)
 layout_mode = 2
+theme = ExtResource("2_i7urc")
 theme_override_font_sizes/font_size = 75
 toggle_mode = true
 
 [node name="2_5k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/5 Buttons/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(75, 115)
 layout_mode = 2
+theme = ExtResource("2_i7urc")
 theme_override_font_sizes/font_size = 75
 toggle_mode = true
 
 [node name="3_5k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/5 Buttons/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(75, 115)
 layout_mode = 2
+theme = ExtResource("2_i7urc")
 theme_override_font_sizes/font_size = 75
 toggle_mode = true
 
 [node name="4_5k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/5 Buttons/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(75, 115)
 layout_mode = 2
+theme = ExtResource("2_i7urc")
 theme_override_font_sizes/font_size = 75
 toggle_mode = true
 
 [node name="5_5k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/5 Buttons/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(75, 115)
 layout_mode = 2
+theme = ExtResource("2_i7urc")
 theme_override_font_sizes/font_size = 75
 toggle_mode = true
 
@@ -188,42 +202,49 @@ theme_override_constants/separation = 15
 [node name="1_6k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(75, 115)
 layout_mode = 2
+theme = ExtResource("2_i7urc")
 theme_override_font_sizes/font_size = 75
 toggle_mode = true
 
 [node name="2_6k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(75, 115)
 layout_mode = 2
+theme = ExtResource("2_i7urc")
 theme_override_font_sizes/font_size = 75
 toggle_mode = true
 
 [node name="3_6k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(75, 115)
 layout_mode = 2
+theme = ExtResource("2_i7urc")
 theme_override_font_sizes/font_size = 75
 toggle_mode = true
 
 [node name="4_6k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(75, 115)
 layout_mode = 2
+theme = ExtResource("2_i7urc")
 theme_override_font_sizes/font_size = 75
 toggle_mode = true
 
 [node name="5_6k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(75, 115)
 layout_mode = 2
+theme = ExtResource("2_i7urc")
 theme_override_font_sizes/font_size = 75
 toggle_mode = true
 
 [node name="6_6k" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(75, 115)
 layout_mode = 2
+theme = ExtResource("2_i7urc")
 theme_override_font_sizes/font_size = 75
 toggle_mode = true
 
 [node name="Return" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+theme = ExtResource("2_i7urc")
 theme_override_font_sizes/font_size = 50
 text = "Voltar"
 

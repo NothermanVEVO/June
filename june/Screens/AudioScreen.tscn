@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://de7h8h88q4meh"]
+[gd_scene load_steps=4 format=3 uid="uid://de7h8h88q4meh"]
 
 [ext_resource type="Script" uid="uid://ddyskrulyqv4k" path="res://Screens/AudioScreen.gd" id="1_wa1wp"]
+[ext_resource type="Theme" uid="uid://oe21uoww8ls3" path="res://themes/JuneThemeV1.tres" id="2_abup8"]
+[ext_resource type="PackedScene" uid="uid://dj8t1madbd5pe" path="res://Background/AnimatedBackgroundV1.tscn" id="2_ny7t3"]
 
 [node name="AudioScreen" type="Control"]
 layout_mode = 3
@@ -10,6 +12,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_wa1wp")
+
+[node name="AnimatedBackground" parent="." instance=ExtResource("2_ny7t3")]
+layout_mode = 1
 
 [node name="Audio" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -70,6 +75,8 @@ vertical_alignment = 1
 [node name="MainVolumeSlider" type="HSlider" parent="PanelContainer/MarginContainer/VBoxContainer/MainVolume"]
 custom_minimum_size = Vector2(700, 50)
 layout_mode = 2
+focus_neighbor_top = NodePath("../../Return")
+theme = ExtResource("2_abup8")
 max_value = 1.0
 step = 0.001
 
@@ -88,12 +95,15 @@ vertical_alignment = 1
 [node name="SFXVolumeSlider" type="HSlider" parent="PanelContainer/MarginContainer/VBoxContainer/SFXVolume"]
 custom_minimum_size = Vector2(700, 50)
 layout_mode = 2
+theme = ExtResource("2_abup8")
 max_value = 1.0
 step = 0.001
 
 [node name="Return" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
+focus_neighbor_bottom = NodePath("../MainVolume/MainVolumeSlider")
 mouse_default_cursor_shape = 2
+theme = ExtResource("2_abup8")
 theme_override_font_sizes/font_size = 50
 text = "Voltar"
 

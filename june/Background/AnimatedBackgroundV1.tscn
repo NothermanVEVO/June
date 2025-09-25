@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://dj8t1madbd5pe"]
+
+[ext_resource type="Shader" uid="uid://db4ka2vxstswn" path="res://shaders/Repeat.gdshader" id="1_qhap1"]
+[ext_resource type="Texture2D" uid="uid://bo30ct5cyjl2b" path="res://concepts/background.png" id="2_a8yyt"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vav2g"]
+resource_local_to_scene = true
+shader = ExtResource("1_qhap1")
+shader_parameter/direction_up = true
+shader_parameter/speed = 0.025
+shader_parameter/seed = 0.0
+shader_parameter/randomness = 0.5
+
+[node name="AnimatedBackground" type="ColorRect"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="TextureRect" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0.235294)
+texture_repeat = 2
+material = SubResource("ShaderMaterial_vav2g")
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_a8yyt")

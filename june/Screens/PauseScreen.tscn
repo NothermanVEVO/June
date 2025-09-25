@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://dm614dfb13bo3"]
+[gd_scene load_steps=3 format=3 uid="uid://dm614dfb13bo3"]
 
 [ext_resource type="Script" uid="uid://t3e5fqlprtkk" path="res://Screens/PauseScreen.gd" id="1_e3ko5"]
+[ext_resource type="Theme" uid="uid://oe21uoww8ls3" path="res://themes/JuneThemeV1.tres" id="2_5bc36"]
 
 [node name="PauseScreen" type="Control"]
 process_mode = 3
@@ -65,19 +66,22 @@ layout_mode = 2
 [node name="Resume" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 60
+theme = ExtResource("2_5bc36")
+theme_override_font_sizes/font_size = 70
 text = "Resumir"
 
 [node name="Restart" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 60
+theme = ExtResource("2_5bc36")
+theme_override_font_sizes/font_size = 70
 text = "Reiniciar"
 
 [node name="Quit" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 60
+theme = ExtResource("2_5bc36")
+theme_override_font_sizes/font_size = 70
 text = "Sair"
 
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]

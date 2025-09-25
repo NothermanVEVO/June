@@ -1,0 +1,137 @@
+[gd_scene load_steps=4 format=3 uid="uid://dgpg45sip6xv6"]
+
+[ext_resource type="Script" uid="uid://bp0fcr7ldfyeh" path="res://Screens/GameSettingsScreen.gd" id="1_kkaiq"]
+[ext_resource type="PackedScene" uid="uid://dj8t1madbd5pe" path="res://Background/AnimatedBackgroundV1.tscn" id="1_qhyca"]
+[ext_resource type="Theme" uid="uid://oe21uoww8ls3" path="res://themes/JuneThemeV1.tres" id="2_kk343"]
+
+[node name="GameSettingsScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_kkaiq")
+
+[node name="AnimatedBackground" parent="." instance=ExtResource("1_qhyca")]
+layout_mode = 1
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -161.0
+offset_right = 161.0
+offset_bottom = 220.0
+grow_horizontal = 2
+theme_override_constants/margin_top = 15
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 150
+text = "Jogo"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -237.5
+offset_top = -115.0
+offset_right = 237.5
+offset_bottom = 115.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="VelocityText" type="RichTextLabel" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 30
+text = "Velocidade: 1.0"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VelocitySlider" type="HSlider" parent="PanelContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(600, 25)
+layout_mode = 2
+focus_neighbor_top = NodePath("../Return")
+min_value = 1.0
+max_value = 10.0
+step = 0.1
+value = 1.0
+
+[node name="GearTransparencyText" type="RichTextLabel" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 30
+text = "Transparência do fundo da Gear: 50%"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GearTransparencySlider" type="HSlider" parent="PanelContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(600, 25)
+layout_mode = 2
+max_value = 1.0
+step = 0.1
+value = 0.5
+
+[node name="GearPositionText" type="RichTextLabel" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 30
+text = "Posição da Gear:"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GearPositionOption" type="OptionButton" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme = ExtResource("2_kk343")
+theme_override_font_sizes/font_size = 30
+selected = 0
+item_count = 3
+popup/item_0/text = "Centro"
+popup/item_0/id = 0
+popup/item_1/text = "Esquerda"
+popup/item_1/id = 1
+popup/item_2/text = "Direita"
+popup/item_2/id = 2
+
+[node name="Return" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("../VelocitySlider")
+mouse_default_cursor_shape = 2
+theme = ExtResource("2_kk343")
+theme_override_font_sizes/font_size = 50
+text = "Voltar"
+
+[connection signal="value_changed" from="PanelContainer/MarginContainer/VBoxContainer/VelocitySlider" to="." method="_on_velocity_slider_value_changed"]
+[connection signal="value_changed" from="PanelContainer/MarginContainer/VBoxContainer/GearTransparencySlider" to="." method="_on_gear_transparency_slider_value_changed"]
+[connection signal="item_selected" from="PanelContainer/MarginContainer/VBoxContainer/GearPositionOption" to="." method="_on_gear_position_option_item_selected"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/Return" to="." method="_on_return_pressed"]

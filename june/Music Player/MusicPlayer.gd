@@ -67,7 +67,7 @@ func _ready() -> void:
 	
 	if autoload:
 		Game.load_music_player(self)
-		_pause_screen.quit_pressed.connect(Game.change_back_to_selection)
+		_pause_screen.quit_pressed.connect(Game.change_to_selection)
 
 func _resized() -> void:
 	if _gear:

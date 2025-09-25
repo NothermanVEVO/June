@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://dnquj78rnqlvn"]
+[gd_scene load_steps=4 format=3 uid="uid://dnquj78rnqlvn"]
 
 [ext_resource type="Script" uid="uid://dqxeaf1p2wk20" path="res://Screens/VideoScreen.gd" id="1_54cql"]
+[ext_resource type="Theme" uid="uid://oe21uoww8ls3" path="res://themes/JuneThemeV1.tres" id="2_3ggaa"]
+[ext_resource type="PackedScene" uid="uid://dj8t1madbd5pe" path="res://Background/AnimatedBackgroundV1.tscn" id="2_w1qnn"]
 
 [node name="VideoScreen" type="Control"]
 layout_mode = 3
@@ -10,6 +12,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_54cql")
+
+[node name="AnimatedBackground" parent="." instance=ExtResource("2_w1qnn")]
+layout_mode = 1
 
 [node name="Vídeo" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -63,7 +68,7 @@ vertical = true
 [node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Mode"]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 30
-text = "Modo"
+text = "Modo: "
 fit_content = true
 autowrap_mode = 0
 horizontal_alignment = 1
@@ -71,6 +76,8 @@ vertical_alignment = 1
 
 [node name="ModeOptionButton" type="OptionButton" parent="PanelContainer/MarginContainer/VBoxContainer/Mode"]
 layout_mode = 2
+focus_neighbor_top = NodePath("../../Return")
+theme = ExtResource("2_3ggaa")
 theme_override_font_sizes/font_size = 30
 item_count = 3
 popup/item_0/text = "Janela"
@@ -105,14 +112,16 @@ vertical = true
 [node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Vsync"]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 30
-text = "V-sync"
+text = "V-sync: "
 fit_content = true
 autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="VsyncOptionButton" type="OptionButton" parent="PanelContainer/MarginContainer/VBoxContainer/Vsync"]
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
+theme = ExtResource("2_3ggaa")
 theme_override_font_sizes/font_size = 30
 item_count = 2
 popup/item_0/text = "Ativado"
@@ -152,12 +161,14 @@ popup/item_3/id = 3
 layout_mode = 2
 tooltip_text = "Ativa ou desativa o vídeo se o song map possuir. Rodar o vídeo usa bastante do processamento, 
 desative caso esteja com baixa perfomance."
+theme = ExtResource("2_3ggaa")
 theme_override_font_sizes/font_size = 30
 text = "Vídeo"
 
 [node name="Particles" type="CheckBox" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 tooltip_text = "São efeitos para melhorar o visual do jogo, tem um custo baixa na perfomance quando comparado ao Vídeo e o Glow."
+theme = ExtResource("2_3ggaa")
 theme_override_font_sizes/font_size = 30
 text = "Partículas"
 
@@ -165,12 +176,15 @@ text = "Partículas"
 layout_mode = 2
 tooltip_text = "Esse é um efeito para melhorar o visual do jogo, mas tem um custo alto no desempenho. 
 Desative caso esteja com baixa perfomance."
+theme = ExtResource("2_3ggaa")
 theme_override_font_sizes/font_size = 30
 text = "Glow"
 
 [node name="Return" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
+focus_neighbor_bottom = NodePath("../Mode/ModeOptionButton")
 mouse_default_cursor_shape = 2
+theme = ExtResource("2_3ggaa")
 theme_override_font_sizes/font_size = 30
 text = "Voltar"
 

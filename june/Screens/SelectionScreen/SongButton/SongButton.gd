@@ -18,3 +18,7 @@ func setup(UUID : String, icon_texture : ImageTexture, song_name : String, autho
 
 func _focus_entered() -> void:
 	on_focus_entered.emit(self)
+
+func _on_button_up() -> void:
+	if not has_focus():
+		button_pressed = true

@@ -55,8 +55,12 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("Escape") and not _button_toggled_on:
 		_on_return_pressed()
 	if _button_toggled_on and event is InputEventKey:
+		if Input.is_action_just_pressed("ui_accept"):
+			return
 		if event.physical_keycode in INVALID_PHYSICAL_KEYCODE:
 			_button_toggled_on.button_pressed = false
+			return
+		if event.physical_keycode == 4194309:
 			return
 		InputMap.erase_action(_button_toggled_on.name)
 		InputMap.add_action(_button_toggled_on.name)
@@ -77,7 +81,7 @@ func _handle_binding_event(toggled_on : bool, button_toggled : Button) -> void:
 	else:
 		var dict := Global.get_settings_dictionary()
 		button_toggled.text = char(dict[button_toggled.name])
-		_button_toggled_on.release_focus()
+		#_button_toggled_on.release_focus()
 		_button_toggled_on = null
 
 ## 4 KEYS

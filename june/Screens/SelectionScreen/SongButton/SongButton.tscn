@@ -1,10 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://4nfrkkxuyin"]
+[gd_scene load_steps=4 format=3 uid="uid://4nfrkkxuyin"]
 
 [ext_resource type="Script" uid="uid://dhkivk3pgyfcd" path="res://Screens/SelectionScreen/SongButton/SongButton.gd" id="1_rjb7l"]
+[ext_resource type="Theme" uid="uid://biwwpllkstc4x" path="res://themes/SongButton.tres" id="1_vppg7"]
 [ext_resource type="Texture2D" uid="uid://cdycxrdrlr8to" path="res://icon.svg" id="1_ycx0p"]
 
 [node name="SongButton" type="Button"]
 custom_minimum_size = Vector2(0, 150)
+theme = ExtResource("1_vppg7")
+toggle_mode = true
 script = ExtResource("1_rjb7l")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
@@ -39,6 +42,10 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/shadow_offset_x = -1
 theme_override_font_sizes/normal_font_size = 45
 text = " So Happy"
 scroll_active = false
@@ -50,6 +57,12 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/shadow_offset_x = 1
 theme_override_font_sizes/normal_font_size = 35
 text = "	 Raven & Kreyn"
 autowrap_mode = 0
+
+[connection signal="button_up" from="." to="." method="_on_button_up"]

@@ -9,6 +9,8 @@ const _SONG_BUTTON_SCENE = preload("res://Screens/SelectionScreen/SongButton/Son
 var _song_resources : Array[SongResource] = []
 var _song_buttons : Array[SongButton] = []
 
+@onready var video_stream_player : VideoStreamPlayer = $"../../VideoStreamPlayer"
+
 @onready var quit_button : Button = $"../MarginContainer/Quit"
 @onready var selected_song_container : TabContainer = $HBoxContainer/MarginContainer/SelectedSong
 
@@ -24,6 +26,10 @@ var _last_song_button : SongButton
 
 enum Buttons {FOUR, FIVE, SIX}
 
+var _currently_playing_uuid : String = ""
+
+var _request_background_id : int = 0
+
 func _ready() -> void:
 	for child in selected_song_container.get_children(true):
 		if not child is TabButton and child is TabBar:
@@ -32,12 +38,15 @@ func _ready() -> void:
 	
 	four_buttons.load_difficulty_save.connect(_load_difficulty_save)
 	four_buttons.play_difficulty.connect(_play_difficulty)
+	four_buttons.settings_pressed.connect(_settings_pressed)
 	
 	five_buttons.load_difficulty_save.connect(_load_difficulty_save)
 	five_buttons.play_difficulty.connect(_play_difficulty)
+	five_buttons.settings_pressed.connect(_settings_pressed)
 	
 	six_buttons.load_difficulty_save.connect(_load_difficulty_save)
 	six_buttons.play_difficulty.connect(_play_difficulty)
+	six_buttons.settings_pressed.connect(_settings_pressed)
 	
 	four_buttons.facil.focus_neighbor_top = tab_bar_selection.get_path()
 	four_buttons.normal.focus_neighbor_top = tab_bar_selection.get_path()
@@ -110,7 +119,15 @@ func load_state(UUID : String, tab_selected : int, difficulty : SongMap.Difficul
 func _song_button_on_focus_entered(song_button : SongButton) -> void:
 	if _last_song_button == song_button:
 		return
+	
+	if _last_song_button:
+		_last_song_button.button_pressed = not _last_song_button.button_pressed
+	song_button.button_pressed = true
 	_last_song_button = song_button
+	
+	if not song_button.button_down.is_connected(_song_button_down):
+		song_button.button_down.connect(_song_button_down)
+	
 	four_buttons.facil.focus_neighbor_left = song_button.get_path()
 	four_buttons.maximus.focus_neighbor_right = song_button.get_path()
 	four_buttons.settings.focus_neighbor_right = song_button.get_path()
@@ -135,27 +152,40 @@ func _song_button_on_focus_entered(song_button : SongButton) -> void:
 			break
 	
 	if selected_song_container.current_tab == 0: ## 4 BUTTONS
-		var difficulty := four_buttons.get_difficulty_selected()
+		var difficulty := four_buttons.get_default_difficulty()
 		song_button.focus_neighbor_left = four_buttons.get_difficulty_button(difficulty).get_path()
 		song_button.focus_neighbor_right = four_buttons.get_difficulty_button(difficulty).get_path()
 		_load_difficulty_save(difficulty)
 	elif selected_song_container.current_tab == 1: ## 5 BUTTONS
-		var difficulty := five_buttons.get_difficulty_selected()
+		var difficulty := five_buttons.get_default_difficulty()
 		song_button.focus_neighbor_left = five_buttons.get_difficulty_button(difficulty).get_path()
 		song_button.focus_neighbor_right = five_buttons.get_difficulty_button(difficulty).get_path()
 		_load_difficulty_save(difficulty)
 	elif selected_song_container.current_tab == 2: ## 6 BUTTONS
-		var difficulty := six_buttons.get_difficulty_selected()
+		var difficulty := six_buttons.get_default_difficulty()
 		song_button.focus_neighbor_left = six_buttons.get_difficulty_button(difficulty).get_path()
 		song_button.focus_neighbor_right = six_buttons.get_difficulty_button(difficulty).get_path()
 		_load_difficulty_save(difficulty)
 	
+	_request_background_id += 1
+	var id := _request_background_id 
 	await get_tree().create_timer(1).timeout
 	
-	if not song_button.has_focus():
+	if _currently_playing_uuid == song_button.UUID or id != _request_background_id:
 		return
+	
+	for song_resource in _song_resources:
+		if song_resource.ID == song_button.UUID:
+			if Global.get_settings_dictionary()["video"]:
+				video_stream_player.stream = Loader.load_video_stream(song_resource.video)
+				video_stream_player.play()
+			Song.stream = Loader.load_music_stream(song_resource.song)
+			Song.play()
+			_currently_playing_uuid = song_resource.ID
 
-func _song_button_pressed() -> void:
+func _song_button_down() -> void:
+	if _last_song_button.button_pressed:
+		_last_song_button.button_pressed = false
 	pass
 
 func _check_folder(path: String) -> Array[String]:
@@ -219,34 +249,53 @@ func _play_difficulty(difficulty : SongMap.Difficulty) -> void:
 		if song_resource.ID == _last_song_button.UUID:
 			for song_map in song_resource.song_maps:
 				if song_map.gear_type == _currently_selected_gear_type and song_map.difficulty == difficulty:
-					Game.change_to_music_player(_last_song_button.UUID, selected_song_container.current_tab, song_map.difficulty, 
-						song_map.gear_type, song_map, Loader.load_music_stream(song_resource.song), 
+					Game.save_selection_state(_last_song_button.UUID, selected_song_container.current_tab, song_map.difficulty)
+					
+					Game.change_to_music_player(song_map.gear_type, song_map, Loader.load_music_stream(song_resource.song), 
 						Loader.load_video_stream(song_resource.video), Loader.load_image(song_resource.image))
 					break
 
 func _on_selected_song_tab_changed(_tab: int) -> void:
 	if selected_song_container.current_tab == 0: ## 4 BUTTONS
 		_currently_selected_gear_type = Gear.Type.FOUR_KEYS
-		var difficulty := four_buttons.get_difficulty_selected()
+		var difficulty := four_buttons.get_default_difficulty()
 		if four_buttons.has_difficulty():
 			_load_difficulty_save(difficulty)
 		_last_song_button.focus_neighbor_left = four_buttons.get_difficulty_button(difficulty).get_path()
 		_last_song_button.focus_neighbor_right = four_buttons.get_difficulty_button(difficulty).get_path()
 	elif selected_song_container.current_tab == 1: ## 5 BUTTONS
 		_currently_selected_gear_type = Gear.Type.FIVE_KEYS
-		var difficulty := five_buttons.get_difficulty_selected()
+		var difficulty := five_buttons.get_default_difficulty()
 		if five_buttons.has_difficulty():
 			_load_difficulty_save(difficulty)
 		_last_song_button.focus_neighbor_left = five_buttons.get_difficulty_button(difficulty).get_path()
 		_last_song_button.focus_neighbor_right = five_buttons.get_difficulty_button(difficulty).get_path()
 	elif selected_song_container.current_tab == 2: ## 6 BUTTONS
 		_currently_selected_gear_type = Gear.Type.SIX_KEYS
-		var difficulty := six_buttons.get_difficulty_selected()
+		var difficulty := six_buttons.get_default_difficulty()
 		if six_buttons.has_difficulty():
 			_load_difficulty_save(difficulty)
 		_last_song_button.focus_neighbor_left = six_buttons.get_difficulty_button(difficulty).get_path()
 		_last_song_button.focus_neighbor_right = six_buttons.get_difficulty_button(difficulty).get_path()
 
+func _settings_pressed() -> void:
+	var difficulty : SongMap.Difficulty
+	
+	if selected_song_container.current_tab == 0: ## 4 BUTTONS
+		difficulty = four_buttons.get_difficulty_selected()
+	elif selected_song_container.current_tab == 1: ## 5 BUTTONS
+		_currently_selected_gear_type = Gear.Type.FIVE_KEYS
+		difficulty = five_buttons.get_difficulty_selected()
+	elif selected_song_container.current_tab == 2: ## 6 BUTTONS
+		difficulty = six_buttons.get_difficulty_selected()
+	
+	for song_resource in _song_resources:
+		if song_resource.ID == _last_song_button.UUID:
+			for song_map in song_resource.song_maps:
+				if song_map.gear_type == _currently_selected_gear_type and song_map.difficulty == difficulty:
+					Game.save_selection_state(_last_song_button.UUID, selected_song_container.current_tab, song_map.difficulty)
+	SettingsScreen.SCENE_CALLER = Global.SELECTION_SCREEN_SCENE
+	get_tree().change_scene_to_packed(Global.SETTING_SCREEN_SCENE)
 
 func _on_quit_pressed() -> void:
 	get_tree().change_scene_to_packed(Global.START_SCREEN_SCENE)

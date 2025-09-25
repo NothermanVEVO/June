@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://bep65l1ramndf"]
+[gd_scene load_steps=4 format=3 uid="uid://bep65l1ramndf"]
 
 [ext_resource type="Script" uid="uid://db0cg34618huk" path="res://Screens/SettingsScreen.gd" id="1_xouov"]
+[ext_resource type="Theme" uid="uid://oe21uoww8ls3" path="res://themes/JuneThemeV1.tres" id="2_8c7wc"]
+[ext_resource type="PackedScene" uid="uid://dj8t1madbd5pe" path="res://Background/AnimatedBackgroundV1.tscn" id="2_qjv4x"]
 
 [node name="SettingsScreen" type="Control"]
 layout_mode = 3
@@ -10,6 +12,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_xouov")
+
+[node name="AnimatedBackground" parent="." instance=ExtResource("2_qjv4x")]
+layout_mode = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -45,30 +50,44 @@ offset_bottom = 140.5
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="Game" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+focus_neighbor_top = NodePath("../Return")
+mouse_default_cursor_shape = 2
+theme = ExtResource("2_8c7wc")
+theme_override_font_sizes/font_size = 60
+text = "Jogo"
+
 [node name="Video" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+theme = ExtResource("2_8c7wc")
 theme_override_font_sizes/font_size = 60
 text = "Vídeo"
 
 [node name="Audio" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+theme = ExtResource("2_8c7wc")
 theme_override_font_sizes/font_size = 60
 text = "Aúdio"
 
 [node name="Controle" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+theme = ExtResource("2_8c7wc")
 theme_override_font_sizes/font_size = 60
 text = "Controle"
 
 [node name="Return" type="Button" parent="VBoxContainer"]
 layout_mode = 2
+focus_neighbor_bottom = NodePath("../Game")
 mouse_default_cursor_shape = 2
+theme = ExtResource("2_8c7wc")
 theme_override_font_sizes/font_size = 60
 text = "Voltar"
 
+[connection signal="pressed" from="VBoxContainer/Game" to="." method="_on_game_pressed"]
 [connection signal="pressed" from="VBoxContainer/Video" to="." method="_on_video_pressed"]
 [connection signal="pressed" from="VBoxContainer/Audio" to="." method="_on_audio_pressed"]
 [connection signal="pressed" from="VBoxContainer/Controle" to="." method="_on_controle_pressed"]

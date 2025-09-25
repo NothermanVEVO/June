@@ -31,6 +31,7 @@ var START_SCREEN_SCENE := load("res://Screens/StartScreen.tscn")
 var SELECTION_SCREEN_SCENE := load("res://Screens/SelectionScreen/SelectionScreen.tscn")
 var EDITOR_SCREEN_SCENE := load("res://Screens/EditorScreen.tscn")
 var SETTING_SCREEN_SCENE := load("res://Screens/SettingsScreen.tscn")
+var GAME_SETTING_SCREEN_SCENE := load("res://Screens/GameSettingsScreen.tscn")
 var VIDEO_SCREEN_SCENE := load("res://Screens/VideoScreen.tscn")
 var AUDIO_SCREEN_SCENE := load("res://Screens/AudioScreen.tscn")
 var CONTROL_SCREEN_SCENE := load("res://Screens/ControlsScreen.tscn")
@@ -152,6 +153,10 @@ func save_sample() -> Dictionary:
 	}
 
 func _create_settings() -> void:
+	_settings_dictionary["game_speed"] = 1.0
+	_settings_dictionary["game_gear_transparency"] = 0.5
+	_settings_dictionary["game_gear_position"] = GameSettingsScreen.GearPositions.CENTER
+	
 	_settings_dictionary["video_mode"] = VideoScreen.Modes.FULLSCREEN
 	_settings_dictionary["video_vsync"] = VideoScreen.Vsync.ACTIVATED
 	_settings_dictionary["video_msaa"] = VideoScreen.MSAA.DISABLED
@@ -221,6 +226,13 @@ func get_settings_dictionary() -> Dictionary:
 	return _settings_dictionary
 
 func _adjust_settings_dictionary() -> void:
+	if not _settings_dictionary.has("game_speed"):
+		_settings_dictionary["game_speed"] = 1.0
+	if not _settings_dictionary.has("game_gear_transparency"):
+		_settings_dictionary["game_gear_transparency"] = 0.5
+	if not _settings_dictionary.has("game_gear_position"):
+		_settings_dictionary["game_gear_position"] = GameSettingsScreen.GearPositions.CENTER
+	
 	if not _settings_dictionary.has("video_mode"):
 		_settings_dictionary["video_mode"] = VideoScreen.Modes.FULLSCREEN
 	if not _settings_dictionary.has("video_vsync"):
@@ -274,6 +286,11 @@ func _adjust_settings_dictionary() -> void:
 		_settings_dictionary["glow"] = true
 	
 	save_settings(_settings_dictionary)
+
+func _load_game_settings() -> void:
+	Game.speed = _settings_dictionary["game_speed"]
+	Game.gear_transparency = _settings_dictionary["game_gear_transparency"]
+	Game.gear_position = _settings_dictionary["game_gear_position"]
 
 func _load_video_settings() -> void:
 	match int(_settings_dictionary["video_mode"]):

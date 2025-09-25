@@ -1,6 +1,20 @@
-[gd_scene load_steps=2 format=3 uid="uid://drjxg7k7qdwwx"]
+[gd_scene load_steps=7 format=3 uid="uid://drjxg7k7qdwwx"]
 
 [ext_resource type="Script" uid="uid://yibdywuie1sm" path="res://Screens/StartScreen.gd" id="1_3tqua"]
+[ext_resource type="PackedScene" uid="uid://dj8t1madbd5pe" path="res://Background/AnimatedBackgroundV1.tscn" id="2_58tuc"]
+[ext_resource type="FontFile" uid="uid://ccptv2g4gl5oq" path="res://assets/fonts/Baby Donuts.ttf" id="3_rmmlk"]
+[ext_resource type="Theme" uid="uid://oe21uoww8ls3" path="res://themes/JuneThemeV1.tres" id="4_rmmlk"]
+
+[sub_resource type="Gradient" id="Gradient_vav2g"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.522876, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.774667, 0.48, 1, 1, 0.5, 0, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_1xvql"]
+gradient = SubResource("Gradient_vav2g")
+width = 128
+height = 128
+fill_from = Vector2(1, 1)
 
 [node name="StartScreen" type="Control"]
 layout_mode = 3
@@ -11,74 +25,82 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_3tqua")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="AnimatedBackground" parent="." instance=ExtResource("2_58tuc")]
+layout_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.301961, 0.301961, 0.301961, 1)
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -97.5
-offset_right = 97.5
-offset_bottom = 125.0
-grow_horizontal = 2
-theme_override_constants/margin_top = 15
-
-[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/normal_font_size = 150
-text = "June"
+theme_override_constants/margin_top = -60
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/MarginContainer"]
+clip_children = 2
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.423529)
+theme_override_constants/shadow_offset_y = 5
+theme_override_constants/shadow_offset_x = -5
+theme_override_constants/shadow_outline_size = 5
+theme_override_fonts/normal_font = ExtResource("3_rmmlk")
+theme_override_font_sizes/normal_font_size = 360
+bbcode_enabled = true
+text = "[tornado radius=7.5 freq=1 connected=1]June[/tornado]"
 fit_content = true
 autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/MarginContainer/RichTextLabel"]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -211.0
-offset_top = -188.0
-offset_right = 211.0
-offset_bottom = 188.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+texture = SubResource("GradientTexture2D_1xvql")
 
-[node name="Play" type="Button" parent="VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Play" type="Button" parent="VBoxContainer/VBoxContainer"]
+layout_mode = 2
+focus_neighbor_top = NodePath("../Quit")
 mouse_default_cursor_shape = 2
+theme = ExtResource("4_rmmlk")
 theme_override_font_sizes/font_size = 60
 text = "Jogar"
 
-[node name="Editor" type="Button" parent="VBoxContainer"]
+[node name="Editor" type="Button" parent="VBoxContainer/VBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+theme = ExtResource("4_rmmlk")
 theme_override_font_sizes/font_size = 60
 text = "Editor"
 
-[node name="Settings" type="Button" parent="VBoxContainer"]
+[node name="Settings" type="Button" parent="VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(450, 0)
 layout_mode = 2
 mouse_default_cursor_shape = 2
+theme = ExtResource("4_rmmlk")
 theme_override_font_sizes/font_size = 60
 text = "Configurações"
 
-[node name="Quit" type="Button" parent="VBoxContainer"]
+[node name="Quit" type="Button" parent="VBoxContainer/VBoxContainer"]
 layout_mode = 2
+focus_neighbor_bottom = NodePath("../Play")
 mouse_default_cursor_shape = 2
+theme = ExtResource("4_rmmlk")
 theme_override_font_sizes/font_size = 60
 text = "Sair"
 
-[connection signal="pressed" from="VBoxContainer/Play" to="." method="_on_play_pressed"]
-[connection signal="pressed" from="VBoxContainer/Editor" to="." method="_on_editor_pressed"]
-[connection signal="pressed" from="VBoxContainer/Settings" to="." method="_on_settings_pressed"]
-[connection signal="pressed" from="VBoxContainer/Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer/Play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer/Editor" to="." method="_on_editor_pressed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer/Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer/Quit" to="." method="_on_quit_pressed"]

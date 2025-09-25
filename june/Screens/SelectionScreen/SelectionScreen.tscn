@@ -1,7 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://b4s84ahuhqyry"]
+[gd_scene load_steps=8 format=3 uid="uid://b4s84ahuhqyry"]
 
+[ext_resource type="Theme" uid="uid://oe21uoww8ls3" path="res://themes/JuneThemeV1.tres" id="1_22iex"]
+[ext_resource type="PackedScene" uid="uid://dj8t1madbd5pe" path="res://Background/AnimatedBackgroundV1.tscn" id="1_oa44x"]
 [ext_resource type="Script" uid="uid://dxc8dk3ynt2dc" path="res://Screens/SelectionScreen/Songs.gd" id="1_y8xdi"]
+[ext_resource type="Shader" uid="uid://dmve0qmdyygvc" path="res://shaders/DualKawaseUp.gdshader" id="2_oa44x"]
+[ext_resource type="Theme" uid="uid://cflls7t5oklv0" path="res://themes/SongSelectionTab.tres" id="2_y1arh"]
 [ext_resource type="PackedScene" uid="uid://bmhuy5v7e77dw" path="res://Screens/SelectionScreen/TabButtons/TabButton.tscn" id="2_y8xdi"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pgowu"]
+shader = ExtResource("2_oa44x")
+shader_parameter/offset = 5.0
 
 [node name="SelectionScreen" type="Control"]
 layout_mode = 3
@@ -11,6 +19,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="AnimatedBackground" parent="." instance=ExtResource("1_oa44x")]
+layout_mode = 1
+
 [node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -19,8 +30,18 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 volume_db = -80.0
+autoplay = true
 expand = true
 loop = true
+
+[node name="Blur" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_pgowu")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -39,8 +60,10 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_bottom = 10
 
 [node name="Quit" type="Button" parent="VBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 0
+theme = ExtResource("1_22iex")
 theme_override_font_sizes/font_size = 35
 text = "Voltar"
 
@@ -52,6 +75,7 @@ script = ExtResource("1_y8xdi")
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Songs"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_constants/separation = 25
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Songs/HBoxContainer"]
 layout_mode = 2
@@ -62,6 +86,7 @@ theme_override_constants/margin_bottom = 10
 custom_minimum_size = Vector2(700, 0)
 layout_mode = 2
 size_flags_vertical = 3
+theme = ExtResource("2_y1arh")
 theme_override_font_sizes/font_size = 40
 tab_alignment = 1
 current_tab = 0
