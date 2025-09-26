@@ -22,9 +22,7 @@ static var _msaa : MSAA
 @onready var glow_check_box : CheckBox = $PanelContainer/MarginContainer/VBoxContainer/Glow
 
 func _ready() -> void:
-	Song.finished.connect(func():
-		Song.play()
-	)
+	Song.finished.connect(_on_song_finished)
 	
 	mode_option_button.grab_focus()
 	
@@ -35,6 +33,9 @@ func _ready() -> void:
 	video_check_box.button_pressed = dict["video"]
 	particles_check_box.button_pressed = dict["particles"]
 	glow_check_box.button_pressed = dict["glow"]
+
+func _on_song_finished() -> void:
+	Song.play()
 
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Escape"):

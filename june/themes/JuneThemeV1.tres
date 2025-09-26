@@ -38,7 +38,7 @@ corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
 [resource]
-Button/colors/font_color = Color(0.716297, 0.716296, 0.716296, 1)
+Button/colors/font_color = Color(0.56, 0.56, 0.56, 1)
 Button/colors/font_focus_color = Color(1, 1, 1, 1)
 Button/colors/font_hover_color = Color(0.393084, 0.393086, 0.393086, 1)
 Button/styles/disabled = SubResource("StyleBoxFlat_hmng7")

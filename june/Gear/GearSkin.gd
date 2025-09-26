@@ -57,6 +57,8 @@ var _current_fever : Note.Fever = Note.Fever.NONE
 @onready var _finalization_animation : AnimationPlayer = $FullGear/FinalizationAnimation
 enum Finalization{CLEAR, MAX_COMBO, PERFECT_COMBO}
 
+signal loaded
+
 func _ready() -> void:
 	_bpm = 60.0 / Song.BPM
 	
@@ -66,10 +68,10 @@ func _ready() -> void:
 	_shader_material.set_shader_parameter("highlight_strength", 4)
 	
 	#if Global.get_settings_dictionary()["particles"]:
-	_fever_star_effect_animation.play("RESET")
-	beat_animation.play("RESET")
-	text_animation.play("RESET")
-	_finalization_animation.play("RESET")
+	#_fever_star_effect_animation.play("RESET")
+	#beat_animation.play("RESET")
+	#text_animation.play("RESET")
+	#_finalization_animation.play("RESET")
 	
 	var dict := Global.get_settings_dictionary()
 	
@@ -235,3 +237,18 @@ func set_combo(combo : int) -> void:
 func play_finalization(finalization : Finalization) -> void:
 	Sfx.play_finalization()
 	_finalization_animation.play(str(Finalization.keys()[finalization]))
+
+func load_gear(loading_screen : LoadingScreen) -> int:
+	_combo_animation.play("Pop")
+	text_animation.play("Pop Up Precision")
+	beat_animation.play("Beat")
+	_fever_star_effect_animation.play("Fever Zone")
+	_finalization_animation.play("PERFECT_COMBO")
+	
+	_combo_animation.animation_finished.connect(loading_screen.loaded)
+	text_animation.animation_finished.connect(loading_screen.loaded)
+	beat_animation.animation_finished.connect(loading_screen.loaded)
+	_fever_star_effect_animation.animation_finished.connect(loading_screen.loaded)
+	_finalization_animation.animation_finished.connect(loading_screen.loaded)
+	
+	return 5

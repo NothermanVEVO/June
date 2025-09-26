@@ -9,9 +9,7 @@ class_name AudioScreen
 @onready var _sfx_volume_slider : HSlider = $PanelContainer/MarginContainer/VBoxContainer/SFXVolume/SFXVolumeSlider
 
 func _ready() -> void:
-	Song.finished.connect(func():
-		Song.play()
-	)
+	Song.finished.connect(_on_song_finished)
 	
 	_main_volume_slider.grab_focus()
 	
@@ -22,6 +20,9 @@ func _ready() -> void:
 	
 	_sfx_volume_slider.value = dict["audio_sfx"]
 	_on_sfx_volume_slider_value_changed(dict["audio_sfx"])
+
+func _on_song_finished() -> void:
+	Song.play()
 
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Escape"):

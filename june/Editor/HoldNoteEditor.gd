@@ -5,8 +5,8 @@ class_name HoldNoteEditor
 @onready var _note_info_scene : PackedScene = preload("res://Editor/NoteInfo.tscn")
 var _note_info : NoteInfo
 
-var top_button := Button.new()
-var bottom_button := Button.new()
+var top_button : Button
+var bottom_button : Button
 
 var is_button_down : bool = false
 
@@ -29,6 +29,9 @@ func _init(start_time : float, end_time : float) -> void:
 	_middle_note.axis_stretch_vertical = NinePatchRect.AXIS_STRETCH_MODE_TILE_FIT
 
 func _ready() -> void:
+	top_button = Button.new() ## WARNING PREVENTS MEMORY LEAK. IF YOU COPY THIS HOLD NOTE EDITOR, THE BUTTON WILL BE KEPT ALIVE IF 
+	bottom_button = Button.new() ## INSTANTIATED OUTSIDE OF _READY()
+	
 	Global.speed_changed.connect(_speed_changed)
 	
 	_note_info = _note_info_scene.instantiate()

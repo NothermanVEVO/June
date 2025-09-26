@@ -5,13 +5,13 @@
 [ext_resource type="FontFile" uid="uid://ccptv2g4gl5oq" path="res://assets/fonts/Baby Donuts.ttf" id="3_rmmlk"]
 [ext_resource type="Theme" uid="uid://oe21uoww8ls3" path="res://themes/JuneThemeV1.tres" id="4_rmmlk"]
 
-[sub_resource type="Gradient" id="Gradient_vav2g"]
+[sub_resource type="Gradient" id="Gradient_rmmlk"]
 interpolation_mode = 2
 offsets = PackedFloat32Array(0, 0.522876, 1)
 colors = PackedColorArray(1, 1, 1, 1, 0.774667, 0.48, 1, 1, 0.5, 0, 1, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_1xvql"]
-gradient = SubResource("Gradient_vav2g")
+gradient = SubResource("Gradient_rmmlk")
 width = 128
 height = 128
 fill_from = Vector2(1, 1)

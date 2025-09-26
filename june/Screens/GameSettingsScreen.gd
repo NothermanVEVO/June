@@ -13,9 +13,7 @@ enum GearPositions {CENTER, LEFT, RIGHT}
 @onready var _gear_position_option : OptionButton = $PanelContainer/MarginContainer/VBoxContainer/GearPositionOption
 
 func _ready() -> void:
-	Song.finished.connect(func():
-		Song.play()
-	)
+	Song.finished.connect(_on_song_finished)
 	
 	_velocity_slider.grab_focus()
 	var dict := Global.get_settings_dictionary()
@@ -27,6 +25,9 @@ func _ready() -> void:
 	_gear_transparency_slider.value = dict["game_gear_transparency"]
 	
 	_gear_position_option.select(dict["game_gear_position"])
+
+func _on_song_finished() -> void:
+	Song.play()
 
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Escape"):

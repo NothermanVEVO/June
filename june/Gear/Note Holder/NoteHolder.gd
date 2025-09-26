@@ -17,7 +17,7 @@ var _last_visible_notes : Array[Note] = []
 
 var _key_pressed_gradient := KeyPressedGradient.new()
 
-const _hit_effect_scene := preload("res://Effects/HitEffect.tscn")
+const _hit_effect_scene := preload("res://Effects/Hit/HitEffect.tscn")
 var _hit_effect : HitEffect
 
 var _currently_note_idx : int = 0
@@ -98,7 +98,7 @@ func _player_process() -> void:
 				elif _holding_note_time >= HOLDING_NOTE_DELAY and not _notes[_currently_note_idx].get_end_time() < time:
 					if Global.main_music_player:
 						Global.main_music_player.pop_precision(_hitted_hold_note_precision)
-						_hit_effect.play_effect(99)
+						_hit_effect.play_effect(HitEffect.calculate_type_in_precision(_hitted_hold_note_precision))
 						_holding_note_time = 0.0
 				else:
 					_holding_note_time += get_process_delta_time()
@@ -181,7 +181,7 @@ func _hit(time : float) -> void:
 		var precision := _calculate_difference(time, _notes[_currently_note_idx].get_time())
 		if not _notes[_currently_note_idx] is HoldNote and Global.main_music_player:
 			Global.main_music_player.pop_precision(precision)
-			_hit_effect.play_effect(99)
+			_hit_effect.play_effect(HitEffect.calculate_type_in_precision(precision))
 			Global.main_music_player.add_score(MusicPlayer.get_value_of_note() * abs(precision) / 100)
 			_currently_note_idx += 1
 			_check_for_last_note_processed()
@@ -194,7 +194,7 @@ func _hit(time : float) -> void:
 				_currently_note_idx += 1
 				_check_for_last_note_processed()
 				return
-			_hit_effect.play_effect(99)
+			_hit_effect.play_effect(HitEffect.calculate_type_in_precision(precision))
 			_hitted_hold_note_precision = precision
 			#if precision > 0 and precision != 100: ## DOES THAT WORK?? WORK AT THIS IN THE FUTURE TODO
 				#_notes[_currently_note_idx].set_start_time(time)
@@ -215,7 +215,7 @@ func _hit_hold_note(time : float) -> void:
 		if abs(precision) < abs(_hitted_hold_note_precision):
 			_hitted_hold_note_precision = precision
 		Global.main_music_player.pop_precision(_hitted_hold_note_precision)
-		_hit_effect.play_effect(99)
+		_hit_effect.play_effect(HitEffect.calculate_type_in_precision(_hitted_hold_note_precision))
 		Global.main_music_player.add_score(MusicPlayer.get_value_of_note() * abs(_hitted_hold_note_precision) / 100)
 		_currently_note_idx += 1
 		_check_for_last_note_processed()

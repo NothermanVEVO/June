@@ -188,6 +188,7 @@ func _load_song_map() -> void:
 	_count_value_of_notes()
 
 func restart() -> void:
+	Game.restarted()
 	_current_time = 0.0
 	Song.stop()
 	Song.set_time(0.0)

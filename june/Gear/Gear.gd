@@ -325,7 +325,7 @@ static func get_speed() -> float:
 	return _speed
 
 static func MAX_TIME_Y() -> float:
-	return clampf(NoteHolder.SECS_SIZE_Y / _speed / _game_speed, NoteHolder.SECS_SIZE_Y / 10, NoteHolder.SECS_SIZE_Y)
+	return clampf(NoteHolder.SECS_SIZE_Y / _speed / _game_speed, NoteHolder.SECS_SIZE_Y / 10.0, NoteHolder.SECS_SIZE_Y)
 
 func add_note_at(idx : int, note : Note, validate_note : bool = false) -> void:
 	note.set_idx(idx)

@@ -64,6 +64,7 @@ func _file_index_pressed(index : int) -> void:
 			if Editor.editor_composer and Editor.editor_composer.editor_menu_bar and Editor.editor_composer.editor_menu_bar.game and Editor.editor_composer.editor_menu_bar.game._copied_notes: ## AVOIDS MEMORY LEAK
 				for note in Editor.editor_composer.editor_menu_bar.game._copied_notes:
 					note.queue_free()
+				Editor.editor_composer.editor_menu_bar.game._copied_notes.clear()
 			_quit()
 
 func _confirmation_dialog_confirmed() -> void:
@@ -85,6 +86,7 @@ func _confirmation_dialog_canceled(custom_action : StringName) -> void:
 		return
 	match _last_choice:
 		Choices.QUIT:
+			Editor.saved_file()
 			Editor.is_on_editor = false
 			get_tree().change_scene_to_packed(Global.START_SCREEN_SCENE)
 

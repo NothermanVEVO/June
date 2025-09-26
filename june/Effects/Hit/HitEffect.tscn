@@ -1,15 +1,13 @@
 [gd_scene load_steps=5 format=3 uid="uid://cbwvslm62p7lc"]
 
-[ext_resource type="Script" uid="uid://bl4xlpbad30vp" path="res://Effects/HitEffect.gd" id="1_q18cl"]
+[ext_resource type="Script" uid="uid://bl4xlpbad30vp" path="res://Effects/Hit/HitEffect.gd" id="1_q18cl"]
 [ext_resource type="Texture2D" uid="uid://fssjb14427a5" path="res://concepts/hit_effect_test_v3.png" id="2_q18cl"]
+[ext_resource type="Gradient" uid="uid://nkogm8r8krw" path="res://Effects/Hit/Maximum.tres" id="3_y4l72"]
 
 [sub_resource type="Curve" id="Curve_q18cl"]
 _limits = [-200.0, 200.0, 0.0, 1.0]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.99999, 123.596), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 3
-
-[sub_resource type="Gradient" id="Gradient_q18cl"]
-colors = PackedColorArray(0.286275, 1, 1, 1, 1, 1, 1, 1)
 
 [node name="HitEffect" type="Node2D"]
 z_index = 5
@@ -51,4 +49,4 @@ tangential_accel_min = -100.0
 tangential_accel_max = -100.0
 scale_amount_max = 15.0
 color = Color(1, 4, 4, 1)
-color_ramp = SubResource("Gradient_q18cl")
+color_ramp = ExtResource("3_y4l72")

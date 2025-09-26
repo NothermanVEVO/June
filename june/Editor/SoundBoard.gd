@@ -144,6 +144,7 @@ func adjust_speed() -> void:
 		last_valid_speed_text = speed_text.text
 	else:
 		speed_text.text = last_valid_speed_text
+	Song.pitch_scale = speed_slider.value / 100
 	speed_text.release_focus()
 
 ## CHANGE SPEED TIMER OR SLIDER 			-- START --

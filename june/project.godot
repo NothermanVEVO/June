@@ -12,9 +12,9 @@ config_version=5
 
 config/name="June"
 config/description="Um jogo de ritmo onde você pode criar seu próprio mapa musical."
-config/version="0.7.0"
+config/version="0.8.0"
 config/tags=PackedStringArray("rythm")
-run/main_scene="uid://drjxg7k7qdwwx"
+run/main_scene="uid://df11ylsthwo5e"
 config/use_custom_user_dir=true
 config/features=PackedStringArray("4.4", "GL Compatibility")
 boot_splash/bg_color=Color(0, 0, 0, 1)
@@ -243,3 +243,4 @@ textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 viewport/hdr_2d=true
+environment/defaults/default_clear_color=Color(0, 0, 0, 1)

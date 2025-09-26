@@ -23,9 +23,7 @@ var _button_toggled_on : Button
 const INVALID_PHYSICAL_KEYCODE : Array[int] = [4194305, 49, 50, 4194336] ## [ESCAPE, 1, 2, F5].
 
 func _ready() -> void:
-	Song.finished.connect(func():
-		Song.play()
-	)
+	Song.finished.connect(_on_song_finished)
 	
 	first_four_keys_button.grab_focus()
 	
@@ -51,6 +49,9 @@ func _ready() -> void:
 	fourth_six_keys_button.text = char(dict[fourth_six_keys_button.name])
 	fifth_six_keys_button.text = char(dict[fifth_six_keys_button.name])
 	sixth_six_keys_button.text = char(dict[sixth_six_keys_button.name])
+
+func _on_song_finished() -> void:
+	Song.play()
 
 func _on_return_pressed() -> void:
 	get_tree().change_scene_to_packed(Global.SETTING_SCREEN_SCENE)

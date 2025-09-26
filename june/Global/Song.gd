@@ -19,7 +19,7 @@ func _process(_delta: float) -> void:
 		_current_time = get_playback_position()
 
 func _finished() -> void:
-	Song.set_time(get_duration())
+	set_time(get_duration())
 	_song_finished = true
 
 @warning_ignore("shadowed_variable_base_class")
