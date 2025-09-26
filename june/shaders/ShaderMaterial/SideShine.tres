@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://brtqtf01n1el3"]
+
+[ext_resource type="Shader" uid="uid://cv72bkw7c1m1g" path="res://shaders/Shine.gdshader" id="1_xgv3l"]
+
+[resource]
+shader = ExtResource("1_xgv3l")
+shader_parameter/size_effect = 0.1
+shader_parameter/speed = -1.0
+shader_parameter/highlight_strength = 4.0
+shader_parameter/color_mode_toggle = false
+shader_parameter/is_horizontal = true

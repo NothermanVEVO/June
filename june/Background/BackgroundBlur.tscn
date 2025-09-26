@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://b27k6hedgs82o"]
+
+[ext_resource type="Material" uid="uid://bloqkb5rgq2o6" path="res://shaders/ShaderMaterial/BackgroundBlur.tres" id="1_davnu"]
+
+[node name="ColorRect" type="ColorRect"]
+material = ExtResource("1_davnu")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

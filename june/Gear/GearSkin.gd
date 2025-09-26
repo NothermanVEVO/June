@@ -39,7 +39,7 @@ const _ZONE_FEVER_GRADIENT_TEXTURE := preload("res://Effects/Fever/Fever_ZONE.tr
 @onready var _combo_animation : AnimationPlayer = $FullGear/ComboAnimation
 
 @onready var _precision_texture_rect : TextureRect = $FullGear/Precision/MarginContainer/Percentage/TextureRect
-var _shader_material := ShaderMaterial.new()
+const _SIDE_SHINE_SHADER_MATERIAL := preload("res://shaders/ShaderMaterial/SideShine.tres")
 
 const _100_PRECISION_GRADIENT := preload("res://Effects/JuneGearV1Letter/100 MAX.tres")
 const _90_PRECISION_GRADIENT := preload("res://Effects/JuneGearV1Letter/90 MAX.tres")
@@ -62,10 +62,10 @@ signal loaded
 func _ready() -> void:
 	_bpm = 60.0 / Song.BPM
 	
-	_shader_material.shader = Global.SHINE_HIGHLIGHT
-	_shader_material.set_shader_parameter("is_horizontal", true)
-	_shader_material.set_shader_parameter("speed", -1.0)
-	_shader_material.set_shader_parameter("highlight_strength", 4)
+	#_shader_material.shader = Global.SHINE_HIGHLIGHT
+	#_shader_material.set_shader_parameter("is_horizontal", true)
+	#_shader_material.set_shader_parameter("speed", -1.0)
+	#_shader_material.set_shader_parameter("highlight_strength", 4)
 	
 	#if Global.get_settings_dictionary()["particles"]:
 	#_fever_star_effect_animation.play("RESET")
@@ -100,7 +100,7 @@ func pop_precision(precision : int) -> void:
 	
 	if precision == 100:
 		_precision_texture_rect.texture = _100_PRECISION_GRADIENT
-		_precision_texture_rect.material = _shader_material
+		_precision_texture_rect.material = _SIDE_SHINE_SHADER_MATERIAL
 		precision_speed_text.visible = false
 		precision_percentage_text.text = str(precision) + "% MAX"
 	elif precision > 0 and precision < 100:
@@ -239,16 +239,66 @@ func play_finalization(finalization : Finalization) -> void:
 	_finalization_animation.play(str(Finalization.keys()[finalization]))
 
 func load_gear(loading_screen : LoadingScreen) -> int:
+	var quantity : int = 0
+	
 	_combo_animation.play("Pop")
+	quantity += 1
+	
 	text_animation.play("Pop Up Precision")
+	quantity += 1
+	
 	beat_animation.play("Beat")
-	_fever_star_effect_animation.play("Fever Zone")
-	_finalization_animation.play("PERFECT_COMBO")
+	quantity += 1
+	
+	quantity += _load_fever_star_effect_animations(loading_screen)
+	
+	quantity += _load_finalization_animations(loading_screen)
 	
 	_combo_animation.animation_finished.connect(loading_screen.loaded)
 	text_animation.animation_finished.connect(loading_screen.loaded)
 	beat_animation.animation_finished.connect(loading_screen.loaded)
-	_fever_star_effect_animation.animation_finished.connect(loading_screen.loaded)
-	_finalization_animation.animation_finished.connect(loading_screen.loaded)
 	
-	return 5
+	return quantity
+
+func _load_fever_star_effect_animations(loading_screen : LoadingScreen) -> int:
+	_fever_star_effect_animation.animation_finished.connect(loading_screen.loaded)
+	_fever_star_effect_animation.speed_scale = 4
+	
+	_play_all_fever_animations()
+	
+	return 6
+
+func _play_all_fever_animations() -> void:
+	_fever_star_effect_animation.play("Fever 1X")
+	await _fever_star_effect_animation.animation_finished
+	
+	_fever_star_effect_animation.play("Fever 2X")
+	await _fever_star_effect_animation.animation_finished
+	
+	_fever_star_effect_animation.play("Fever 3X")
+	await _fever_star_effect_animation.animation_finished
+	
+	_fever_star_effect_animation.play("Fever 4X")
+	await _fever_star_effect_animation.animation_finished
+	
+	_fever_star_effect_animation.play("Fever 5X")
+	await _fever_star_effect_animation.animation_finished
+	
+	_fever_star_effect_animation.play("Fever Zone")
+
+func _load_finalization_animations(loading_screen : LoadingScreen) -> int:
+	_finalization_animation.animation_finished.connect(loading_screen.loaded)
+	_finalization_animation.speed_scale = 4
+	
+	_play_all_finalization_animations()
+	
+	return 3
+
+func _play_all_finalization_animations() -> void:
+	_finalization_animation.play("CLEAR")
+	await _finalization_animation.animation_finished
+	
+	_finalization_animation.play("MAX_COMBO")
+	await _finalization_animation.animation_finished
+	
+	_finalization_animation.play("PERFECT_COMBO")

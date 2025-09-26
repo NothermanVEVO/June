@@ -48,26 +48,14 @@ length = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("ComboText:theme_override_font_sizes/normal_font_size")
+tracks/0/path = NodePath(".:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.0666667, 0.1),
-"transitions": PackedFloat32Array(0.116629, 0.233258, 1),
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1),
+"transitions": PackedFloat32Array(0.0980732, 1, 0.0947322, 1),
 "update": 0,
-"values": [80, 82, 80]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:scale")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.0666667, 0.1),
-"transitions": PackedFloat32Array(0.0980732, 0.0947322, 1),
-"update": 0,
-"values": [Vector2(1.05, 1), Vector2(1.05, 1), Vector2(1, 1)]
+"values": [Vector2(1.05, 1), Vector2(1.075, 1), Vector2(1.05, 1), Vector2(1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_r2g2g"]
@@ -75,22 +63,10 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("ComboText:theme_override_font_sizes/normal_font_size")
+tracks/0/path = NodePath(".:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [80]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:scale")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
@@ -109,38 +85,26 @@ length = 1.25
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("FullGear/Precision/MarginContainer/Percentage:theme_override_font_sizes/normal_font_size")
+tracks/0/path = NodePath("FullGear/Precision:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.133333, 1),
-"transitions": PackedFloat32Array(0.31864, 1, 1, 4.28709),
-"update": 0,
-"values": [35, 105, 100, 100]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("FullGear/Precision/Speed:theme_override_font_sizes/normal_font_size")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.133333, 1),
-"transitions": PackedFloat32Array(0.31864, 1, 1, 4.28709),
-"update": 0,
-"values": [14, 30, 25, 25]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("FullGear/Precision:modulate")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
 "times": PackedFloat32Array(0, 0.1, 1, 1.25),
 "transitions": PackedFloat32Array(0.31864, 1, 1.86607, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("FullGear/Precision:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.133333),
+"transitions": PackedFloat32Array(0.183011, 0.241484, 1),
+"update": 0,
+"values": [Vector2(0.9, 0.9), Vector2(1.05, 1.05), Vector2(1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_uu6xs"]
@@ -148,46 +112,22 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("FullGear/Precision/MarginContainer/Percentage:theme_override_font_sizes/normal_font_size")
+tracks/0/path = NodePath("FullGear/Precision:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [60]
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("FullGear/Precision/Speed:theme_override_font_sizes/normal_font_size")
+tracks/1/path = NodePath("FullGear/Precision:scale")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [25]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("FullGear/Precision:modulate")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("FullGear/Gear/Control/Star:scale")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
@@ -379,62 +319,74 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:theme_override_font_sizes/normal_font_size")
+tracks/5/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel/TextureRect:texture")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.866667, 1.5),
-"transitions": PackedFloat32Array(0.233259, 1, 1),
-"update": 0,
-"values": [130, 300, 300]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel/TextureRect:texture")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [SubResource("GradientTexture2D_54wux")]
 }
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:modulate")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
 "times": PackedFloat32Array(0, 0.3, 0.866667, 1.5),
 "transitions": PackedFloat32Array(0.233258, 1, 1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 2, 1), Color(1, 1, 2, 1), Color(1, 1, 1, 0)]
 }
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:visible")
+tracks/8/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:text")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": ["1X"]
 }
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:text")
+tracks/9/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:scale")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
+"times": PackedFloat32Array(0, 0.8667, 1.499),
+"transitions": PackedFloat32Array(0.241484, 1, 1),
+"update": 0,
+"values": [Vector2(0.8, 0.8), Vector2(1, 1), Vector2(1, 1)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:pivot_offset")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": ["1X"]
+"update": 0,
+"values": [Vector2(100.5, 197.5)]
 }
 
 [sub_resource type="Gradient" id="Gradient_54wux"]
@@ -506,62 +458,74 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:theme_override_font_sizes/normal_font_size")
+tracks/5/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:visible")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.866667, 1.5),
-"transitions": PackedFloat32Array(0.233259, 1, 1),
-"update": 0,
-"values": [130, 300, 300]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:visible")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [true]
 }
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:modulate")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
 "times": PackedFloat32Array(0, 0.3, 0.866667, 1.5),
 "transitions": PackedFloat32Array(0.233258, 1, 1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 2, 1, 1), Color(1, 2, 1, 1), Color(1, 1, 1, 0)]
 }
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel/TextureRect:texture")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("3_xxcan")]
+}
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel/TextureRect:texture")
+tracks/8/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:text")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("3_xxcan")]
+"values": ["2X"]
 }
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:text")
+tracks/9/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:scale")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
+"times": PackedFloat32Array(0, 0.8667, 1.499),
+"transitions": PackedFloat32Array(0.241484, 1, 1),
+"update": 0,
+"values": [Vector2(0.8, 0.8), Vector2(1, 1), Vector2(1, 1)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:pivot_offset")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": ["2X"]
+"update": 0,
+"values": [Vector2(108, 197.5)]
 }
 
 [sub_resource type="Gradient" id="Gradient_r2g2g"]
@@ -633,62 +597,74 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:theme_override_font_sizes/normal_font_size")
+tracks/5/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:modulate")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.866667, 1.5),
-"transitions": PackedFloat32Array(0.233259, 1, 1),
-"update": 0,
-"values": [130, 300, 300]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:modulate")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
 "times": PackedFloat32Array(0, 0.3, 0.866667, 1.5),
 "transitions": PackedFloat32Array(0.233258, 1, 1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(2, 2, 1, 1), Color(2, 2, 1, 1), Color(1, 1, 1, 0)]
 }
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:visible")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [true]
 }
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel/TextureRect:texture")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("4_jii80")]
+}
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel/TextureRect:texture")
+tracks/8/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:text")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("4_jii80")]
+"values": ["3X"]
 }
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:text")
+tracks/9/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:scale")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
+"times": PackedFloat32Array(0, 0.8667, 1.499),
+"transitions": PackedFloat32Array(0.241484, 1, 1),
+"update": 0,
+"values": [Vector2(0.8, 0.8), Vector2(1, 1), Vector2(1, 1)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:pivot_offset")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": ["3X"]
+"update": 0,
+"values": [Vector2(107.5, 197.5)]
 }
 
 [sub_resource type="Gradient" id="Gradient_kmhpc"]
@@ -760,62 +736,74 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:theme_override_font_sizes/normal_font_size")
+tracks/5/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:modulate")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.866667, 1.5),
-"transitions": PackedFloat32Array(0.233259, 1, 1),
-"update": 0,
-"values": [130, 300, 300]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:modulate")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
 "times": PackedFloat32Array(0, 0.3, 0.866667, 1.5),
 "transitions": PackedFloat32Array(0.233258, 1, 1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(4, 2, 1, 1), Color(4, 2, 1, 1), Color(1, 1, 1, 0)]
 }
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:visible")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [true]
 }
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel/TextureRect:texture")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("5_kmhpc")]
+}
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel/TextureRect:texture")
+tracks/8/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:text")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("5_kmhpc")]
+"values": ["4X"]
 }
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:text")
+tracks/9/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:scale")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
+"times": PackedFloat32Array(0, 0.8667, 1.499),
+"transitions": PackedFloat32Array(0.241484, 1, 1),
+"update": 0,
+"values": [Vector2(0.8, 0.8), Vector2(1, 1), Vector2(1, 1)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:pivot_offset")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": ["4X"]
+"update": 0,
+"values": [Vector2(116, 197.5)]
 }
 
 [sub_resource type="Gradient" id="Gradient_xxcan"]
@@ -887,62 +875,74 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:theme_override_font_sizes/normal_font_size")
+tracks/5/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:modulate")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.866667, 1.5),
-"transitions": PackedFloat32Array(0.233259, 1, 1),
-"update": 0,
-"values": [130, 300, 300]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:modulate")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
 "times": PackedFloat32Array(0, 0.3, 0.866667, 1.5),
 "transitions": PackedFloat32Array(0.233258, 1, 1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(2, 1, 1, 1), Color(2, 1, 1, 1), Color(1, 1, 1, 0)]
 }
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:visible")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [true]
 }
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel/TextureRect:texture")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("6_1nofc")]
+}
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel/TextureRect:texture")
+tracks/8/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:text")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("6_1nofc")]
+"values": ["5X"]
 }
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:text")
+tracks/9/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:scale")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
+"times": PackedFloat32Array(0, 0.8667, 1.499),
+"transitions": PackedFloat32Array(0.241484, 1, 1),
+"update": 0,
+"values": [Vector2(0.8, 0.8), Vector2(1, 1), Vector2(1, 1)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:pivot_offset")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": ["5X"]
+"update": 0,
+"values": [Vector2(100.5, 197.5)]
 }
 
 [sub_resource type="Gradient" id="Gradient_nhmow"]
@@ -1014,62 +1014,74 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:theme_override_font_sizes/normal_font_size")
+tracks/5/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:modulate")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.866667, 1.5),
-"transitions": PackedFloat32Array(0.233259, 1, 1),
-"update": 0,
-"values": [130, 300, 300]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:modulate")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
 "times": PackedFloat32Array(0, 0.3, 0.866667, 1.5),
 "transitions": PackedFloat32Array(0.233258, 1, 1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(2, 1, 2, 1), Color(2, 1, 2, 1), Color(1, 1, 1, 0)]
 }
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:visible")
+tracks/7/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel/TextureRect:texture")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [ExtResource("7_vvqmb")]
 }
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel/TextureRect:texture")
+tracks/8/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:text")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("7_vvqmb")]
+"values": ["ZONE"]
 }
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:text")
+tracks/9/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:scale")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
+"times": PackedFloat32Array(0, 0.8667, 1.499),
+"transitions": PackedFloat32Array(0.241484, 1, 1),
+"update": 0,
+"values": [Vector2(0.8, 0.8), Vector2(1, 1), Vector2(1, 1)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:pivot_offset")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": ["ZONE"]
+"update": 0,
+"values": [Vector2(235, 197.5)]
 }
 
 [sub_resource type="Gradient" id="Gradient_2ksjx"]
@@ -1140,62 +1152,74 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:theme_override_font_sizes/normal_font_size")
+tracks/5/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel/TextureRect:texture")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [130]
+"values": [ExtResource("3_apgu0")]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel/TextureRect:texture")
+tracks/6/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:modulate")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [ExtResource("3_apgu0")]
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
 }
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:modulate")
+tracks/7/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:visible")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 0)]
+"update": 1,
+"values": [false]
 }
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:visible")
+tracks/8/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:text")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [false]
+"values": [""]
 }
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:text")
+tracks/9/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:scale")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [""]
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("../Gear/Control/Fever Effect Star/RichTextLabel:pivot_offset")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_najma"]
@@ -1266,38 +1290,38 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Finalization/RichTextLabel:theme_override_font_sizes/normal_font_size")
+tracks/3/path = NodePath("Finalization/Control/CPUParticles2D:emitting")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.133333),
-"transitions": PackedFloat32Array(0.482968, 5.85634, 1),
-"update": 0,
-"values": [666, 200, 205]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Finalization/Control/CPUParticles2D:emitting")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
 "times": PackedFloat32Array(0, 0.0666667, 0.1),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [false, true, false]
 }
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("Finalization/Control/CPUParticles2D:color_ramp")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Finalization/Control/CPUParticles2D:color_ramp")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [SubResource("Gradient_oprfg")]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Finalization:scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.133333),
+"transitions": PackedFloat32Array(0.183011, 0.189465, 1),
+"update": 0,
+"values": [Vector2(5, 5), Vector2(0.95, 0.95), Vector2(1, 1)]
 }
 
 [sub_resource type="Gradient" id="Gradient_najma"]
@@ -1347,38 +1371,38 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Finalization/RichTextLabel:theme_override_font_sizes/normal_font_size")
+tracks/3/path = NodePath("Finalization/Control/CPUParticles2D:emitting")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.133333),
-"transitions": PackedFloat32Array(0.482968, 5.85634, 1),
-"update": 0,
-"values": [666, 200, 205]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Finalization/Control/CPUParticles2D:emitting")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
 "times": PackedFloat32Array(0, 0.0666667, 0.1),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [false, true, false]
 }
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("Finalization/Control/CPUParticles2D:color_ramp")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Finalization/Control/CPUParticles2D:color_ramp")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [SubResource("Gradient_najma")]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Finalization:scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.133333),
+"transitions": PackedFloat32Array(0.183011, 0.189465, 1),
+"update": 0,
+"values": [Vector2(5, 5), Vector2(0.95, 0.95), Vector2(1, 1)]
 }
 
 [sub_resource type="Gradient" id="Gradient_3v6na"]
@@ -1429,38 +1453,38 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Finalization/RichTextLabel:theme_override_font_sizes/normal_font_size")
+tracks/3/path = NodePath("Finalization/Control/CPUParticles2D:emitting")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.133333),
-"transitions": PackedFloat32Array(0.482969, 5.85634, 1),
-"update": 0,
-"values": [666, 200, 205]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Finalization/Control/CPUParticles2D:emitting")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
 "times": PackedFloat32Array(0, 0.0666667, 0.1),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [false, true, false]
 }
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("Finalization/Control/CPUParticles2D:color_ramp")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Finalization/Control/CPUParticles2D:color_ramp")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [SubResource("Gradient_3v6na")]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Finalization:scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.133333),
+"transitions": PackedFloat32Array(0.183011, 0.189465, 1),
+"update": 0,
+"values": [Vector2(5, 5), Vector2(0.95, 0.95), Vector2(1, 1)]
 }
 
 [sub_resource type="Gradient" id="Gradient_0dwk1"]
@@ -1507,38 +1531,38 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Finalization/RichTextLabel:theme_override_font_sizes/normal_font_size")
+tracks/3/path = NodePath("Finalization/Control/CPUParticles2D:emitting")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [1]
+"values": [false]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Finalization/Control/CPUParticles2D:emitting")
+tracks/4/path = NodePath("Finalization/Control/CPUParticles2D:color_ramp")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [false]
+"values": [SubResource("Gradient_0dwk1")]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Finalization/Control/CPUParticles2D:color_ramp")
+tracks/5/path = NodePath("Finalization:scale")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [SubResource("Gradient_0dwk1")]
+"update": 0,
+"values": [Vector2(1, 1)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_pmcdu"]
@@ -1627,6 +1651,7 @@ offset_right = 91.5
 offset_bottom = 27.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset = Vector2(170.5, 76.5)
 theme_override_constants/separation = -15
 
 [node name="Speed" type="RichTextLabel" parent="FullGear/Precision"]
@@ -1657,7 +1682,7 @@ theme_override_constants/margin_right = 7
 clip_children = 2
 layout_mode = 2
 theme_override_fonts/normal_font = ExtResource("2_apgu0")
-theme_override_font_sizes/normal_font_size = 60
+theme_override_font_sizes/normal_font_size = 100
 text = "100% MAX"
 fit_content = true
 autowrap_mode = 0
@@ -1934,7 +1959,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/outline_size = 10
 theme_override_fonts/normal_font = ExtResource("14_xxcan")
-theme_override_font_sizes/normal_font_size = 130
+theme_override_font_sizes/normal_font_size = 300
 fit_content = true
 autowrap_mode = 0
 horizontal_alignment = 1
@@ -1999,6 +2024,7 @@ offset_right = 28.0
 offset_bottom = 23.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset = Vector2(253.5, 98.5)
 
 [node name="Control" type="Control" parent="Finalization"]
 layout_mode = 2
@@ -2036,7 +2062,7 @@ theme_override_constants/shadow_offset_y = 5
 theme_override_constants/shadow_offset_x = -5
 theme_override_constants/shadow_outline_size = 20
 theme_override_fonts/normal_font = ExtResource("24_kmhpc")
-theme_override_font_sizes/normal_font_size = 1
+theme_override_font_sizes/normal_font_size = 205
 bbcode_enabled = true
 fit_content = true
 autowrap_mode = 0

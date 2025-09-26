@@ -1,15 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://blxnnundw6hmy"]
+[gd_scene load_steps=6 format=3 uid="uid://blxnnundw6hmy"]
 
 [ext_resource type="Script" uid="uid://bad8ejhlf2gu6" path="res://Screens/PressToPlayScreen.gd" id="1_24uug"]
 [ext_resource type="PackedScene" uid="uid://dj8t1madbd5pe" path="res://Background/AnimatedBackgroundV1.tscn" id="1_m1ony"]
-[ext_resource type="Shader" uid="uid://dmve0qmdyygvc" path="res://shaders/DualKawaseUp.gdshader" id="2_24uug"]
+[ext_resource type="PackedScene" uid="uid://b27k6hedgs82o" path="res://Background/BackgroundBlur.tscn" id="3_m1ony"]
 [ext_resource type="FontFile" uid="uid://bk7uiutchpno7" path="res://assets/fonts/Kalufira.otf" id="4_50c40"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rcaxk"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_wty5p"]
-shader = ExtResource("2_24uug")
-shader_parameter/offset = 4.27
 
 [node name="PressToPlayScreen" type="Control"]
 layout_mode = 3
@@ -24,14 +20,8 @@ script = ExtResource("1_24uug")
 material = SubResource("ShaderMaterial_rcaxk")
 layout_mode = 1
 
-[node name="ColorRect" type="ColorRect" parent="."]
-material = SubResource("ShaderMaterial_wty5p")
+[node name="Blur" parent="." instance=ExtResource("3_m1ony")]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 
 [node name="MarginContainer2" type="MarginContainer" parent="."]
 layout_mode = 1

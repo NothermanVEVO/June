@@ -5,6 +5,8 @@ class_name Note
 enum State {TO_HIT, HITTED, BREAK}
 enum Type {BLUE, RED}
 
+const PULSE_SHINE_SHADER_MATERIAL := preload("res://shaders/ShaderMaterial/PulseShine.tres")
+
 #const NORMAL_NOTE_IMG = preload("res://assets/noteFormated.png")
 const NORMAL_NOTE_BLUE_IMG = preload("res://concepts/hit_test_blue.png")
 const NORMAL_NOTE_RED_IMG = preload("res://concepts/hit_test_red.png")
@@ -36,12 +38,7 @@ func _init(current_time : float) -> void:
 	z_index = 5
 
 func _ready() -> void:
-	_shader_material.shader = Global.SHINE_HIGHLIGHT
-	_shader_material.set_shader_parameter("is_horizontal", true)
-	_shader_material.set_shader_parameter("size_effect", 5.0)
-	_shader_material.set_shader_parameter("speed", -1.0)
-	_shader_material.set_shader_parameter("highlight_strength", 0.1)
-	material = _shader_material
+	material = PULSE_SHINE_SHADER_MATERIAL
 
 func set_time(time : float) -> void:
 	_current_time = time

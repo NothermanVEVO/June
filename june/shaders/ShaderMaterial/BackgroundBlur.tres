@@ -1,0 +1,7 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bloqkb5rgq2o6"]
+
+[ext_resource type="Shader" uid="uid://dmve0qmdyygvc" path="res://shaders/DualKawaseUp.gdshader" id="1_dmjba"]
+
+[resource]
+shader = ExtResource("1_dmjba")
+shader_parameter/offset = 5.0

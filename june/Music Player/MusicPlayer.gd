@@ -371,6 +371,7 @@ func wait_for_song_to_finish(id : String) -> void:
 	#print(id)
 	#print(_current_uuid)
 	if self and id == _current_uuid:
+		World.unload()
 		Game.game_ended.emit(current_score, _current_combo, _section_dict)
 
 func _section_has_break(section : Dictionary) -> bool:
