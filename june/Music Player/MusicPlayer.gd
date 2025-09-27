@@ -209,6 +209,7 @@ func pause() -> void:
 	_pause_screen.visible = not _pause_screen.visible
 
 func _quit() -> void:
+	Game.restarted()
 	Song.set_time(0)
 	Song.stop()
 	World.unload()

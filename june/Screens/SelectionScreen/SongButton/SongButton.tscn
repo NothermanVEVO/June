@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://cdycxrdrlr8to" path="res://icon.svg" id="1_ycx0p"]
 
 [node name="SongButton" type="Button"]
-custom_minimum_size = Vector2(0, 150)
+custom_minimum_size = Vector2(0, 120)
 theme = ExtResource("1_vppg7")
 toggle_mode = true
 script = ExtResource("1_rjb7l")
@@ -26,7 +26,7 @@ dragging_enabled = false
 dragger_visibility = 1
 
 [node name="Icon" type="TextureRect" parent="HBoxContainer"]
-custom_minimum_size = Vector2(128, 128)
+custom_minimum_size = Vector2(96, 96)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4

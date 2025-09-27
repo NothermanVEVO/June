@@ -1,6 +1,9 @@
 extends Node
 
 func load_music_stream(path : String):
+	if not FileAccess.file_exists(path):
+		return null
+	
 	var stream
 	if path.get_extension() == "mp3":
 		stream = AudioStreamMP3.load_from_file(path)
@@ -21,6 +24,9 @@ func load_image(path : String):
 	return ImageTexture.create_from_image(image)
 
 func load_video_stream(path : String):
+	if not FileAccess.file_exists(path):
+		return null
+	
 	var stream = VideoStreamTheora.new()
 	stream.file = path
 	

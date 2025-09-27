@@ -10,15 +10,15 @@ corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wdxq1"]
-bg_color = Color(0.86, 0.86, 0.86, 1)
+bg_color = Color(0.601223, 0.601223, 0.601223, 1)
 border_width_bottom = 10
-border_color = Color(0.505344, 0.505344, 0.505344, 1)
+border_color = Color(0.347817, 0.347817, 0.347817, 1)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
-expand_margin_left = 5.0
-expand_margin_right = 5.0
+expand_margin_left = 10.0
+expand_margin_right = 10.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5lqsa"]
 bg_color = Color(1, 1, 1, 1)
@@ -38,9 +38,10 @@ corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
 [resource]
-Button/colors/font_color = Color(0.56, 0.56, 0.56, 1)
-Button/colors/font_focus_color = Color(1, 1, 1, 1)
-Button/colors/font_hover_color = Color(0.393084, 0.393086, 0.393086, 1)
+Button/colors/font_color = Color(0.252027, 0.252028, 0.252028, 1)
+Button/colors/font_focus_color = Color(0.929715, 0.929715, 0.929715, 1)
+Button/colors/font_hover_color = Color(0.728821, 0.728822, 0.728822, 1)
+Button/colors/font_pressed_color = Color(0.277528, 0.277528, 0.277528, 1)
 Button/styles/disabled = SubResource("StyleBoxFlat_hmng7")
 Button/styles/focus = SubResource("StyleBoxFlat_wdxq1")
 Button/styles/hover = SubResource("StyleBoxFlat_5lqsa")

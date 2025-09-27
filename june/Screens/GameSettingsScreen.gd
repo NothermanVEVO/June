@@ -18,7 +18,7 @@ func _ready() -> void:
 	_velocity_slider.grab_focus()
 	var dict := Global.get_settings_dictionary()
 	
-	_velocity_text.text = "Velocidade: " + str(dict["game_speed"])
+	_velocity_text.text = "Velocidade: %.1fx" % [dict["game_speed"]]
 	_velocity_slider.value = dict["game_speed"]
 	
 	_gear_transparency_text.text = "Transparência do fundo da Gear:" + str(int(dict["game_gear_transparency"] * 100)) + "%"
@@ -27,7 +27,8 @@ func _ready() -> void:
 	_gear_position_option.select(dict["game_gear_position"])
 
 func _on_song_finished() -> void:
-	Song.play()
+	if is_inside_tree():
+		Song.play()
 
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Escape"):

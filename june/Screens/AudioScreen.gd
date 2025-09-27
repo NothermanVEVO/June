@@ -22,7 +22,8 @@ func _ready() -> void:
 	_on_sfx_volume_slider_value_changed(dict["audio_sfx"])
 
 func _on_song_finished() -> void:
-	Song.play()
+	if is_inside_tree():
+		Song.play()
 
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Escape"):

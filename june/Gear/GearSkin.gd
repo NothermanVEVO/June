@@ -226,7 +226,7 @@ func set_score(score : int) -> void:
 	score_text.text = "Score: " + str(score)
 
 func set_speed(speed : float) -> void:
-	speed_text.text = "Speed: " + str(speed) + "x"
+	speed_text.text = "Speed: %.1fx" % [speed]
 
 func set_combo(combo : int) -> void:
 	$FullGear/Combo/ComboText.text = "COMBO " + str(combo)

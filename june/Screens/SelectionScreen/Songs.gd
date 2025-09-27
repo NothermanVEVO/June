@@ -103,11 +103,15 @@ func _ready() -> void:
 	if not _song_buttons.is_empty():
 		_song_buttons[0].grab_focus()
 	
+	_song_buttons[0].focus_neighbor_top = _song_buttons[_song_buttons.size() - 1].get_path()
+	_song_buttons[_song_buttons.size() - 1].focus_neighbor_bottom = _song_buttons[0].get_path()
+	
 	if Game.has_selection_state_saved():
 		Game.load_selection_state_saved(self)
 
 func _on_song_finished() -> void:
-	Song.play()
+	if is_inside_tree():
+		Song.play()
 
 func load_state(UUID : String, tab_selected : int, difficulty : SongMap.Difficulty) -> void:
 	selected_song_container.current_tab = tab_selected
@@ -175,7 +179,11 @@ func _song_button_on_focus_entered(song_button : SongButton) -> void:
 	
 	_request_background_id += 1
 	var id := _request_background_id 
+	
 	await get_tree().create_timer(1).timeout
+	
+	if not is_inside_tree():
+		return
 	
 	if _currently_playing_uuid == song_button.UUID or id != _request_background_id:
 		return

@@ -82,13 +82,13 @@ func load_result_screen_values(result_screen : ResultsScreen) -> void:
 	_last_combo = 0
 	_last_sections = {}
 
-func _game_ended(score : int, combo : int, sections : Dictionary) -> void:
+func _game_ended(score : float, combo : int, sections : Dictionary) -> void:
 	_restarted = false
 	await get_tree().create_timer(4, false).timeout
 	if _restarted:
 		return
 	
-	_last_score = score
+	_last_score = roundi(score)
 	_last_combo = combo
 	_last_sections = sections
 	

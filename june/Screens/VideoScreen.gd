@@ -35,7 +35,8 @@ func _ready() -> void:
 	glow_check_box.button_pressed = dict["glow"]
 
 func _on_song_finished() -> void:
-	Song.play()
+	if is_inside_tree():
+		Song.play()
 
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Escape"):
