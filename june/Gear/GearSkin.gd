@@ -61,6 +61,7 @@ signal loaded
 
 func _ready() -> void:
 	_bpm = 60.0 / Song.BPM
+	_last_time_beat = -_bpm + 0.01
 	
 	#_shader_material.shader = Global.SHINE_HIGHLIGHT
 	#_shader_material.set_shader_parameter("is_horizontal", true)

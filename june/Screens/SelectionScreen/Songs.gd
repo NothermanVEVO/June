@@ -200,7 +200,6 @@ func _song_button_on_focus_entered(song_button : SongButton) -> void:
 func _song_button_down() -> void:
 	if _last_song_button.button_pressed:
 		_last_song_button.button_pressed = false
-	pass
 
 func _check_folder(path: String) -> Array[String]:
 	var paths : Array[String] = []
@@ -264,7 +263,7 @@ func _play_difficulty(difficulty : SongMap.Difficulty) -> void:
 			for song_map in song_resource.song_maps:
 				if song_map.gear_type == _currently_selected_gear_type and song_map.difficulty == difficulty:
 					Game.save_selection_state(_last_song_button.UUID, selected_song_container.current_tab, song_map.difficulty)
-					
+					Song.BPM = song_resource.BPM
 					Game.change_to_music_player(song_map.gear_type, song_map, Loader.load_music_stream(song_resource.song), 
 						Loader.load_video_stream(song_resource.video), Loader.load_image(song_resource.image))
 					break
