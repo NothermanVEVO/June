@@ -115,6 +115,7 @@ func _open_file(path : String) -> void:
 		return
 	
 	_new_file()
+	_file_path = path
 	
 	var file := FileAccess.open(path, FileAccess.READ)
 	var content := file.get_as_text()

@@ -32,6 +32,9 @@ func _ready() -> void:
 	top_button = Button.new() ## WARNING PREVENTS MEMORY LEAK. IF YOU COPY THIS HOLD NOTE EDITOR, THE BUTTON WILL BE KEPT ALIVE IF 
 	bottom_button = Button.new() ## INSTANTIATED OUTSIDE OF _READY()
 	
+	top_button.focus_mode = Control.FOCUS_CLICK
+	bottom_button.focus_mode = Control.FOCUS_CLICK
+	
 	Global.speed_changed.connect(_speed_changed)
 	
 	_note_info = _note_info_scene.instantiate()

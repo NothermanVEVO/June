@@ -605,6 +605,7 @@ func _handle_selected_item_hold() -> void:
 		elif Input.is_action_just_released("Add Item"):
 			_currently_hold_note.pressing_button.connect(_pressing_some_hold_resize_button)
 			_currently_hold_note.set_end_time(mouse_time_pos_y)
+			gear.update_note_time(_currently_hold_note, true)
 			_currently_hold_note.update_end_time_text()
 			Editor.editor_composer.editor_menu_bar._memory_save_song_map() ## SHOULDN'T BE DOING THIS, BUT WELL...
 			#changed.emit()
@@ -698,6 +699,7 @@ func _paste() -> void:
 			new_note.set_selected_highlight(true)
 			gear.add_note_at(note.get_idx(), new_note, true)
 			_selected_notes.append(new_note)
+			new_note.pressing_button.connect(_pressing_some_hold_resize_button)
 		else:
 			var new_note := NoteEditor.new(_get_closest_grid_time_pos(note.get_time() + time_copied_difference))
 			new_note.powered = note.powered

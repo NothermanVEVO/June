@@ -12,7 +12,7 @@ config_version=5
 
 config/name="June"
 config/description="Um jogo de ritmo onde você pode criar seu próprio mapa musical."
-config/version="1.0.0"
+config/version="1.0.1"
 config/tags=PackedStringArray("rythm")
 run/main_scene="uid://df11ylsthwo5e"
 config/use_custom_user_dir=true
