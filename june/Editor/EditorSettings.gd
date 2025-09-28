@@ -201,15 +201,15 @@ func _on_song_button_pressed() -> void:
 	_last_called_file = Files.SONG
 
 func _on_play_song_button_pressed() -> void:
-	if play_song_button.text == "Play":
+	if play_song_button.text == "Tocar":
 		Song.play()
-		play_song_button.text = "Stop"
+		play_song_button.text = "Parar"
 	else:
-		play_song_button.text = "Play"
+		play_song_button.text = "Tocar"
 		Song.stop()
 
 func _on_song_finished() -> void:
-	play_song_button.text = "Play"
+	play_song_button.text = "Parar"
 
 func _on_compose_pressed() -> void:
 	Song.BPM = get_BPM_value()

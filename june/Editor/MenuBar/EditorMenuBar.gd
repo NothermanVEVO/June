@@ -214,6 +214,8 @@ func load_song_map(song_map : SongMap, focus_on_note : bool = false) -> void:
 		for note_resource in song_map.notes:
 			if not note_resource.is_selected:
 				for note in game._selected_notes:
+					if not is_instance_valid(note):
+						continue
 					if note.get_time() == note_resource.start_time and note.get_idx() == note_resource.idx and (
 						(note_resource.type == NoteResource.Type.HOLD and note is HoldNote and note.get_end_time() == note_resource.end_time) or
 						(note_resource.type == NoteResource.Type.TAP and note is Note)):

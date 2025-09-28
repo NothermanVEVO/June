@@ -151,7 +151,7 @@ vertical = true
 [node name="RichTextLabel2" type="RichTextLabel" parent="MenuBar/FlowContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-text = "Grid: "
+text = "Grade: "
 fit_content = true
 autowrap_mode = 0
 horizontal_alignment = 1
@@ -408,6 +408,7 @@ tick_count = 15
 
 [node name="TransferToHolder" type="Node2D" parent="."]
 
+[connection signal="visibility_changed" from="." to="SoundBoard" method="_on_editor_composer_visibility_changed"]
 [connection signal="pressed" from="MenuBar/Test" to="MenuBar" method="_on_test_pressed"]
 [connection signal="pressed" from="MenuBar/Undo" to="MenuBar" method="_on_undo_pressed"]
 [connection signal="pressed" from="MenuBar/Redo" to="MenuBar" method="_on_redo_pressed"]

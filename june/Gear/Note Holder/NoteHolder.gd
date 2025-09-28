@@ -69,12 +69,12 @@ func _player_process() -> void:
 	#if not _notes:
 		#return
 	
-	if _last_note_was_processed:
-		if Input.is_action_just_pressed(_note_action):
-			_key_pressed_gradient.key_just_pressed()
-		elif Input.is_action_just_released(_note_action):
-			_key_pressed_gradient.key_just_released()
-		return
+	#if _last_note_was_processed:
+		#if Input.is_action_just_pressed(_note_action):
+			#_key_pressed_gradient.key_just_pressed()
+		#elif Input.is_action_just_released(_note_action):
+			#_key_pressed_gradient.key_just_released()
+		#return
 	
 	var time : float
 	

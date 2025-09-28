@@ -390,3 +390,7 @@ func get_time_pos() -> float:
 	if $Play.text == "Pause":
 		return Song.get_time()
 	return _temp_song_time_pos
+
+func _on_editor_composer_visibility_changed() -> void:
+	if speed_slider:
+		Song.pitch_scale = speed_slider.value / 100
