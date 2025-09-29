@@ -90,12 +90,12 @@ func _ready() -> void:
 	
 	for song_resource in _song_resources:
 		var song_button : SongButton = _SONG_BUTTON_SCENE.instantiate()
-		var image_texture : ImageTexture = null
-		if song_resource.icon and FileAccess.file_exists(song_resource.icon):
-			var icon := Image.load_from_file(song_resource.icon)
-			image_texture = ImageTexture.create_from_image(icon)
+		#var image_texture : ImageTexture = null
+		#if song_resource.icon and FileAccess.file_exists(song_resource.icon):
+			#var icon := Image.load_from_file(song_resource.icon)
+			#image_texture = ImageTexture.create_from_image(icon)
 		
-		song_button.setup(song_resource.ID, image_texture, song_resource.name, song_resource.author)
+		song_button.setup(song_resource.ID, Loader.load_image(song_resource.icon), song_resource.name, song_resource.author)
 		song_button.on_focus_entered.connect(_song_button_on_focus_entered)
 		_song_buttons.append(song_button)
 		_songs_container.add_child(song_button)

@@ -1,12 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://b3ljeq5vwy67a"]
+[gd_scene load_steps=5 format=3 uid="uid://b3ljeq5vwy67a"]
 
 [ext_resource type="Script" uid="uid://cxngxkql6desj" path="res://Editor/EditorSettings.gd" id="1_33eqs"]
 [ext_resource type="PackedScene" uid="uid://dj8t1madbd5pe" path="res://Background/AnimatedBackgroundV1.tscn" id="1_vxgxl"]
 [ext_resource type="Script" uid="uid://cuhkonamt3aus" path="res://Editor/MenuBar/File.gd" id="2_iy5o1"]
+[ext_resource type="Theme" uid="uid://oe21uoww8ls3" path="res://themes/JuneThemeV1.tres" id="4_nm0sj"]
 
 [node name="Settings" type="VBoxContainer"]
-offset_right = 1920.0
-offset_bottom = 280.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_33eqs")
@@ -78,7 +80,6 @@ initial_position = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
-size_flags_vertical = 3
 
 [node name="Left" type="MarginContainer" parent="HBoxContainer"]
 layout_mode = 2
@@ -339,6 +340,21 @@ autoplay = true
 expand = true
 loop = true
 
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Return" type="Button" parent="MarginContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme = ExtResource("4_nm0sj")
+theme_override_font_sizes/font_size = 50
+text = "Sair"
+
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
 [connection signal="pressed" from="Menu/FlowContainer/Compose" to="." method="_on_compose_pressed"]
 [connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
@@ -357,3 +373,4 @@ loop = true
 [connection signal="pressed" from="HBoxContainer/Right/VBoxContainer/Image/RemoveImageButton" to="." method="_on_remove_image_button_pressed"]
 [connection signal="pressed" from="HBoxContainer/Right/VBoxContainer/Video/VideoButton" to="." method="_on_video_button_pressed"]
 [connection signal="pressed" from="HBoxContainer/Right/VBoxContainer/Video/RemoveVideoButton" to="." method="_on_remove_video_button_pressed"]
+[connection signal="pressed" from="MarginContainer/Return" to="." method="_on_return_pressed"]

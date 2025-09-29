@@ -71,6 +71,7 @@ theme_override_font_sizes/font_size = 70
 text = "Resumir"
 
 [node name="Restart" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme = ExtResource("2_5bc36")

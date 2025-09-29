@@ -61,11 +61,7 @@ func _file_index_pressed(index : int) -> void:
 		Choices.EXPORT:
 			export_file()
 		Choices.QUIT:
-			if Editor.editor_composer and Editor.editor_composer.editor_menu_bar and Editor.editor_composer.editor_menu_bar.game and Editor.editor_composer.editor_menu_bar.game._copied_notes: ## AVOIDS MEMORY LEAK
-				for note in Editor.editor_composer.editor_menu_bar.game._copied_notes:
-					note.queue_free()
-				Editor.editor_composer.editor_menu_bar.game._copied_notes.clear()
-			_quit()
+			quit()
 
 func _confirmation_dialog_confirmed() -> void:
 	if DialogConfirmation.get_last_caller() != dialog_confirmation_id:
@@ -89,6 +85,13 @@ func _confirmation_dialog_canceled(custom_action : StringName) -> void:
 			Editor.saved_file()
 			Editor.is_on_editor = false
 			get_tree().change_scene_to_packed(Global.START_SCREEN_SCENE)
+
+func quit() -> void:
+	if Editor.editor_composer and Editor.editor_composer.editor_menu_bar and Editor.editor_composer.editor_menu_bar.game and Editor.editor_composer.editor_menu_bar.game._copied_notes: ## AVOIDS MEMORY LEAK
+		for note in Editor.editor_composer.editor_menu_bar.game._copied_notes:
+			note.queue_free()
+		Editor.editor_composer.editor_menu_bar.game._copied_notes.clear()
+	_quit()
 
 func new_file() -> void:
 	if EditorMenuBar.is_editor_empty() and Editor.editor_settings.is_empty():

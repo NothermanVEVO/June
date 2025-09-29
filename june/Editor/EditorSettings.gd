@@ -388,3 +388,7 @@ func _on_visibility_changed() -> void:
 	else:
 		video_player.stop()
 		video_player.stream = null
+
+
+func _on_return_pressed() -> void:
+	$Menu/FlowContainer/MenuBar/File.quit()

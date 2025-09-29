@@ -29,9 +29,9 @@ func play_effect(type : Type) -> void:
 			star.angular_velocity_max = -180
 		else:
 			explosion.amount = 50
-			explosion.color = NON_COLOR
-			explosion.color_ramp = NON_COLOR_RAMP
-			star.color = NON_COLOR
+			#explosion.color = NON_COLOR
+			#explosion.color_ramp = NON_COLOR_RAMP
+			#star.color = NON_COLOR
 			star.angular_velocity_min = -90
 			star.angular_velocity_max = -90
 	
