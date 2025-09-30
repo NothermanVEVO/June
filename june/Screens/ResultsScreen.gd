@@ -7,6 +7,7 @@ enum Letters {Z = 1000000, S = 970000, A = 900000, B = 800000, C = 650000, D = 5
 var score : int = 1000000
 var combo : int
 var sections : Dictionary
+var finalization : GearSkin.Finalization
 
 var _time : float = 0.0
 const _MAXIMUM_TIME : float = 2.0
@@ -20,14 +21,17 @@ const _MAXIMUM_TIME : float = 2.0
 
 @onready var _letter_results_animation : AnimationPlayer = $Result
 
+@onready var _finalization_unclear : RichTextLabel = $Finalization/Unclear
+@onready var _finalization_ulear : RichTextLabel = $Finalization/Clear
+@onready var _finalization_max_combo : RichTextLabel = $Finalization/MaxCombo
+@onready var _finalization_perfect_combo : RichTextLabel = $Finalization/PerfectCombo
+
 var for_loading : bool = false
 
 func _ready() -> void:
 	set_physics_process(false)
 	if not for_loading:
 		load_ended_game_values()
-		pass
-	
 
 #func _process(delta: float) -> void:
 	#if Input.is_action_just_pressed("Add Item"):
@@ -61,6 +65,23 @@ func _physics_process(delta: float) -> void:
 		#var all_precision : float = 0.0
 		#for section in _sections:
 			#print(section)
+
+func set_finalization(finalization : GearSkin.Finalization) -> void:
+	self.finalization = finalization
+	$Finalization/Unclear.visible = false
+	$Finalization/Clear.visible = false
+	$Finalization/MaxCombo.visible = false
+	$Finalization/PerfectCombo.visible = false
+	
+	match finalization:
+		GearSkin.Finalization.UNCLEAR:
+			$Finalization/Unclear.visible = true
+		GearSkin.Finalization.CLEAR:
+			$Finalization/Clear.visible = true
+		GearSkin.Finalization.MAX_COMBO:
+			$Finalization/MaxCombo.visible = true
+		GearSkin.Finalization.PERFECT_COMBO:
+			$Finalization/PerfectCombo.visible = true
 
 func load_ended_game_values() -> void:
 	Game.load_result_screen_values(self)

@@ -37,6 +37,7 @@ var _current_fever_score : float = 0.0
 var _perfect_state : bool = true
 
 var _current_combo : int = 0
+var _highest_combo : int = 0
 
 var fade_tween : Tween
 
@@ -134,6 +135,7 @@ func start() -> void:
 	_pause_screen.visible = false
 	_gear.set_max_size_y(size.y)
 	NoteHolder.set_hitzone(-325)
+	_gear_skin.show_controls(_gear_type)
 
 func _create_gear() -> void:
 	current_score = 0.0
@@ -327,6 +329,9 @@ func _calculate_fever(precision : int) -> void:
 		_current_fever_score = Note.Fever.ZONE + (_current_fever_score - Note.Fever.MAX_ZONE)
 		_gear_skin.set_fever_value(Global.get_percentage_between(Note.Fever.ZONE, Note.Fever.MAX_ZONE, _current_fever_score) * 100, Note.Fever.MAX_ZONE, true)
 	
+	if _current_combo > _highest_combo:
+		_highest_combo = _current_combo
+	
 	_gear_skin.set_combo(_current_combo)
 
 func _register_precision_in_section_dict(precision : int) -> void:
@@ -351,21 +356,25 @@ func _last_note_was_processed() -> void:
 	#print(_section_dict)
 	#print("foi")
 	var perfect : bool = true
+	var finalization : GearSkin.Finalization = GearSkin.Finalization.UNCLEAR
 	for section in _section_dict.values():
 		if _section_has_break(section):
-			_gear_skin.play_finalization(GearSkin.Finalization.CLEAR)
+			finalization = GearSkin.Finalization.CLEAR
+			_gear_skin.play_finalization(finalization)
 			perfect = false
 			break
 		elif _section_has_not_perfect_precision(section):
-			_gear_skin.play_finalization(GearSkin.Finalization.MAX_COMBO)
+			finalization = GearSkin.Finalization.MAX_COMBO
+			_gear_skin.play_finalization(finalization)
 			perfect = false
 			break
 	if perfect:
-		_gear_skin.play_finalization(GearSkin.Finalization.PERFECT_COMBO)
+		finalization = GearSkin.Finalization.PERFECT_COMBO
+		_gear_skin.play_finalization(finalization)
 	if autoload:
-		wait_for_song_to_finish(_current_uuid)
+		wait_for_song_to_finish(_current_uuid, finalization)
 
-func wait_for_song_to_finish(id : String) -> void:
+func wait_for_song_to_finish(id : String, finalization : GearSkin.Finalization) -> void:
 	#print("to perando")
 	if not Song.is_finished():
 		await Song.finished
@@ -373,7 +382,7 @@ func wait_for_song_to_finish(id : String) -> void:
 	#print(_current_uuid)
 	if self and id == _current_uuid:
 		World.unload()
-		Game.game_ended.emit(current_score, _current_combo, _section_dict)
+		Game.game_ended.emit(current_score, _highest_combo, _section_dict, finalization)
 
 func _section_has_break(section : Dictionary) -> bool:
 	return section["0"] > 0

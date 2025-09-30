@@ -133,27 +133,27 @@ func get_save() -> Dictionary:
 func save_sample() -> Dictionary:
 	return {
 		"4 buttons": {
-			"FACIL": {"combo": 0.0, "score": 0.0},
-			"NORMAL": {"combo": 0.0, "score": 0.0},
-			"HARD": {"combo": 0.0, "score": 0.0},
-			"MAXIMUS": {"combo": 0.0, "score": 0.0}
+			"FACIL": {"combo": 0.0, "score": 0.0, "state": 0},
+			"NORMAL": {"combo": 0.0, "score": 0.0, "state": 0},
+			"HARD": {"combo": 0.0, "score": 0.0, "state": 0},
+			"MAXIMUS": {"combo": 0.0, "score": 0.0, "state": 0}
 		},
 		"5 buttons": {
-			"FACIL": {"combo": 0.0, "score": 0.0},
-			"NORMAL": {"combo": 0.0, "score": 0.0},
-			"HARD": {"combo": 0.0, "score": 0.0},
-			"MAXIMUS": {"combo": 0.0, "score": 0.0}
+			"FACIL": {"combo": 0.0, "score": 0.0, "state": 0},
+			"NORMAL": {"combo": 0.0, "score": 0.0, "state": 0},
+			"HARD": {"combo": 0.0, "score": 0.0, "state": 0},
+			"MAXIMUS": {"combo": 0.0, "score": 0.0, "state": 0}
 		},
 		"6 buttons": {
-			"FACIL": {"combo": 0.0, "score": 0.0},
-			"NORMAL": {"combo": 0.0, "score": 0.0},
-			"HARD": {"combo": 0.0, "score": 0.0},
-			"MAXIMUS": {"combo": 0.0, "score": 0.0}
+			"FACIL": {"combo": 0.0, "score": 0.0, "state": 0},
+			"NORMAL": {"combo": 0.0, "score": 0.0, "state": 0},
+			"HARD": {"combo": 0.0, "score": 0.0, "state": 0},
+			"MAXIMUS": {"combo": 0.0, "score": 0.0, "state": 0}
 		}
 	}
 
 func _create_settings() -> void:
-	_settings_dictionary["game_speed"] = 1.0
+	_settings_dictionary["game_speed"] = 3.0
 	_settings_dictionary["game_gear_transparency"] = 0.5
 	_settings_dictionary["game_gear_position"] = GameSettingsScreen.GearPositions.CENTER
 	
@@ -229,7 +229,7 @@ func get_settings_dictionary() -> Dictionary:
 
 func _adjust_settings_dictionary() -> void:
 	if not _settings_dictionary.has("game_speed"):
-		_settings_dictionary["game_speed"] = 1.0
+		_settings_dictionary["game_speed"] = 3.0
 	if not _settings_dictionary.has("game_gear_transparency"):
 		_settings_dictionary["game_gear_transparency"] = 0.5
 	if not _settings_dictionary.has("game_gear_position"):

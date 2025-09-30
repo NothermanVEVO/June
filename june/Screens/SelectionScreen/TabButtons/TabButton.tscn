@@ -85,7 +85,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 focus_neighbor_left = NodePath("../Maximus")
 focus_neighbor_right = NodePath("../Normal")
-focus_neighbor_bottom = NodePath("../../Settings")
+focus_neighbor_bottom = NodePath("../../Play")
 focus_next = NodePath("../Normal")
 mouse_default_cursor_shape = 2
 theme = ExtResource("2_417wl")
@@ -100,7 +100,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 focus_neighbor_left = NodePath("../Facil")
 focus_neighbor_right = NodePath("../Hard")
-focus_neighbor_bottom = NodePath("../../Settings")
+focus_neighbor_bottom = NodePath("../../Play")
 focus_next = NodePath("../Hard")
 mouse_default_cursor_shape = 2
 theme = ExtResource("2_417wl")
@@ -114,7 +114,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 focus_neighbor_left = NodePath("../Normal")
 focus_neighbor_right = NodePath("../Maximus")
-focus_neighbor_bottom = NodePath("../../Settings")
+focus_neighbor_bottom = NodePath("../../Play")
 focus_next = NodePath("../Maximus")
 mouse_default_cursor_shape = 2
 theme = ExtResource("2_417wl")
@@ -128,8 +128,8 @@ text = "Hard
 layout_mode = 2
 size_flags_horizontal = 3
 focus_neighbor_left = NodePath("../Hard")
-focus_neighbor_bottom = NodePath("../../Settings")
-focus_next = NodePath("../../Settings")
+focus_neighbor_bottom = NodePath("../../Play")
+focus_next = NodePath("../../Play")
 mouse_default_cursor_shape = 2
 theme = ExtResource("2_417wl")
 theme_override_font_sizes/font_size = 35
@@ -176,15 +176,23 @@ scroll_active = false
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/State"]
-custom_minimum_size = Vector2(128, 128)
+[node name="StateValue" type="RichTextLabel" parent="MarginContainer/VBoxContainer/State"]
 layout_mode = 2
-size_flags_horizontal = 2
-expand_mode = 1
+fit_content = true
+autowrap_mode = 0
+
+[node name="Play" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("../Settings")
+mouse_default_cursor_shape = 2
+theme = ExtResource("2_417wl")
+theme_override_font_sizes/font_size = 30
+text = "Jogar"
 
 [node name="Settings" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 10
+focus_neighbor_top = NodePath("../Play")
 mouse_default_cursor_shape = 2
 theme = ExtResource("2_417wl")
 theme_override_font_sizes/font_size = 30
@@ -195,4 +203,5 @@ text = "Configurações"
 [connection signal="focus_entered" from="MarginContainer/VBoxContainer/Difficulties/Normal" to="." method="_on_normal_focus_entered"]
 [connection signal="focus_entered" from="MarginContainer/VBoxContainer/Difficulties/Hard" to="." method="_on_hard_focus_entered"]
 [connection signal="focus_entered" from="MarginContainer/VBoxContainer/Difficulties/Maximus" to="." method="_on_maximus_focus_entered"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Settings" to="." method="_on_settings_pressed"]

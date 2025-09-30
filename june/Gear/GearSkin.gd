@@ -55,7 +55,17 @@ const STAR_ROTATION_SPEED : float = PI / 32
 var _current_fever : Note.Fever = Note.Fever.NONE
 
 @onready var _finalization_animation : AnimationPlayer = $FullGear/FinalizationAnimation
-enum Finalization{CLEAR, MAX_COMBO, PERFECT_COMBO}
+enum Finalization{UNCLEAR, CLEAR, MAX_COMBO, PERFECT_COMBO}
+
+@onready var _controls : MarginContainer = $FullGear/Controls
+@onready var _controls_animation : AnimationPlayer = $FullGear/ControlsAnimation
+
+@onready var _button1 : Button = $FullGear/Controls/HBoxContainer/Button1
+@onready var _button2 : Button = $FullGear/Controls/HBoxContainer/Button2
+@onready var _button3 : Button = $FullGear/Controls/HBoxContainer/Button3
+@onready var _button4 : Button = $FullGear/Controls/HBoxContainer/Button4
+@onready var _button5 : Button = $FullGear/Controls/HBoxContainer/Button5
+@onready var _button6 : Button = $FullGear/Controls/HBoxContainer/Button6
 
 signal loaded
 
@@ -238,6 +248,36 @@ func set_combo(combo : int) -> void:
 func play_finalization(finalization : Finalization) -> void:
 	Sfx.play_finalization()
 	_finalization_animation.play(str(Finalization.keys()[finalization]))
+
+func show_controls(gear_type : Gear.Type) -> void:
+	var dict := Global.get_settings_dictionary()
+	match gear_type:
+		Gear.Type.FOUR_KEYS:
+			_button1.text = char(dict["1_4k"])
+			_button2.text = char(dict["2_4k"])
+			_button3.text = char(dict["3_4k"])
+			_button4.text = char(dict["4_4k"])
+			_button5.visible = false
+			_button6.visible = false
+		Gear.Type.FIVE_KEYS:
+			_button1.text = char(dict["1_5k"])
+			_button2.text = char(dict["2_5k"])
+			_button3.text = char(dict["3_5k"])
+			_button4.text = char(dict["4_5k"])
+			_button5.text = char(dict["5_5k"])
+			_button5.visible = true
+			_button6.visible = false
+		Gear.Type.SIX_KEYS:
+			_button1.text = char(dict["1_6k"])
+			_button2.text = char(dict["2_6k"])
+			_button3.text = char(dict["3_6k"])
+			_button4.text = char(dict["4_6k"])
+			_button5.text = char(dict["5_6k"])
+			_button6.text = char(dict["6_6k"])
+			_button5.visible = true
+			_button6.visible = true
+	
+	_controls_animation.play("Display")
 
 func load_gear(loading_screen : LoadingScreen) -> int:
 	var quantity : int = 0

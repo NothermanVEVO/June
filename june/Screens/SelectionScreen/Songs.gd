@@ -244,16 +244,19 @@ func _load_difficulty_save(difficulty : SongMap.Difficulty) -> void:
 	if selected_song_container.current_tab == 0: ## 4 BUTTONS
 		four_buttons.score.text = "Pontuação: " + Global.formate_int_to_pontuation(save[_last_song_button.UUID]["4 buttons"][difficulty_str]["score"])
 		four_buttons.combo.text = "Combo: " + Global.formate_int_to_pontuation(save[_last_song_button.UUID]["4 buttons"][difficulty_str]["combo"])
+		four_buttons.select_state(save[_last_song_button.UUID]["4 buttons"][difficulty_str]["state"])
 		_last_song_button.focus_neighbor_left = four_buttons.get_difficulty_button(difficulty).get_path()
 		_last_song_button.focus_neighbor_right = four_buttons.get_difficulty_button(difficulty).get_path()
 	elif selected_song_container.current_tab == 1: ## 5 BUTTONS
 		five_buttons.score.text = "Pontuação: " + Global.formate_int_to_pontuation(save[_last_song_button.UUID]["5 buttons"][difficulty_str]["score"])
 		five_buttons.combo.text = "Combo: " + Global.formate_int_to_pontuation(save[_last_song_button.UUID]["5 buttons"][difficulty_str]["combo"])
+		five_buttons.select_state(save[_last_song_button.UUID]["6 buttons"][difficulty_str]["state"])
 		_last_song_button.focus_neighbor_left = five_buttons.get_difficulty_button(difficulty).get_path()
 		_last_song_button.focus_neighbor_right = five_buttons.get_difficulty_button(difficulty).get_path()
 	elif selected_song_container.current_tab == 2: ## 6 BUTTONS
 		six_buttons.score.text = "Pontuação: " + Global.formate_int_to_pontuation(save[_last_song_button.UUID]["6 buttons"][difficulty_str]["score"])
 		six_buttons.combo.text = "Combo: " + Global.formate_int_to_pontuation(save[_last_song_button.UUID]["6 buttons"][difficulty_str]["combo"])
+		six_buttons.select_state(save[_last_song_button.UUID]["5 buttons"][difficulty_str]["state"])
 		_last_song_button.focus_neighbor_left = six_buttons.get_difficulty_button(difficulty).get_path()
 		_last_song_button.focus_neighbor_right = six_buttons.get_difficulty_button(difficulty).get_path()
 

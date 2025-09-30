@@ -1,4 +1,4 @@
-[gd_scene load_steps=76 format=3 uid="uid://ygpxmyrvsexw"]
+[gd_scene load_steps=80 format=3 uid="uid://ygpxmyrvsexw"]
 
 [ext_resource type="Script" uid="uid://bhrlpa2ttx82t" path="res://Gear/GearSkin.gd" id="1_g01tw"]
 [ext_resource type="FontFile" uid="uid://ccptv2g4gl5oq" path="res://assets/fonts/Baby Donuts.ttf" id="2_apgu0"]
@@ -25,6 +25,7 @@
 [ext_resource type="FontFile" uid="uid://dmudawe2at5ci" path="res://assets/fonts/Warm Winter.ttf" id="14_xxcan"]
 [ext_resource type="FontFile" uid="uid://bk7uiutchpno7" path="res://assets/fonts/Kalufira.otf" id="24_kmhpc"]
 [ext_resource type="Texture2D" uid="uid://pvjaem6qnqgu" path="res://Effects/Game Finalization/MaxCombo.tres" id="25_1nofc"]
+[ext_resource type="Theme" uid="uid://oe21uoww8ls3" path="res://themes/JuneThemeV1.tres" id="26_0dwk1"]
 [ext_resource type="Texture2D" uid="uid://boar5ghyvw8be" path="res://Effects/Game Finalization/PerfectPlay.tres" id="26_vvqmb"]
 
 [sub_resource type="Gradient" id="Gradient_jii80"]
@@ -1234,12 +1235,12 @@ _data = {
 &"RESET": SubResource("Animation_oprfg")
 }
 
-[sub_resource type="Gradient" id="Gradient_vvqmb"]
+[sub_resource type="Gradient" id="Gradient_pmcdu"]
 offsets = PackedFloat32Array(0, 0.441558, 1)
 colors = PackedColorArray(0.343483, 0.2109, 0.37, 1, 0, 1, 0.483333, 1, 0.956, 1, 0.78, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_1nofc"]
-gradient = SubResource("Gradient_vvqmb")
+gradient = SubResource("Gradient_pmcdu")
 width = 192
 height = 192
 fill_to = Vector2(1, 1)
@@ -1573,6 +1574,43 @@ _data = {
 &"RESET": SubResource("Animation_3v6na")
 }
 
+[sub_resource type="Animation" id="Animation_l1bnb"]
+resource_name = "Display"
+length = 2.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FullGear/Controls:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2, 2.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_r62sw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FullGear/Controls:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_goqav"]
+_data = {
+&"Display": SubResource("Animation_l1bnb"),
+&"RESET": SubResource("Animation_r62sw")
+}
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dh8pw"]
 shader = ExtResource("2_dtqx8")
 shader_parameter/size_effect = 0.3
@@ -1802,6 +1840,12 @@ libraries = {
 &"": SubResource("AnimationLibrary_pmcdu")
 }
 
+[node name="ControlsAnimation" type="AnimationPlayer" parent="FullGear"]
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_goqav")
+}
+
 [node name="Gear" type="Control" parent="FullGear"]
 layout_mode = 1
 anchors_preset = 15
@@ -2009,6 +2053,73 @@ offset_bottom = 97.5199
 pivot_offset = Vector2(98.03, 106.41)
 texture = ExtResource("10_u7dcu")
 metadata/_edit_use_anchors_ = true
+
+[node name="Controls" type="MarginContainer" parent="FullGear"]
+z_index = 5
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.37
+anchor_top = 0.591
+anchor_right = 0.63
+anchor_bottom = 0.614
+offset_left = -0.400024
+offset_top = -15.5
+offset_right = 0.399902
+offset_bottom = 15.5
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_right = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="FullGear/Controls"]
+layout_mode = 2
+
+[node name="Button1" type="Button" parent="FullGear/Controls/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme = ExtResource("26_0dwk1")
+theme_override_font_sizes/font_size = 50
+text = "A"
+
+[node name="Button2" type="Button" parent="FullGear/Controls/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme = ExtResource("26_0dwk1")
+theme_override_font_sizes/font_size = 50
+text = "A"
+
+[node name="Button3" type="Button" parent="FullGear/Controls/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme = ExtResource("26_0dwk1")
+theme_override_font_sizes/font_size = 50
+text = "A"
+
+[node name="Button4" type="Button" parent="FullGear/Controls/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme = ExtResource("26_0dwk1")
+theme_override_font_sizes/font_size = 50
+text = "A"
+
+[node name="Button5" type="Button" parent="FullGear/Controls/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme = ExtResource("26_0dwk1")
+theme_override_font_sizes/font_size = 50
+text = "A"
+
+[node name="Button6" type="Button" parent="FullGear/Controls/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme = ExtResource("26_0dwk1")
+theme_override_font_sizes/font_size = 50
+text = "A"
 
 [node name="Finalization" type="MarginContainer" parent="."]
 z_index = 6

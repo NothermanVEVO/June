@@ -2,6 +2,11 @@ extends TabBar
 
 class_name TabButton
 
+const _UNCLEAR_TEXT_SCENE := preload("res://Screens/SelectionScreen/States/Unclear.tscn")
+const _CLEAR_TEXT_SCENE := preload("res://Screens/SelectionScreen/States/Clear.tscn")
+const _MAX_COMBO_TEXT_SCENE := preload("res://Screens/SelectionScreen/States/MaxCombo.tscn")
+const _PERFECT_COMBO_TEXT_SCENE := preload("res://Screens/SelectionScreen/States/PerfectCombo.tscn")
+
 @export var gear_type : Gear.Type
 
 @onready var image : TextureRect = $MarginContainer/VBoxContainer/Image
@@ -18,8 +23,9 @@ class_name TabButton
 @onready var score : RichTextLabel = $MarginContainer/VBoxContainer/Score
 @onready var combo : RichTextLabel = $MarginContainer/VBoxContainer/Combo
 
+@onready var state_container : HBoxContainer = $MarginContainer/VBoxContainer/State
 @onready var state_text : RichTextLabel = $MarginContainer/VBoxContainer/State/StateText
-@onready var state_image : TextureRect = $MarginContainer/VBoxContainer/State/TextureRect
+@onready var state_value : RichTextLabel = $MarginContainer/VBoxContainer/State/StateValue
 
 @onready var settings : Button = $MarginContainer/VBoxContainer/Settings
 
@@ -91,8 +97,7 @@ func reset() -> void:
 	maximus.text = "Maximus\n "
 	score.text = ""
 	combo.text = ""
-	state_text.text = ""
-	state_image.texture = null
+	state_value.text = ""
 	
 	facil.disabled = true
 	facil.button_pressed = false
@@ -105,6 +110,21 @@ func reset() -> void:
 	
 	maximus.disabled = true
 	maximus.button_pressed = false
+
+func select_state(state : GearSkin.Finalization) -> void:
+	state_value.queue_free()
+	match state:
+		GearSkin.Finalization.UNCLEAR:
+			state_value = _UNCLEAR_TEXT_SCENE.instantiate()
+		GearSkin.Finalization.CLEAR:
+			state_value = _CLEAR_TEXT_SCENE.instantiate()
+		GearSkin.Finalization.MAX_COMBO:
+			state_value = _MAX_COMBO_TEXT_SCENE.instantiate()
+		GearSkin.Finalization.PERFECT_COMBO:
+			state_value = _PERFECT_COMBO_TEXT_SCENE.instantiate()
+		_:
+			return
+	state_container.add_child(state_value)
 
 func _process(delta: float) -> void:
 	if facil.has_focus():
@@ -234,3 +254,7 @@ func _on_maximus_focus_entered() -> void:
 
 func _on_settings_pressed() -> void:
 	settings_pressed.emit()
+
+func _on_play_pressed() -> void:
+	if has_difficulty():
+		play_difficulty.emit(get_difficulty_selected())

@@ -21,10 +21,11 @@ var _RESULT_SCREEN_SCENE := load("res://Screens/ResultsScreen.tscn")
 var _last_score : int
 var _last_combo : int
 var _last_sections : Dictionary
+var _last_finalization : GearSkin.Finalization
 
 var _restarted : bool = false
 
-signal game_ended(score : int, combo : int, sections : Dictionary)
+signal game_ended(score : int, combo : int, sections : Dictionary, finalization : GearSkin.Finalization)
 
 func _ready() -> void:
 	game_ended.connect(_game_ended)
@@ -77,12 +78,14 @@ func load_result_screen_values(result_screen : ResultsScreen) -> void:
 	result_screen.score = _last_score
 	result_screen.combo = _last_combo
 	result_screen.sections = _last_sections
+	result_screen.set_finalization(_last_finalization)
 	
 	_last_score = 0
 	_last_combo = 0
 	_last_sections = {}
+	_last_finalization = 0
 
-func _game_ended(score : float, combo : int, sections : Dictionary) -> void:
+func _game_ended(score : float, combo : int, sections : Dictionary, finalization : GearSkin.Finalization) -> void:
 	_restarted = false
 	await get_tree().create_timer(4, false).timeout
 	if _restarted:
@@ -91,6 +94,7 @@ func _game_ended(score : float, combo : int, sections : Dictionary) -> void:
 	_last_score = roundi(score)
 	_last_combo = combo
 	_last_sections = sections
+	_last_finalization = finalization
 	
 	var dict := Global.get_settings_dictionary()
 	dict["game_speed"] = Gear.get_speed()
@@ -122,6 +126,9 @@ func _handle_record() -> void:
 		changed = true
 	if _last_combo > save[_selection_UUID][gear_name][difficulty_str]["combo"]:
 		save[_selection_UUID][gear_name][difficulty_str]["combo"] = _last_combo
+		changed = true
+	if _last_finalization > save[_selection_UUID][gear_name][difficulty_str]["state"]:
+		save[_selection_UUID][gear_name][difficulty_str]["state"] = _last_finalization
 		changed = true
 	
 	if changed:

@@ -1,0 +1,40 @@
+[gd_scene load_steps=5 format=3 uid="uid://jomv7cp6thrr"]
+
+[ext_resource type="FontFile" uid="uid://bk7uiutchpno7" path="res://assets/fonts/Kalufira.otf" id="1_dive4"]
+[ext_resource type="Shader" uid="uid://cv72bkw7c1m1g" path="res://shaders/Shine.gdshader" id="2_f5h3t"]
+[ext_resource type="Texture2D" uid="uid://boar5ghyvw8be" path="res://Effects/Game Finalization/PerfectPlay.tres" id="3_jcmgf"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wq021"]
+shader = ExtResource("2_f5h3t")
+shader_parameter/size_effect = 0.4
+shader_parameter/speed = -1.0
+shader_parameter/highlight_strength = 0.25
+shader_parameter/color_mode_toggle = false
+shader_parameter/is_horizontal = false
+
+[node name="RichTextLabel" type="RichTextLabel"]
+clip_children = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.1)
+theme_override_constants/shadow_offset_y = 5
+theme_override_constants/shadow_offset_x = -5
+theme_override_constants/shadow_outline_size = 20
+theme_override_fonts/normal_font = ExtResource("1_dive4")
+theme_override_font_sizes/normal_font_size = 40
+bbcode_enabled = true
+text = "[wave amp=50.0 freq=2.5 connected=1]Perfect
+Combo[/wave]
+"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_wq021")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_jcmgf")
