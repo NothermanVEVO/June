@@ -303,11 +303,19 @@ func load_gear(loading_screen : LoadingScreen) -> int:
 
 func _load_fever_star_effect_animations(loading_screen : LoadingScreen) -> int:
 	_fever_star_effect_animation.animation_finished.connect(loading_screen.loaded)
-	_fever_star_effect_animation.speed_scale = 4
+	_fever_star_effect_animation.speed_scale = 1
 	
-	_play_all_fever_animations()
+	_play_one_fever_animation()
 	
-	return 6
+	return 1
+	
+	#_play_all_fever_animations()
+	#
+	#return 6
+
+func _play_one_fever_animation() -> void:
+	_fever_star_effect_animation.play("Fever 1X")
+	await _fever_star_effect_animation.animation_finished
 
 func _play_all_fever_animations() -> void:
 	_fever_star_effect_animation.play("Fever 1X")
@@ -329,11 +337,19 @@ func _play_all_fever_animations() -> void:
 
 func _load_finalization_animations(loading_screen : LoadingScreen) -> int:
 	_finalization_animation.animation_finished.connect(loading_screen.loaded)
-	_finalization_animation.speed_scale = 4
+	_finalization_animation.speed_scale = 1
 	
-	_play_all_finalization_animations()
+	_play_one_finalization_animation()
 	
-	return 3
+	return 1
+	
+	#_play_all_finalization_animations()
+	#
+	#return 3
+
+func _play_one_finalization_animation() -> void:
+	_finalization_animation.play("CLEAR")
+	await _finalization_animation.animation_finished
 
 func _play_all_finalization_animations() -> void:
 	_finalization_animation.play("CLEAR")

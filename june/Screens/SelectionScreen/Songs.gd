@@ -4,7 +4,7 @@ class_name SongsSelection
 
 const _SONG_BUTTON_SCENE = preload("res://Screens/SelectionScreen/SongButton/SongButton.tscn")
 
-@onready var _songs_container : VBoxContainer = $HBoxContainer/Songs/ScrollContainer/SongsContainer
+@onready var _songs_container : VBoxContainer = $HBoxContainer/Songs/ScrollContainer/MarginContainer/SongsContainer
 
 var _song_resources : Array[SongResource] = []
 var _song_buttons : Array[SongButton] = []
@@ -84,7 +84,16 @@ func _ready() -> void:
 				DialogConfirmation.pop_up("Cancelar", "Ok", "O Song Map está inválido: " + path + "\nErro: " + validate_wrong)
 				continue
 			else:
-				_song_resources.append(SongResource.dictionary_to_resource(json_data))
+				var song_resource := SongResource.dictionary_to_resource(json_data)
+				if song_resource.song.get_file():
+					song_resource.song = path.get_base_dir() + "/" + song_resource.song.get_file()
+				if song_resource.icon.get_file():
+					song_resource.icon = path.get_base_dir() + "/" + song_resource.icon.get_file()
+				if song_resource.image.get_file():
+					song_resource.image = path.get_base_dir() + "/" + song_resource.image.get_file()
+				if song_resource.video.get_file():
+					song_resource.video = path.get_base_dir() + "/" + song_resource.video.get_file()
+				_song_resources.append(song_resource)
 		else:
 			DialogConfirmation.pop_up("Cancelar", "Ok", "Erro de parse do Song Map: " + path)
 	
@@ -108,6 +117,9 @@ func _ready() -> void:
 	
 	if Game.has_selection_state_saved():
 		Game.load_selection_state_saved(self)
+	else:
+		var rng := RandomNumberGenerator.new()
+		_song_buttons[rng.randi_range(0, _song_buttons.size() - 1)].grab_focus.call_deferred()
 
 func _on_song_finished() -> void:
 	if is_inside_tree():
@@ -124,6 +136,7 @@ func load_state(UUID : String, tab_selected : int, difficulty : SongMap.Difficul
 				five_buttons.set_difficulty_selected(difficulty)
 			elif tab_selected == 2: ## SIX BUTTONS
 				six_buttons.set_difficulty_selected(difficulty)
+			song_button.grab_focus.call_deferred()
 			break
 
 func _song_button_on_focus_entered(song_button : SongButton) -> void:

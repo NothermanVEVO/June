@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=12 format=3 uid="uid://cflls7t5oklv0"]
+[gd_resource type="Theme" load_steps=17 format=3 uid="uid://cflls7t5oklv0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b2xo2"]
 content_margin_left = 10.0
@@ -117,6 +117,54 @@ border_color = Color(0.55, 0.55, 0.55, 0.415686)
 corner_radius_top_right = 27
 corner_detail = 1
 
+[sub_resource type="ImageTexture" id="ImageTexture_b2xo2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k0mms"]
+bg_color = Color(0.823529, 0.619608, 1, 1)
+border_color = Color(0.267321, 0.000897013, 0.52279, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+corner_detail = 1
+expand_margin_top = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x4uqu"]
+bg_color = Color(0.608535, 0.376518, 1, 1)
+border_color = Color(0.928931, 0.857384, 0.999999, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+corner_detail = 1
+expand_margin_top = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ri4w1"]
+bg_color = Color(0.354798, 0.00159659, 0.6796, 1)
+border_color = Color(0.699996, 0.221386, 0.999988, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+corner_detail = 1
+expand_margin_top = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3xwqq"]
+content_margin_left = 20.0
+bg_color = Color(0.118581, 0.118581, 0.118581, 1)
+border_width_top = 10
+border_width_bottom = 10
+border_color = Color(0.65, 1, 0, 1)
+border_blend = true
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+corner_detail = 1
+
 [resource]
 Button/colors/font_color = Color(1, 1, 1, 1)
 Button/colors/font_disabled_color = Color(1, 1, 1, 0.588235)
@@ -136,3 +184,13 @@ TabContainer/styles/tab_focus = SubResource("StyleBoxFlat_a6ko0")
 TabContainer/styles/tab_hovered = SubResource("StyleBoxFlat_e5scu")
 TabContainer/styles/tab_selected = SubResource("StyleBoxFlat_evxnb")
 TabContainer/styles/tab_unselected = SubResource("StyleBoxFlat_ba05x")
+VScrollBar/icons/decrement = SubResource("ImageTexture_b2xo2")
+VScrollBar/icons/decrement_highlight = SubResource("ImageTexture_b2xo2")
+VScrollBar/icons/decrement_pressed = SubResource("ImageTexture_b2xo2")
+VScrollBar/icons/increment = SubResource("ImageTexture_b2xo2")
+VScrollBar/icons/increment_highlight = SubResource("ImageTexture_b2xo2")
+VScrollBar/icons/increment_pressed = SubResource("ImageTexture_b2xo2")
+VScrollBar/styles/grabber = SubResource("StyleBoxFlat_k0mms")
+VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_x4uqu")
+VScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_ri4w1")
+VScrollBar/styles/scroll = SubResource("StyleBoxFlat_3xwqq")

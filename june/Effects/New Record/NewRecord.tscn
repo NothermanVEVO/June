@@ -1,0 +1,183 @@
+[gd_scene load_steps=11 format=3 uid="uid://hvyrhk7pgmib"]
+
+[ext_resource type="Script" uid="uid://ddvqpw66qm2lk" path="res://Effects/New Record/NewRecord.gd" id="1_b46vk"]
+[ext_resource type="FontFile" uid="uid://cijchlo1rfb44" path="res://assets/fonts/Tokyo.ttf" id="1_uav8t"]
+[ext_resource type="Shader" uid="uid://cv72bkw7c1m1g" path="res://shaders/Shine.gdshader" id="2_w6r4r"]
+[ext_resource type="PackedScene" uid="uid://ddwq7prmfk71w" path="res://Effects/New Record/NewRecordParticles.tscn" id="3_w6r4r"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b46vk"]
+shader = ExtResource("2_w6r4r")
+shader_parameter/size_effect = 0.1
+shader_parameter/speed = -0.5
+shader_parameter/highlight_strength = 0.85
+shader_parameter/color_mode_toggle = false
+shader_parameter/is_horizontal = true
+
+[sub_resource type="Gradient" id="Gradient_pt4e8"]
+offsets = PackedFloat32Array(0.506494)
+colors = PackedColorArray(1, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_hb7rp"]
+gradient = SubResource("Gradient_pt4e8")
+
+[sub_resource type="Animation" id="Animation_pt4e8"]
+resource_name = "Pop"
+length = 0.234
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.233333),
+"transitions": PackedFloat32Array(0.098073, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("NewRecordParticles:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.233333),
+"transitions": PackedFloat32Array(0.116629, 1),
+"update": 0,
+"values": [Vector2(0.8, 0.8), Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_hb7rp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("NewRecordParticles:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vcecy"]
+_data = {
+&"POP": SubResource("Animation_pt4e8"),
+&"RESET": SubResource("Animation_hb7rp")
+}
+
+[node name="NewRecord" type="MarginContainer"]
+modulate = Color(1, 1, 1, 0)
+offset_right = 40.0
+offset_bottom = 40.0
+pivot_offset = Vector2(267.5, 80)
+script = ExtResource("1_b46vk")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer"]
+clip_children = 2
+custom_minimum_size = Vector2(525, 150)
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("1_uav8t")
+theme_override_font_sizes/normal_font_size = 120
+bbcode_enabled = true
+text = "[tornado radius=5.0 freq=2.0 connected=1]Novo Recorde[/tornado]"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/RichTextLabel"]
+material = SubResource("ShaderMaterial_b46vk")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_hb7rp")
+
+[node name="NewRecordParticles" parent="." instance=ExtResource("3_w6r4r")]
+position = Vector2(262, 81)
+lifetime = 1.0
+spread = 180.0
+gravity = Vector2(0, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_vcecy")
+}

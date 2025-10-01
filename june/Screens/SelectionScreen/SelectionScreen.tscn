@@ -105,13 +105,21 @@ theme_override_constants/margin_bottom = 10
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/Songs/HBoxContainer/Songs"]
 layout_mode = 2
+theme = ExtResource("2_y1arh")
 follow_focus = true
 horizontal_scroll_mode = 0
 
-[node name="SongsContainer" type="VBoxContainer" parent="VBoxContainer/Songs/HBoxContainer/Songs/ScrollContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Songs/HBoxContainer/Songs/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_constants/margin_right = 10
+
+[node name="SongsContainer" type="VBoxContainer" parent="VBoxContainer/Songs/HBoxContainer/Songs/ScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 8
 
 [connection signal="pressed" from="VBoxContainer/MarginContainer/Quit" to="VBoxContainer/Songs" method="_on_quit_pressed"]
 [connection signal="tab_changed" from="VBoxContainer/Songs/HBoxContainer/MarginContainer/SelectedSong" to="VBoxContainer/Songs" method="_on_selected_song_tab_changed"]

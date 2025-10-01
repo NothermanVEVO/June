@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://ddwq7prmfk71w"]
+
+[sub_resource type="Curve" id="Curve_8bt4g"]
+_limits = [-200.0, 200.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1e-05, 200), 0.0, 0.0, 0, 0, Vector2(1, -2.24719), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[node name="NewRecordParticles" type="CPUParticles2D"]
+emitting = false
+amount = 150
+lifetime = 3.0
+one_shot = true
+explosiveness = 1.0
+lifetime_randomness = 1.0
+direction = Vector2(0, -1)
+spread = 34.55
+initial_velocity_min = 1.0
+initial_velocity_max = 403.55
+linear_accel_max = 10.0
+linear_accel_curve = SubResource("Curve_8bt4g")
+scale_amount_max = 15.0
+color = Color(4, 0, 0, 1)

@@ -8,6 +8,7 @@ var score : int = 1000000
 var combo : int
 var sections : Dictionary
 var finalization : GearSkin.Finalization
+var record : NewRecord.Records
 
 var _time : float = 0.0
 const _MAXIMUM_TIME : float = 2.0
@@ -26,9 +27,14 @@ const _MAXIMUM_TIME : float = 2.0
 @onready var _finalization_max_combo : RichTextLabel = $Finalization/MaxCombo
 @onready var _finalization_perfect_combo : RichTextLabel = $Finalization/PerfectCombo
 
+@onready var _score_record : NewRecord = $VBoxContainer/ScoreRecord
+@onready var _combo_record : NewRecord = $VBoxContainer/ComboRecord
+
 var for_loading : bool = false
 
 func _ready() -> void:
+	_score_record.modulate.a = 0
+	_combo_record.modulate.a = 0
 	set_physics_process(false)
 	if not for_loading:
 		load_ended_game_values()
@@ -60,6 +66,19 @@ func _physics_process(delta: float) -> void:
 			_player_letter_animation(Letters.C)
 		elif score < Letters.C:
 			_player_letter_animation(Letters.D)
+		
+		await get_tree().create_timer(3.25).timeout
+		
+		match record:
+			NewRecord.Records.SCORE:
+				_score_record.pop_animation()
+				_combo_record.modulate.a = 0
+			NewRecord.Records.COMBO:
+				_combo_record.pop_animation()
+				_score_record.modulate.a = 0
+			NewRecord.Records.BOTH:
+				_score_record.pop_animation()
+				_combo_record.pop_animation()
 		
 		#var n : int = 0
 		#var all_precision : float = 0.0

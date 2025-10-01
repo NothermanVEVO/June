@@ -22,6 +22,7 @@ var _last_score : int
 var _last_combo : int
 var _last_sections : Dictionary
 var _last_finalization : GearSkin.Finalization
+var _last_record : NewRecord.Records
 
 var _restarted : bool = false
 
@@ -79,11 +80,13 @@ func load_result_screen_values(result_screen : ResultsScreen) -> void:
 	result_screen.combo = _last_combo
 	result_screen.sections = _last_sections
 	result_screen.set_finalization(_last_finalization)
+	result_screen.record = _last_record
 	
 	_last_score = 0
 	_last_combo = 0
 	_last_sections = {}
 	_last_finalization = 0
+	_last_record = NewRecord.Records.NONE
 
 func _game_ended(score : float, combo : int, sections : Dictionary, finalization : GearSkin.Finalization) -> void:
 	_restarted = false
@@ -100,13 +103,13 @@ func _game_ended(score : float, combo : int, sections : Dictionary, finalization
 	dict["game_speed"] = Gear.get_speed()
 	Global.save_settings(dict)
 	
-	_handle_record()
+	_last_record = _handle_record()
 	
 	get_tree().change_scene_to_packed(_RESULT_SCREEN_SCENE)
 
-func _handle_record() -> void:
+func _handle_record() -> NewRecord.Records:
 	if not _selection_UUID:
-		return
+		return NewRecord.Records.NONE
 	
 	var save = Global.get_save()
 	
@@ -120,16 +123,23 @@ func _handle_record() -> void:
 	else:
 		gear_name = "6 buttons"
 	
-	var changed : bool = false
+	var record := NewRecord.Records.NONE
+	
 	if _last_score > save[_selection_UUID][gear_name][difficulty_str]["score"]:
 		save[_selection_UUID][gear_name][difficulty_str]["score"] = _last_score
-		changed = true
+		record = NewRecord.Records.SCORE
 	if _last_combo > save[_selection_UUID][gear_name][difficulty_str]["combo"]:
 		save[_selection_UUID][gear_name][difficulty_str]["combo"] = _last_combo
-		changed = true
+		if record == NewRecord.Records.SCORE:
+			record = NewRecord.Records.BOTH
+		else:
+			record = NewRecord.Records.COMBO
 	if _last_finalization > save[_selection_UUID][gear_name][difficulty_str]["state"]:
 		save[_selection_UUID][gear_name][difficulty_str]["state"] = _last_finalization
-		changed = true
+		if record == NewRecord.Records.NONE:
+			Global.create_save(save)
 	
-	if changed:
+	if record != NewRecord.Records.NONE:
 		Global.create_save(save)
+	
+	return record

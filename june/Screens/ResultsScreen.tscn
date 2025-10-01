@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://cifju8rkw3yqu"]
+[gd_scene load_steps=34 format=3 uid="uid://cifju8rkw3yqu"]
 
 [ext_resource type="Script" uid="uid://d3om433nhxxgs" path="res://Screens/ResultsScreen.gd" id="1_7ykpg"]
 [ext_resource type="Texture2D" uid="uid://dff8aavqvqask" path="res://concepts/results_background.png" id="1_15ncf"]
@@ -17,6 +17,7 @@
 [ext_resource type="PackedScene" uid="uid://ltfedtb8h22y" path="res://Screens/SelectionScreen/States/Clear.tscn" id="15_oemvb"]
 [ext_resource type="PackedScene" uid="uid://xig4jsn7e40w" path="res://Screens/SelectionScreen/States/MaxCombo.tscn" id="16_gdew7"]
 [ext_resource type="PackedScene" uid="uid://jomv7cp6thrr" path="res://Screens/SelectionScreen/States/PerfectCombo.tscn" id="17_qh60l"]
+[ext_resource type="PackedScene" uid="uid://hvyrhk7pgmib" path="res://Effects/New Record/NewRecord.tscn" id="18_oemvb"]
 
 [sub_resource type="Curve" id="Curve_xxsu4"]
 _limits = [-200.0, 200.0, 0.0, 1.0]
@@ -1285,5 +1286,23 @@ theme_override_font_sizes/normal_font_size = 60
 [node name="PerfectCombo" parent="Finalization" instance=ExtResource("17_qh60l")]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 60
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 1239.0
+offset_top = 746.0
+offset_right = 1774.0
+offset_bottom = 1106.0
+theme_override_constants/separation = 30
+
+[node name="ScoreRecord" parent="VBoxContainer" instance=ExtResource("18_oemvb")]
+visible = true
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+
+[node name="ComboRecord" parent="VBoxContainer" instance=ExtResource("18_oemvb")]
+visible = true
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
 
 [connection signal="pressed" from="ReturnContainer/Return" to="." method="_on_return_pressed"]
