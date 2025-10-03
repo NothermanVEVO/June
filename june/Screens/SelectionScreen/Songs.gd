@@ -109,8 +109,11 @@ func _ready() -> void:
 		_song_buttons.append(song_button)
 		_songs_container.add_child(song_button)
 		
-	if not _song_buttons.is_empty():
-		_song_buttons[0].grab_focus()
+	if _song_buttons.is_empty():
+		tab_bar_selection.grab_focus()
+		return
+	
+	_song_buttons[0].grab_focus()
 	
 	_song_buttons[0].focus_neighbor_top = _song_buttons[_song_buttons.size() - 1].get_path()
 	_song_buttons[_song_buttons.size() - 1].focus_neighbor_bottom = _song_buttons[0].get_path()
@@ -120,6 +123,18 @@ func _ready() -> void:
 	else:
 		var rng := RandomNumberGenerator.new()
 		_song_buttons[rng.randi_range(0, _song_buttons.size() - 1)].grab_focus.call_deferred()
+
+func _process(_delta: float) -> void:
+	if Input.is_action_just_pressed("Escape"):
+		_on_quit_pressed()
+	
+	if _last_song_button and _last_song_button.has_focus() and (Input.is_action_just_pressed("ui_accept")):
+		if selected_song_container.current_tab == 0 and four_buttons.has_difficulty():
+			_play_difficulty(four_buttons.get_difficulty_selected())
+		elif selected_song_container.current_tab == 1 and five_buttons.has_difficulty():
+			_play_difficulty(five_buttons.get_difficulty_selected())
+		elif selected_song_container.current_tab == 2 and six_buttons.has_difficulty():
+			_play_difficulty(six_buttons.get_difficulty_selected())
 
 func _on_song_finished() -> void:
 	if is_inside_tree():
@@ -247,6 +262,8 @@ func _check_folder(path: String) -> Array[String]:
 	return paths
 
 func _load_difficulty_save(difficulty : SongMap.Difficulty) -> void:
+	if not _last_song_button:
+		return
 	var save := Global.get_save()
 	
 	if not save.has(_last_song_button.UUID):

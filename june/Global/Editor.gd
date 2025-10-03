@@ -58,7 +58,7 @@ func change_to_settings() -> void:
 	editor_composer.editor_menu_bar.game.set_gear(Gear.Type.FOUR_KEYS)
 	editor_composer.visible = false
 	editor_settings.visible = true
-	editor_settings.play_song_button.text = "Play"
+	editor_settings.play_song_button.text = "Tocar"
 	_current_scene = Scenes.SETTINGS
 	Song.set_time(0.0)
 

@@ -140,7 +140,7 @@ func _process(delta: float) -> void:
 	elif normal.has_focus():
 		if Input.is_action_just_pressed("ui_accept") or (Input.is_action_just_pressed("Add Item") and 
 		normal.get_global_rect().has_point(get_global_mouse_position())):
-			if not normal.button_pressed and not normal.disabled:
+			if not normal.button_pressed and not normal.disabled  and _last_difficulty_button:
 				normal.button_pressed = true
 				_last_difficulty_button.button_pressed = false
 				_last_difficulty_button = normal
@@ -150,7 +150,7 @@ func _process(delta: float) -> void:
 	elif hard.has_focus():
 		if Input.is_action_just_pressed("ui_accept") or (Input.is_action_just_pressed("Add Item") and 
 		hard.get_global_rect().has_point(get_global_mouse_position())):
-			if not hard.button_pressed and not hard.disabled:
+			if not hard.button_pressed and not hard.disabled  and _last_difficulty_button:
 				hard.button_pressed = true
 				_last_difficulty_button.button_pressed = false
 				_last_difficulty_button = hard
@@ -160,7 +160,7 @@ func _process(delta: float) -> void:
 	elif maximus.has_focus():
 		if Input.is_action_just_pressed("ui_accept") or (Input.is_action_just_pressed("Add Item") and 
 		maximus.get_global_rect().has_point(get_global_mouse_position())):
-			if not maximus.button_pressed and not maximus.disabled:
+			if not maximus.button_pressed and not maximus.disabled  and _last_difficulty_button:
 				maximus.button_pressed = true
 				_last_difficulty_button.button_pressed = false
 				_last_difficulty_button = maximus
@@ -217,7 +217,7 @@ func get_difficulty_button(difficulty : SongMap.Difficulty) -> Button:
 	return facil
 
 func _on_facil_focus_entered() -> void:
-	if not facil.disabled:
+	if not facil.disabled and _last_difficulty_button:
 		load_difficulty_save.emit(SongMap.Difficulty.FACIL)
 		if not facil.button_pressed:
 			facil.button_pressed = not (Input.is_action_just_pressed("Add Item") or (Input.is_action_just_pressed("ui_accept") and
@@ -226,7 +226,7 @@ func _on_facil_focus_entered() -> void:
 			_last_difficulty_button = facil
 
 func _on_normal_focus_entered() -> void:
-	if not normal.disabled:
+	if not normal.disabled and _last_difficulty_button:
 		load_difficulty_save.emit(SongMap.Difficulty.NORMAL)
 		if not normal.button_pressed:
 			normal.button_pressed = not (Input.is_action_just_pressed("Add Item") or (Input.is_action_just_pressed("ui_accept") and
@@ -235,7 +235,7 @@ func _on_normal_focus_entered() -> void:
 			_last_difficulty_button = normal
 
 func _on_hard_focus_entered() -> void:
-	if not hard.disabled:
+	if not hard.disabled and _last_difficulty_button:
 		load_difficulty_save.emit(SongMap.Difficulty.HARD)
 		if not hard.button_pressed:
 			hard.button_pressed = not (Input.is_action_just_pressed("Add Item") or (Input.is_action_just_pressed("ui_accept") and
@@ -244,7 +244,7 @@ func _on_hard_focus_entered() -> void:
 			_last_difficulty_button = hard
 
 func _on_maximus_focus_entered() -> void:
-	if not maximus.disabled:
+	if not maximus.disabled and _last_difficulty_button:
 		load_difficulty_save.emit(SongMap.Difficulty.MAXIMUS)
 		if not maximus.button_pressed:
 			maximus.button_pressed = not (Input.is_action_just_pressed("Add Item") or (Input.is_action_just_pressed("ui_accept") and

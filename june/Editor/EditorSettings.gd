@@ -379,6 +379,7 @@ func _on_creator_text_edit_text_changed(_new_text: String) -> void:
 	Editor.changed_editor()
 
 func _on_visibility_changed() -> void:
+	Song.pitch_scale = 1.0
 	if visible and _video_path:
 		set_video(_video_path)
 		video_player.play()

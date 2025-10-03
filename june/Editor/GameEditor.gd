@@ -12,6 +12,7 @@ var gear : Gear
 
 var sample_tap_note : Note
 
+const _HIT_ZONE_Y : float = -50
 var _hit_zone_y : float
 
 var _currently_hold_note : HoldNoteEditor
@@ -57,6 +58,8 @@ var _song_time_when_copied : float = 0.0
 signal changed
 
 func _ready() -> void:
+	NoteHolder.set_hitzone(_HIT_ZONE_Y)
+	
 	match keys_quantity:
 		4:
 			gear = Gear.new(Gear.Type.FOUR_KEYS, Gear.Mode.EDITOR, false, size.y)

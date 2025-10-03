@@ -39,9 +39,9 @@ func _ready() -> void:
 	if not for_loading:
 		load_ended_game_values()
 
-#func _process(delta: float) -> void:
-	#if Input.is_action_just_pressed("Add Item"):
-		#_letter_results_animation.play("Pop Letter A")
+func _process(delta: float) -> void:
+	if Input.is_action_just_pressed("Escape"):
+		_on_return_pressed()
 
 func _physics_process(delta: float) -> void:
 	_time += delta

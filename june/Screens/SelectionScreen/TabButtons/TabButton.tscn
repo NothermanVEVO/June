@@ -105,6 +105,7 @@ focus_next = NodePath("../Hard")
 mouse_default_cursor_shape = 2
 theme = ExtResource("2_417wl")
 theme_override_font_sizes/font_size = 35
+disabled = true
 toggle_mode = true
 text = "Normal
  "
@@ -119,8 +120,8 @@ focus_next = NodePath("../Maximus")
 mouse_default_cursor_shape = 2
 theme = ExtResource("2_417wl")
 theme_override_font_sizes/font_size = 35
+disabled = true
 toggle_mode = true
-button_pressed = true
 text = "Hard
  "
 
