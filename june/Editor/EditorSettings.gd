@@ -325,6 +325,8 @@ func get_creator_name() -> String:
 func get_song_time_sample() -> String:
 	return $HBoxContainer/Left/VBoxContainer/SongTimeSample/SongTimeSampleText.text
 
+func get_video_time_sample() -> String:
+	return $HBoxContainer/Left/VBoxContainer/VideoTimeSample/VideoTimeSampleText.text
 
 func get_song_path() -> String:
 	return _song_path

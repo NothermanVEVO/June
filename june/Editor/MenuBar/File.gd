@@ -164,13 +164,6 @@ static func save_file(path : String, song_res : SongResource = null) -> void:
 			else:
 				DialogConfirmation.pop_up("Cancelar", "Ok", "Ocorreu um erro ao tentar salvar o arquivo.")
 
-static func _save_as_resource(path : String, song_resource : SongResource):
-	var media_data := MediaData.new(Loader.load_image(song_resource.icon) if song_resource.icon else null,
-									Loader.load_image(song_resource.image) if song_resource.image else null,
-									Loader.load_music_stream(song_resource.song) if song_resource.song else null,
-									Loader.load_video_stream(song_resource.video) if song_resource.video else null)
-	ResourceSaver.save(media_data, path)
-
 static func save() -> int:
 	if Editor.editor_settings.is_empty() and EditorMenuBar.is_editor_empty():
 		return -1
@@ -180,16 +173,33 @@ static func save() -> int:
 	return dialog_file_id
 
 func _export(path : String) -> void:
-	print(path)
-	if FileAccess.file_exists(path):
+	path = path.get_basename()
+	if DirAccess.dir_exists_absolute(path):
 		_pop_confirmation_dialog("Esse nome já existe.", "Ok", Choices.NONE)
 		return
 	else:
-		if _file_path:
-			save_file(_file_path)
-		var song_resource := Editor.to_resource()
-		_save_as_resource(path + ".res", song_resource)
-		_pop_confirmation_dialog("O Song Map foi exportado com sucesso.", "Ok", Choices.NONE)
+		var error = DirAccess.make_dir_absolute(path)
+		if error == OK:
+			if _file_path:
+				save_file(_file_path)
+			var song_resource := Editor.to_resource()
+			if song_resource.song:
+				song_resource.song = path + "//song." + Editor.editor_settings.get_song_path().get_extension()
+			if song_resource.video:
+				song_resource.video = path + "//video." + Editor.editor_settings.get_video_path().get_extension()
+			if song_resource.icon:
+				song_resource.icon = path + "//icon." + Editor.editor_settings.get_icon_path().get_extension()
+			if song_resource.image:
+				song_resource.image = path + "//image." + Editor.editor_settings.get_image_path().get_extension()
+			save_file(path + "//song_map.json", song_resource)
+			_export_song(path)
+			_export_video(path)
+			_export_icon(path)
+			_export_image(path)
+			_pop_confirmation_dialog("O Song Map foi exportado com sucesso.", "Ok", Choices.NONE)
+		else:
+			_pop_confirmation_dialog("Ocorreu um erro ao tentar criar o Song Map.", "Ok", Choices.NONE)
+	pass
 
 func export_file() -> void:
 	var is_settings_valid := Editor.editor_settings.is_valid_for_export()
@@ -269,7 +279,7 @@ func _file_dialog_file(path : String) -> void:
 		_file_path = Global.EDITOR_PATH + "//" + path.get_file()
 		_open_file(_file_path)
 	elif _last_file_dialog_choice == Choices.EXPORT:
-		_export(Global.SONGS_PATH + "//" + path.get_file().get_basename() + "")
+		_export(Global.SONGS_PATH + "//" + path.get_file() + "")
 
 static func get_file_path() -> String:
 	return _file_path
