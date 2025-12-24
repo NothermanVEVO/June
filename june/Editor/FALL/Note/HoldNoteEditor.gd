@@ -2,7 +2,7 @@ extends HoldNote
 
 class_name HoldNoteEditor
 
-@onready var _note_info_scene : PackedScene = preload("res://Editor/NoteInfo.tscn")
+@onready var _note_info_scene : PackedScene = preload("res://Editor/FALL/Note/NoteInfo.tscn")
 var _note_info : NoteInfo
 
 var top_button : Button
@@ -15,6 +15,8 @@ signal pressing_button(hold_note : HoldNoteEditor, top_button : bool)
 signal value_changed
 
 func _init(start_time : float, end_time : float) -> void:
+	_holder_size_type = NoteHolder.Holder.NOTES
+	
 	set_start_time(start_time)
 	set_end_time(end_time)
 	

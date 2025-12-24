@@ -13,9 +13,11 @@ static var _hit_zone_y : float = -50.0 # SET THE POSITION OF THE HITZONE #NOTE
 
 const SECS_SIZE_Y = 4 # SPEED OF THE GAME
 
+enum Holder {NOTES, SIDE_NOTES}
+
 var _last_visible_notes : Array[Note] = []
 
-var _key_pressed_gradient := KeyPressedGradient.new()
+var _key_pressed_gradient : KeyPressedGradient
 
 const _hit_effect_scene := preload("res://Effects/Hit/HitEffect.tscn")
 var _hit_effect : HitEffect
@@ -30,6 +32,8 @@ const HOLDING_NOTE_DELAY : float = 0.15
 
 var _note_type : Note.Type
 
+var _hold_type : Holder
+
 var _note_size_time : float = 0.0
 
 var _last_note_was_processed : bool = false
@@ -38,14 +42,20 @@ signal changed_note
 
 signal last_note_was_processed
 
-func _init(note_action : String, pos_x : float, note_type : Note.Type) -> void:
+func _init(note_action : String, pos_x : float, note_type : Note.Type, hold_type : Holder) -> void:
 	_note_action = note_action
 	_pos_x = pos_x
 	_note_type = note_type
+	_hold_type = hold_type
 
 func _ready() -> void:
 	position = Vector2(_pos_x, _hit_zone_y)
-	add_child(_key_pressed_gradient)
+	print(str(position) + " | " + _note_action)
+	
+	if _hold_type == Holder.NOTES:
+		_key_pressed_gradient = KeyPressedGradient.new()
+		add_child(_key_pressed_gradient)
+	
 	Global.changed_hitzone_y.connect(_changed_hitzone_y)
 	
 	_hit_effect = _hit_effect_scene.instantiate()
@@ -62,19 +72,10 @@ func _process(_delta: float) -> void:
 		Gear.Mode.PLAYER:
 			_player_process()
 		Gear.Mode.EDITOR:
-			queue_redraw() #TODO REMOVE THIS LATER, FOR THE SAKE OF GOD
+			queue_redraw() #TODO REMOVE THIS LATER
 			_editor_process()
 
 func _player_process() -> void:
-	#if not _notes:
-		#return
-	
-	#if _last_note_was_processed:
-		#if Input.is_action_just_pressed(_note_action):
-			#_key_pressed_gradient.key_just_pressed()
-		#elif Input.is_action_just_released(_note_action):
-			#_key_pressed_gradient.key_just_released()
-		#return
 	
 	var time : float
 	
@@ -118,10 +119,12 @@ func _player_process() -> void:
 			_check_for_last_note_processed()
 	
 	if Input.is_action_just_pressed(_note_action):
-		_key_pressed_gradient.key_just_pressed()
+		if _key_pressed_gradient: ## if is a Holder.NOTE
+			_key_pressed_gradient.key_just_pressed()
 		_hit(time)
 	elif Input.is_action_just_released(_note_action):
-		_key_pressed_gradient.key_just_released()
+		if _key_pressed_gradient: ## if is a Holder.NOTE
+			_key_pressed_gradient.key_just_released()
 		_hit_hold_note(time)
 	
 	display_notes(time)
@@ -132,9 +135,9 @@ func _check_for_last_note_processed() -> void:
 		_last_note_was_processed = true
 
 func _editor_process() -> void:
-	if not Input.is_action_just_pressed("Save") and Input.is_action_just_pressed(_note_action):
+	if not Input.is_action_just_pressed("Save") and Input.is_action_just_pressed(_note_action) and _key_pressed_gradient:
 		_key_pressed_gradient.key_just_pressed()
-	elif Input.is_action_just_released(_note_action):
+	elif Input.is_action_just_released(_note_action) and _key_pressed_gradient:
 		_key_pressed_gradient.key_just_released()
 	
 	var time : float = Song.get_time()
@@ -153,7 +156,7 @@ func display_notes(time : float) -> void:
 		note.visible = note.end_state != Note.State.HITTED if note is HoldNote else note.state == Note.State.TO_HIT
 		if not note.visible:
 			continue
-		note.position.x = -width / 2
+		note.position.x = -width / 2 if _hold_type == Holder.NOTES else SideNote.get_width() / 2
 		note.position.y = -get_local_pos_y_correct(float(Note.height) / 2, Gear.get_max_size_y() + float(Note.height) / 2, note.get_time(), time, time + Gear.MAX_TIME_Y())
 		
 		if note.get_time() < time:
@@ -297,7 +300,9 @@ func add_note(note : Note, validate_note : bool = false) -> void:
 	add_child.call_deferred(note)
 	note.visible = false
 	
-	if not note is NoteEditor and not note is HoldNoteEditor:
+	if not note is NoteEditor and not note is HoldNoteEditor and not note is SideNoteEditor:
+		if note is SideNote:
+			return
 		if note is HoldNote:
 			note.set_type_hold_note(_note_type)
 		else:
@@ -427,14 +432,23 @@ func get_all_notes() -> Array[Note]:
 func _draw() -> void:
 	if Gear.mode == Gear.Mode.PLAYER:
 		return
+	var color : Color = Color.WHITE
+	var w = width
 	var pos = Vector2.ZERO
 	#var rect_size_y = float(Note.height)
-	var pos_x = pos.x - width / 2
+	var pos_x = pos.x - w / 2
+	
+	if _hold_type == Holder.SIDE_NOTES:
+		color = Color.BLUE_VIOLET
+		w = Gear.width / 2
+		pos_x = pos.x - w / 4
+		
 	#var pos_y = pos.y - (rect_size_y / 2)
 	#draw_rect(Rect2(pos_x, pos_y, width, rect_size_y), Color.BLUE)
-	draw_line(Vector2(pos_x, pos.y), Vector2(pos_x, pos.y - Gear.get_max_size_y() - float(Note.height) / 2), Color.WHITE, 1, true)
-	draw_line(Vector2(pos_x + width, pos.y), Vector2(pos_x + width, pos.y - Gear.get_max_size_y() - float(Note.height) / 2), Color.WHITE, 1, true)
-	draw_line(pos - Vector2(width / 2, 0), pos + Vector2(width / 2, 0), Color.YELLOW, 10)
+	draw_line(Vector2(pos_x, pos.y), Vector2(pos_x, pos.y - Gear.get_max_size_y() - float(Note.height) / 2), color, 1, true)
+	draw_line(Vector2(pos_x + w, pos.y), Vector2(pos_x + w, pos.y - Gear.get_max_size_y() - float(Note.height) / 2), color, 1, true)
+	if _hold_type == Holder.NOTES:
+		draw_line(pos - Vector2(w / 2, 0), pos + Vector2(w / 2, 0), Color.YELLOW, 10)
 	#draw_circle(pos, 5, Color.YELLOW)
 	#draw_circle(Vector2(pos.x, pos.y - max_note_distance), 
 		#5, Color.RED)

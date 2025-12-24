@@ -11,7 +11,7 @@ const FADE_TEXTURE := preload("res://assets/fade.png")
 const FADE_OUT_TEXTURE := preload("res://assets/fadeOut.png")
 const FADE_IN_TEXTURE := preload("res://assets/fadeIn.png")
 
-const _LONG_NOTE_INFO_SCENE : PackedScene = preload("res://Editor/LongNoteInfo.tscn")
+const _LONG_NOTE_INFO_SCENE : PackedScene = preload("res://Editor/Fall/Note/LongNoteInfo.tscn")
 var _long_note_info : LongNoteInfo
 
 var _shader_material = ShaderMaterial.new()

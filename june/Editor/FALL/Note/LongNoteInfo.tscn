@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dsdqpralnpbu2"]
 
-[ext_resource type="Script" uid="uid://chowwnfxg0hxv" path="res://Editor/LongNoteInfo.gd" id="1_g6eli"]
+[ext_resource type="Script" uid="uid://chowwnfxg0hxv" path="res://Editor/FALL/Note/LongNoteInfo.gd" id="1_g6eli"]
 [ext_resource type="Texture2D" uid="uid://cqjua7mxnjv5t" path="res://assets/warningIcon.png" id="2_ym7im"]
 
 [node name="PanelContainer" type="PanelContainer"]

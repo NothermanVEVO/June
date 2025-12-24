@@ -16,12 +16,13 @@ func _ready() -> void:
 	## OMG PIRATE SOFTWARE???
 	set_item_tooltip(1, "Consegue selecionar \"Notas\" e \"Notas Longas\", pode mexê-las de posição, copiar, além de\n apagá-las com \"Delete\"")
 	set_item_tooltip(4, "Nota simples de apertar.")
-	set_item_tooltip(5, "Nota de apertar, aperte com o mouse e arraste para usá-la, essas notas serão inválidas se começarem\n e acaberem no mesmo tempo.")
-	set_item_tooltip(7, "Ativa ou desativa o efeito de \"Poder\" em uma nota do tipo Tap ou Hold.")
-	set_item_tooltip(8, "A partir do tempo que a nota for posicionada, a velocidade mudará e ficara assim até\n o final ou até outra nota de velocidade, clique na nota com botão direito para alterar a velocidade.")
-	set_item_tooltip(9, "Essa nota só funciona em pares, para cada Fade Out deve haver um Fade In, isso irá fazer com que a\n Gear desapareça até o momento do Fade In, clique na nota com botão direito para alterar o tipo de Fade.")
-	set_item_tooltip(12, "Essa nota não altera em nada durante o jogo, ela só serve para caso você queria marcar posições da\n música, se clicar com o botão direito você pode fazer comentários nela.")
-	set_item_tooltip(13, "Um song map poderá ser dividido em seções, a partir do momento da nota o jogo começara a contar estatísticas\n do jogador entre essa seção até o outra seção ou o final da música, clique com o botão direito para colocar um título.")
+	set_item_tooltip(5, "Nota de segurar, aperte com o mouse e arraste para usá-la, essas notas serão inválidas se começarem\n e acaberem no mesmo tempo.")
+	set_item_tooltip(6, "Igual a nota de segurar, contudo, ela cobre metade do lado esquerdo ou direito, além de possuir teclas especias para elas.")
+	set_item_tooltip(8, "Ativa ou desativa o efeito de \"Poder\" em uma nota do tipo Tap ou Hold.")
+	set_item_tooltip(9, "A partir do tempo que a nota for posicionada, a velocidade mudará e ficara assim até\n o final ou até outra nota de velocidade, clique na nota com botão direito para alterar a velocidade.")
+	set_item_tooltip(10, "Essa nota só funciona em pares, para cada Fade Out deve haver um Fade In, isso irá fazer com que a\n Gear desapareça até o momento do Fade In, clique na nota com botão direito para alterar o tipo de Fade.")
+	set_item_tooltip(13, "Essa nota não altera em nada durante o jogo, ela só serve para caso você queria marcar posições da\n música, se clicar com o botão direito você pode fazer comentários nela.")
+	set_item_tooltip(14, "Um song map poderá ser dividido em seções, a partir do momento da nota o jogo começara a contar estatísticas\n do jogador entre essa seção até o outra seção ou o final da música, clique com o botão direito para colocar um título.")
 
 func _process(_delta: float) -> void:
 	if Editor.editor_music_player and Editor.editor_music_player.visible:
@@ -47,21 +48,24 @@ func _process(_delta: float) -> void:
 	elif Input.is_action_just_pressed("Hold") and not Input.is_action_just_pressed("Paste"):
 		_selected_item_text = "Hold (V)"
 		select(5)
+	elif Input.is_action_just_pressed("Side") and not Input.is_action_just_pressed("Save"):
+		_selected_item_text = "Side (S)"
+		select(6)
 	elif Input.is_action_just_pressed("Power"):
 		_selected_item_text = "Poder (G)"
-		select(7)
+		select(8)
 	elif Input.is_action_just_pressed("Speed") and not Input.is_action_pressed("Undo"):
 		_selected_item_text = "Velocidade (Z)"
-		select(8)
+		select(9)
 	elif Input.is_action_just_pressed("Fade"):
 		_selected_item_text = "Fade (F)"
-		select(9)
+		select(10)
 	elif Input.is_action_just_pressed("Note") and not Input.is_action_just_pressed("Copy"):
 		_selected_item_text = "Comentário (C)"
-		select(12)
+		select(13)
 	elif Input.is_action_just_pressed("Section"):
 		_selected_item_text = "Seção (X)"
-		select(13)
+		select(14)
 
 func _on_item_selected(index: int) -> void:
 	

@@ -65,11 +65,28 @@ func _ready() -> void: #TODO HANDLE ANY POSITION FOR THE GEAR, NOT ONLY THE MIDD
 		var position_difference := 0.0 if mode == Mode.EDITOR else position.x
 		initial_x = -(width / 2) + (NoteHolder.width / 2) + position_difference
 	
+	var initial_x_copy = initial_x
+	
+	
+	## NORMAL NOTES HOLDER
 	for i in range(_type):
 		var note_type : Note.Type = Note.Type.RED if (i == 1 or i == _type - 2) else Note.Type.BLUE
-		var note_holder := NoteHolder.new(str(i + 1) + "_" + str(_type) + "k", initial_x, note_type)
+		var note_holder := NoteHolder.new(str(i + 1) + "_" + str(_type) + "k", initial_x, note_type, NoteHolder.Holder.NOTES)
 		note_holder.last_note_was_processed.connect(_note_holders_last_processed_notes)
 		initial_x += NoteHolder.width
+		_note_holders.append(note_holder)
+		add_child(note_holder)
+		note_holder.changed_note.connect(_changed_note_from_note_holder)
+	
+	## SIDE NOTES HOLDER
+	_add_side_notes(initial_x_copy)
+
+func _add_side_notes(initial_x : float) -> void:
+	var x = initial_x
+	for i in range(2):
+		var note_holder := NoteHolder.new(str(i + 1) + "_side_note", x, Note.Type.BLUE, NoteHolder.Holder.SIDE_NOTES)
+		note_holder.last_note_was_processed.connect(_note_holders_last_processed_notes)
+		x += width / 2
 		_note_holders.append(note_holder)
 		add_child(note_holder)
 		note_holder.changed_note.connect(_changed_note_from_note_holder)

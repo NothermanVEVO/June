@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://b3ljeq5vwy67a"]
 
-[ext_resource type="Script" uid="uid://cxngxkql6desj" path="res://Editor/EditorSettings.gd" id="1_33eqs"]
+[ext_resource type="Script" uid="uid://cxngxkql6desj" path="res://Editor/FALL/Setttings/EditorSettings.gd" id="1_33eqs"]
 [ext_resource type="PackedScene" uid="uid://dj8t1madbd5pe" path="res://Background/AnimatedBackgroundV1.tscn" id="1_vxgxl"]
-[ext_resource type="Script" uid="uid://cuhkonamt3aus" path="res://Editor/MenuBar/File.gd" id="2_iy5o1"]
+[ext_resource type="Script" uid="uid://cuhkonamt3aus" path="res://Editor/FALL/MenuBar/File.gd" id="2_iy5o1"]
 [ext_resource type="Theme" uid="uid://oe21uoww8ls3" path="res://themes/JuneThemeV1.tres" id="4_nm0sj"]
 
 [node name="Settings" type="VBoxContainer"]

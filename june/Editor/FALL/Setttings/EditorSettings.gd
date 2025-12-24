@@ -34,9 +34,9 @@ var _last_called_file : Files
 @onready var compose_button : Button = $Menu/FlowContainer/Compose
 
 @onready var song_time_sample_text : TextEdit = $HBoxContainer/Left/VBoxContainer/SongTimeSample/SongTimeSampleText
-@onready var video_time_sample_text : TextEdit = $HBoxContainer/Left/VBoxContainer/VideoTimeSample/VideoTimeSampleText
+#@onready var video_time_sample_text : TextEdit = $HBoxContainer/Left/VBoxContainer/VideoTimeSample/VideoTimeSampleText
 var last_valid_sample_song_text : String = ""
-var last_valid_sample_video_text : String = ""
+#var last_valid_sample_video_text : String = ""
 var time_regex := RegEx.new()
 
 func _ready() -> void:
@@ -185,7 +185,7 @@ func _on_remove_video_button_pressed() -> void:
 	_video_path = ""
 	video_player.stream = null
 	remove_video_button.disabled = true
-	video_time_sample_text.editable = false
+	#video_time_sample_text.editable = false
 
 func _on_image_button_pressed() -> void:
 	file_dialog.popup()
@@ -225,21 +225,21 @@ func _on_song_time_sample_text_changed() -> void:
 			song_time_sample_text.text = last_valid_sample_song_text
 		song_time_sample_text.release_focus()
 
-func _on_video_time_sample_text_changed() -> void:
-	if "\n" in video_time_sample_text.text:
-		video_time_sample_text.text = video_time_sample_text.text.replace("\n", "")
-		if time_regex.search(video_time_sample_text.text):
-			last_valid_sample_video_text = video_time_sample_text.text
-		else:
-			video_time_sample_text.text = last_valid_sample_video_text
-		video_time_sample_text.release_focus()
+#func _on_video_time_sample_text_changed() -> void:
+	#if "\n" in video_time_sample_text.text:
+		#video_time_sample_text.text = video_time_sample_text.text.replace("\n", "")
+		#if time_regex.search(video_time_sample_text.text):
+			#last_valid_sample_video_text = video_time_sample_text.text
+		#else:
+			#video_time_sample_text.text = last_valid_sample_video_text
+		#video_time_sample_text.release_focus()
 
 func is_empty() -> bool:
 	return $HBoxContainer/Left/VBoxContainer/Name/NameTextEdit.text.is_empty() and (
 		$HBoxContainer/Left/VBoxContainer/Author/AuthorTextEdit.text.is_empty()) and (
 		$HBoxContainer/Left/VBoxContainer/Track/TrackTextEdit.text.is_empty()) and (
 		$HBoxContainer/Left/VBoxContainer/Creator/CreatorTextEdit.text.is_empty()) and (
-		last_valid_sample_song_text.is_empty()) and last_valid_sample_video_text.is_empty() and (
+		last_valid_sample_song_text.is_empty()) and (
 		not Song.stream) and not icon_texture.texture and not image_rect_texture.texture and not video_player.stream
 
 func reset() -> void:
@@ -249,7 +249,7 @@ func reset() -> void:
 	$HBoxContainer/Left/VBoxContainer/BPM/SpinBox.value = 60
 	$HBoxContainer/Left/VBoxContainer/Creator/CreatorTextEdit.text = ""
 	$HBoxContainer/Left/VBoxContainer/SongTimeSample/SongTimeSampleText.text = ""
-	$HBoxContainer/Left/VBoxContainer/VideoTimeSample/VideoTimeSampleText.text = ""
+	#$HBoxContainer/Left/VBoxContainer/VideoTimeSample/VideoTimeSampleText.text = ""
 	compose_button.disabled = true
 	
 	play_song_button.disabled = true
@@ -269,10 +269,10 @@ func reset() -> void:
 	_video_path = ""
 	
 	$HBoxContainer/Left/VBoxContainer/SongTimeSample/SongTimeSampleText.editable = false
-	$HBoxContainer/Left/VBoxContainer/VideoTimeSample/VideoTimeSampleText.editable = false
+	#$HBoxContainer/Left/VBoxContainer/VideoTimeSample/VideoTimeSampleText.editable = false
 
 @warning_ignore("shadowed_variable")
-func load_editor(song : String, author : String, track : String, BPM : int, creator : String, song_time_sample : String, video_time_sample : String, 
+func load_editor(song : String, author : String, track : String, BPM : int, creator : String, song_time_sample : String, 
 	song_path : String, icon_path : String, image_path : String, video_path : String) -> int:
 	
 	reset()
@@ -282,10 +282,10 @@ func load_editor(song : String, author : String, track : String, BPM : int, crea
 	$HBoxContainer/Left/VBoxContainer/BPM/SpinBox.value = BPM
 	$HBoxContainer/Left/VBoxContainer/Creator/CreatorTextEdit.text = creator
 	$HBoxContainer/Left/VBoxContainer/SongTimeSample/SongTimeSampleText.text = song_time_sample
-	$HBoxContainer/Left/VBoxContainer/VideoTimeSample/VideoTimeSampleText.text = video_time_sample
+	#$HBoxContainer/Left/VBoxContainer/VideoTimeSample/VideoTimeSampleText.text = video_time_sample
 	
 	last_valid_sample_song_text = song_time_sample
-	last_valid_sample_video_text = video_time_sample
+	#last_valid_sample_video_text = video_time_sample
 	
 	var valid := 0
 	
@@ -325,8 +325,8 @@ func get_creator_name() -> String:
 func get_song_time_sample() -> String:
 	return $HBoxContainer/Left/VBoxContainer/SongTimeSample/SongTimeSampleText.text
 
-func get_video_time_sample() -> String:
-	return $HBoxContainer/Left/VBoxContainer/VideoTimeSample/VideoTimeSampleText.text
+#func get_video_time_sample() -> String:
+	#return $HBoxContainer/Left/VBoxContainer/VideoTimeSample/VideoTimeSampleText.text
 
 func get_song_path() -> String:
 	return _song_path

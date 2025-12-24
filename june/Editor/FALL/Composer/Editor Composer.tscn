@@ -1,13 +1,13 @@
 [gd_scene load_steps=19 format=3 uid="uid://dw4rs74gsagrn"]
 
-[ext_resource type="Script" uid="uid://ddx3q78woi7jl" path="res://Editor/SoundComponentsItems.gd" id="1_7fqon"]
-[ext_resource type="Script" uid="uid://3yuoy3etpxip" path="res://Editor/EditorComposer.gd" id="1_g7rpo"]
-[ext_resource type="Script" uid="uid://re8yk5328yco" path="res://Editor/MenuBar/EditorMenuBar.gd" id="1_p8fip"]
-[ext_resource type="Script" uid="uid://jr7inyppvgoi" path="res://Editor/GameComponentsList.gd" id="1_sakc5"]
-[ext_resource type="Script" uid="uid://bbuinuyr63r63" path="res://Editor/MenuBar/Menu.gd" id="2_bnevv"]
-[ext_resource type="Script" uid="uid://b5sxt0fdx3nd3" path="res://Editor/GameEditor.gd" id="2_d6op5"]
-[ext_resource type="Script" uid="uid://cuhkonamt3aus" path="res://Editor/MenuBar/File.gd" id="3_6pnfi"]
-[ext_resource type="Script" uid="uid://cr1l58jmclcj" path="res://Editor/SoundBoard.gd" id="3_ty45h"]
+[ext_resource type="Script" uid="uid://ddx3q78woi7jl" path="res://Editor/FALL/Composer/SoundComponentsItems.gd" id="1_7fqon"]
+[ext_resource type="Script" uid="uid://3yuoy3etpxip" path="res://Editor/FALL/Composer/EditorComposer.gd" id="1_g7rpo"]
+[ext_resource type="Script" uid="uid://re8yk5328yco" path="res://Editor/FALL/MenuBar/EditorMenuBar.gd" id="1_p8fip"]
+[ext_resource type="Script" uid="uid://jr7inyppvgoi" path="res://Editor/FALL/Composer/GameComponentsList.gd" id="1_sakc5"]
+[ext_resource type="Script" uid="uid://bbuinuyr63r63" path="res://Editor/FALL/MenuBar/Menu.gd" id="2_bnevv"]
+[ext_resource type="Script" uid="uid://b5sxt0fdx3nd3" path="res://Editor/FALL/Composer/GameEditor.gd" id="2_d6op5"]
+[ext_resource type="Script" uid="uid://cuhkonamt3aus" path="res://Editor/FALL/MenuBar/File.gd" id="3_6pnfi"]
+[ext_resource type="Script" uid="uid://cr1l58jmclcj" path="res://Editor/FALL/Composer/SoundBoard.gd" id="3_ty45h"]
 [ext_resource type="Texture2D" uid="uid://oyfiimbt1x0y" path="res://assets/gameItemsIcons/selectIcon.png" id="6_6pnfi"]
 [ext_resource type="Texture2D" uid="uid://cmb4i22o1gq1y" path="res://assets/gameItemsIcons/unLockIcon.png" id="7_vl3l7"]
 [ext_resource type="Texture2D" uid="uid://ckv44gvcprwo0" path="res://assets/gameItemsIcons/tapIcon.png" id="8_g7rpo"]
@@ -294,7 +294,7 @@ custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.0
-item_count = 14
+item_count = 15
 item_0/text = "---- Ferramentas ----"
 item_0/selectable = false
 item_1/text = "Selecionar (E)"
@@ -308,23 +308,24 @@ item_4/text = "Tap (B)"
 item_4/icon = ExtResource("8_g7rpo")
 item_5/text = "Hold (V)"
 item_5/icon = ExtResource("9_fp4jx")
-item_6/text = "---- Efeitos ----"
-item_6/selectable = false
-item_7/text = "Poder (G)"
-item_7/icon = ExtResource("10_6548f")
-item_8/text = "Velocidade (Z)"
-item_8/icon = ExtResource("11_p5hb3")
-item_9/text = "Fade (F)"
-item_9/icon = ExtResource("12_4las8")
-item_10/text = "Som"
-item_10/icon = ExtResource("13_1a345")
-item_10/disabled = true
-item_11/text = "---- Anotações ----"
-item_11/selectable = false
-item_12/text = "Comentário (C)"
-item_12/icon = ExtResource("14_nlio8")
-item_13/text = "Seção (X)"
-item_13/icon = ExtResource("15_lhgse")
+item_6/text = "Side (S)"
+item_7/text = "---- Efeitos ----"
+item_7/selectable = false
+item_8/text = "Poder (G)"
+item_8/icon = ExtResource("10_6548f")
+item_9/text = "Velocidade (Z)"
+item_9/icon = ExtResource("11_p5hb3")
+item_10/text = "Fade (F)"
+item_10/icon = ExtResource("12_4las8")
+item_11/text = "Som"
+item_11/icon = ExtResource("13_1a345")
+item_11/disabled = true
+item_12/text = "---- Anotações ----"
+item_12/selectable = false
+item_13/text = "Comentário (C)"
+item_13/icon = ExtResource("14_nlio8")
+item_14/text = "Seção (X)"
+item_14/icon = ExtResource("15_lhgse")
 script = ExtResource("1_sakc5")
 
 [node name="Resize Button" type="Button" parent="Middle/Game Components List"]

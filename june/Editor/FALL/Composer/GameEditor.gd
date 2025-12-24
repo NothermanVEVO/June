@@ -288,6 +288,8 @@ func _handle_selected_item(item_text : String) -> void:
 			_handle_selected_item_tap() # TO REVIEW ...
 		"Hold (V)":
 			_handle_selected_item_hold() # TO REVIEW ...
+		"Side (S)":
+			print("bora") # TODO FAZ AQUI NOTE WARNING !!!!!! ?
 		"Poder (G)":
 			_handle_selected_item_power() # TO REVIEW ...
 		"Velocidade (Z)":
@@ -821,7 +823,7 @@ func _get_closest_grid_time_pos(time_pos : float) -> float:
 	return time_pos
 
 func _draw() -> void:
-	var nh_positions := gear.get_note_holders_global_position()
+	var nh_positions := gear.get_note_holders_global_position().slice(0, 4)
 	var left_x := 0.0
 	var right_x := 0.0
 	

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://35wpkqpv41cv"]
 
-[ext_resource type="Script" uid="uid://b2jn6grsfcgd4" path="res://Editor/TransferToConfirmation.gd" id="1_pqd3g"]
+[ext_resource type="Script" uid="uid://b2jn6grsfcgd4" path="res://Editor/FALL/Dialog/TransferToConfirmation.gd" id="1_pqd3g"]
 
 [node name="Transfer To Confirmation" type="PanelContainer"]
 z_index = 20

@@ -33,7 +33,7 @@ static var _holding_time : float = 0.0
 const _FIRST_HOLDING_TIME_DELAY = 0.3
 const _HOLDING_TIME_DELAY = 0.1
 
-@onready var transfer_to_confirmation_scene := preload("res://Editor/TransferToConfirmation.tscn")
+@onready var transfer_to_confirmation_scene := preload("res://Editor/FALL/Dialog/TransferToConfirmation.tscn")
 var _transfer_to_confirmation : TransferToConfirmation
 var _transfer_to_difficulty : SongMap.Difficulty
 

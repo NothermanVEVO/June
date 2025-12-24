@@ -2,7 +2,7 @@ extends Note
 
 class_name NoteEditor
 
-@onready var _note_info_scene : PackedScene = preload("res://Editor/NoteInfo.tscn")
+@onready var _note_info_scene : PackedScene = preload("res://Editor/FALL/Note/NoteInfo.tscn")
 var _note_info : NoteInfo
 
 signal value_changed

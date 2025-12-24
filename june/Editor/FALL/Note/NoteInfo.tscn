@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b82iibq8fpgqn"]
 
-[ext_resource type="Script" uid="uid://dvq0k3sxpd7x0" path="res://Editor/NoteInfo.gd" id="1_feaks"]
+[ext_resource type="Script" uid="uid://dvq0k3sxpd7x0" path="res://Editor/FALL/Note/NoteInfo.gd" id="1_feaks"]
 
 [node name="Note Info" type="PanelContainer"]
 offset_right = 152.0
