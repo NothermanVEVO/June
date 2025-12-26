@@ -347,6 +347,7 @@ static func MAX_TIME_Y() -> float:
 func add_note_at(idx : int, note : Note, validate_note : bool = false) -> void:
 	note.set_idx(idx)
 	_note_holders[idx].add_note(note, validate_note)
+	print(_note_holders[idx]._hold_type)
 
 func remove_note_at(idx : int, note : Note, validate_note : bool = false, free : bool = false) -> void:
 	_note_holders[idx].remove_note(note, validate_note, free)

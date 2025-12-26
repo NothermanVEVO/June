@@ -50,7 +50,7 @@ func _init(note_action : String, pos_x : float, note_type : Note.Type, hold_type
 
 func _ready() -> void:
 	position = Vector2(_pos_x, _hit_zone_y)
-	print(str(position) + " | " + _note_action)
+	#print(str(position) + " | " + _note_action)
 	
 	if _hold_type == Holder.NOTES:
 		_key_pressed_gradient = KeyPressedGradient.new()
@@ -144,7 +144,8 @@ func _editor_process() -> void:
 	display_notes(time)
 
 func _calculate_note_size_time() -> void:
-	_note_size_time = get_time_pos_y(float(Note.height) / 2, Gear.get_max_size_y() + float(Note.height) / 2, float(Note.height) + float(Note.height) / 2, 0, Gear.MAX_TIME_Y())
+	var note_height := get_note_height()
+	_note_size_time = get_time_pos_y(note_height / 2, Gear.get_max_size_y() + note_height / 2, note_height + note_height / 2, 0, Gear.MAX_TIME_Y())
 
 func display_notes(time : float) -> void:
 	var notes := get_notes(time - _note_size_time, time + Gear.MAX_TIME_Y() + _note_size_time)
@@ -156,8 +157,10 @@ func display_notes(time : float) -> void:
 		note.visible = note.end_state != Note.State.HITTED if note is HoldNote else note.state == Note.State.TO_HIT
 		if not note.visible:
 			continue
-		note.position.x = -width / 2 if _hold_type == Holder.NOTES else SideNote.get_width() / 2
-		note.position.y = -get_local_pos_y_correct(float(Note.height) / 2, Gear.get_max_size_y() + float(Note.height) / 2, note.get_time(), time, time + Gear.MAX_TIME_Y())
+		
+		var note_height := get_note_height()
+		note.position.x = -width / 2 if _hold_type == Holder.NOTES else - SideNote.get_width() / 4
+		note.position.y = -get_local_pos_y_correct(note_height / 2, Gear.get_max_size_y() + note_height / 2, note.get_time(), time, time + Gear.MAX_TIME_Y())
 		
 		if note.get_time() < time:
 			var p_time = note.get_time() + (time - note.get_time())
@@ -429,6 +432,9 @@ func get_notes_array() -> Array[Note]:
 func get_all_notes() -> Array[Note]:
 	return _notes
 
+func get_note_height() -> float:
+		return Note.height if _hold_type == Holder.NOTES else SideNote.side_height
+
 func _draw() -> void:
 	if Gear.mode == Gear.Mode.PLAYER:
 		return
@@ -440,13 +446,14 @@ func _draw() -> void:
 	
 	if _hold_type == Holder.SIDE_NOTES:
 		color = Color.BLUE_VIOLET
-		w = Gear.width / 2
+		w = SideNote.get_width()
 		pos_x = pos.x - w / 4
 		
 	#var pos_y = pos.y - (rect_size_y / 2)
 	#draw_rect(Rect2(pos_x, pos_y, width, rect_size_y), Color.BLUE)
-	draw_line(Vector2(pos_x, pos.y), Vector2(pos_x, pos.y - Gear.get_max_size_y() - float(Note.height) / 2), color, 1, true)
-	draw_line(Vector2(pos_x + w, pos.y), Vector2(pos_x + w, pos.y - Gear.get_max_size_y() - float(Note.height) / 2), color, 1, true)
+	var note_height := get_note_height()
+	draw_line(Vector2(pos_x, pos.y), Vector2(pos_x, pos.y - Gear.get_max_size_y() - note_height / 2), color, 1, true)
+	draw_line(Vector2(pos_x + w, pos.y), Vector2(pos_x + w, pos.y - Gear.get_max_size_y() - note_height / 2), color, 1, true)
 	if _hold_type == Holder.NOTES:
 		draw_line(pos - Vector2(w / 2, 0), pos + Vector2(w / 2, 0), Color.YELLOW, 10)
 	#draw_circle(pos, 5, Color.YELLOW)

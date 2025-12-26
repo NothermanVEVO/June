@@ -54,12 +54,12 @@ func _ready() -> void:
 	_shader_material.shader = Global.HIGHLIGHT_SHADER
 	
 	top_button.position = _end_note.position# + Vector2(0, - Note.height)
-	top_button.size = Vector2(_end_note.size.x, float(Note.height) / 4)
+	top_button.size = Vector2(_end_note.size.x, float(get_height_by_holder_type()) / 4)
 	top_button.mouse_default_cursor_shape = Control.CURSOR_VSIZE
 	add_child(top_button)
 	
 	bottom_button.position = _start_note.position# + Vector2(0, - Note.height)
-	bottom_button.size = Vector2(_start_note.size.x, float(Note.height) / 4)
+	bottom_button.size = Vector2(_start_note.size.x, float(get_height_by_holder_type()) / 4)
 	bottom_button.mouse_default_cursor_shape = Control.CURSOR_VSIZE
 	add_child(bottom_button)
 	
@@ -75,7 +75,7 @@ func _process(_delta: float) -> void:
 		top_button.visible = true
 		bottom_button.visible = true
 		top_button.position = _end_note.position# + Vector2(0, float(Note.height))
-		bottom_button.position = _start_note.position + Vector2(0, float(Note.height) / 4)
+		bottom_button.position = _start_note.position + Vector2(0, float(get_height_by_holder_type()) / 4)
 		if top_button.button_pressed:
 			pressing_button.emit(self, true)
 		elif bottom_button.button_pressed:

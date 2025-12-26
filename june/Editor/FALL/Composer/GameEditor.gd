@@ -12,10 +12,14 @@ var gear : Gear
 
 var sample_tap_note : Note
 
+var sample_side_note : SideNote
+
 const _HIT_ZONE_Y : float = -50
 var _hit_zone_y : float
 
 var _currently_hold_note : HoldNoteEditor
+
+var _currently_side_note : SideNoteEditor
 
 var _is_mouse_inside : bool = false
 
@@ -77,6 +81,12 @@ func _ready() -> void:
 	sample_tap_note.set_note_type(Note.Type.BLUE)
 	sample_tap_note.position = Vector2(-10000000, -10000000)
 	sample_tap_note.modulate = Color(1, 1, 1, 0.5)
+	
+	sample_side_note = SideNote.new(0, 0, SideNote.Side.LEFT)
+	add_child(sample_side_note)
+	sample_side_note.material = null
+	sample_side_note.position = Vector2(-10000000, -10000000)
+	sample_side_note.modulate = Color(1, 1, 1, 0.5)
 	
 	_sample_long_annotation_note = LongNote.new(0, LongNote.Type.ANNOTATION)
 	add_child(_sample_long_annotation_note)
@@ -289,7 +299,7 @@ func _handle_selected_item(item_text : String) -> void:
 		"Hold (V)":
 			_handle_selected_item_hold() # TO REVIEW ...
 		"Side (S)":
-			print("bora") # TODO FAZ AQUI NOTE WARNING !!!!!! ?
+			_handle_selected_item_side() # TODO FAZ AQUI NOTE WARNING !!!!!! ?
 		"Poder (G)":
 			_handle_selected_item_power() # TO REVIEW ...
 		"Velocidade (Z)":
@@ -619,6 +629,84 @@ func _handle_selected_item_hold() -> void:
 	else: # DIDN'T FIND A NOTE HOLD
 		sample_tap_note.visible = false
 
+func _handle_selected_item_side() -> void:
+	if not get_rect().has_point(get_local_mouse_position()) or _is_any_note_with_display_info():
+		sample_side_note.visible = false
+		#return
+	
+	var result = _get_limited_by_gear_local_mouse_position()
+	var mouse_pos : Vector2 = result["position"]
+	var idx : int = result["note_hold"]
+	
+	
+	if mouse_pos.x >= 0: # FINDED A NOTE HOLD
+		_display_mouse_time_position(true)
+		sample_side_note.visible = true
+		sample_side_note.position = Vector2(mouse_pos.x - NoteHolder.width / 2, mouse_pos.y)
+		var time_pos = Song.get_time()
+		
+		var mouse_time_pos_y = _get_closest_grid_time_to_mouse()
+		
+		if mouse_time_pos_y > _get_highest_grid_time():
+			mouse_time_pos_y = _get_highest_grid_time()
+		
+		sample_side_note.position.y = NoteHolder.get_local_pos_y(_hit_zone_y - float(sample_side_note.get_height_by_holder_type()) / 2, 
+			- float(sample_side_note.get_height_by_holder_type()) / 2, mouse_time_pos_y, time_pos, time_pos + Gear.MAX_TIME_Y())
+		
+		sample_side_note.set_time(mouse_time_pos_y)
+		
+		#print(get_global_mouse_position())
+		#print(gear.get_note_holders_global_position()[gear.get_type()])
+		
+		if Input.is_action_just_pressed("Add Item"):
+			sample_side_note.visible = false
+			changed.emit()
+			_currently_side_note = SideNoteEditor.new(mouse_time_pos_y, mouse_time_pos_y)
+			
+			var min_max_x := Global.get_min_max_x(gear.get_note_holders_global_position())
+			var middle_x : float = (min_max_x["min_x"] + min_max_x["max_x"]) / 2 - get_global_position().x
+			
+			if mouse_pos.x < middle_x:
+				print("left")
+				idx = gear.get_type() ## LEFT
+			else:
+				print("right")
+				idx = gear.get_type() + 1 ## RIGHT
+			
+			gear.add_note_at(idx, _currently_side_note, true)
+			_last_drag_mouse_position = _get_limited_by_gear_local_mouse_position()["position"]
+		elif Input.is_action_pressed("Add Item"):
+			sample_side_note.visible = false
+			_currently_side_note.set_end_time(mouse_time_pos_y)
+			gear.update_note_time(_currently_side_note, true)
+			
+			var time_difference_y := _get_time_difference_y()
+			_last_drag_mouse_position = _get_limited_by_gear_local_mouse_position()["position"]
+			
+			var temp = time_difference_y
+			time_difference_y -= _last_time_difference_y
+			_last_time_difference_y = temp
+			
+			if not _currently_side_note.visible:
+				_currently_side_note.visible = true ##NOTE NOT THE BEST WAY, BUT WORKS FOR NOW
+				
+			if not time_difference_y or (time_difference_y > 0.0 and get_local_mouse_position().y > _hit_zone_y) or (
+				time_difference_y < 0.0 and get_local_mouse_position().y < 0.0):
+				return
+			if get_local_mouse_position().y < 0.0 or get_local_mouse_position().y > _hit_zone_y:
+				Song.set_time(clampf(Song.get_time() + time_difference_y, 0.0, Song.get_duration()))
+		elif Input.is_action_just_released("Add Item"):
+			_currently_side_note.pressing_button.connect(_pressing_some_hold_resize_button)
+			_currently_side_note.set_end_time(mouse_time_pos_y)
+			gear.update_note_time(_currently_side_note, true)
+			_currently_side_note.update_end_time_text()
+			Editor.editor_composer.editor_menu_bar._memory_save_song_map() ## SHOULDN'T BE DOING THIS, BUT WELL...
+			#changed.emit()
+			_currently_side_note.value_changed.connect((func(): emit_signal("changed")))
+			_last_time_difference_y = 0.0
+	else: # DIDN'T FIND A NOTE HOLD
+		sample_side_note.visible = false
+
 func _handle_selected_item_power() -> void:
 	if Input.is_action_just_pressed("Add Item"):
 		var notes := gear.get_global_note_intersected_rects(Rect2(get_global_mouse_position(), Vector2.ZERO))
@@ -823,7 +911,7 @@ func _get_closest_grid_time_pos(time_pos : float) -> float:
 	return time_pos
 
 func _draw() -> void:
-	var nh_positions := gear.get_note_holders_global_position().slice(0, 4)
+	var nh_positions := gear.get_note_holders_global_position().slice(0, gear.get_type())
 	var left_x := 0.0
 	var right_x := 0.0
 	

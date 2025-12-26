@@ -366,3 +366,21 @@ func formate_int_to_pontuation(value: int) -> String:
 			result = "." + result
 	
 	return result
+
+func get_min_max_x(points: Array[Vector2]) -> Dictionary:
+	if points.is_empty():
+		return {}
+
+	var min_x := INF
+	var max_x := -INF
+
+	for p in points:
+		if p.x < min_x:
+			min_x = p.x
+		if p.x > max_x:
+			max_x = p.x
+
+	return {
+		"min_x": min_x,
+		"max_x": max_x
+	}
