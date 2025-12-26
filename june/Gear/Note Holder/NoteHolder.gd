@@ -159,7 +159,7 @@ func display_notes(time : float) -> void:
 			continue
 		
 		var note_height := get_note_height()
-		note.position.x = -width / 2 if _hold_type == Holder.NOTES else - SideNote.get_width() / 4
+		note.position.x = -width / 2
 		note.position.y = -get_local_pos_y_correct(note_height / 2, Gear.get_max_size_y() + note_height / 2, note.get_time(), time, time + Gear.MAX_TIME_Y())
 		
 		if note.get_time() < time:
@@ -447,7 +447,7 @@ func _draw() -> void:
 	if _hold_type == Holder.SIDE_NOTES:
 		color = Color.BLUE_VIOLET
 		w = SideNote.get_width()
-		pos_x = pos.x - w / 4
+		pos_x = pos.x - width / 2
 		
 	#var pos_y = pos.y - (rect_size_y / 2)
 	#draw_rect(Rect2(pos_x, pos_y, width, rect_size_y), Color.BLUE)

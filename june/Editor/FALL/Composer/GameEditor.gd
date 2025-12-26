@@ -379,9 +379,23 @@ func _handle_select() -> void:
 			var dict := _get_limited_by_gear_local_mouse_position()
 			var note_hold_idx = dict["note_hold"]
 			
+			var has_left_n_right_side_note : bool = false
+			var has_only_side_notes : bool = true
+			var idx : int = -1
+			for i in range(_selected_notes.size()):
+				if not _selected_notes[i] is SideNoteEditor:
+					has_only_side_notes = false
+					continue
+				if idx < 0:
+					idx = i
+				elif i != idx:
+					has_left_n_right_side_note = true
+			
 			var leftest_note : Note = null
 			for note in _selected_notes:
 				if leftest_note:
+					if note is SideNoteEditor: ## ISN'T SUPPOSED TO HAPPEN IN THE LEFT, BUT... 
+						continue
 					if note.get_idx() < leftest_note.get_idx():
 						leftest_note = note
 				else:
@@ -389,11 +403,17 @@ func _handle_select() -> void:
 			
 			var rightest_note : Note = null
 			for note in _selected_notes:
+				if note is SideNoteEditor:
+					continue
 				if rightest_note:
 					if note.get_idx() > rightest_note.get_idx():
 						rightest_note = note
 				else:
 					rightest_note = note
+			
+			if has_only_side_notes:
+				leftest_note = _selected_notes[0]
+				rightest_note = _selected_notes[0]
 			
 			if note_hold_idx < 0 or _last_note_holder_idx < 0:
 				_last_note_holder_idx = note_hold_idx
@@ -404,8 +424,17 @@ func _handle_select() -> void:
 					_had_time_difference = true
 					changed.emit()
 					for note in _selected_notes:
+						if note is SideNoteEditor:
+							continue
 						gear.change_note_from_note_holder(note.get_idx(), note.get_idx() + distance, note, true)
 					_last_note_holder_idx = note_hold_idx
+			
+			for note in _selected_notes:
+				if note is SideNoteEditor:
+					if not has_left_n_right_side_note:
+						var side_note_idx = _get_side_note_idx(get_local_mouse_position().x)
+						if note.get_idx() != side_note_idx:
+							gear.change_note_from_note_holder(note.get_idx(), side_note_idx, note, true)
 			
 			var mouse_time_difference_y := _get_time_difference_y()
 			_last_drag_mouse_position = _get_limited_by_gear_local_mouse_position()["position"]
@@ -526,8 +555,8 @@ func _handle_select() -> void:
 				#) or (note is NoteEditor and (note.get_time() > Song.get_time() + Gear.MAX_TIME_Y() or note.get_time() < Song.get_time())):
 					#pass
 				#else:
-					_selected_notes.append(note)
-					note.set_selected_highlight(true)
+				_selected_notes.append(note)
+				note.set_selected_highlight(true)
 			_mouse_selection.set_rect(Rect2(0, 0, 0, 0))
 
 func _handle_selected_item_tap() -> void:
@@ -636,13 +665,12 @@ func _handle_selected_item_side() -> void:
 	
 	var result = _get_limited_by_gear_local_mouse_position()
 	var mouse_pos : Vector2 = result["position"]
-	var idx : int = result["note_hold"]
-	
+	var idx : int = _get_side_note_idx(mouse_pos.x)
 	
 	if mouse_pos.x >= 0: # FINDED A NOTE HOLD
 		_display_mouse_time_position(true)
 		sample_side_note.visible = true
-		sample_side_note.position = Vector2(mouse_pos.x - NoteHolder.width / 2, mouse_pos.y)
+		sample_side_note.position = Vector2(gear.get_note_holders_global_position()[idx].x - NoteHolder.width / 2 - global_position.x, mouse_pos.y)
 		var time_pos = Song.get_time()
 		
 		var mouse_time_pos_y = _get_closest_grid_time_to_mouse()
@@ -662,16 +690,6 @@ func _handle_selected_item_side() -> void:
 			sample_side_note.visible = false
 			changed.emit()
 			_currently_side_note = SideNoteEditor.new(mouse_time_pos_y, mouse_time_pos_y)
-			
-			var min_max_x := Global.get_min_max_x(gear.get_note_holders_global_position())
-			var middle_x : float = (min_max_x["min_x"] + min_max_x["max_x"]) / 2 - get_global_position().x
-			
-			if mouse_pos.x < middle_x:
-				print("left")
-				idx = gear.get_type() ## LEFT
-			else:
-				print("right")
-				idx = gear.get_type() + 1 ## RIGHT
 			
 			gear.add_note_at(idx, _currently_side_note, true)
 			_last_drag_mouse_position = _get_limited_by_gear_local_mouse_position()["position"]
@@ -706,6 +724,15 @@ func _handle_selected_item_side() -> void:
 			_last_time_difference_y = 0.0
 	else: # DIDN'T FIND A NOTE HOLD
 		sample_side_note.visible = false
+
+func _get_side_note_idx(mouse_pos_x : float) -> int:
+	var min_max_x := Global.get_min_max_x(gear.get_note_holders_global_position())
+	var middle_x : float = (min_max_x["min_x"] + min_max_x["max_x"]) / 2 - get_global_position().x
+	
+	if mouse_pos_x < middle_x:
+		return gear.get_type() ## LEFT
+	else:
+		return gear.get_type() + 1 ## RIGHT
 
 func _handle_selected_item_power() -> void:
 	if Input.is_action_just_pressed("Add Item"):
