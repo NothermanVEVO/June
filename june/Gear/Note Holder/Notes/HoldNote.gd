@@ -22,6 +22,10 @@ var _holder_size_type : NoteHolder.Holder
 
 func _init(start_time : float, end_time : float) -> void:
 	_holder_size_type = NoteHolder.Holder.NOTES
+	
+	z_index = 5
+	y_sort_enabled = true
+	
 	_current_time = start_time
 	_duration = end_time - start_time
 	

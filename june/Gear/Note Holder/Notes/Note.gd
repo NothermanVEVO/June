@@ -36,6 +36,7 @@ func _init(current_time : float) -> void:
 	position = Vector2(-size / 2)
 	z_as_relative = false
 	z_index = 5
+	y_sort_enabled = true
 
 func _ready() -> void:
 	material = PULSE_SHINE_SHADER_MATERIAL

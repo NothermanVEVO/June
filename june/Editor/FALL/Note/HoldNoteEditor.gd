@@ -17,6 +17,9 @@ signal value_changed
 func _init(start_time : float, end_time : float) -> void:
 	_holder_size_type = NoteHolder.Holder.NOTES
 	
+	z_index = 1
+	y_sort_enabled = true
+	
 	set_start_time(start_time)
 	set_end_time(end_time)
 	
@@ -118,9 +121,15 @@ func set_selected_highlight(selected : bool) -> void:
 	_set_highlight(selected)
 	
 	if selected:
-		z_index = 2
+		if not self is SideNoteEditor:
+			z_index = 2
+		else:
+			z_index = 0
 	else:
-		z_index = 1
+		if not self is SideNoteEditor:
+			z_index = 1
+		else:
+			z_index = 0
 	
 	if selected:
 		if _is_valid:

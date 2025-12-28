@@ -47,6 +47,8 @@ func _init(note_action : String, pos_x : float, note_type : Note.Type, hold_type
 	_pos_x = pos_x
 	_note_type = note_type
 	_hold_type = hold_type
+	
+	y_sort_enabled = true
 
 func _ready() -> void:
 	position = Vector2(_pos_x, _hit_zone_y)
@@ -60,6 +62,9 @@ func _ready() -> void:
 	
 	_hit_effect = _hit_effect_scene.instantiate()
 	add_child(_hit_effect)
+	
+	if _hold_type == Holder.SIDE_NOTES:
+		_hit_effect.position.x += SideNote.get_width() / 4
 	
 	Global.changed_max_size_y.connect(_calculate_note_size_time)
 	Global.speed_changed.connect(_calculate_note_size_time)

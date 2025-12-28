@@ -49,6 +49,8 @@ func _init(type : Type, mode : Mode, center_screen : bool = true, max_size_y : f
 		position.x -= 625
 	elif dict["game_gear_position"] == GameSettingsScreen.GearPositions.RIGHT:
 		position.x += 625
+	
+	y_sort_enabled = true
 
 func _ready() -> void: #TODO HANDLE ANY POSITION FOR THE GEAR, NOT ONLY THE MIDDLE
 	if _max_size_y < 0:
@@ -347,7 +349,6 @@ static func MAX_TIME_Y() -> float:
 func add_note_at(idx : int, note : Note, validate_note : bool = false) -> void:
 	note.set_idx(idx)
 	_note_holders[idx].add_note(note, validate_note)
-	print(_note_holders[idx]._hold_type)
 
 func remove_note_at(idx : int, note : Note, validate_note : bool = false, free : bool = false) -> void:
 	_note_holders[idx].remove_note(note, validate_note, free)

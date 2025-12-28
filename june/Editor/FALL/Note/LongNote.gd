@@ -75,7 +75,7 @@ func _ready() -> void:
 	_long_note_info.speed_value_changed.connect(_speed_value_changed)
 	_long_note_info.fade_value_changed.connect(_fade_value_changed)
 	
-	z_index = 1
+	z_index = 2
 
 func _process(_delta: float) -> void:
 	_long_note_info.global_position = global_position + get_global_rect().size / 2 - _long_note_info.size / 2

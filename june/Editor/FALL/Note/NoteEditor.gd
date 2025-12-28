@@ -13,7 +13,9 @@ func _init(current_time : float) -> void:
 	texture = NORMAL_NOTE_BLUE_IMG
 	size = Vector2(NoteHolder.width, height)
 	position = Vector2(-size / 2)
+	
 	z_index = 1
+	y_sort_enabled = true
 
 func _ready() -> void:
 	_note_info = _note_info_scene.instantiate()
