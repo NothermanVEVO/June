@@ -69,4 +69,4 @@ func to_resource() -> NoteResource:
 	var type := NoteResource.Type.HOLD if self is HoldNote else NoteResource.Type.TAP
 	var note = self ## KKKKKKKKKKKKKKKKKKKKKKK PILANTRAGEM HEIN
 	end_time = note.get_end_time() if note is HoldNote else end_time
-	return NoteResource.new(_current_time, end_time, _idx, type, powered, _is_valid, _is_selected)
+	return NoteResource.new(_current_time, end_time, _idx, type, powered, _is_valid, _is_selected, (note is SideNote or note is SideNoteEditor))
