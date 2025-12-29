@@ -35,7 +35,7 @@ func _init(current_time : float) -> void:
 	size = Vector2(NoteHolder.width, height)
 	position = Vector2(-size / 2)
 	z_as_relative = false
-	z_index = 5
+	z_index = 6
 	y_sort_enabled = true
 
 func _ready() -> void:

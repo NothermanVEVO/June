@@ -138,6 +138,14 @@ func set_gear(type : Gear.Type) -> void:
 	sample_tap_note.material = null
 	sample_tap_note.set_note_type(Note.Type.BLUE)
 	
+	remove_child(sample_side_note)
+	sample_side_note.queue_free()
+	sample_side_note = SideNote.new(0, 0, SideNote.Side.LEFT)
+	add_child(sample_side_note)
+	sample_side_note.material = null
+	sample_side_note.position = Vector2(-10000000, -10000000)
+	sample_side_note.modulate = Color(1, 1, 1, 0.5)
+	
 	_resized()
 
 func _process(delta: float) -> void:
@@ -250,6 +258,7 @@ func _process(delta: float) -> void:
 			_holding_speed_time = 0.0
 	
 	sample_tap_note.visible = false
+	sample_side_note.visible = false
 	if _currently_sample_long_note:
 		_currently_sample_long_note.visible = false
 	
@@ -280,7 +289,7 @@ func _display_mouse_time_position(display_on_grid : bool = false) -> void:
 	
 	var note_holders_positions := gear.get_note_holders_global_position()
 	if note_holders_positions:
-		var position_x = note_holders_positions[note_holders_positions.size() - 1].x - global_position.x + _mouse_time_container.size.x
+		var position_x = note_holders_positions[note_holders_positions.size() - 3].x - global_position.x + _mouse_time_container.size.x
 		#var miss_placement_y = -_mouse_time_container.size.y / 8
 		var position_y
 		if display_on_grid:

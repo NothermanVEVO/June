@@ -14,7 +14,7 @@ func _init(current_time : float) -> void:
 	size = Vector2(NoteHolder.width, height)
 	position = Vector2(-size / 2)
 	
-	z_index = 1
+	z_index = 2
 	y_sort_enabled = true
 
 func _ready() -> void:
@@ -59,9 +59,9 @@ func set_selected_highlight(selected : bool) -> void:
 	_set_highlight(selected)
 	
 	if selected:
-		z_index = 2
+		z_index = 3
 	else:
-		z_index = 1
+		z_index = 2
 	
 	if selected:
 		if _is_valid:

@@ -122,7 +122,7 @@ func set_selected_highlight(selected : bool) -> void:
 	
 	if selected:
 		if not self is SideNoteEditor:
-			z_index = 2
+			z_index = 3
 		else:
 			z_index = 0
 	else:
