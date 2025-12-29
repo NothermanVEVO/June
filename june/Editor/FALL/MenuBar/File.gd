@@ -4,7 +4,7 @@ class_name FileMenu
 
 @export var _editor_scene : Editor.Scenes
 
-enum Choices {NEW = 0, OPEN = 1, SAVE = 2, EXPORT = 3, QUIT = 4, NONE = 5}
+enum Choices {NEW = 0, OPEN = 1, SAVE = 2, EXPORT = 3, OPEN_FOLDER = 4, QUIT = 5, NONE = 6}
 var _last_choice : Choices = Choices.NONE
 
 static var current_ID : String = ""
@@ -60,6 +60,8 @@ func _file_index_pressed(index : int) -> void:
 				save()
 		Choices.EXPORT:
 			export_file()
+		Choices.OPEN_FOLDER:
+			OS.shell_open(ProjectSettings.globalize_path(Global.EDITOR_PATH))
 		Choices.QUIT:
 			quit()
 

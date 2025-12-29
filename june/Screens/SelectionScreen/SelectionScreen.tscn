@@ -57,6 +57,15 @@ theme = ExtResource("2_y1arh")
 theme_override_font_sizes/font_size = 35
 text = "Voltar"
 
+[node name="Open Folder" type="Button" parent="VBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_default_cursor_shape = 2
+theme = ExtResource("2_y1arh")
+theme_override_font_sizes/font_size = 35
+text = "Abrir Pasta"
+
 [node name="Songs" type="MarginContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -122,4 +131,5 @@ size_flags_vertical = 3
 theme_override_constants/separation = 8
 
 [connection signal="pressed" from="VBoxContainer/MarginContainer/Quit" to="VBoxContainer/Songs" method="_on_quit_pressed"]
+[connection signal="pressed" from="VBoxContainer/MarginContainer/Open Folder" to="VBoxContainer/Songs" method="_on_open_folder_pressed"]
 [connection signal="tab_changed" from="VBoxContainer/Songs/HBoxContainer/MarginContainer/SelectedSong" to="VBoxContainer/Songs" method="_on_selected_song_tab_changed"]

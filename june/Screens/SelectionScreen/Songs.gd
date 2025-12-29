@@ -345,3 +345,6 @@ func _settings_pressed() -> void:
 
 func _on_quit_pressed() -> void:
 	get_tree().change_scene_to_packed(Global.START_SCREEN_SCENE)
+
+func _on_open_folder_pressed() -> void:
+	OS.shell_open(ProjectSettings.globalize_path(Global.SONGS_PATH))

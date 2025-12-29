@@ -38,7 +38,7 @@ size_flags_horizontal = 0
 [node name="File" type="PopupMenu" parent="Menu/FlowContainer/MenuBar"]
 auto_translate_mode = 1
 title = "Arquivo"
-item_count = 5
+item_count = 6
 item_0/text = "Novo"
 item_0/id = 0
 item_1/text = "Abrir"
@@ -47,8 +47,10 @@ item_2/text = "Salvar"
 item_2/id = 2
 item_3/text = "Exportar"
 item_3/id = 3
-item_4/text = "Sair"
+item_4/text = "Abrir Pasta"
 item_4/id = 4
+item_5/text = "Sair"
+item_5/id = 5
 script = ExtResource("2_iy5o1")
 _editor_scene = 1
 
