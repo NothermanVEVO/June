@@ -100,6 +100,16 @@ theme = ExtResource("4_rmmlk")
 theme_override_font_sizes/font_size = 60
 text = "Sair"
 
+[node name="Version" type="RichTextLabel" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 10
+theme_override_font_sizes/normal_font_size = 56
+text = "Versão 1.3.00 - BETA"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
 [connection signal="pressed" from="VBoxContainer/VBoxContainer/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="VBoxContainer/VBoxContainer/Editor" to="." method="_on_editor_pressed"]
 [connection signal="pressed" from="VBoxContainer/VBoxContainer/Settings" to="." method="_on_settings_pressed"]
