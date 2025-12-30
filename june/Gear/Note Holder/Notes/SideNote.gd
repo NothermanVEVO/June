@@ -15,6 +15,7 @@ static var side_height : float = 40
 func _init(start_time : float, end_time : float, side : int) -> void:
 	super(start_time, end_time)
 	
+	z_as_relative = false
 	z_index = 4
 	y_sort_enabled = true
 	

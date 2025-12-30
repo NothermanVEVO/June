@@ -48,7 +48,7 @@ const _BREAK_PRECISION_GRADIENT := preload("res://Effects/JuneGearV1Letter/BREAK
 @onready var _explosion_particles : CPUParticles2D = $"FullGear/Gear/Control/Fever Effect Star/Explosion"
 
 var _bpm : float
-var _last_time_beat : float = 0.0
+var _time_beat : float = 0.0
 
 const STAR_ROTATION_SPEED : float = PI / 32
 
@@ -71,7 +71,7 @@ signal loaded
 
 func _ready() -> void:
 	_bpm = 60.0 / Song.BPM
-	_last_time_beat = -_bpm + 0.01
+	_time_beat = -_bpm + Song.offset
 	
 	#_shader_material.shader = Global.SHINE_HIGHLIGHT
 	#_shader_material.set_shader_parameter("is_horizontal", true)
@@ -94,8 +94,8 @@ func _ready() -> void:
 	$FullGear/Gear/Control/Base/Background.color.a = 1 - dict["game_gear_transparency"]
 
 func _process(delta: float) -> void:
-	if Song.get_time() >= _last_time_beat + _bpm:
-		_last_time_beat = Song.get_time()
+	if Song.get_time() >= _time_beat:
+		_time_beat += _bpm
 		if Global.get_settings_dictionary()["particles"]:
 			if beat_animation.is_playing():
 				beat_animation.play("RESET")

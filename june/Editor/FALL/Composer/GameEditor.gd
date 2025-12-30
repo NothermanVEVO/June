@@ -968,7 +968,7 @@ func _draw() -> void:
 	var start_time_pos := Song.get_time() + value - rest
 	var n_grids := int((Gear.MAX_TIME_Y()) / value)
 	
-	for i in (n_grids + 1):
+	for i in (n_grids + 2):
 		var time : float = start_time_pos + (value * (i - 1))
 		#print(time)
 		
