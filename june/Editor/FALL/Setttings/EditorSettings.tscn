@@ -117,7 +117,7 @@ layout_mode = 2
 [node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/Author"]
 layout_mode = 2
 size_flags_vertical = 4
-text = "Autor:"
+text = "Autor: "
 fit_content = true
 autowrap_mode = 0
 
@@ -134,7 +134,7 @@ layout_mode = 2
 [node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/Track"]
 layout_mode = 2
 size_flags_vertical = 4
-text = "Coleção:"
+text = "Coleção: "
 fit_content = true
 autowrap_mode = 0
 
@@ -155,7 +155,7 @@ layout_mode = 2
 [node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/BPM"]
 layout_mode = 2
 size_flags_vertical = 4
-text = "BPM:"
+text = "BPM: "
 fit_content = true
 autowrap_mode = 0
 
@@ -168,13 +168,30 @@ min_value = 1.0
 max_value = 1000.0
 value = 60.0
 
+[node name="Offset" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/Offset"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Offset: "
+fit_content = true
+autowrap_mode = 0
+
+[node name="OffsetSpinBox" type="SpinBox" parent="HBoxContainer/Left/VBoxContainer/Offset"]
+layout_mode = 2
+tooltip_text = "Em qual segundo a música começa de fato."
+max_value = 999.0
+step = 0.1
+suffix = "s"
+
 [node name="Creator" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer"]
 layout_mode = 2
 
 [node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/Creator"]
 layout_mode = 2
 size_flags_vertical = 4
-text = "Criador:"
+text = "Criador: "
 fit_content = true
 autowrap_mode = 0
 
@@ -192,7 +209,7 @@ layout_mode = 2
 [node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/SongTimeSample"]
 layout_mode = 2
 size_flags_vertical = 4
-text = "Tempo de amostra da música:"
+text = "Tempo de amostra da música: "
 fit_content = true
 autowrap_mode = 0
 
@@ -200,10 +217,25 @@ autowrap_mode = 0
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 tooltip_text = "Na tela de seleção de mapas, quando esse mapa estiver em foco, vai começar a tocar a música 
-a partir do momento que você colocar aqui, e tocará por uns 20 segundos, repetindo o ciclo."
+a partir do momento que você colocar aqui, e tocará por uns 25 segundos, repetindo o ciclo."
 placeholder_text = "00:00:000"
 editable = false
 scroll_fit_content_width = true
+
+[node name="SongSampleSlider" type="HSlider" parent="HBoxContainer/Left/VBoxContainer/SongTimeSample"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+step = 0.01
+editable = false
+tick_count = 7
+ticks_on_borders = true
+
+[node name="SongSampleTestButton" type="Button" parent="HBoxContainer/Left/VBoxContainer/SongTimeSample"]
+layout_mode = 2
+disabled = true
+text = "Testar"
 
 [node name="VideoTimeSample" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer"]
 visible = false
@@ -364,8 +396,11 @@ text = "Sair"
 [connection signal="text_changed" from="HBoxContainer/Left/VBoxContainer/Author/AuthorTextEdit" to="." method="_on_author_text_edit_text_changed"]
 [connection signal="text_changed" from="HBoxContainer/Left/VBoxContainer/Track/TrackTextEdit" to="." method="_on_track_text_edit_text_changed"]
 [connection signal="value_changed" from="HBoxContainer/Left/VBoxContainer/BPM/SpinBox" to="." method="_on_spin_box_value_changed"]
+[connection signal="value_changed" from="HBoxContainer/Left/VBoxContainer/Offset/OffsetSpinBox" to="." method="_on_offset_spin_box_value_changed"]
 [connection signal="text_changed" from="HBoxContainer/Left/VBoxContainer/Creator/CreatorTextEdit" to="." method="_on_creator_text_edit_text_changed"]
 [connection signal="text_changed" from="HBoxContainer/Left/VBoxContainer/SongTimeSample/SongTimeSampleText" to="." method="_on_song_time_sample_text_changed"]
+[connection signal="value_changed" from="HBoxContainer/Left/VBoxContainer/SongTimeSample/SongSampleSlider" to="." method="_on_song_sample_slider_value_changed"]
+[connection signal="pressed" from="HBoxContainer/Left/VBoxContainer/SongTimeSample/SongSampleTestButton" to="." method="_on_song_sample_test_button_pressed"]
 [connection signal="text_changed" from="HBoxContainer/Left/VBoxContainer/VideoTimeSample/VideoTimeSampleText" to="." method="_on_video_time_sample_text_changed"]
 [connection signal="pressed" from="HBoxContainer/Right/VBoxContainer/Song/SongButton" to="." method="_on_song_button_pressed"]
 [connection signal="pressed" from="HBoxContainer/Right/VBoxContainer/Song/PlaySongButton" to="." method="_on_play_song_button_pressed"]

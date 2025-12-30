@@ -284,8 +284,7 @@ func _display_mouse_time_position(display_on_grid : bool = false) -> void:
 		mouse_time_pos_y = _get_closest_grid_time_to_mouse()
 	else:
 		mouse_time_pos_y = NoteHolder.get_time_pos_y(_hit_zone_y - float(Note.height) / 2, - float(Note.height) / 2, mouse_pos.y, Song.get_time(), Song.get_time() + Gear.MAX_TIME_Y())
-	var splitted_time := SoundBoard.split_time(mouse_time_pos_y)
-	_mouse_time_text.text = "%02d:%02d:%03d" % [splitted_time["minutes"], splitted_time["seconds"], splitted_time["milliseconds"]]
+	_mouse_time_text.text = Global.time_to_text(mouse_time_pos_y)
 	
 	var note_holders_positions := gear.get_note_holders_global_position()
 	if note_holders_positions:
@@ -924,27 +923,32 @@ func  _is_any_note_with_display_info() -> bool:
 
 func _get_closest_grid_time_to_mouse() -> float:
 	var mouse_pos : Vector2 = _get_limited_by_gear_local_mouse_position()["position"]
-	var value := EditorMenuBar.get_divisor()
 		
 	var time_pos := NoteHolder.get_time_pos_y(_hit_zone_y - float(Note.height) / 2, - float(Note.height) / 2, mouse_pos.y, Song.get_time(), Song.get_time() + Gear.MAX_TIME_Y())
-	var rest := fmod(time_pos, value)
-	if rest <= value / 2.0:
-		time_pos -= rest
-	else:
-		time_pos += value - rest
-	return time_pos
+	return _get_closest_grid_time_pos(time_pos)
 
-func _get_highest_grid_time() -> float: ## OXI?? ISSO FUNFA COMO?
-	return floor(Song.get_duration() / EditorMenuBar.get_divisor()) * EditorMenuBar.get_divisor()
+func _get_highest_grid_time() -> float:
+	var time : float = _get_closest_grid_time_pos(Song.get_duration())
+	if time > Song.get_duration():
+		return time - EditorMenuBar.get_divisor()
+	return time
+
+#func _get_lowest_grid_time() -> float:
+	#return Song.offset
 
 func _get_closest_grid_time_pos(time_pos : float) -> float:
+	if time_pos < Song.offset:
+		return Song.offset
+	else:
+		time_pos -= Song.offset
+		
 	var value := EditorMenuBar.get_divisor()
 	var rest := fmod(time_pos, value)
 	if rest <= value / 2.0:
 		time_pos -= rest
 	else:
 		time_pos += value - rest
-	return time_pos
+	return time_pos + Song.offset
 
 func _draw() -> void:
 	var nh_positions := gear.get_note_holders_global_position().slice(0, gear.get_type())
@@ -960,14 +964,31 @@ func _draw() -> void:
 	right_x = nh_positions[nh_positions.size() - 1].x - global_position.x + NoteHolder.width / 2
 	
 	var value := EditorMenuBar.get_divisor()
-	var rest := fmod(Song.get_time(), value)
+	var rest := fmod(Song.get_time() - Song.offset, value)
 	var start_time_pos := Song.get_time() + value - rest
 	var n_grids := int((Gear.MAX_TIME_Y()) / value)
 	
 	for i in (n_grids + 1):
-		var pos_y = NoteHolder.get_local_pos_y(_hit_zone_y - float(Note.height) / 2, - float(Note.height) / 2, start_time_pos + (value * i), Song.get_time(), Song.get_time() + Gear.MAX_TIME_Y())
+		var time : float = start_time_pos + (value * (i - 1))
+		#print(time)
+		
+		if time > _get_highest_grid_time():
+			return
+		elif time < Song.offset - 0.01: ## HAD TO DO THIS BECAUSE OF FLOAT ERROR
+			continue
+		
+		var pos_y = NoteHolder.get_local_pos_y(_hit_zone_y - float(Note.height) / 2, - float(Note.height) / 2, time, Song.get_time(), Song.get_time() + Gear.MAX_TIME_Y())
 		pos_y += float(Note.height) / 2
-		draw_line(Vector2(left_x, pos_y), Vector2(right_x, pos_y), Color.WHITE, 1, true)
+		
+		var is_start_line : bool = is_equal_approx(time, Song.offset)
+		if not is_start_line:
+			var is_end_line : bool = is_equal_approx(_get_highest_grid_time(), time)
+			if not is_end_line:
+				draw_line(Vector2(left_x, pos_y), Vector2(right_x, pos_y), Color.WHITE, 1, true)
+			else:
+				draw_line(Vector2(left_x, pos_y), Vector2(right_x, pos_y), Color.MEDIUM_SPRING_GREEN, 5, true)
+		else:
+			draw_line(Vector2(left_x, pos_y), Vector2(right_x, pos_y), Color.CRIMSON, 5, true)
 
 func _on_mouse_entered() -> void:
 	_is_mouse_inside = true

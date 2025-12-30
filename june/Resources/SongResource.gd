@@ -17,11 +17,11 @@ var video : String
 var icon : String
 var song_maps : Array[SongMap]
 
-var song_time_sample : String
+var song_time_sample : float
 
 @warning_ignore("shadowed_variable")
-func _init(name : String, author : String, BPM : int, track : String, creator : String, song : String, image : String, video : String, 
-	icon : String, song_maps : Array[SongMap], song_time_sample : String) -> void:
+func _init(name : String, author : String, BPM : int, track : String, creator : String, offset : float, song : String, image : String, video : String, 
+	icon : String, song_maps : Array[SongMap], song_time_sample : float) -> void:
 	
 	self.ID = Global.get_UUID()
 	self.name = name
@@ -29,6 +29,7 @@ func _init(name : String, author : String, BPM : int, track : String, creator : 
 	self.BPM = BPM
 	self.track = track
 	self.creator = creator
+	self.offset = offset
 	self.song = song
 	self.image = image
 	self.video = video
@@ -51,7 +52,7 @@ static func dictionary_to_resource(dictionary : Dictionary) -> SongResource:
 	for dict in dictionary["song_maps"]:
 		song_maps.append(SongMap.dictionary_to_resource(dict))
 	
-	var song_resource := SongResource.new(dictionary["name"], dictionary["author"], dictionary["BPM"], dictionary["track"], dictionary["creator"], dictionary["song"], 
+	var song_resource := SongResource.new(dictionary["name"], dictionary["author"], dictionary["BPM"], dictionary["track"], dictionary["creator"], dictionary["offset"], dictionary["song"], 
 		dictionary["image"], dictionary["video"], dictionary["icon"], song_maps, dictionary["song_time_sample"])
 	
 	song_resource.ID = dictionary["ID"]
@@ -74,6 +75,8 @@ static func validate_dictionary(dictionary : Dictionary) -> String:
 		return "\"track\" not found or wrong format in SongResource"
 	if not dictionary.has("creator") or typeof(dictionary["creator"]) != TYPE_STRING:
 		return "\"creator\" not found or wrong format in SongResource"
+	if not dictionary.has("offset") or typeof(dictionary["offset"]) != TYPE_FLOAT:
+		return "\"offset\" not found or wrong format in SongResource"
 	if not dictionary.has("song") or typeof(dictionary["song"]) != TYPE_STRING:
 		return "\"song\" not found or wrong format in SongResource"
 	if not dictionary.has("image") or typeof(dictionary["image"]) != TYPE_STRING:
@@ -88,7 +91,7 @@ static func validate_dictionary(dictionary : Dictionary) -> String:
 		var validate_wrong := SongMap.validate_dictionary(dict)
 		if validate_wrong:
 			return validate_wrong
-	if not dictionary.has("song_time_sample") or typeof(dictionary["song_time_sample"]) != TYPE_STRING:
+	if not dictionary.has("song_time_sample") or typeof(dictionary["song_time_sample"]) != TYPE_FLOAT:
 		return "\"song_time_sample\" not found or wrong format in SongResource"
 	#if not dictionary.has("video_time_sample") or typeof(dictionary["video_time_sample"]) != TYPE_STRING:
 		#return "\"video_time_sample\" not found or wrong format in SongResource"

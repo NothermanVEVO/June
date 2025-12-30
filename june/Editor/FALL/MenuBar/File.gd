@@ -136,7 +136,7 @@ func _open_file(path : String) -> void:
 		else:
 			var song_resource := SongResource.dictionary_to_resource(json_data)
 			current_ID = song_resource.ID
-			Editor.load_resource(SongResource.dictionary_to_resource(json_data))
+			Editor.load_resource(song_resource)
 			Editor.saved_file()
 	else:
 		_pop_confirmation_dialog("Ocorreu um erro ao tentar ler o arquivo.", "Ok", Choices.NONE)

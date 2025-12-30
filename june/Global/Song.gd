@@ -8,6 +8,11 @@ var _duration : float = 0.0
 
 var BPM : int = 0
 
+var offset : float = 0.0
+
+const TIME_SAMPLE : float = 25.0
+const SAMPLE_FADE_DURATION : float = 2.0
+
 func _ready() -> void:
 	finished.connect(_finished)
 	bus = &"Song"

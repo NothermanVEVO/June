@@ -34,6 +34,16 @@ var _last_called_file : Files
 @onready var compose_button : Button = $Menu/FlowContainer/Compose
 
 @onready var song_time_sample_text : TextEdit = $HBoxContainer/Left/VBoxContainer/SongTimeSample/SongTimeSampleText
+@onready var song_sample_slider : HSlider = $HBoxContainer/Left/VBoxContainer/SongTimeSample/SongSampleSlider
+var _song_time_sample : float = 0.0
+
+@onready var song_sample_test_button : Button = $HBoxContainer/Left/VBoxContainer/SongTimeSample/SongSampleTestButton
+var song_sample_tween : Tween
+var _original_volume_db : float
+var _song_sample_test_id : int = 0
+
+@onready var offset_spin_box : SpinBox = $HBoxContainer/Left/VBoxContainer/Offset/OffsetSpinBox
+
 #@onready var video_time_sample_text : TextEdit = $HBoxContainer/Left/VBoxContainer/VideoTimeSample/VideoTimeSampleText
 var last_valid_sample_song_text : String = ""
 #var last_valid_sample_video_text : String = ""
@@ -103,7 +113,11 @@ func set_song(path : String) -> int:
 		Song.set_song(stream)
 		play_song_button.disabled = false
 		compose_button.disabled = false
-		song_time_sample_text.editable = true
+		song_time_sample_text.editable = false
+		song_sample_slider.editable = true
+		song_sample_test_button.disabled = false
+		offset_spin_box.max_value = Song.get_duration() - 0.1
+		_set_time_sample_slider_max()
 		_song_path = path
 		Editor.changed_editor()
 		return 0
@@ -202,7 +216,10 @@ func _on_song_button_pressed() -> void:
 
 func _on_play_song_button_pressed() -> void:
 	if play_song_button.text == "Tocar":
+		if song_sample_test_button.text == "Parar":
+			_song_sample_tween_finished()
 		Song.play()
+		_song_sample_test_id += 1
 		play_song_button.text = "Parar"
 	else:
 		play_song_button.text = "Tocar"
@@ -249,10 +266,14 @@ func reset() -> void:
 	$HBoxContainer/Left/VBoxContainer/BPM/SpinBox.value = 60
 	$HBoxContainer/Left/VBoxContainer/Creator/CreatorTextEdit.text = ""
 	$HBoxContainer/Left/VBoxContainer/SongTimeSample/SongTimeSampleText.text = ""
+	song_sample_test_button.text = "Testar"
+	offset_spin_box.value = 0.0
 	#$HBoxContainer/Left/VBoxContainer/VideoTimeSample/VideoTimeSampleText.text = ""
 	compose_button.disabled = true
 	
 	play_song_button.disabled = true
+	song_sample_slider.editable = false
+	song_sample_slider.value = 0.0
 	Song.stream = null
 	_song_path = ""
 	
@@ -272,7 +293,7 @@ func reset() -> void:
 	#$HBoxContainer/Left/VBoxContainer/VideoTimeSample/VideoTimeSampleText.editable = false
 
 @warning_ignore("shadowed_variable")
-func load_editor(song : String, author : String, track : String, BPM : int, creator : String, song_time_sample : String, 
+func load_editor(song : String, author : String, track : String, BPM : int, creator : String, offset : float, song_time_sample : float, 
 	song_path : String, icon_path : String, image_path : String, video_path : String) -> int:
 	
 	reset()
@@ -281,10 +302,13 @@ func load_editor(song : String, author : String, track : String, BPM : int, crea
 	$HBoxContainer/Left/VBoxContainer/Track/TrackTextEdit.text = track
 	$HBoxContainer/Left/VBoxContainer/BPM/SpinBox.value = BPM
 	$HBoxContainer/Left/VBoxContainer/Creator/CreatorTextEdit.text = creator
-	$HBoxContainer/Left/VBoxContainer/SongTimeSample/SongTimeSampleText.text = song_time_sample
+	offset_spin_box.value = offset
+	$HBoxContainer/Left/VBoxContainer/SongTimeSample/SongTimeSampleText.text = Global.time_to_text(song_time_sample)
+	song_sample_slider.value = song_time_sample / Song.get_duration() * 100
+	_song_time_sample = song_time_sample
 	#$HBoxContainer/Left/VBoxContainer/VideoTimeSample/VideoTimeSampleText.text = video_time_sample
 	
-	last_valid_sample_song_text = song_time_sample
+	#last_valid_sample_song_text = song_time_sample
 	#last_valid_sample_video_text = video_time_sample
 	
 	var valid := 0
@@ -322,8 +346,11 @@ func get_BPM_value() -> int:
 func get_creator_name() -> String:
 	return $HBoxContainer/Left/VBoxContainer/Creator/CreatorTextEdit.text
 
-func get_song_time_sample() -> String:
-	return $HBoxContainer/Left/VBoxContainer/SongTimeSample/SongTimeSampleText.text
+func get_song_offset() -> float:
+	return offset_spin_box.value
+
+func get_song_time_sample() -> float:
+	return Global.text_to_time($HBoxContainer/Left/VBoxContainer/SongTimeSample/SongTimeSampleText.text)
 
 #func get_video_time_sample() -> String:
 	#return $HBoxContainer/Left/VBoxContainer/VideoTimeSample/VideoTimeSampleText.text
@@ -390,6 +417,69 @@ func _on_visibility_changed() -> void:
 		video_player.stop()
 		video_player.stream = null
 
-
 func _on_return_pressed() -> void:
 	$Menu/FlowContainer/MenuBar/File.quit()
+
+func _set_time_sample_slider_max() -> void:
+	if Song.get_duration() < Song.TIME_SAMPLE:
+		song_sample_slider.editable = false
+		return
+	
+	var y : float = (Song.get_duration() - Song.TIME_SAMPLE)
+	
+	song_sample_slider.max_value = y / Song.get_duration() * 100
+
+func _on_song_sample_slider_value_changed(value: float) -> void:
+	Editor.changed_editor()
+	if value == 0.0:
+		song_time_sample_text.text = "00:00:000"
+		return
+	song_time_sample_text.text = Global.time_to_text(Song.get_duration() * value / 100)
+
+func _on_song_sample_test_button_pressed() -> void:
+	if song_sample_test_button.text == "Testar":
+		song_sample_test_button.text = "Parar"
+		_play_sample_song()
+	elif song_sample_test_button.text == "Parar":
+		song_sample_test_button.text = "Testar"
+		_song_sample_tween_finished()
+
+func _play_sample_song() -> void:
+	_song_sample_test_id += 1
+	
+	if play_song_button.text == "Parar":
+		play_song_button.text = "Tocar"
+	
+	Song.play(Song.get_duration() * song_sample_slider.value / 100)
+	
+	Song.volume_db = -80.0
+	
+	song_sample_tween = get_tree().create_tween()
+	song_sample_tween.tween_property(
+		Song,
+		"volume_db",
+		0,
+		Song.SAMPLE_FADE_DURATION
+	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	get_tree().create_timer(Song.TIME_SAMPLE - Song.SAMPLE_FADE_DURATION).timeout.connect(_start_song_sample_fade_out.bind(_song_sample_test_id))
+
+func _start_song_sample_fade_out(song_sample_test_id : int) -> void:
+	if _song_sample_test_id != song_sample_test_id:
+		return
+	song_sample_tween = get_tree().create_tween()
+	song_sample_tween.tween_property(
+		Song,
+		"volume_db",
+		-80.0,
+		Song.SAMPLE_FADE_DURATION
+	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	song_sample_tween.finished.connect(_song_sample_tween_finished)
+
+func _song_sample_tween_finished() -> void:
+	Song.stop()
+	Song.volume_db = 0
+	song_sample_test_button.text = "Testar"
+
+func _on_offset_spin_box_value_changed(value: float) -> void:
+	Editor.changed_editor()
+	Song.offset = value

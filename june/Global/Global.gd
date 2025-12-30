@@ -110,6 +110,24 @@ func text_to_time(text : String) -> float:
 	absolute_seconds = absolute_seconds if absolute_seconds <= Song.get_duration() else Song.get_duration()
 	return absolute_seconds
 
+func time_to_text(time : float) -> String:
+	# Garante que não seja negativo
+	time = max(time, 0.0)
+
+	var total_milliseconds : int = int(round(time * 1000.0))
+
+	var minutes : int = total_milliseconds / 60000
+	total_milliseconds %= 60000
+
+	var seconds : int = total_milliseconds / 1000
+	var milliseconds : int = total_milliseconds % 1000
+
+	var min_text := str(minutes).pad_zeros(2)
+	var sec_text := str(seconds).pad_zeros(2)
+	var ms_text := str(milliseconds).pad_zeros(3)
+
+	return "%s:%s:%s" % [min_text, sec_text, ms_text]
+
 func create_save(dictionary : Dictionary) -> void:
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	if file:
