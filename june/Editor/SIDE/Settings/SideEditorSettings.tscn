@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://c2eryr2qmqbr4"]
+[gd_scene load_steps=4 format=3 uid="uid://c2eryr2qmqbr4"]
 
+[ext_resource type="PackedScene" uid="uid://dj8t1madbd5pe" path="res://Background/AnimatedBackgroundV1.tscn" id="1_bnhj5"]
 [ext_resource type="Theme" uid="uid://oe21uoww8ls3" path="res://themes/JuneThemeV1.tres" id="1_fopwg"]
+[ext_resource type="FontFile" uid="uid://bk7uiutchpno7" path="res://assets/fonts/Kalufira.otf" id="2_ua2qd"]
 
 [node name="Side Editor Settings" type="VBoxContainer"]
 anchors_preset = 15
@@ -8,6 +10,18 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 25
+
+[node name="Background" type="Node2D" parent="."]
+
+[node name="AnimatedBackground" parent="Background" instance=ExtResource("1_bnhj5")]
+custom_minimum_size = Vector2(1920, 1080)
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+grow_horizontal = 1
+grow_vertical = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="MenuBar" type="FlowContainer" parent="."]
 layout_mode = 2
@@ -38,22 +52,290 @@ layout_mode = 2
 disabled = true
 text = "Compor"
 
-[node name="Middle" type="HBoxContainer" parent="."]
+[node name="First" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Left" type="MarginContainer" parent="First"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="First/Left"]
+layout_mode = 2
+
+[node name="Title" type="RichTextLabel" parent="First/Left/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("2_ua2qd")
+theme_override_font_sizes/normal_font_size = 50
+text = "Detalhes"
+fit_content = true
+autowrap_mode = 0
+
+[node name="Name" type="HBoxContainer" parent="First/Left/VBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="First/Left/VBoxContainer/Name"]
+layout_mode = 2
+text = "Nome: "
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="First/Left/VBoxContainer/Name"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "O nome da música aqui..."
+
+[node name="Author" type="HBoxContainer" parent="First/Left/VBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="First/Left/VBoxContainer/Author"]
+layout_mode = 2
+text = "Autor: "
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="First/Left/VBoxContainer/Author"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "O nome do autor da música aqui..."
+
+[node name="Collection" type="HBoxContainer" parent="First/Left/VBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="First/Left/VBoxContainer/Collection"]
+layout_mode = 2
+text = "Coleção: "
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="First/Left/VBoxContainer/Collection"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "O nome da coleção aqui..."
+
+[node name="Creator" type="HBoxContainer" parent="First/Left/VBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="First/Left/VBoxContainer/Creator"]
+layout_mode = 2
+text = "Criador: "
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="First/Left/VBoxContainer/Creator"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "O nome do criador do SongMap aqui..."
+
+[node name="VSeparator" type="VSeparator" parent="First"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Right" type="MarginContainer" parent="First"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="First/Right"]
+layout_mode = 2
+
+[node name="Title" type="RichTextLabel" parent="First/Right/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("2_ua2qd")
+theme_override_font_sizes/normal_font_size = 50
+text = "Música"
+fit_content = true
+autowrap_mode = 0
+
+[node name="Song" type="HBoxContainer" parent="First/Right/VBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="First/Right/VBoxContainer/Song"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Música: "
+fit_content = true
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="SongButton" type="Button" parent="First/Right/VBoxContainer/Song"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+tooltip_text = "Só aceita nos formatos \".mp3\", \".ogg\" and \".wav\"."
+text = "Selecione um arquivo ou arraste e solte aqui"
+
+[node name="PlaySongButton" type="Button" parent="First/Right/VBoxContainer/Song"]
+layout_mode = 2
+disabled = true
+text = "Tocar"
+
+[node name="SongTimeSample" type="HBoxContainer" parent="First/Right/VBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="First/Right/VBoxContainer/SongTimeSample"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Tempo de amostra da música: "
+fit_content = true
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="SongTimeSampleText" type="TextEdit" parent="First/Right/VBoxContainer/SongTimeSample"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+tooltip_text = "Na tela de seleção de mapas, quando esse mapa estiver em foco, vai começar a tocar a música 
+a partir do momento que você colocar aqui, e tocará por uns 25 segundos, repetindo o ciclo."
+placeholder_text = "00:00:000"
+editable = false
+scroll_fit_content_width = true
+
+[node name="SongSampleSlider" type="HSlider" parent="First/Right/VBoxContainer/SongTimeSample"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+step = 0.01
+editable = false
+tick_count = 7
+ticks_on_borders = true
+
+[node name="SongSampleTestButton" type="Button" parent="First/Right/VBoxContainer/SongTimeSample"]
+layout_mode = 2
+disabled = true
+text = "Testar"
+
+[node name="Offset" type="HBoxContainer" parent="First/Right/VBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="First/Right/VBoxContainer/Offset"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Offset: "
+fit_content = true
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="OffsetSpinBox" type="SpinBox" parent="First/Right/VBoxContainer/Offset"]
+layout_mode = 2
+tooltip_text = "Em qual segundo a música começa de fato."
+max_value = 999.0
+step = 0.1
+suffix = "s"
+
+[node name="BPM" type="HBoxContainer" parent="First/Right/VBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="First/Right/VBoxContainer/BPM"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "BPM: "
+fit_content = true
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="SpinBox" type="SpinBox" parent="First/Right/VBoxContainer/BPM"]
+layout_mode = 2
+tooltip_text = "Batidas por minuto.
+Afeta a posição de como você pode colar as notas, além de sincronizar melhor com a música. 
+Você pode ajustar manualmente e ir testando ou pode tentar encontrar um site ou software que faça isso por você."
+min_value = 1.0
+max_value = 1000.0
+value = 60.0
+
+[node name="HSeparator" type="HSeparator" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Second" type="HBoxContainer" parent="."]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Left" type="MarginContainer" parent="Middle"]
+[node name="Left" type="MarginContainer" parent="Second"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Second/Left"]
+layout_mode = 2
+
+[node name="Title" type="RichTextLabel" parent="Second/Left/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("2_ua2qd")
+theme_override_font_sizes/normal_font_size = 50
+text = "Jogo"
+fit_content = true
+autowrap_mode = 0
+
+[node name="Speed" type="HBoxContainer" parent="Second/Left/VBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Second/Left/VBoxContainer/Speed"]
+layout_mode = 2
+text = "Velocidade: "
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="SpinBox" type="SpinBox" parent="Second/Left/VBoxContainer/Speed"]
+layout_mode = 2
+min_value = 1.0
+max_value = 10.0
+step = 0.1
+value = 1.0
+
+[node name="Main Scenario" type="HBoxContainer" parent="Second/Left/VBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Second/Left/VBoxContainer/Main Scenario"]
+layout_mode = 2
+text = "Cenário Principal: "
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="OptionButton" type="OptionButton" parent="Second/Left/VBoxContainer/Main Scenario"]
+layout_mode = 2
+selected = 0
+item_count = 1
+popup/item_0/text = "Cidade"
+popup/item_0/id = 0
+
+[node name="Main Boss" type="HBoxContainer" parent="Second/Left/VBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Second/Left/VBoxContainer/Main Boss"]
+layout_mode = 2
+text = "Chefão Principal: "
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="OptionButton" type="OptionButton" parent="Second/Left/VBoxContainer/Main Boss"]
+layout_mode = 2
+selected = 0
+item_count = 1
+popup/item_0/text = "Bobo"
+popup/item_0/id = 0
+
+[node name="VSeparator" type="VSeparator" parent="Second"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Right" type="MarginContainer" parent="Second"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Middle/Left"]
-layout_mode = 2
-
-[node name="Right" type="MarginContainer" parent="Middle"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Middle/Right"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Second/Right"]
 layout_mode = 2
 
 [node name="Bottom" type="MarginContainer" parent="."]

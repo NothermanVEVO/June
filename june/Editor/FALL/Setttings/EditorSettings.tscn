@@ -13,9 +13,9 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_33eqs")
 
-[node name="Node2D" type="Node2D" parent="."]
+[node name="Background" type="Node2D" parent="."]
 
-[node name="AnimatedBackground" parent="Node2D" instance=ExtResource("1_vxgxl")]
+[node name="AnimatedBackground" parent="Background" instance=ExtResource("1_vxgxl")]
 custom_minimum_size = Vector2(1920, 1080)
 anchors_preset = 0
 anchor_right = 0.0
@@ -182,7 +182,7 @@ autowrap_mode = 0
 layout_mode = 2
 tooltip_text = "Em qual segundo a música começa de fato."
 max_value = 999.0
-step = 0.1
+step = 0.01
 suffix = "s"
 
 [node name="Creator" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer"]
