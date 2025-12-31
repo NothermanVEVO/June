@@ -1,0 +1,72 @@
+[gd_scene load_steps=2 format=3 uid="uid://c2eryr2qmqbr4"]
+
+[ext_resource type="Theme" uid="uid://oe21uoww8ls3" path="res://themes/JuneThemeV1.tres" id="1_fopwg"]
+
+[node name="Side Editor Settings" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MenuBar" type="FlowContainer" parent="."]
+layout_mode = 2
+
+[node name="MenuBar" type="MenuBar" parent="MenuBar"]
+layout_mode = 2
+
+[node name="File" type="PopupMenu" parent="MenuBar/MenuBar"]
+auto_translate_mode = 1
+title = "Arquivo"
+size = Vector2i(100, 143)
+item_count = 6
+item_0/text = "Novo"
+item_0/id = 0
+item_1/text = "Abrir"
+item_1/id = 1
+item_2/text = "Salvar"
+item_2/id = 2
+item_3/text = "Exportar"
+item_3/id = 3
+item_4/text = "Abrir Pasta"
+item_4/id = 4
+item_5/text = "Sair"
+item_5/id = 5
+
+[node name="Compose" type="Button" parent="MenuBar"]
+layout_mode = 2
+disabled = true
+text = "Compor"
+
+[node name="Middle" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Left" type="MarginContainer" parent="Middle"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Middle/Left"]
+layout_mode = 2
+
+[node name="Right" type="MarginContainer" parent="Middle"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Middle/Right"]
+layout_mode = 2
+
+[node name="Bottom" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Button" type="Button" parent="Bottom"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_fopwg")
+theme_override_font_sizes/font_size = 50
+text = "Sair"

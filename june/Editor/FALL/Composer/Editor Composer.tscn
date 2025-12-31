@@ -346,6 +346,7 @@ clip_contents = true
 layout_mode = 2
 size_flags_vertical = 8
 script = ExtResource("3_ty45h")
+is_from_fall_editor = true
 
 [node name="Time" type="TextEdit" parent="SoundBoard"]
 custom_minimum_size = Vector2(120, 50)

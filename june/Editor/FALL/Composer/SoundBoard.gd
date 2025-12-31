@@ -2,6 +2,8 @@ extends FlowContainer
 
 class_name SoundBoard
 
+@export var is_from_fall_editor : bool = false
+
 ## SPEED TEXT AND SLIDER			-- START --
 @onready var speed_text : TextEdit = $SpeedContainer/SpeedText
 @onready var speed_slider : HSlider = $SpeedContainer/SpeedSlider
@@ -73,7 +75,7 @@ func _ready() -> void:
 	Song.finished.connect(_song_has_finished)
 
 func _process(_delta: float) -> void:
-	if not Editor.editor_composer.visible:
+	if is_from_fall_editor and not Editor.editor_composer.visible:
 		return
 	
 	## SPEED TEXT AND SLIDER
