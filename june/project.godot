@@ -17,6 +17,7 @@ config/tags=PackedStringArray("rythm")
 run/main_scene="uid://df11ylsthwo5e"
 config/use_custom_user_dir=true
 config/features=PackedStringArray("4.4", "GL Compatibility")
+run/max_fps=60
 boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/show_image=false
 config/icon="uid://b6tnrk3ngahh2"

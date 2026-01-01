@@ -933,9 +933,6 @@ func _get_highest_grid_time() -> float:
 		return time - EditorMenuBar.get_divisor()
 	return time
 
-#func _get_lowest_grid_time() -> float:
-	#return Song.offset
-
 func _get_closest_grid_time_pos(time_pos : float) -> float:
 	if time_pos < Song.offset:
 		return Song.offset

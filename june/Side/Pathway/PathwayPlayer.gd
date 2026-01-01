@@ -10,6 +10,9 @@ func _init(character : Character, direction : Direction) -> void:
 	_ground_path = PathPlayer.new(Path.Types.GROUND, direction)
 	_air_path = PathPlayer.new(Path.Types.AIR, direction)
 
+func _ready() -> void:
+	position.y = 1080 - DISTANCE_FROM_BOTTOM
+
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("1_air") or Input.is_action_just_pressed("2_air"):
 		_ground_path.is_player_inside = false

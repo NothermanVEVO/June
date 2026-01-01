@@ -13,7 +13,7 @@ var _damage : float
 var _path_type : Path.Types ## GROUND or AIR
 
 var _speed : float = -1.0
-var is_from_boss : bool
+var half_reaction : bool = false
 
 func _init(start_time : float, path_type : Path.Types, is_from_boss : bool) -> void:
 	_start_time = start_time

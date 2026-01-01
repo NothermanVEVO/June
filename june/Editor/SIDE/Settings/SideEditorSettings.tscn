@@ -273,18 +273,18 @@ text = "Jogo"
 fit_content = true
 autowrap_mode = 0
 
-[node name="Speed" type="HBoxContainer" parent="Second/Left/VBoxContainer"]
+[node name="Main Speed" type="HBoxContainer" parent="Second/Left/VBoxContainer"]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Second/Left/VBoxContainer/Speed"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Second/Left/VBoxContainer/Main Speed"]
 layout_mode = 2
-text = "Velocidade: "
+text = "Velocidade Principal: "
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="SpinBox" type="SpinBox" parent="Second/Left/VBoxContainer/Speed"]
+[node name="SpinBox" type="SpinBox" parent="Second/Left/VBoxContainer/Main Speed"]
 layout_mode = 2
 min_value = 1.0
 max_value = 10.0
@@ -305,9 +305,11 @@ vertical_alignment = 1
 [node name="OptionButton" type="OptionButton" parent="Second/Left/VBoxContainer/Main Scenario"]
 layout_mode = 2
 selected = 0
-item_count = 1
+item_count = 2
 popup/item_0/text = "Cidade"
 popup/item_0/id = 0
+popup/item_1/text = "Praia"
+popup/item_1/id = 1
 
 [node name="Main Boss" type="HBoxContainer" parent="Second/Left/VBoxContainer"]
 layout_mode = 2
