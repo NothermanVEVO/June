@@ -4,6 +4,18 @@ class_name Hold
 
 var _end_time : float
 
+var _has_hitted : bool
+
+func hit() -> void:
+	print("ai")
+	_has_hitted = true
+
+func released() -> void:
+	_death()
+
+func _death() -> void:
+	print("morri")
+
 func get_end_time() -> float:
 	return _end_time
 
@@ -12,3 +24,6 @@ func set_end_time(end_time : float) -> void:
 
 func get_duration() -> float:
 	return _end_time - _start_time
+
+func has_hitted() -> bool:
+	return _has_hitted

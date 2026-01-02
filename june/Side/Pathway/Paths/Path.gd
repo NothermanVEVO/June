@@ -17,6 +17,8 @@ var _direction : Pathway.Direction
 
 var _targets : Array[Target]
 
+const MAX_TIME_HIT : float = 0.25
+
 func _init(type : Types, direction : Pathway.Direction) -> void:
 	_type = type
 	_direction = direction
