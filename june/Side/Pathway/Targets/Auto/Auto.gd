@@ -1,12 +1,6 @@
-extends ManualTarget
+extends Target
 
-class_name Delay
-
-var _hits : int = 0
-
-func hit() -> void:
-	print("Delay acertado")
-	_hits += 1
+class_name AutoTarget
 
 func is_colliding(time : float) -> bool:
 	return (time >= get_start_time() - get_collision_radius_in_time()

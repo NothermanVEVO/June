@@ -15,6 +15,8 @@ var _path_type : Path.Types ## GROUND or AIR
 var _speed : float = -1.0
 var half_reaction : bool = false
 
+var _collision_radius_in_time : float
+
 func _init(start_time : float, path_type : Path.Types) -> void:
 	_start_time = start_time
 	_path_type = path_type
@@ -27,6 +29,9 @@ func hit() -> void:
 
 func _death() -> void:
 	pass
+
+func is_colliding(time : float) -> bool:
+	return false
 
 func is_just_pressed() -> bool:
 	if _path_type == Path.Types.GROUND:
@@ -61,6 +66,12 @@ func get_start_time() -> float:
 func set_start_time(start_time : float) -> void:
 	_start_time = start_time
 
+func set_path_type(path_type : Path.Types) -> void:
+	_path_type = path_type
+
+func get_path_type() -> Path.Types:
+	return _path_type
+
 func get_score() -> float:
 	return _score
 
@@ -75,3 +86,6 @@ func get_speed() -> float:
 
 func set_speed(speed : float) -> void:
 	_speed = speed
+
+func get_collision_radius_in_time() -> float:
+	return _collision_radius_in_time

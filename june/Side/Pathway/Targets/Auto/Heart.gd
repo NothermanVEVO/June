@@ -1,6 +1,6 @@
 extends AutoTarget
 
-class_name Trap
+class_name Heart
 
 func collide() -> void:
-	print("tomei dano da trap")
+	print("ganhei vida")
