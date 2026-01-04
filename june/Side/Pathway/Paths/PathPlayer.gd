@@ -25,7 +25,17 @@ func _process(delta: float) -> void:
 			_process_auto()
 
 func _process_delay() -> void:
-	pass
+	if Song.get_time() + MAX_TIME_HIT > _manual_targets[_currently_manual_target_idx].get_current_time():
+		return
+	
+	if _manual_targets[_currently_manual_target_idx].is_just_pressed() and not _manual_targets[_currently_manual_target_idx].has_hitted_all():
+		_manual_targets[_currently_manual_target_idx].hit()
+		if _manual_targets[_currently_manual_target_idx].has_hitted_all():
+			_change_to_next_manual_target()
+	
+	if _manual_targets[_currently_manual_target_idx].is_colliding(Song.get_time()):
+		_manual_targets[_currently_manual_target_idx].collide()
+		_change_to_next_manual_target()
 
 func _process_hold() -> void:
 	if Song.get_time() + MAX_TIME_HIT > _manual_targets[_currently_manual_target_idx].get_start_time():
