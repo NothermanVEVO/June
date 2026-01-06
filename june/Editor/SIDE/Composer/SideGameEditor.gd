@@ -10,6 +10,8 @@ var _attach_mouse_display : bool = false
 
 @onready var _focus_effect : ReferenceRect = $"Focus Effect"
 
+var _sample_target := TargetEditor.new(0, 0, 0)
+
 func _init() -> void: ## TEMP
 	Song.set_song(load("res://Sound Test Sample/Brutal, acabou pro beta versão globo.mp3"))
 	Song.BPM = 60
@@ -17,6 +19,10 @@ func _init() -> void: ## TEMP
 
 func _ready() -> void:
 	add_child(_pathway_editor)
+	
+	add_child(_sample_target)
+	_sample_target.global_position = Vector2(INF, INF)
+	_sample_target.modulate.a = 0.5
 
 func _on_resized() -> void:
 	_pathway_editor.global_position.y = global_position.y + (get_global_rect().size.y / 2)
@@ -26,8 +32,45 @@ func _on_resized() -> void:
 
 func _process(delta: float) -> void:
 	queue_redraw()
+	
+	_attach_mouse_display = false
+	
+	var selected_in_text : String = SideGameComponents.get_selected_in_text()
+	if selected_in_text:
+		_process_selected_game_component(selected_in_text)
+	
 	_adjust_mouse_time_display()
+	
 	#print(Path.get_time_x(Path.hitzone, Path.width, get_global_mouse_position().x, Song.get_time(), Song.get_time() + Path.WIDTH_IN_SECS))
+
+func _process_selected_game_component(game_component : String) -> void:
+	match game_component:
+		"Leve 1", "Leve 2", "Leve 3":
+			_process_light_items()
+		"Médio 1", "Médio 2":
+			pass
+		"Pesado":
+			pass
+		"Dupla":
+			pass
+		"Shield", "Fortified":
+			pass
+		"Hammer":
+			pass
+		"Hold":
+			pass
+		"Trap":
+			pass
+		"Machado":
+			pass
+		"Nota 1", "Nota 2":
+			pass
+		"Coração":
+			pass
+
+func _process_light_items() -> void:
+	_attach_mouse_display = true
+	_sample_target.global_position = _get_mouse_position_locked_by_paths()
 
 func _get_path_width_by_zoom() -> float:
 	return Path.WIDTH_IN_SECS * SideMenuBarComposer.get_zoom_value()
@@ -67,9 +110,27 @@ func _get_limited_by_pathway_mouse_position() -> Vector2:
 	mouse_pos.y = mouse_pos.y if mouse_pos.y <= get_rect().size.y else get_rect().size.y
 	return mouse_pos
 
+func _get_mouse_position_locked_by_paths() -> Vector2:
+	var mouse_pos := get_global_mouse_position()
+	
+	if (_pathway_editor.get_air_path_global_position().distance_squared_to(mouse_pos) < 
+		_pathway_editor.get_ground_path_global_position().distance_squared_to(mouse_pos)):
+		
+		mouse_pos.y = _pathway_editor.get_air_path_global_position().y
+	else:
+		mouse_pos.y = _pathway_editor.get_ground_path_global_position().y
+	
+	mouse_pos.x = _get_closest_grid_time_to_mouse_in_x()
+	
+	return mouse_pos
+
+func _get_closest_grid_time_to_mouse_in_x() -> float:
+	var time : float = clampf(_get_closest_grid_time_to_mouse(), 0, _get_highest_grid_time())
+	return Path.get_pos_x(Song.get_time(), Song.get_time() + _get_path_width_by_zoom(),time, Path.hitzone, Path.width)
+
 func _get_closest_grid_time_to_mouse() -> float:
 	var mouse_pos : Vector2 = _get_limited_by_pathway_mouse_position()
-	return _get_closest_grid_time_pos(Path.get_time_x(Path.hitzone, Path.width, get_global_mouse_position().x, Song.get_time(), Song.get_time() + Path.WIDTH_IN_SECS))
+	return _get_closest_grid_time_pos(Path.get_time_x(Path.hitzone, Path.width, get_global_mouse_position().x, Song.get_time(), Song.get_time() + _get_path_width_by_zoom()))
 
 func _get_highest_grid_time() -> float:
 	var time : float = _get_closest_grid_time_pos(Song.get_duration())

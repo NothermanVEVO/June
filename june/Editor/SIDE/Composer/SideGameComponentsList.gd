@@ -10,6 +10,8 @@ var start_minimum_size_x : float
 
 static var _width : float = 0.0
 
+static var _selected_in_text : String = ""
+
 func _process(delta: float) -> void:
 	if is_resizing:
 		custom_minimum_size.x = start_minimum_size_x + (mouse_position_when_down.x - get_global_mouse_position().x)
@@ -20,6 +22,9 @@ func _process(delta: float) -> void:
 
 static func get_width() -> float:
 	return _width
+
+static func get_selected_in_text() -> String:
+	return _selected_in_text
 
 func _on_resize_button_down() -> void:
 	is_resizing = true
@@ -33,3 +38,6 @@ func _on_resize_button_up() -> void:
 
 func _on_resized() -> void:
 	_width = custom_minimum_size.x
+
+func _on_item_selected(index: int) -> void:
+	_selected_in_text = get_item_text(index)

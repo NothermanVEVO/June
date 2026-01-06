@@ -202,7 +202,7 @@ custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.0
-item_count = 25
+item_count = 27
 item_0/text = "---- Ferramentas ----"
 item_0/selectable = false
 item_1/text = "Selecionar (E)"
@@ -220,25 +220,27 @@ item_8/text = "Médio 2"
 item_9/text = "Pesado"
 item_10/text = "Dupla"
 item_11/text = "Shield"
-item_12/text = "Hammer"
-item_13/text = "Hold"
-item_14/text = "Trap"
-item_15/text = "Machado"
-item_16/text = "Nota"
-item_17/text = "Coração"
-item_18/text = "---- Efeitos ----"
-item_18/selectable = false
-item_19/text = "Meia Reação"
-item_20/text = "Velocidade (Z)"
-item_20/icon = ExtResource("4_gldp5")
-item_21/text = "Fade (F)"
-item_21/icon = ExtResource("5_pudow")
-item_22/text = "---- Anotações ----"
-item_22/selectable = false
-item_23/text = "Comentário (C)"
-item_23/icon = ExtResource("6_t8781")
-item_24/text = "Seção (X)"
-item_24/icon = ExtResource("7_t2a3l")
+item_12/text = "Fortified"
+item_13/text = "Hammer"
+item_14/text = "Hold"
+item_15/text = "Trap"
+item_16/text = "Machado"
+item_17/text = "Nota 1"
+item_18/text = "Nota 2"
+item_19/text = "Coração"
+item_20/text = "---- Efeitos ----"
+item_20/selectable = false
+item_21/text = "Meia Reação"
+item_22/text = "Velocidade (Z)"
+item_22/icon = ExtResource("4_gldp5")
+item_23/text = "Fade (F)"
+item_23/icon = ExtResource("5_pudow")
+item_24/text = "---- Anotações ----"
+item_24/selectable = false
+item_25/text = "Comentário (C)"
+item_25/icon = ExtResource("6_t8781")
+item_26/text = "Seção (X)"
+item_26/icon = ExtResource("7_t2a3l")
 script = ExtResource("8_dmxwq")
 
 [node name="Resize Button" type="Button" parent="Middle/Game Components List"]
@@ -325,6 +327,7 @@ tick_count = 15
 [connection signal="focus_entered" from="Middle/Game" to="Middle/Game" method="_on_focus_entered"]
 [connection signal="focus_exited" from="Middle/Game" to="Middle/Game" method="_on_focus_exited"]
 [connection signal="resized" from="Middle/Game" to="Middle/Game" method="_on_resized"]
+[connection signal="item_selected" from="Middle/Game Components List" to="Middle/Game Components List" method="_on_item_selected"]
 [connection signal="resized" from="Middle/Game Components List" to="Middle/Game Components List" method="_on_resized"]
 [connection signal="button_down" from="Middle/Game Components List/Resize Button" to="Middle/Game Components List" method="_on_resize_button_down"]
 [connection signal="button_up" from="Middle/Game Components List/Resize Button" to="Middle/Game Components List" method="_on_resize_button_up"]

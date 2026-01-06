@@ -39,6 +39,9 @@ func _process(_delta: float) -> void:
 				sound_components.custom_minimum_size.x = MINIMUM_SIZE_X
 				custom_minimum_size.x = get_viewport_rect().size.x - max_pos
 	
+	if not Input.is_anything_pressed():
+		return
+	
 	if Input.is_action_just_pressed("Select"):
 		_selected_item_text = "Selecionar (E)"
 		select(1)

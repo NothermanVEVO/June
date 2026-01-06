@@ -1,8 +1,6 @@
-extends NinePatchRect
+extends Sprite2D
 
 class_name Target
-
-enum Types {LIGHT, MEDIUM, HEAVY, TWIN, HOLD, HAMMER, SHIELD, BOSS, NOTE, TRAP}
 
 var _start_time : float
 
@@ -12,7 +10,7 @@ var _damage : float
 
 var _path_type : Path.Types ## GROUND or AIR
 
-var _speed : float = -1.0
+var _speed : float = 0.0
 var half_reaction : bool = false
 
 var _collision_radius_in_time : float
