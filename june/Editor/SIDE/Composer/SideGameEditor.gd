@@ -10,7 +10,7 @@ var _attach_mouse_display : bool = false
 
 @onready var _focus_effect : ReferenceRect = $"Focus Effect"
 
-var _sample_target := TargetEditor.new(0, true)
+var _sample_target := TargetEditor.new(0)
 
 func _init() -> void: ## TEMP
 	Song.set_song(load("res://Sound Test Sample/Brutal, acabou pro beta versão globo.mp3"))
@@ -20,7 +20,10 @@ func _init() -> void: ## TEMP
 func _ready() -> void:
 	add_child(_pathway_editor)
 	
-	add_child(_sample_target.target)
+	add_child(_sample_target)
+	
+	_sample_target.global_position = Vector2(INF, INF)
+	_sample_target.modulate.a = 0.5
 
 func _on_resized() -> void:
 	_pathway_editor.global_position.y = global_position.y + (get_global_rect().size.y / 2)
@@ -42,7 +45,7 @@ func _process(delta: float) -> void:
 	#print(Path.get_time_x(Path.hitzone, Path.width, get_global_mouse_position().x, Song.get_time(), Song.get_time() + Path.WIDTH_IN_SECS))
 
 func _process_selected_game_component(game_component : String) -> void:
-	_sample_target.target.visible = false
+	_sample_target.visible = false
 	
 	match game_component:
 		"Leve 1", "Leve 2", "Leve 3":
@@ -69,18 +72,18 @@ func _process_selected_game_component(game_component : String) -> void:
 			pass
 
 func _process_light_items(type : String) -> void:
-	_sample_target.target.visible = true
+	_sample_target.visible = true
+	_attach_mouse_display = true
+	_sample_target.global_position = _get_mouse_position_locked_by_paths()
 	
 	match type:
 		"Leve 1":
-			_sample_target.set_type(TargetEditor.Types.LIGHT_1, true)
+			_sample_target.set_type(TargetEditor.Types.LIGHT_1)
 		"Leve 2":
-			_sample_target.set_type(TargetEditor.Types.LIGHT_2, true)
+			_sample_target.set_type(TargetEditor.Types.LIGHT_2)
 		"Leve 3":
-			_sample_target.set_type(TargetEditor.Types.LIGHT_3, true)
+			_sample_target.set_type(TargetEditor.Types.LIGHT_3)
 	
-	_attach_mouse_display = true
-	_sample_target.target.global_position = _get_mouse_position_locked_by_paths()
 
 func _get_path_width_by_zoom() -> float:
 	return Path.WIDTH_IN_SECS * SideMenuBarComposer.get_zoom_value()

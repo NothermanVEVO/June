@@ -1,4 +1,4 @@
-extends Node
+extends Target
 
 class_name TargetEditor
 
@@ -33,12 +33,14 @@ var _shader_material = ShaderMaterial.new()
 
 var target : Target
 
-func _init(type : Types, sample_version : bool = false) -> void:
-	_shader_material.shader = Global.HIGHLIGHT_SHADER
+func _init(type : Types) -> void:
 	_previous_type = -1
-	set_type(type, sample_version)
+	set_type(type)
 
-func set_type(type : Types, sample_version : bool = false) -> void:
+func _ready() -> void:
+	_shader_material.shader = Global.HIGHLIGHT_SHADER
+
+func set_type(type : Types) -> void:
 	_type = type
 	
 	if _previous_type == _type:
@@ -46,13 +48,9 @@ func set_type(type : Types, sample_version : bool = false) -> void:
 	
 	_previous_type = _type
 	
-	var parent : Node
-	
 	if target:
-		parent = target.get_parent()
-		if parent:
-			parent.remove_child(target)
-			target.free()
+		remove_child(target)
+		target.free()
 	
 	match type:
 		Types.LIGHT_1:
@@ -90,12 +88,7 @@ func set_type(type : Types, sample_version : bool = false) -> void:
 		Types.HEART:
 			target = ManualTarget.new(0, 0)
 	
-	if sample_version:
-		target.global_position = Vector2(INF, INF)
-		target.modulate.a = 0.5
-	
-	if parent:
-		parent.add_child(target)
+	add_child(target)
 
 func get_size() -> Vector2:
 	return target.texture.get_size() if target.texture else Vector2.ZERO
