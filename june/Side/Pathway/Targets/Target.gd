@@ -15,6 +15,8 @@ var half_reaction : bool = false
 
 var _collision_radius_in_time : float
 
+var target_editor : TargetEditor
+
 func _init(start_time : float, path_type : Path.Types) -> void:
 	_start_time = start_time
 	_path_type = path_type

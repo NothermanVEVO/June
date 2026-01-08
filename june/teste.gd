@@ -4,6 +4,8 @@ func _ready() -> void:
 	var pathway_editor := PathwayEditor.new()
 	add_child(pathway_editor)
 	
+	#pathway_editor._air_path._manual_targets.append(TargetEditor.new(0))
+	
 	var spam := Spam.new(1, Path.Types.GROUND)
 	
 	print(spam.get_path_type())
