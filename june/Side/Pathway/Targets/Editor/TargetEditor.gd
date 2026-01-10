@@ -89,9 +89,6 @@ func set_type(type : Types) -> void:
 	#
 	#add_child(target)
 
-func get_size() -> Vector2:
-	return _target.texture.get_size() if _target.texture else Vector2.ZERO
-
 func get_type() -> Types:
 	return _type
 

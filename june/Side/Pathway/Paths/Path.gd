@@ -33,6 +33,9 @@ func get_rect() -> Rect2:
 func get_global_hitzone_x() -> float:
 	return global_position.x - 50 if _direction == Pathway.Direction.LEFT else global_position.x + 50
 
+func _display_targets() -> void:
+	pass
+
 ## MANUAL TARGETS
 
 func get_manual_targets(from : float, to : float) -> Array[ManualTarget]: ##TODO
@@ -67,24 +70,34 @@ func _get_values(array : Array, from : float, to : float) -> Array:
 	var result : Array = []
 	var low := 0
 	var high := array.size()
-
-	for target in array: ## THIS IS REALLY BAD
-		if target is Hold and (target.get_start_time() < from and target.get_end_time() > from):
-			result.append(target)
-			break
-
-	while low < high:
-		@warning_ignore("integer_division")
-		var mid := (low + high) / 2
-		if array[mid].get_time() < from:
-			low = mid + 1
+	
+	for target in array:
+		if target is Hold:
+			pass
+		elif target is Spam:
+			pass
+		elif target is Delay:
+			pass
 		else:
-			high = mid
-
-	var i := low
-	while i < array.size() and (array[i].get_time() < to or is_equal_approx(array[i].get_time(), to)):
-		result.append(array[i])
-		i += 1
+			pass
+	
+	#for target in array: ## THIS IS REALLY BAD
+		#if target is Hold and (target.get_start_time() < from and target.get_end_time() > from):
+			#result.append(target)
+			#break
+#
+	#while low < high:
+		#@warning_ignore("integer_division")
+		#var mid := (low + high) / 2
+		#if array[mid].get_time() < from:
+			#low = mid + 1
+		#else:
+			#high = mid
+#
+	#var i := low
+	#while i < array.size() and (array[i].get_time() < to or is_equal_approx(array[i].get_time(), to)):
+		#result.append(array[i])
+		#i += 1
 
 	return result
 

@@ -33,6 +33,9 @@ func _death() -> void:
 func is_colliding(time : float) -> bool:
 	return false
 
+func get_size() -> Vector2:
+	return Vector2.ZERO
+
 func is_just_pressed() -> bool:
 	if _path_type == Path.Types.GROUND:
 		if Input.is_action_just_pressed("1_ground") or Input.is_action_just_pressed("2_ground"):
