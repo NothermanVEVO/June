@@ -1,10 +1,8 @@
-extends ManualTarget
+extends Hold
 
 class_name Spam
 
 const NO_SPAM_LIMIT_TIME : float = 1.0
-
-var _end_time : float
 
 var _min_hits : float
 var _max_hits : float
@@ -20,6 +18,7 @@ func _init(start_time : float, path_type : Path.Types) -> void:
 
 func hit() -> void:
 	_current_hits += 1
+	_has_hitted = true
 	print("ai")
 	if has_hitted_all():
 		_death()
@@ -46,17 +45,13 @@ func set_path_type(path_type : Path.Types) -> void:
 	else: ## AIR
 		_blank.set_path_type(Path.Types.GROUND)
 
+func get_time() -> float:
+	if _has_hitted:
+		return Song.get_time()
+	return _start_time
+
 func get_blank() -> Blank:
 	return _blank
-
-func get_end_time() -> float:
-	return _end_time
-
-func set_end_time(end_time : float) -> void:
-	_end_time = end_time
-
-func get_duration() -> float:
-	return _end_time - _start_time
 
 func get_min_hits() -> float:
 	return _min_hits

@@ -20,6 +20,10 @@ var _auto_targets : Array[AutoTarget]
 
 const MAX_TIME_HIT : float = 0.25
 
+var speed : float = 1.0
+
+var _last_visible_targets : Array[Target] = []
+
 func _init(type : Types, direction : Pathway.Direction) -> void:
 	_type = type
 	_direction = direction
@@ -33,15 +37,37 @@ func get_rect() -> Rect2:
 func get_global_hitzone_x() -> float:
 	return global_position.x - 50 if _direction == Pathway.Direction.LEFT else global_position.x + 50
 
-func _display_targets() -> void:
+func _display_targets(time : float) -> void:
 	pass
+
+func _is_between(from : float, to : float, value : float) -> bool:
+	return value >= from and value <= to
+
+func get_targets(from : float, to : float) -> Array[Target]:
+	var targets : Array[Target] = []
+	targets.append_array(get_manual_targets(from, to))
+	targets.append_array(get_auto_targets(from, to))
+	
+	return targets
 
 ## MANUAL TARGETS
 
-func get_manual_targets(from : float, to : float) -> Array[ManualTarget]: ##TODO
-	return _get_values(_manual_targets, from, to)
+func get_manual_targets(from : float, to : float) -> Array[ManualTarget]:
+	var result : Array[ManualTarget] = []
+	var low := 0
+	var high := _manual_targets.size()
+	
+	for target in _manual_targets:
+		if target is Hold and (_is_between(from, to, target.get_start_time()) or
+								target.get_start_time() < from and target.get_end_time() >= from):
+			result.append(target)
+		elif target is Delay and _is_between(from, to, target.get_current_time()):
+			result.append(target)
+		elif _is_between(from, to, target.get_start_time()):
+			result.append(target)
+	return result
 
-func add_manual_targets(manual_target : ManualTarget) -> void:
+func add_manual_target(manual_target : ManualTarget) -> void:
 	_add_value(_manual_targets, manual_target)
 
 func remove_manual_target(manual_target : ManualTarget, free : bool = false) -> void:
@@ -52,10 +78,25 @@ func update_manual_target(manual_target : ManualTarget) -> void:
 
 ## AUTO TARGETS
 
-func get_auto_targets(from : float, to : float) -> Array[AutoTarget]: ##TODO
-	return _get_values(_auto_targets, from, to)
+func get_auto_targets(from : float, to : float) -> Array[AutoTarget]:
+	var result : Array[AutoTarget] = []
+	var low := 0
+	var high := _auto_targets.size()
+	while low < high:
+		@warning_ignore("integer_division")
+		var mid := (low + high) / 2
+		if _auto_targets[mid].get_time() < from:
+			low = mid + 1
+		else:
+			high = mid
 
-func add_auto_targets(auto_target : AutoTarget) -> void:
+	var i := low
+	while i < _auto_targets.size() and (_auto_targets[i].get_time() < to or is_equal_approx(_auto_targets[i].get_time(), to)):
+		result.append(_auto_targets[i])
+		i += 1
+	return result
+
+func add_auto_target(auto_target : AutoTarget) -> void:
 	_add_value(_auto_targets, auto_target)
 
 func remove_auto_target(auto_target : AutoTarget, free : bool = false) -> void:
@@ -65,41 +106,6 @@ func update_auto_target(auto_target : AutoTarget) -> void:
 	_update_value(_auto_targets, auto_target)
 
 ## BASE FOR ARRAY TARGETS
-
-func _get_values(array : Array, from : float, to : float) -> Array:
-	var result : Array = []
-	var low := 0
-	var high := array.size()
-	
-	for target in array:
-		if target is Hold:
-			pass
-		elif target is Spam:
-			pass
-		elif target is Delay:
-			pass
-		else:
-			pass
-	
-	#for target in array: ## THIS IS REALLY BAD
-		#if target is Hold and (target.get_start_time() < from and target.get_end_time() > from):
-			#result.append(target)
-			#break
-#
-	#while low < high:
-		#@warning_ignore("integer_division")
-		#var mid := (low + high) / 2
-		#if array[mid].get_time() < from:
-			#low = mid + 1
-		#else:
-			#high = mid
-#
-	#var i := low
-	#while i < array.size() and (array[i].get_time() < to or is_equal_approx(array[i].get_time(), to)):
-		#result.append(array[i])
-		#i += 1
-
-	return result
 
 func _add_value(array : Array, target : Target) -> void:
 	var low := 0
@@ -144,6 +150,9 @@ func _update_value(array : Array, target : Target) -> void:
 			low = mid + 1
 
 	array.insert(low, target)
+
+func WIDTH_IN_SECS_BY_SPEED() -> float:
+	return WIDTH_IN_SECS * speed
 
 static func get_pos_x(min_time : float, max_time : float, current_time : float, min_pos_x : float, max_pos_x : float) -> float:
 	var percentage = Global.get_percentage_between(min_time, max_time, current_time)

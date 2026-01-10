@@ -63,6 +63,9 @@ func is_just_released() -> bool:
 			return true
 	return false
 
+func get_time() -> float:
+	return _start_time
+
 func get_start_time() -> float:
 	return _start_time
 

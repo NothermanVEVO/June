@@ -14,6 +14,37 @@ const MAX_HEIGHT : float = 1080
 var _ground_path : Path
 var _air_path : Path
 
+var _speed : float = 1.0
+
+func add_target_at(path_type : Path.Types, target : Target, validate_note : bool = false) -> void:
+	target.set_path_type(path_type)
+	
+	if path_type == Path.Types.GROUND:
+		if target is ManualTarget:
+			_ground_path.add_manual_target(target)
+		else: ## AUTO TARGET
+			_ground_path.add_auto_target(target)
+	else: ## AIR
+		if target is ManualTarget:
+			_air_path.add_manual_target(target)
+		else: ## AUTO TARGET
+			_air_path.add_auto_target(target)
+
+func remove_target_at(path_type : Path.Types, target : Target, validate_note : bool = false, free : bool = false) -> void:
+	if path_type == Path.Types.GROUND:
+		if target is ManualTarget:
+			_ground_path.remove_manual_target(target, free)
+		else: ## AUTO TARGET
+			_ground_path.remove_auto_target(target, free)
+	else: ## AIR
+		if target is ManualTarget:
+			_air_path.remove_manual_target(target, free)
+		else: ## AUTO TARGET
+			_air_path.remove_auto_target(target, free)
+
+#func remove_target_at_time(time : float, end_time : float, idx : int, type : NoteResource.Type, validate_note : bool = false, free : bool = false) -> void:
+	#_note_holders[idx].remove_note_at_time(time, end_time, type, validate_note, free) ## TODO
+
 static func _set_distance_from_border(distance : float) -> void:
 	_distance_from_border = distance
 
@@ -25,3 +56,14 @@ func get_ground_path_global_position() -> Vector2:
 
 func get_air_path_global_position() -> Vector2:
 	return _air_path.global_position
+
+func get_speed() -> float:
+	return _speed
+
+func set_speed(speed : float) -> void:
+	_speed = speed
+	_ground_path.speed = speed
+	_air_path.speed = speed
+
+func WIDTH_IN_SECS_BY_SPEED() -> float:
+	return Path.WIDTH_IN_SECS * _speed

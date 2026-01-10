@@ -34,6 +34,7 @@ World="*res://Global/World.gd"
 Sfx="*res://Global/SFX.gd"
 Game="*res://Global/Game.gd"
 Transition="*res://Global/Transition.gd"
+SideEditor="*res://Global/SideEditor.gd"
 
 [display]
 

@@ -9,3 +9,9 @@ func hit() -> void:
 	super.hit()
 	if not _has_hitted_first_delay:
 		_current_time = _first_time_delay
+
+func get_first_time_delay() -> float:
+	return _first_time_delay
+
+func set_first_time_delay(first_time_delay : float) -> void:
+	_first_time_delay = first_time_delay

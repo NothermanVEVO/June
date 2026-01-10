@@ -11,10 +11,10 @@ func _process(delta: float) -> void:
 	if _currently_manual_target_idx < _manual_targets.size(): ## MANUAL
 		if _manual_targets[_currently_manual_target_idx] is Delay:
 			_process_delay()
-		elif _manual_targets[_currently_manual_target_idx] is Hold:
-			_process_hold()
 		elif _manual_targets[_currently_manual_target_idx] is Spam:
 			_process_spam()
+		elif _manual_targets[_currently_manual_target_idx] is Hold:
+			_process_hold()
 		elif _manual_targets[_currently_manual_target_idx] is Tap:
 			_process_tap()
 
