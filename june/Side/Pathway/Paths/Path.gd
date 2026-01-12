@@ -20,7 +20,7 @@ var _auto_targets : Array[AutoTarget]
 
 const MAX_TIME_HIT : float = 0.25
 
-var speed : float = 1.0
+var _speed : float = 1.0
 
 var _last_visible_targets : Array[Target] = []
 
@@ -151,8 +151,20 @@ func _update_value(array : Array, target : Target) -> void:
 
 	array.insert(low, target)
 
+func set_speed(speed : float) -> void:
+	_speed = speed
+	
+	for manual_target in _manual_targets:
+		manual_target.set_current_speed(speed)
+	
+	for auto_target in _auto_targets:
+		auto_target.set_current_speed(speed)
+
+func get_speed() -> float:
+	return _speed
+
 func WIDTH_IN_SECS_BY_SPEED() -> float:
-	return WIDTH_IN_SECS * speed
+	return WIDTH_IN_SECS * _speed
 
 static func get_pos_x(min_time : float, max_time : float, current_time : float, min_pos_x : float, max_pos_x : float) -> float:
 	var percentage = Global.get_percentage_between(min_time, max_time, current_time)

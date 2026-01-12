@@ -62,8 +62,8 @@ func get_speed() -> float:
 
 func set_speed(speed : float) -> void:
 	_speed = speed
-	_ground_path.speed = speed
-	_air_path.speed = speed
+	_ground_path.set_speed(speed)
+	_air_path.set_speed(speed)
 
 func WIDTH_IN_SECS_BY_SPEED() -> float:
 	return Path.WIDTH_IN_SECS * _speed

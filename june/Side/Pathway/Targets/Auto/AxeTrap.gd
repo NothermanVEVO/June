@@ -1,0 +1,12 @@
+extends Trap
+
+class_name AxeTrap
+
+func _init(start_time : float, path_type : Path.Types) -> void:
+	super._init(start_time, path_type)
+	texture = SideEditor.AXE_TEXTURE
+
+func set_path_type(path_type : Path.Types) -> void:
+	super.set_path_type(path_type)
+	if path_type == Path.Types.GROUND:
+		flip_v = true

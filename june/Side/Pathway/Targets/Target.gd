@@ -10,7 +10,8 @@ var _damage : float
 
 var _path_type : Path.Types ## GROUND or AIR
 
-var _speed : float = 0.0
+var _base_speed : float = 0.0 ## 0 means that has the same speed of the pathway
+var _current_speed : float = 1.0
 var half_reaction : bool = false
 
 var _collision_radius_in_time : float
@@ -18,8 +19,8 @@ var _collision_radius_in_time : float
 var target_editor : TargetEditor
 
 func _init(start_time : float, path_type : Path.Types) -> void:
-	_start_time = start_time
-	_path_type = path_type
+	set_start_time(start_time)
+	set_path_type(path_type)
 
 func collide() -> void:
 	pass
@@ -87,11 +88,25 @@ func get_zone_points() -> float:
 func get_damage() -> float:
 	return _damage
 
-func get_speed() -> float:
-	return _speed
+func get_base_speed() -> float:
+	return _base_speed
 
-func set_speed(speed : float) -> void:
-	_speed = speed
+func set_base_speed(base_speed : float) -> void:
+	_base_speed = base_speed
+	if not is_equal_approx(_base_speed, 0):
+		set_current_speed(base_speed)
+
+func get_current_speed() -> float:
+	return _current_speed
+
+func get_width_in_secs_by_speed() -> float:
+	return Path.WIDTH_IN_SECS * _current_speed
+
+func set_current_speed(current_speed : float) -> void:
+	if _base_speed == 0.0:
+		_current_speed = current_speed
+	else:
+		_current_speed = _base_speed
 
 func get_collision_radius_in_time() -> float:
 	return _collision_radius_in_time
