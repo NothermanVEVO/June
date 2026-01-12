@@ -19,6 +19,8 @@ var _speed : float = 1.0
 func add_target_at(path_type : Path.Types, target : Target, validate_note : bool = false) -> void:
 	target.set_path_type(path_type)
 	
+	target.set_current_speed(_speed)
+	
 	if path_type == Path.Types.GROUND:
 		if target is ManualTarget:
 			_ground_path.add_manual_target(target)

@@ -40,6 +40,16 @@ func _process(delta: float) -> void:
 	
 	_attach_mouse_display = false
 	
+	if get_global_rect().has_point(get_global_mouse_position()):
+		if Input.is_action_just_pressed("Scroll Up"):
+			if Song.playing:
+				Song.stop()
+			Song.set_time(clampf(Song.get_time() + 0.1, 0.0, Song.get_duration()))
+		elif Input.is_action_just_pressed("Scroll Down"):
+			if Song.playing:
+				Song.stop()
+			Song.set_time(clampf(Song.get_time() - 0.1, 0.0, Song.get_duration()))
+	
 	if _last_zoom_value != SideMenuBarComposer.get_zoom_value():
 		_pathway_editor.set_speed(SideMenuBarComposer.get_zoom_value())
 		_last_zoom_value = SideMenuBarComposer.get_zoom_value()
@@ -146,11 +156,11 @@ func _process_hold_item() -> void:
 	
 	_sample_target.texture = SideEditor.START_HOLD_TEXTURE
 	
-	
 	if Input.is_action_just_pressed("Add Item"):
 		_current_hold_target = Hold.new(_get_closest_grid_time_to_mouse(), _get_closest_grid_time_to_mouse(), _get_path_type_at_mouse())
 		_pathway_editor.add_target_at(_get_path_type_at_mouse(), _current_hold_target)
 	elif _current_hold_target != null and Input.is_action_pressed("Add Item"):
+		_sample_target.visible = false
 		_current_hold_target.set_end_time(_get_closest_grid_time_to_mouse())
 
 func _process_trap_item() -> void:

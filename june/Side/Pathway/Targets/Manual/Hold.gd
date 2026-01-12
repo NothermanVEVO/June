@@ -17,12 +17,16 @@ func _init(start_time : float, end_time : float, path_type : Path.Types) -> void
 	texture = SideEditor.START_HOLD_TEXTURE
 	
 	add_child(_middle_hold)
+	_middle_hold.z_index = z_index - 1
 	_middle_hold.texture = SideEditor.MIDDLE_HOLD_TEXTURE
 	
 	add_child(_end_hold)
 	_end_hold.texture = SideEditor.END_HOLD_TEXTURE
 	
-	_middle_hold.axis_stretch_vertical = NinePatchRect.AXIS_STRETCH_MODE_TILE_FIT
+	_middle_hold.patch_margin_left = 6
+	_middle_hold.patch_margin_top = 6
+	_middle_hold.patch_margin_right = 6
+	_middle_hold.patch_margin_bottom = 6
 
 func hit() -> void:
 	print("ai")
@@ -52,23 +56,16 @@ func get_end_time() -> float:
 func set_end_time(end_time : float) -> void:
 	_end_time = end_time
 	
-	var end_pos = Path.get_pos_x(0, get_width_in_secs_by_speed(), end_time - _start_time, Path.hitzone, Path.width)
-	
-	#print(get_width_in_secs_by_speed()) ## TODO
-	#print(end_pos)
-	#print(_start_time)
-	#print(end_time)
+	var end_pos = Path.get_pos_x(0, get_width_in_secs_by_speed(), end_time - _start_time, Path.hitzone, Path.width) - Path.hitzone
 	
 	while end_time - _start_time > get_width_in_secs_by_speed():
 		end_time -= get_width_in_secs_by_speed()
-		end_pos += Path.get_pos_x(0, get_width_in_secs_by_speed(), end_time - _start_time, Path.hitzone, Path.width)
+		end_pos += Path.get_pos_x(0, get_width_in_secs_by_speed(), end_time - _start_time, Path.hitzone, Path.width) - Path.hitzone
 	
-	#_end_note.size = Vector2(get_width_by_holder_type(), get_height_by_holder_type() / 2.0)
 	_end_hold.position = Vector2(end_pos, 0)
 	
 	_middle_hold.size = Vector2(end_pos, Path.HEIGHT * 0.7)
-	#_middle_note.position = Vector2(0, floor(_end_note.position.y + _end_note.size.y))
-	#_middle_note.size = Vector2(get_width_by_holder_type(), ceil(abs(_middle_note.position.y - _start_note.size.y)))
+	_middle_hold.position = Vector2(0, -_middle_hold.size.y / 2)
 
 func get_duration() -> float:
 	return _end_time - _start_time
