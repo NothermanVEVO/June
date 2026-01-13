@@ -72,7 +72,7 @@ func _process_selected_game_component(game_component : String) -> void:
 		"Médio 1", "Médio 2":
 			_process_medium_items(game_component)
 		"Pesado":
-			pass
+			_process_heavy_item()
 		"Dupla":
 			pass
 		"Shield", "Fortified":
@@ -132,6 +132,28 @@ func _process_medium_items(type : String) -> void:
 	
 	if Input.is_action_just_pressed("Add Item"):
 		_pathway_editor.add_target_at(_get_path_type_at_mouse(), MediumTap.new(_get_closest_grid_time_to_mouse(), _get_path_type_at_mouse(), medium_variant))
+
+func _process_heavy_item() -> void:
+	if not _is_mouse_inside():
+		return
+	_sample_target.visible = true
+	_attach_mouse_display = true
+	_sample_target.global_position = _get_mouse_position_locked_by_paths()
+	
+	if _get_path_type_at_mouse() == Path.Types.GROUND:
+		_sample_target.global_position.y += - Path.HEIGHT
+	else: ## AIR
+		_sample_target.global_position.y += Path.HEIGHT
+	
+	_sample_target.texture = SideEditor.HEAVY_TEXTURE
+	
+	if Input.is_action_just_pressed("Add Item"):
+		_current_hold_target = Spam.new(_get_closest_grid_time_to_mouse(), _get_closest_grid_time_to_mouse(), _get_path_type_at_mouse())
+		_pathway_editor.add_target_at(_get_path_type_at_mouse(), _current_hold_target)
+		_pathway_editor.add_target_at(_current_hold_target.get_hold_blank().get_path_type(), _current_hold_target.get_hold_blank())
+	elif _current_hold_target != null and Input.is_action_pressed("Add Item"):
+		_sample_target.visible = false
+		_current_hold_target.set_end_time(_get_closest_grid_time_to_mouse())
 
 func _process_hammer_item() -> void:
 	if not _is_mouse_inside():

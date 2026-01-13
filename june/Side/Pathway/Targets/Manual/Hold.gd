@@ -10,8 +10,8 @@ var _middle_hold : NinePatchRect = NinePatchRect.new()
 var _end_hold : Sprite2D = Sprite2D.new()
 
 func _init(start_time : float, end_time : float, path_type : Path.Types) -> void:
+	_end_time = end_time
 	set_start_time(start_time)
-	set_end_time(end_time)
 	set_path_type(path_type)
 	
 	texture = SideEditor.START_HOLD_TEXTURE

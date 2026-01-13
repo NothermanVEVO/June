@@ -9,12 +9,16 @@ var _max_hits : float
 
 var _current_hits : float = 0
 
-var _blank : Blank
+var _hold_blank : HoldBlank
 
-func _init(start_time : float, path_type : Path.Types) -> void:
-	_start_time = start_time
-	_blank = Blank.new(start_time, path_type)
-	set_path_type(path_type)
+func _init(start_time : float, end_time : float, path_type : Path.Types) -> void:
+	_hold_blank = HoldBlank.new(start_time, end_time, path_type)
+	super._init(start_time, end_time, path_type)
+	z_index = 1
+	texture = SideEditor.HEAVY_TEXTURE
+	_end_hold.texture = texture
+	_middle_hold.modulate.a = 0.75
+	_end_hold.modulate.a = 0.75
 
 func hit() -> void:
 	_current_hits += 1
@@ -36,22 +40,28 @@ func is_just_pressed() -> bool:
 
 func set_start_time(start_time : float) -> void:
 	super.set_start_time(start_time)
-	_blank.set_start_time(start_time)
+	_hold_blank.set_start_time(start_time)
 
 func set_path_type(path_type : Path.Types) -> void:
 	super.set_path_type(path_type)
 	if path_type == Path.Types.GROUND:
-		_blank.set_path_type(Path.Types.AIR)
+		position.y = -Path.HEIGHT
+		_hold_blank.set_path_type(Path.Types.AIR)
 	else: ## AIR
-		_blank.set_path_type(Path.Types.GROUND)
+		position.y = Path.HEIGHT
+		_hold_blank.set_path_type(Path.Types.GROUND)
 
 func get_time() -> float:
 	if _has_hitted:
 		return Song.get_time()
 	return _start_time
 
-func get_blank() -> Blank:
-	return _blank
+func set_end_time(end_time : float) -> void:
+	super.set_end_time(end_time)
+	_hold_blank.set_end_time(end_time)
+
+func get_hold_blank() -> HoldBlank:
+	return _hold_blank
 
 func get_min_hits() -> float:
 	return _min_hits

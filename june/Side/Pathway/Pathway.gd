@@ -44,6 +44,10 @@ func remove_target_at(path_type : Path.Types, target : Target, validate_note : b
 		else: ## AUTO TARGET
 			_air_path.remove_auto_target(target, free)
 
+func update_target_at(path_type : Path.Types, target : Target, validate_note : bool = false) -> void:
+	remove_target_at(path_type, target, validate_note)
+	add_target_at(path_type, target, validate_note)
+
 #func remove_target_at_time(time : float, end_time : float, idx : int, type : NoteResource.Type, validate_note : bool = false, free : bool = false) -> void:
 	#_note_holders[idx].remove_note_at_time(time, end_time, type, validate_note, free) ## TODO
 
