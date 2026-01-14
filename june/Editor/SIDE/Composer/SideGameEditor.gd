@@ -16,10 +16,13 @@ var _sample_target := Sprite2D.new()
 
 var _current_hold_target : Hold
 
+var _highest_grid_time : float = 0.0
+
 func _init() -> void: ## TEMP
 	Song.set_song(load("res://Sound Test Sample/Brutal, acabou pro beta versão globo.mp3"))
 	Song.BPM = 60
 	Song.offset = 1.0
+	_calculate_highest_grid_time()
 
 func _ready() -> void:
 	add_child(_pathway_editor)
@@ -74,7 +77,7 @@ func _process_selected_game_component(game_component : String) -> void:
 		"Pesado":
 			_process_heavy_item()
 		"Dupla":
-			pass
+			_process_twins_item()
 		"Shield", "Fortified":
 			pass
 		"Hammer":
@@ -150,10 +153,26 @@ func _process_heavy_item() -> void:
 	if Input.is_action_just_pressed("Add Item"):
 		_current_hold_target = Spam.new(_get_closest_grid_time_to_mouse(), _get_closest_grid_time_to_mouse(), _get_path_type_at_mouse())
 		_pathway_editor.add_target_at(_get_path_type_at_mouse(), _current_hold_target)
-		_pathway_editor.add_target_at(_current_hold_target.get_hold_blank().get_path_type(), _current_hold_target.get_hold_blank())
 	elif _current_hold_target != null and Input.is_action_pressed("Add Item"):
 		_sample_target.visible = false
 		_current_hold_target.set_end_time(_get_closest_grid_time_to_mouse())
+
+func _process_twins_item() -> void:
+	if not _is_mouse_inside():
+		return
+	_sample_target.visible = true
+	_attach_mouse_display = true
+	_sample_target.global_position = _get_mouse_position_locked_by_paths()
+	
+	if _get_path_type_at_mouse() == Path.Types.GROUND:
+		_sample_target.global_position.y += - Path.HEIGHT
+	else: ## AIR
+		_sample_target.global_position.y += Path.HEIGHT
+	
+	_sample_target.texture = SideEditor.TWINS_TEXTURE
+	
+	if Input.is_action_just_pressed("Add Item"):
+		_pathway_editor.add_target_at(_get_path_type_at_mouse(), TwinTap.new(_get_closest_grid_time_to_mouse(), _get_path_type_at_mouse(), true))
 
 func _process_hammer_item() -> void:
 	if not _is_mouse_inside():
@@ -300,18 +319,25 @@ func _get_path_type_at_mouse() -> Path.Types:
 		return Path.Types.GROUND
 
 func _get_closest_grid_time_to_mouse_in_x() -> float:
-	var time : float = clampf(_get_closest_grid_time_to_mouse(), 0, _get_highest_grid_time())
+	var time : float = clampf(_get_closest_grid_time_to_mouse(), 0, _highest_grid_time)
 	return Path.get_pos_x(Song.get_time(), Song.get_time() + _pathway_editor.WIDTH_IN_SECS_BY_SPEED(),time, Path.hitzone, Path.width)
 
 func _get_closest_grid_time_to_mouse() -> float:
 	var mouse_pos : Vector2 = _get_limited_by_pathway_mouse_position()
-	return _get_closest_grid_time_pos(Path.get_time_x(Path.hitzone, Path.width, get_global_mouse_position().x, Song.get_time(), Song.get_time() + _pathway_editor.WIDTH_IN_SECS_BY_SPEED()))
+	return clampf(_get_closest_grid_time_pos(Path.get_time_x(Path.hitzone, Path.width, get_global_mouse_position().x, Song.get_time(), Song.get_time() + _pathway_editor.WIDTH_IN_SECS_BY_SPEED())), 0, _highest_grid_time)
 
-func _get_highest_grid_time() -> float:
+#func _get_highest_grid_time() -> float:
+	#var time : float = _get_closest_grid_time_pos(Song.get_duration())
+	#if time > Song.get_duration():
+		#return time - SideMenuBarComposer.get_divisor()
+	#return time
+
+func _calculate_highest_grid_time() -> void:
 	var time : float = _get_closest_grid_time_pos(Song.get_duration())
 	if time > Song.get_duration():
-		return time - SideMenuBarComposer.get_divisor()
-	return time
+		_highest_grid_time = time - SideMenuBarComposer.get_divisor()
+	else:
+		_highest_grid_time = time
 
 func _get_closest_grid_time_pos(time_pos : float) -> float:
 	if time_pos < Song.offset:
@@ -342,7 +368,7 @@ func _draw() -> void:
 	for i in (n_grids + 2):
 		var time : float = start_time_pos + (value * (i - 1))
 		
-		if time > _get_highest_grid_time():
+		if time > _highest_grid_time:
 			return
 		elif time < Song.offset - 0.01: ## HAD TO DO THIS BECAUSE OF FLOAT ERROR
 			continue
@@ -351,7 +377,7 @@ func _draw() -> void:
 		
 		var is_start_line : bool = is_equal_approx(time, Song.offset)
 		if not is_start_line:
-			var is_end_line : bool = is_equal_approx(_get_highest_grid_time(), time)
+			var is_end_line : bool = is_equal_approx(_highest_grid_time, time)
 			if not is_end_line:
 				draw_line(Vector2(pos_x, min_y), Vector2(pos_x, min_y + Path.HEIGHT), Color.WHITE, 1, true)
 				draw_line(Vector2(pos_x, max_y - Path.HEIGHT), Vector2(pos_x, max_y), Color.WHITE, 1, true)

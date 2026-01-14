@@ -31,6 +31,11 @@ func add_target_at(path_type : Path.Types, target : Target, validate_note : bool
 			_air_path.add_manual_target(target)
 		else: ## AUTO TARGET
 			_air_path.add_auto_target(target)
+	
+	if target is Spam:
+		add_target_at(target.get_hold_blank().get_path_type(), target.get_hold_blank(), validate_note)
+	if target is TwinTap and target.is_older():
+		add_target_at(target.get_twin().get_path_type(), target.get_twin(), validate_note)
 
 func remove_target_at(path_type : Path.Types, target : Target, validate_note : bool = false, free : bool = false) -> void:
 	if path_type == Path.Types.GROUND:

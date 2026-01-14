@@ -1,7 +1,9 @@
 extends Node
 
+const AIR_TWIN_TEXTURE : CompressedTexture2D = preload("res://assets/Side/sketch/air_twin.png")
 const AXE_TEXTURE : CompressedTexture2D = preload("res://assets/Side/sketch/incomplete_axe.png")
 const END_HOLD_TEXTURE : CompressedTexture2D = preload("res://assets/Side/sketch/end hold.png")
+const GROUND_TWIN_TEXTURE : CompressedTexture2D = preload("res://assets/Side/sketch/ground_twin.png")
 const HAMMER_TEXTURE : CompressedTexture2D = preload("res://assets/Side/sketch/incomplete_hammer.png")
 const HEART_TEXTURE : CompressedTexture2D = preload("res://assets/Side/sketch/heart.png")
 const HEAVY_TEXTURE : CompressedTexture2D = preload("res://assets/Side/sketch/heavy.png")

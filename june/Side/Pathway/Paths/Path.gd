@@ -43,6 +43,11 @@ func _display_targets(time : float) -> void:
 func _is_between(from : float, to : float, value : float) -> bool:
 	return value >= from and value <= to
 
+static func reverse_path_type(path_type : Path.Types) -> Path.Types:
+	if path_type == Types.GROUND:
+		return Types.AIR
+	return Types.GROUND
+
 func get_targets(from : float, to : float) -> Array[Target]:
 	var targets : Array[Target] = []
 	targets.append_array(get_manual_targets(from, to))
@@ -120,14 +125,16 @@ func _add_value(array : Array, target : Target) -> void:
 			low = mid + 1
 
 	array.insert(low, target)
-	add_child.call_deferred(target)
-	target.visible = false
+	if not target is Blank or not target is HoldBlank:
+		add_child.call_deferred(target)
+		target.visible = false
 
 func _remove_value(array : Array, target : Target, free : bool = false) -> void:
 	array.erase(target)
-	remove_child.call_deferred(target)
-	if free:
-		target.queue_free()
+	if not target is Blank or not target is HoldBlank:
+		remove_child.call_deferred(target)
+		if free:
+			target.queue_free()
 
 #func add_target_at(start_time : float) -> void:
 	#pass

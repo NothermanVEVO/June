@@ -20,8 +20,9 @@ func _display_targets(time : float) -> void:
 	_last_visible_targets.clear()
 	
 	for target in targets:
-		#if not target.visible:
-			#continue
+		if target is Blank or target is HoldBlank:
+			continue
+		
 		target.visible = true
 		_last_visible_targets.append(target)
 		
