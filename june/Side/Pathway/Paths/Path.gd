@@ -90,13 +90,13 @@ func get_auto_targets(from : float, to : float) -> Array[AutoTarget]:
 	while low < high:
 		@warning_ignore("integer_division")
 		var mid := (low + high) / 2
-		if _auto_targets[mid].get_time() < from:
+		if _auto_targets[mid].get_current_time() < from:
 			low = mid + 1
 		else:
 			high = mid
 
 	var i := low
-	while i < _auto_targets.size() and (_auto_targets[i].get_time() < to or is_equal_approx(_auto_targets[i].get_time(), to)):
+	while i < _auto_targets.size() and (_auto_targets[i].get_current_time() < to or is_equal_approx(_auto_targets[i].get_current_time(), to)):
 		result.append(_auto_targets[i])
 		i += 1
 	return result
@@ -119,7 +119,7 @@ func _add_value(array : Array, target : Target) -> void:
 	while low < high:
 		@warning_ignore("integer_division")
 		var mid := (low + high) / 2
-		if target.get_time() < array[mid].get_time():
+		if target.get_current_time() < array[mid].get_current_time():
 			high = mid
 		else:
 			low = mid + 1

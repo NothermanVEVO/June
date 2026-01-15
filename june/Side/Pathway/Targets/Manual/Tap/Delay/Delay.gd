@@ -1,4 +1,4 @@
-extends ManualTarget
+extends Tap
 
 class_name Delay
 
@@ -20,7 +20,7 @@ func is_colliding(time : float) -> bool:
 	return (time >= _current_time - get_collision_radius_in_time()
 			or time <= _current_time + get_collision_radius_in_time())
 
-func get_time() -> float:
+func get_current_time() -> float:
 	return _current_time
 
 func has_hitted_all() -> bool:

@@ -1,6 +1,6 @@
 extends OneTimeDelay
 
-class_name TwoTimeDelay
+class_name TwoTimesDelay
 
 var _second_time_delay : float
 
