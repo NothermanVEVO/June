@@ -39,8 +39,13 @@ func is_older() -> bool:
 func is_alive() -> bool:
 	return _is_alive
 
+func create_target_editor() -> void:
+	super.create_target_editor()
+	if _older and _twin:
+		_twin.create_target_editor()
+
 func get_global_rect() -> Rect2:
-	if texture and _twin.texture:
+	if _older and texture:
 		return Rect2(global_position.x - texture.get_width() / 2, global_position.y - texture.get_height() / 2, texture.get_width(), texture.get_height()).merge(Rect2(_twin.global_position.x - _twin.texture.get_width() / 2, _twin.global_position.y - _twin.texture.get_height() / 2, _twin.texture.get_width(), _twin.texture.get_height()))
 	else:
 		return Rect2(global_position.x, global_position.y, 0, 0)
