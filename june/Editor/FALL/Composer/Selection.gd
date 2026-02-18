@@ -17,3 +17,8 @@ func set_rect(rect : Rect2) -> void:
 	rect = rect.abs()
 	position = rect.position
 	size = rect.size
+
+func set_global_rect(rect : Rect2) -> void:
+	rect = rect.abs()
+	global_position = rect.position
+	size = rect.size

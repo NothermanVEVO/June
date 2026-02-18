@@ -42,6 +42,12 @@ func is_colliding(time : float) -> bool:
 	return not _has_hitted and (time >= get_start_time() - get_collision_radius_in_time()
 			or time <= get_start_time() + get_collision_radius_in_time())
 
+func get_global_rect() -> Rect2:
+	if texture:
+		return Rect2(global_position.x - texture.get_width() / 2, global_position.y - texture.get_height() / 2, texture.get_width(), texture.get_height()).merge(_middle_hold.get_global_rect()).merge(Rect2(_end_hold.global_position.x - _end_hold.texture.get_width() / 2, _end_hold.global_position.y - _end_hold.texture.get_height() / 2, _end_hold.texture.get_width(), _end_hold.texture.get_height()))
+	else:
+		return Rect2(global_position.x, global_position.y, 0, 0)
+
 func set_current_speed(speed : float) -> void:
 	super.set_current_speed(speed)
 	set_end_time(_end_time)

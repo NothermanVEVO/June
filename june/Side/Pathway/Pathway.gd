@@ -56,6 +56,20 @@ func update_target_at(path_type : Path.Types, target : Target, validate_note : b
 #func remove_target_at_time(time : float, end_time : float, idx : int, type : NoteResource.Type, validate_note : bool = false, free : bool = false) -> void:
 	#_note_holders[idx].remove_note_at_time(time, end_time, type, validate_note, free) ## TODO
 
+func get_global_targets_intersected_with(rect : Rect2, from : float, to : float) -> Array[Target]:
+	var intersected_targets : Array[Target] = []
+	
+	var targets : Array[Target] = []
+	targets.append_array(_ground_path.get_targets(from, to))
+	targets.append_array(_air_path.get_targets(from, to))
+	
+	for target in targets:
+		if target is Blank or target is HoldBlank or not target.get_global_rect().intersects(rect, true):
+			continue
+		intersected_targets.append(target)
+	
+	return intersected_targets
+
 static func _set_distance_from_border(distance : float) -> void:
 	_distance_from_border = distance
 

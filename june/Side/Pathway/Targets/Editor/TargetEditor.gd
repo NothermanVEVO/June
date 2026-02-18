@@ -33,64 +33,15 @@ var _shader_material = ShaderMaterial.new()
 
 var _target : Target
 
-func _init(target : Target, type : Types) -> void:
-	#_previous_type = -1
+func _init(target : Target) -> void:
 	_shader_material.shader = Global.HIGHLIGHT_SHADER
 	_target = target
-	set_type(type)
 
-func set_type(type : Types) -> void:
-	_type = type
-	#
-	#if _previous_type == _type:
-		#return
-	#
-	#_previous_type = _type
-	#
-	#if target:
-		#remove_child(target)
-		#target.free()
-	#
-	#match type:
-		#Types.LIGHT_1:
-			#target = LightTap.new(0, 0, LightTap.Variants.ONE)
-		#Types.LIGHT_2:
-			#target = LightTap.new(0, 0, LightTap.Variants.TWO)
-		#Types.LIGHT_3:
-			#target = LightTap.new(0, 0, LightTap.Variants.THREE)
-		#Types.MEDIUM_1:
-			#target = ManualTarget.new(0, 0)
-		#Types.MEDIUM_2:
-			#target = ManualTarget.new(0, 0)
-		#Types.HEAVY:
-			#target = ManualTarget.new(0, 0)
-		#Types.TWINS:
-			#target = ManualTarget.new(0, 0)
-		#Types.SHIELD_0:
-			#target = ManualTarget.new(0, 0)
-		#Types.SHIELD_1:
-			#target = ManualTarget.new(0, 0)
-		#Types.SHIELD_2:
-			#target = ManualTarget.new(0, 0)
-		#Types.HAMMER:
-			#target = ManualTarget.new(0, 0)
-		#Types.HOLD:
-			#target = ManualTarget.new(0, 0)
-		#Types.TRAP:
-			#target = ManualTarget.new(0, 0)
-		#Types.AXE:
-			#target = ManualTarget.new(0, 0)
-		#Types.NOTE_1:
-			#target = ManualTarget.new(0, 0)
-		#Types.NOTE_2:
-			#target = ManualTarget.new(0, 0)
-		#Types.HEART:
-			#target = ManualTarget.new(0, 0)
-	#
-	#add_child(target)
+func is_selected() -> bool:
+	return _is_selected
 
-func get_type() -> Types:
-	return _type
+func is_valid() -> bool:
+	return _is_valid
 
 func _set_highlight(highlight : bool) -> void:
 	if highlight:

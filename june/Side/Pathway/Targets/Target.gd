@@ -34,8 +34,12 @@ func _death() -> void:
 func is_colliding(time : float) -> bool:
 	return false
 
-func get_size() -> Vector2:
-	return Vector2.ZERO
+func get_global_rect() -> Rect2:
+	return Rect2(global_position.x, global_position.y, 0, 0)
+
+func create_target_editor() -> void:
+	if not target_editor:
+		target_editor = TargetEditor.new(self)
 
 func is_just_pressed() -> bool:
 	if _path_type == Path.Types.GROUND:
