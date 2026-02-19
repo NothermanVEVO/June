@@ -20,10 +20,14 @@ var _current_hold_target : Hold
 
 var _highest_grid_time : float = 0.0
 
+## SELECTION
+
 var _start_selection_global_position : Vector2
 var _clicked_on_target : bool = false
 var _selected_targets : Array[Target] = []
 var _target_selected_clicked : Target
+
+var _last_mouse_time_pos : float
 
 var _leftest_target_selected : Target
 var _rightest_target_selected : Target
@@ -120,6 +124,8 @@ func _process_select() -> void:
 			
 			_target_selected_clicked = selected_targets[0]
 			
+			_last_mouse_time_pos = _get_closest_grid_time_to_mouse()
+			
 			if not _target_selected_clicked.target_editor.is_selected():
 				_clear_selected_targets()
 				_select_targets(selected_targets)
@@ -127,8 +133,21 @@ func _process_select() -> void:
 	elif Input.is_action_pressed("Add Item"):
 		if _clicked_on_target:
 			var mouse_time_pos := _get_closest_grid_time_to_mouse()
+			var mouse_time_diff : float = mouse_time_pos - _last_mouse_time_pos
+			_last_mouse_time_pos = mouse_time_pos
 			var mouse_path_type := _get_path_type_at_mouse()
 			
+			## Change time pos
+			if mouse_time_diff:
+				if _leftest_target_selected.get_start_time() + mouse_time_diff >= Song.offset and (
+					(_rightest_target_selected is Hold and _rightest_target_selected.get_end_time() + mouse_time_diff <= _highest_grid_time) or (
+					_rightest_target_selected.get_start_time() + mouse_time_diff <= _highest_grid_time)):
+						for selected_target in _selected_targets:
+							selected_target.set_start_time(selected_target.get_start_time() + mouse_time_diff)
+							if selected_target is Hold:
+								selected_target.set_end_time(selected_target.get_end_time() + mouse_time_diff)
+			
+			## Change paths
 			if not _has_both_paths_selected and _target_selected_clicked.get_path_type() != mouse_path_type:
 				for selected_target in _selected_targets:
 					_pathway_editor.change_target_path(mouse_path_type, selected_target, true)
@@ -362,6 +381,7 @@ func _select_targets(targets : Array[Target]) -> void:
 	var has_ground_target : bool = false
 	
 	for target in targets:
+		_righest_or_leftest_selected(target)
 		if target is Spam or target is TwinTap:
 			if target is TwinTap and target.is_older():
 				target.get_twin().target_editor.set_selected_highlight(true)
@@ -387,6 +407,11 @@ func _clear_selected_targets() -> void:
 	_leftest_target_selected = null
 
 func _righest_or_leftest_selected(target : Target) -> void:
+	if not _leftest_target_selected or not _rightest_target_selected:
+		_leftest_target_selected = target
+		_rightest_target_selected = target
+		return
+	
 	if target is Hold:
 		if target.get_start_time() < _leftest_target_selected.get_start_time():
 			_leftest_target_selected = target
