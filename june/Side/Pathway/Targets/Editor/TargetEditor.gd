@@ -46,12 +46,19 @@ func is_valid() -> bool:
 func _set_highlight(highlight : bool) -> void:
 	if highlight:
 		_target.material = _shader_material
+		for child in _target.get_children():
+			child.material = _shader_material
 	else:
 		_target.material = null
+		for child in _target.get_children():
+			child.material = null
 
 func set_selected_highlight(selected : bool) -> void:
 	_is_selected = selected
 	_set_highlight(selected)
+	
+	if _target is TwinTap and _target.is_older():
+		_target.get_twin().target_editor.set_selected_highlight(selected)
 	
 	if selected:
 		_target.z_index = 3

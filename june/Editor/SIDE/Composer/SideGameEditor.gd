@@ -151,6 +151,10 @@ func _process_select() -> void:
 			if not _has_both_paths_selected and _target_selected_clicked.get_path_type() != mouse_path_type:
 				for selected_target in _selected_targets:
 					_pathway_editor.change_target_path(mouse_path_type, selected_target, true)
+					if selected_target is OneTimeDelayEditor:
+						_pathway_editor.change_target_path(mouse_path_type, selected_target.get_first_delay_tap(), true)
+						if selected_target is TwoTimesDelayEditor:
+							_pathway_editor.change_target_path(mouse_path_type, selected_target.get_second_delay_tap(), true)
 		
 		else: ## NOT CLICKED ON TARGET
 			_mouse_selection.set_global_rect(Rect2(_start_selection_global_position.x, _start_selection_global_position.y, get_global_mouse_position().x - _start_selection_global_position.x, get_global_mouse_position().y - _start_selection_global_position.y))
@@ -383,14 +387,20 @@ func _select_targets(targets : Array[Target]) -> void:
 	for target in targets:
 		_righest_or_leftest_selected(target)
 		if target is Spam or target is TwinTap:
-			if target is TwinTap and target.is_older():
-				target.get_twin().target_editor.set_selected_highlight(true)
 			has_air_target = true
 			has_ground_target = true
 		elif target.get_path_type() == Path.Types.AIR:
 			has_air_target = true
 		else:
 			has_ground_target = true
+		
+		#if target is DelayTapEditor:
+			#target = target.get_delay_parent()
+			#_righest_or_leftest_selected(target)
+			#if target is OneTimeDelayEditor:
+				#_righest_or_leftest_selected(target.get_first_delay_tap())
+				#if target is TwoTimesDelayEditor:
+					#_righest_or_leftest_selected(target.get_second_delay_tap())
 		
 		target.target_editor.set_selected_highlight(true)
 		_selected_targets.append(target)
@@ -399,8 +409,6 @@ func _select_targets(targets : Array[Target]) -> void:
 
 func _clear_selected_targets() -> void:
 	for selected_target in _selected_targets:
-		if selected_target is TwinTap and selected_target.is_older():
-			selected_target.get_twin().target_editor.set_selected_highlight(false)
 		selected_target.target_editor.set_selected_highlight(false)
 	_selected_targets.clear()
 	_rightest_target_selected = null
