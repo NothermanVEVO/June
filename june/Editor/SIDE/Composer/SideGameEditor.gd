@@ -2,6 +2,8 @@ extends Button
 
 var _pathway_editor := PathwayEditor.new()
 
+@onready var _side_game_components_list : SideGameComponents = $"../Game Components List"
+
 var _mouse_selection : Selection = Selection.new()
 
 @onready var _mouse_time_display_panel : PanelContainer = $MouseTimeDisplay
@@ -47,12 +49,21 @@ func _ready() -> void:
 	_sample_target.modulate.a = 0.5
 	
 	add_child(_sample_target)
+	
+	_side_game_components_list.resizing.connect(_is_resizing_game_components_list)
 
 func _on_resized() -> void:
 	_pathway_editor.global_position.y = global_position.y + (get_global_rect().size.y / 2)
 	
 	Path.width = Pathway.MAX_WIDTH - SideGameComponents.get_width()
 	Path.hitzone = Path.BASE_HITZONE * Global.get_percentage_between(Pathway.get_distance_from_border(), Pathway.MAX_WIDTH, Path.width)
+
+func _is_resizing_game_components_list() -> void:
+	var zoom_value := SideMenuBarComposer.get_zoom_value()
+	if _pathway_editor and zoom_value:
+		_pathway_editor.set_speed(zoom_value)
+	if _mouse_selection:
+		_mouse_selection.set_global_rect(Rect2(0, 0, 0, 0))
 
 func _process(delta: float) -> void:
 	queue_redraw()
