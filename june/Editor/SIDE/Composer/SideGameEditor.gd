@@ -1,5 +1,7 @@
 extends Button
 
+const _TARGET_INFO_WINDOW_SCENE : PackedScene = preload("res://Editor/SIDE/Composer/TargetInfoWindow/TargetInfoWindow.tscn")
+
 var _pathway_editor := PathwayEditor.new()
 
 @onready var _side_game_components_list : SideGameComponents = $"../Game Components List"
@@ -125,6 +127,15 @@ func _process_selected_game_component(game_component : String) -> void:
 			_process_heart_item()
 
 func _process_select() -> void:
+	if Input.is_action_just_pressed("Inspect Note"):
+		var selected_targets := _pathway_editor.get_global_targets_intersected_with(Rect2(get_global_mouse_position().x, get_global_mouse_position().y, 1, 1), Song.get_time(), Song.get_time() + _pathway_editor.WIDTH_IN_SECS_BY_SPEED())
+		
+		if selected_targets and selected_targets[0]:
+			var target_info_window : TargetInfoWindow = _TARGET_INFO_WINDOW_SCENE.instantiate()
+			add_child(target_info_window)
+			target_info_window.set_target(selected_targets[0])
+			target_info_window.popup_centered()
+	
 	if Input.is_action_just_pressed("Add Item"):
 		var selected_targets := _pathway_editor.get_global_targets_intersected_with(Rect2(get_global_mouse_position().x, get_global_mouse_position().y, 1, 1), Song.get_time(), Song.get_time() + _pathway_editor.WIDTH_IN_SECS_BY_SPEED())
 		_clicked_on_target = not selected_targets.is_empty()
