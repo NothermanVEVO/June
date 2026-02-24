@@ -109,6 +109,8 @@ func _process_selected_game_component(game_component : String) -> void:
 			_process_twins_item()
 		"Shield", "Fortified":
 			_process_shield_item(game_component)
+		"Clone":
+			_process_clone_item()
 		"Hammer":
 			_process_hammer_item()
 		"Hold":
@@ -290,6 +292,20 @@ func _process_shield_item(type : String) -> void:
 			_pathway_editor.add_target_at(_get_path_type_at_mouse(), fortified_target)
 			_pathway_editor.add_target_at(_get_path_type_at_mouse(), fortified_target.get_first_delay_tap())
 			_pathway_editor.add_target_at(_get_path_type_at_mouse(), fortified_target.get_second_delay_tap())
+
+func _process_clone_item() -> void:
+	if not _is_mouse_inside():
+		return
+	_sample_target.visible = true
+	_attach_mouse_display = true
+	_sample_target.global_position = _get_mouse_position_locked_by_paths()
+	
+	_sample_target.texture = SideEditor.CLONE_FINAL_TEXTURE
+	
+	if Input.is_action_just_pressed("Add Item"):
+		var target : Target = RealClone.new(_get_closest_grid_time_to_mouse(), _get_path_type_at_mouse())
+		target.create_target_editor()
+		_pathway_editor.add_target_at(_get_path_type_at_mouse(), target)
 
 func _process_hammer_item() -> void:
 	if not _is_mouse_inside():
