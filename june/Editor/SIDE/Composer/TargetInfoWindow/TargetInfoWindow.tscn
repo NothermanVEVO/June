@@ -39,184 +39,253 @@ size_flags_vertical = 3
 
 [node name="TargetName" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/normal_font_size = 20
+theme_override_font_sizes/normal_font_size = 30
 text = "Target"
 fit_content = true
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="StartTimeContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Left" type="VBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+
+[node name="StartTimeContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left"]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer/StartTimeContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left/StartTimeContainer"]
 layout_mode = 2
 text = "Start Time: "
 fit_content = true
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="LineEdit" type="LineEdit" parent="MarginContainer/ScrollContainer/VBoxContainer/StartTimeContainer"]
+[node name="StartTimeLineEdit" type="LineEdit" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left/StartTimeContainer"]
 layout_mode = 2
 placeholder_text = "00:00:000"
 editable = false
 expand_to_text_length = true
 
-[node name="EndTimeContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="EndTimeContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left"]
 visible = false
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer/EndTimeContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left/EndTimeContainer"]
 layout_mode = 2
 text = "End Time: "
 fit_content = true
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="LineEdit" type="LineEdit" parent="MarginContainer/ScrollContainer/VBoxContainer/EndTimeContainer"]
+[node name="EndTimeLineEdit" type="LineEdit" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left/EndTimeContainer"]
 layout_mode = 2
 placeholder_text = "00:00:000"
 editable = false
 expand_to_text_length = true
 
-[node name="PathTypeContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="PathTypeContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left"]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer/PathTypeContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left/PathTypeContainer"]
 layout_mode = 2
 text = "Path Type:"
 fit_content = true
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="LineEdit" type="LineEdit" parent="MarginContainer/ScrollContainer/VBoxContainer/PathTypeContainer"]
+[node name="PathTypeLineEdit" type="LineEdit" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left/PathTypeContainer"]
 layout_mode = 2
 placeholder_text = "Air or Ground"
 editable = false
 expand_to_text_length = true
 
-[node name="SpeedContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="SpeedContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left"]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer/SpeedContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left/SpeedContainer"]
 layout_mode = 2
 text = "Speed: "
 fit_content = true
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="LineEdit" type="LineEdit" parent="MarginContainer/ScrollContainer/VBoxContainer/SpeedContainer"]
+[node name="SpeedSpinBox" type="SpinBox" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left/SpeedContainer"]
 layout_mode = 2
-placeholder_text = "0.0"
-editable = false
-expand_to_text_length = true
+max_value = 10.0
+step = 0.1
 
-[node name="HalfReactionContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="HalfReactionContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left"]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer/HalfReactionContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left/HalfReactionContainer"]
 layout_mode = 2
 text = "Half Reaction: "
 fit_content = true
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="CheckBox" type="CheckBox" parent="MarginContainer/ScrollContainer/VBoxContainer/HalfReactionContainer"]
+[node name="HalfReactionCheckBox" type="CheckBox" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left/HalfReactionContainer"]
 layout_mode = 2
 
-[node name="DelayParentTimeContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="DelayParentTimeContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left"]
 visible = false
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer/DelayParentTimeContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left/DelayParentTimeContainer"]
 layout_mode = 2
 text = "Delay Parent Time: "
 fit_content = true
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="LineEdit" type="LineEdit" parent="MarginContainer/ScrollContainer/VBoxContainer/DelayParentTimeContainer"]
+[node name="DelayParentLineEdit" type="LineEdit" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left/DelayParentTimeContainer"]
 layout_mode = 2
 placeholder_text = "00:00:000"
 editable = false
 expand_to_text_length = true
 
-[node name="FirstDelayTimeContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="FirstDelayTimeContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left"]
 visible = false
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer/FirstDelayTimeContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left/FirstDelayTimeContainer"]
 layout_mode = 2
 text = "First Delay Time: "
 fit_content = true
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="LineEdit" type="LineEdit" parent="MarginContainer/ScrollContainer/VBoxContainer/FirstDelayTimeContainer"]
+[node name="FirstDelayLineEdit" type="LineEdit" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left/FirstDelayTimeContainer"]
 layout_mode = 2
 placeholder_text = "00:00:000"
 editable = false
 expand_to_text_length = true
 
-[node name="SecondDelayTimeContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="SecondDelayTimeContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left"]
 visible = false
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer/SecondDelayTimeContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left/SecondDelayTimeContainer"]
 layout_mode = 2
 text = "Second Delay Time: "
 fit_content = true
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="LineEdit" type="LineEdit" parent="MarginContainer/ScrollContainer/VBoxContainer/SecondDelayTimeContainer"]
+[node name="SecondDelayLineEdit" type="LineEdit" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left/SecondDelayTimeContainer"]
 layout_mode = 2
 placeholder_text = "00:00:000"
 editable = false
 expand_to_text_length = true
 
-[node name="RealCloneTimeContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="RealCloneTimeContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left"]
 visible = false
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer/RealCloneTimeContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left/RealCloneTimeContainer"]
 layout_mode = 2
 text = "Real Clone Time: "
 fit_content = true
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="LineEdit" type="LineEdit" parent="MarginContainer/ScrollContainer/VBoxContainer/RealCloneTimeContainer"]
+[node name="RealCloneLineEdit" type="LineEdit" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left/RealCloneTimeContainer"]
 layout_mode = 2
 placeholder_text = "00:00:000"
 editable = false
 expand_to_text_length = true
 
-[node name="FakeClonesContainer" type="PanelContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="FakeClonesContainer" type="PanelContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left"]
 visible = false
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 script = ExtResource("2_emb80")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/FakeClonesContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left/FakeClonesContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/FakeClonesContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left/FakeClonesContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer/FakeClonesContainer/MarginContainer/VBoxContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left/FakeClonesContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Fake Clones"
 fit_content = true
 
-[node name="AddFakeCloneButton" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer/FakeClonesContainer/MarginContainer/VBoxContainer"]
+[node name="AddFakeCloneButton" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left/FakeClonesContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "+ Add Fake Clone"
 
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+
+[node name="Right" type="VBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+
+[node name="ScoreContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Right"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Right/ScoreContainer"]
+layout_mode = 2
+text = "Score: "
+fit_content = true
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="ScoreLineEdit" type="LineEdit" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Right/ScoreContainer"]
+layout_mode = 2
+placeholder_text = "0"
+editable = false
+expand_to_text_length = true
+
+[node name="ZonePointsContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Right"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Right/ZonePointsContainer"]
+layout_mode = 2
+text = "Zone Points: "
+fit_content = true
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="ZonePointsLineEdit" type="LineEdit" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Right/ZonePointsContainer"]
+layout_mode = 2
+placeholder_text = "0"
+editable = false
+expand_to_text_length = true
+
+[node name="DamageContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Right"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Right/DamageContainer"]
+layout_mode = 2
+text = "Damage: "
+fit_content = true
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="DamageLineEdit" type="LineEdit" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Right/DamageContainer"]
+layout_mode = 2
+placeholder_text = "0"
+editable = false
+expand_to_text_length = true
+
+[node name="TargetTextureRect" type="TextureRect" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Right"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
 [connection signal="close_requested" from="." to="." method="_on_close_requested"]
-[connection signal="pressed" from="MarginContainer/ScrollContainer/VBoxContainer/FakeClonesContainer/MarginContainer/VBoxContainer/AddFakeCloneButton" to="MarginContainer/ScrollContainer/VBoxContainer/FakeClonesContainer" method="_on_add_fake_clone_button_pressed"]
+[connection signal="pressed" from="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left/FakeClonesContainer/MarginContainer/VBoxContainer/AddFakeCloneButton" to="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Left/FakeClonesContainer" method="_on_add_fake_clone_button_pressed"]
