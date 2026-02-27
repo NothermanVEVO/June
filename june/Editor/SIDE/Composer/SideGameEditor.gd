@@ -35,6 +35,7 @@ var _clicked_on_target : bool = false
 var _selected_targets : Array[Target] = []
 var _target_selected_clicked : Target
 
+var _mouse_was_pressed_inside : bool = false
 var _last_mouse_time_pos : float
 
 var _leftest_target_selected : Target
@@ -76,6 +77,9 @@ func _process(delta: float) -> void:
 	queue_redraw()
 	
 	_attach_mouse_display = false
+	
+	if Input.is_action_just_pressed("Add Item"):
+		_mouse_was_pressed_inside = _is_mouse_inside()
 	
 	if Input.is_action_just_pressed("Scroll Up") and not _current_target_info_window and get_global_rect().has_point(get_global_mouse_position()):
 		if Song.playing:
@@ -158,7 +162,7 @@ func _process_select() -> void:
 				_clear_selected_targets()
 				_select_targets(selected_targets.slice(0, 1))
 		
-	elif Input.is_action_pressed("Add Item"):
+	elif Input.is_action_pressed("Add Item") and _mouse_was_pressed_inside:
 		if _clicked_on_target:
 			var mouse_time_pos := _get_closest_grid_time_to_mouse()
 			var mouse_time_diff : float = mouse_time_pos - _last_mouse_time_pos
