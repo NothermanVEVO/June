@@ -1,5 +1,7 @@
 extends Button
 
+class_name SideGameEditor
+
 const _TARGET_INFO_WINDOW_SCENE : PackedScene = preload("res://Editor/SIDE/Composer/TargetInfoWindow/TargetInfoWindow.tscn")
 
 var _pathway_editor := PathwayEditor.new()
@@ -24,7 +26,7 @@ var _sample_target := Sprite2D.new()
 
 var _current_hold_target : Hold
 
-var _highest_grid_time : float = 0.0
+static var _highest_grid_time : float = 0.0
 
 ## SELECTION
 
@@ -43,6 +45,7 @@ func _init() -> void: ## TEMP
 	Song.set_song(load("res://Sound Test Sample/Brutal, acabou pro beta versão globo.mp3"))
 	Song.BPM = 60
 	Song.offset = 1.0
+	_highest_grid_time = 0
 	_calculate_highest_grid_time()
 
 func _ready() -> void:
@@ -134,7 +137,7 @@ func _process_select() -> void:
 		if selected_targets and selected_targets[0]:
 			_current_target_info_window = _TARGET_INFO_WINDOW_SCENE.instantiate()
 			add_child(_current_target_info_window)
-			_current_target_info_window.set_target(selected_targets[0])
+			_current_target_info_window.setup(selected_targets[0], _pathway_editor)
 			_current_target_info_window.popup_centered()
 	
 	if Input.is_action_just_pressed("Add Item"):
@@ -153,7 +156,7 @@ func _process_select() -> void:
 			
 			if not _target_selected_clicked.target_editor.is_selected():
 				_clear_selected_targets()
-				_select_targets(selected_targets)
+				_select_targets(selected_targets.slice(0, 1))
 		
 	elif Input.is_action_pressed("Add Item"):
 		if _clicked_on_target:
@@ -543,22 +546,19 @@ func _get_closest_grid_time_to_mouse_in_x() -> float:
 
 func _get_closest_grid_time_to_mouse() -> float:
 	var mouse_pos : Vector2 = _get_limited_by_pathway_mouse_position()
-	return clampf(_get_closest_grid_time_pos(Path.get_time_x(Path.hitzone, Path.width, get_global_mouse_position().x, Song.get_time(), Song.get_time() + _pathway_editor.WIDTH_IN_SECS_BY_SPEED())), 0, _highest_grid_time)
-
-#func _get_highest_grid_time() -> float:
-	#var time : float = _get_closest_grid_time_pos(Song.get_duration())
-	#if time > Song.get_duration():
-		#return time - SideMenuBarComposer.get_divisor()
-	#return time
+	return clampf(get_closest_grid_time_pos(Path.get_time_x(Path.hitzone, Path.width, get_global_mouse_position().x, Song.get_time(), Song.get_time() + _pathway_editor.WIDTH_IN_SECS_BY_SPEED())), 0, _highest_grid_time)
 
 func _calculate_highest_grid_time() -> void:
-	var time : float = _get_closest_grid_time_pos(Song.get_duration())
+	var time : float = get_closest_grid_time_pos(Song.get_duration())
 	if time > Song.get_duration():
 		_highest_grid_time = time - SideMenuBarComposer.get_divisor()
 	else:
 		_highest_grid_time = time
 
-func _get_closest_grid_time_pos(time_pos : float) -> float:
+static func _get_highest_grid_time() -> float:
+	return _highest_grid_time
+
+static func get_closest_grid_time_pos(time_pos : float) -> float:
 	if time_pos < Song.offset:
 		return Song.offset
 	else:
@@ -571,6 +571,10 @@ func _get_closest_grid_time_pos(time_pos : float) -> float:
 	else:
 		time_pos += value - rest
 	return time_pos + Song.offset
+
+static func get_next_grid_time_pos(time_pos : float) -> float:
+	var grid_time_pos = get_closest_grid_time_pos(time_pos)
+	return clampf(get_closest_grid_time_pos(grid_time_pos + SideMenuBarComposer.get_divisor()), 0.0, _highest_grid_time)
 
 func _is_mouse_inside() -> bool:
 	return get_global_rect().has_point(get_global_mouse_position())

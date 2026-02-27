@@ -39,9 +39,11 @@ class_name TargetInfoWindow
 @onready var _target_texture_rect : TextureRect = $MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Right/TargetTextureRect
 
 var _target : Target
+var _pathway_editor : PathwayEditor
 
-func set_target(target : Target) -> void:
+func setup(target : Target, pathway_editor : PathwayEditor) -> void:
 	_target = target
+	_pathway_editor = pathway_editor
 	
 	_start_time_line_edit.text = Global.time_to_text(_target.get_start_time())
 	_path_type_line_edit.text = Path.Types.keys()[_target.get_path_type()]
@@ -50,6 +52,7 @@ func set_target(target : Target) -> void:
 	
 	if target is RealClone:
 		_target_name.text = "<Real Clone>"
+		_fake_clones_container.setup(target, _pathway_editor)
 		_fake_clones_container.visible = true
 	elif target is FakeClone:
 		_target_name.text = "<Fake Clone>"
