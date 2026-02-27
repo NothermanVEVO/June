@@ -30,3 +30,4 @@ func _on_add_fake_clone_button_pressed() -> void:
 	
 	_pathway_editor.remove_target_at(_real_clone_last_path_type, _real_clone, true)
 	_pathway_editor.add_target_at(_real_clone.get_path_type(), _real_clone, true)
+	_pathway_editor.add_target_at(fake_clone.get_path_type(), fake_clone, true)
