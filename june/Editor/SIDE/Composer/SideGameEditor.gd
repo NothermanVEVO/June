@@ -6,6 +6,8 @@ var _pathway_editor := PathwayEditor.new()
 
 @onready var _side_game_components_list : SideGameComponents = $"../Game Components List"
 
+var _current_target_info_window : TargetInfoWindow
+
 var _mouse_selection : Selection = Selection.new()
 
 @onready var _mouse_time_display_panel : PanelContainer = $MouseTimeDisplay
@@ -72,15 +74,16 @@ func _process(delta: float) -> void:
 	
 	_attach_mouse_display = false
 	
-	if get_global_rect().has_point(get_global_mouse_position()):
-		if Input.is_action_just_pressed("Scroll Up"):
-			if Song.playing:
-				Song.stop()
-			Song.set_time(clampf(Song.get_time() + 0.1, 0.0, Song.get_duration()))
-		elif Input.is_action_just_pressed("Scroll Down"):
-			if Song.playing:
-				Song.stop()
-			Song.set_time(clampf(Song.get_time() - 0.1, 0.0, Song.get_duration()))
+	_current_target_info_window ## TODO
+	
+	if Input.is_action_just_pressed("Scroll Up") and not _current_target_info_window and get_global_rect().has_point(get_global_mouse_position()):
+		if Song.playing:
+			Song.stop()
+		Song.set_time(clampf(Song.get_time() + 0.1, 0.0, Song.get_duration()))
+	elif Input.is_action_just_pressed("Scroll Down") and not _current_target_info_window and get_global_rect().has_point(get_global_mouse_position()):
+		if Song.playing:
+			Song.stop()
+		Song.set_time(clampf(Song.get_time() - 0.1, 0.0, Song.get_duration()))
 	
 	if _last_zoom_value != SideMenuBarComposer.get_zoom_value():
 		_pathway_editor.set_speed(SideMenuBarComposer.get_zoom_value())
@@ -131,10 +134,10 @@ func _process_select() -> void:
 		var selected_targets := _pathway_editor.get_global_targets_intersected_with(Rect2(get_global_mouse_position().x, get_global_mouse_position().y, 1, 1), Song.get_time(), Song.get_time() + _pathway_editor.WIDTH_IN_SECS_BY_SPEED())
 		
 		if selected_targets and selected_targets[0]:
-			var target_info_window : TargetInfoWindow = _TARGET_INFO_WINDOW_SCENE.instantiate()
-			add_child(target_info_window)
-			target_info_window.set_target(selected_targets[0])
-			target_info_window.popup_centered()
+			_current_target_info_window = _TARGET_INFO_WINDOW_SCENE.instantiate()
+			add_child(_current_target_info_window)
+			_current_target_info_window.set_target(selected_targets[0])
+			_current_target_info_window.popup_centered()
 	
 	if Input.is_action_just_pressed("Add Item"):
 		var selected_targets := _pathway_editor.get_global_targets_intersected_with(Rect2(get_global_mouse_position().x, get_global_mouse_position().y, 1, 1), Song.get_time(), Song.get_time() + _pathway_editor.WIDTH_IN_SECS_BY_SPEED())

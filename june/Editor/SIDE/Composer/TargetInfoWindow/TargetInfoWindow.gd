@@ -49,59 +49,69 @@ func set_target(target : Target) -> void:
 	_half_reaction_check_box.button_pressed = _target.half_reaction
 	
 	if target is RealClone:
-		_target_name.text = "Real Clone"
+		_target_name.text = "<Real Clone>"
 		_fake_clones_container.visible = true
 	elif target is FakeClone:
-		_target_name.text = "Fake Clone"
+		_target_name.text = "<Fake Clone>"
 		_real_clone_time_line_edit.text = Global.time_to_text(_target.real_clone.get_start_time())
 		_real_clone_container.visible = true
 	elif target is TwoTimesDelayEditor:
-		_target_name.text = "Fortified"
+		_target_name.text = "<Fortified>"
 		_first_delay_time_line_edit.text = Global.time_to_text(_target.get_first_time_delay())
 		_second_delay_time_line_edit.text = Global.time_to_text(_target.get_second_time_delay())
 		_first_delay_time_container.visible = true
 		_second_delay_time_container.visible = true
 	elif target is OneTimeDelayEditor:
-		_target_name.text = "Shield"
+		_target_name.text = "<Shield>"
 		_first_delay_time_line_edit.text = Global.time_to_text(_target.get_first_time_delay())
 		_first_delay_time_container.visible = true
 	elif target is DelayTapEditor:
 		if target.get_delay_parent() is TwoTimesDelayEditor:
-			_target_name.text = "Fortified"
+			_target_name.text = "<Fortified>"
 		else:
-			_target_name.text = "Shield"
+			_target_name.text = "<Shield>"
 		_delay_parent_time_line_edit.text = Global.time_to_text(_target.get_delay_parent().get_start_time())
 		_delay_parent_time_container.visible = true
 	elif target is Spam:
-		_target_name.text = "Heavy"
+		_target_name.text = "<Heavy>"
 		_path_type_line_edit.text = "BOTH"
 		_end_time_line_edit.text = Global.time_to_text(_target.get_end_time())
 		_end_time_container.visible = true
 	elif target is Hold:
-		_target_name.text = "Hold"
+		_target_name.text = "<Hold>"
 		_end_time_line_edit.text = Global.time_to_text(_target.get_end_time())
 		_end_time_container.visible = true
 	elif target is TwinTap:
 		_path_type_line_edit.text = "BOTH"
-		_target_name.text = "Twins"
+		_target_name.text = "<Twins>"
+	elif target is HammerTap:
+		_target_name.text = "<Hammer>"
 	elif target is MediumTap:
 		match target.get_variant():
 			MediumTap.Variants.ONE:
-				_target_name.text = "Medium 1"
+				_target_name.text = "<Medium 1>"
 			MediumTap.Variants.TWO:
-				_target_name.text = "Medium 2"
+				_target_name.text = "<Medium 2>"
 			_:
 				_target_name.text = "<UNKNOWN>"
 	elif target is LightTap:
 		match target.get_variant():
 			LightTap.Variants.ONE:
-				_target_name.text = "Light 1"
+				_target_name.text = "<Light 1>"
 			LightTap.Variants.TWO:
-				_target_name.text = "Light 2"
+				_target_name.text = "<Light 2>"
 			LightTap.Variants.THREE:
-				_target_name.text = "Light 3"
+				_target_name.text = "<Light 3>"
 			_:
 				_target_name.text = "<UNKNOWN>"
+	elif target is AxeTrap:
+		_target_name.text = "<Axe Trap>"
+	elif target is Heart:
+		_target_name.text = "<Heart>"
+	elif target is MusicalNote:
+		_target_name.text = "<Musical Note>"
+	elif target is Trap:
+		_target_name.text = "<Trap>"
 	else:
 		_target_name.text = "<UNKNOWN>"
 	
