@@ -74,8 +74,6 @@ func _process(delta: float) -> void:
 	
 	_attach_mouse_display = false
 	
-	_current_target_info_window ## TODO
-	
 	if Input.is_action_just_pressed("Scroll Up") and not _current_target_info_window and get_global_rect().has_point(get_global_mouse_position()):
 		if Song.playing:
 			Song.stop()
