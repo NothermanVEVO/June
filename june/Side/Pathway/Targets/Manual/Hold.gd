@@ -9,6 +9,9 @@ var _has_hitted : bool
 var _middle_hold : NinePatchRect = NinePatchRect.new()
 var _end_hold : Sprite2D = Sprite2D.new()
 
+var left_edit_button : Button
+var right_edit_button : Button
+
 func _init(start_time : float, end_time : float, path_type : Path.Types) -> void:
 	_end_time = end_time
 	set_start_time(start_time)
@@ -27,6 +30,9 @@ func _init(start_time : float, end_time : float, path_type : Path.Types) -> void
 	_middle_hold.patch_margin_top = 6
 	_middle_hold.patch_margin_right = 6
 	_middle_hold.patch_margin_bottom = 6
+
+func _ready() -> void:
+	create_edit_buttons()
 
 func hit() -> void:
 	print("ai")
@@ -72,9 +78,47 @@ func set_end_time(end_time : float) -> void:
 	
 	_middle_hold.size = Vector2(end_pos, Path.HEIGHT * 0.7)
 	_middle_hold.position = Vector2(0, -_middle_hold.size.y / 2)
+	
+	_update_edit_buttons_positions()
 
 func get_duration() -> float:
 	return _end_time - _start_time
 
 func has_hitted() -> bool:
 	return _has_hitted
+
+func create_edit_buttons() -> void:
+	if left_edit_button:
+		left_edit_button.queue_free()
+	if right_edit_button:
+		right_edit_button.queue_free()
+	
+	left_edit_button = Button.new()
+	right_edit_button = Button.new()
+	
+	add_child(left_edit_button)
+	add_child(right_edit_button)
+	
+	left_edit_button.mouse_default_cursor_shape = Control.CURSOR_HSPLIT
+	right_edit_button.mouse_default_cursor_shape = Control.CURSOR_HSPLIT
+	
+	if not texture:
+		return
+	
+	var size := texture.get_size()
+	size.x = size.x / 2
+	
+	left_edit_button.size = size
+	right_edit_button.size = size
+	
+	_update_edit_buttons_positions()
+
+func _update_edit_buttons_positions() -> void:
+	if not left_edit_button or not right_edit_button:
+		return
+	
+	left_edit_button.position.x = -left_edit_button.size.x
+	left_edit_button.position.y = -left_edit_button.size.y / 2
+	
+	right_edit_button.position.x = _end_hold.position.x# + _end_hold.get_rect().size.x
+	right_edit_button.position.y = -_end_hold.get_rect().size.y / 2

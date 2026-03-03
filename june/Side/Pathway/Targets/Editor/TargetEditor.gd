@@ -47,10 +47,14 @@ func _set_highlight(highlight : bool) -> void:
 	if highlight:
 		_target.material = _shader_material
 		for child in _target.get_children():
+			if child is Button:
+				continue
 			child.material = _shader_material
 	else:
 		_target.material = null
 		for child in _target.get_children():
+			if child is Button:
+				continue
 			child.material = null
 
 func set_selected_highlight(selected : bool) -> void:
