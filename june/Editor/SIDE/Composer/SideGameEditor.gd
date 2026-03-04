@@ -80,6 +80,8 @@ func _process(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("Add Item"):
 		_mouse_was_pressed_inside = _is_mouse_inside()
+		if not _mouse_was_pressed_inside:
+			_clear_selected_targets()
 	
 	if Input.is_action_just_pressed("Scroll Up") and not _current_target_info_window and get_global_rect().has_point(get_global_mouse_position()):
 		if Song.playing:
@@ -439,14 +441,6 @@ func _select_targets(targets : Array[Target]) -> void:
 			has_air_target = true
 		else:
 			has_ground_target = true
-		
-		#if target is DelayTapEditor:
-			#target = target.get_delay_parent()
-			#_righest_or_leftest_selected(target)
-			#if target is OneTimeDelayEditor:
-				#_righest_or_leftest_selected(target.get_first_delay_tap())
-				#if target is TwoTimesDelayEditor:
-					#_righest_or_leftest_selected(target.get_second_delay_tap())
 		
 		target.target_editor.set_selected_highlight(true)
 		_selected_targets.append(target)

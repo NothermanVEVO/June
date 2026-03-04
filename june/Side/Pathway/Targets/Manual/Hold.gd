@@ -31,9 +31,6 @@ func _init(start_time : float, end_time : float, path_type : Path.Types) -> void
 	_middle_hold.patch_margin_right = 6
 	_middle_hold.patch_margin_bottom = 6
 
-func _ready() -> void:
-	create_edit_buttons()
-
 func hit() -> void:
 	print("ai")
 	_has_hitted = true
@@ -122,3 +119,10 @@ func _update_edit_buttons_positions() -> void:
 	
 	right_edit_button.position.x = _end_hold.position.x# + _end_hold.get_rect().size.x
 	right_edit_button.position.y = -_end_hold.get_rect().size.y / 2
+
+@warning_ignore("shadowed_variable_base_class")
+func set_edit_buttons_visibility(visible : bool) -> void:
+	if left_edit_button:
+		left_edit_button.visible = visible
+	if right_edit_button:
+		right_edit_button.visible = visible
