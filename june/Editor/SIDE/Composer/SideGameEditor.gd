@@ -42,6 +42,9 @@ var _leftest_target_selected : Target
 var _rightest_target_selected : Target
 var _has_both_paths_selected : bool = false
 
+var _is_pressing_left_edit_hold_button : bool = false
+var _is_pressing_right_edit_hold_button : bool = false
+
 func _init() -> void: ## TEMP
 	Song.set_song(load("res://Sound Test Sample/Brutal, acabou pro beta versão globo.mp3"))
 	Song.BPM = 60
@@ -137,6 +140,9 @@ func _process_selected_game_component(game_component : String) -> void:
 			_process_heart_item()
 
 func _process_select() -> void:
+	if _is_pressing_left_edit_hold_button or _is_pressing_right_edit_hold_button:
+		return
+	
 	if Input.is_action_just_pressed("Inspect Note"):
 		var selected_targets := _pathway_editor.get_global_targets_intersected_with(Rect2(get_global_mouse_position().x, get_global_mouse_position().y, 1, 1), Song.get_time(), Song.get_time() + _pathway_editor.WIDTH_IN_SECS_BY_SPEED())
 		
@@ -265,6 +271,11 @@ func _process_heavy_item() -> void:
 		_current_hold_target = Spam.new(_get_closest_grid_time_to_mouse(), _get_closest_grid_time_to_mouse(), _get_path_type_at_mouse())
 		_current_hold_target.create_target_editor()
 		_pathway_editor.add_target_at(_get_path_type_at_mouse(), _current_hold_target)
+		_current_hold_target.set_process.call_deferred(true)
+		_current_hold_target.is_pressing_left_edit_button.connect(_is_pressing_left_edit_button_hold)
+		_current_hold_target.is_pressing_right_edit_button.connect(_is_pressing_right_edit_button_hold)
+		_current_hold_target.released_left_edit_button.connect(_hold_left_edit_button_released)
+		_current_hold_target.released_right_edit_button.connect(_hold_right_edit_button_released)
 	elif _current_hold_target != null and Input.is_action_pressed("Add Item"):
 		_sample_target.visible = false
 		_current_hold_target.set_end_time(_get_closest_grid_time_to_mouse())
@@ -357,6 +368,11 @@ func _process_hold_item() -> void:
 		_current_hold_target = Hold.new(_get_closest_grid_time_to_mouse(), _get_closest_grid_time_to_mouse(), _get_path_type_at_mouse())
 		_current_hold_target.create_target_editor()
 		_pathway_editor.add_target_at(_get_path_type_at_mouse(), _current_hold_target)
+		_current_hold_target.set_process.call_deferred(true)
+		_current_hold_target.is_pressing_left_edit_button.connect(_is_pressing_left_edit_button_hold)
+		_current_hold_target.is_pressing_right_edit_button.connect(_is_pressing_right_edit_button_hold)
+		_current_hold_target.released_left_edit_button.connect(_hold_left_edit_button_released)
+		_current_hold_target.released_right_edit_button.connect(_hold_right_edit_button_released)
 	elif _current_hold_target != null and Input.is_action_pressed("Add Item"):
 		_sample_target.visible = false
 		_current_hold_target.set_end_time(_get_closest_grid_time_to_mouse())
@@ -426,6 +442,28 @@ func _process_heart_item() -> void:
 		var target = Heart.new(_get_closest_grid_time_to_mouse(), _get_path_type_at_mouse())
 		target.create_target_editor()
 		_pathway_editor.add_target_at(_get_path_type_at_mouse(), target)
+
+func _is_pressing_left_edit_button_hold(hold_target : Hold) -> void:
+	_is_pressing_left_edit_hold_button = true
+	
+	var mouse_time := _get_closest_grid_time_to_mouse()
+	
+	if mouse_time != hold_target.get_start_time():
+		hold_target.set_start_time(mouse_time)
+
+func _is_pressing_right_edit_button_hold(hold_target : Hold) -> void:
+	_is_pressing_right_edit_hold_button = true
+	
+	var mouse_time := _get_closest_grid_time_to_mouse()
+	
+	if mouse_time != hold_target.get_end_time():
+		hold_target.set_end_time(mouse_time)
+
+func _hold_left_edit_button_released() -> void:
+	_is_pressing_left_edit_hold_button = false
+
+func _hold_right_edit_button_released() -> void:
+	_is_pressing_right_edit_hold_button = false
 
 func _select_targets(targets : Array[Target]) -> void:
 	_has_both_paths_selected = false
