@@ -450,6 +450,7 @@ func _is_pressing_left_edit_button_hold(hold_target : Hold) -> void:
 	
 	if mouse_time != hold_target.get_start_time():
 		hold_target.set_start_time(mouse_time)
+		_pathway_editor.update_target(hold_target, true)
 
 func _is_pressing_right_edit_button_hold(hold_target : Hold) -> void:
 	_is_pressing_right_edit_hold_button = true
@@ -458,6 +459,7 @@ func _is_pressing_right_edit_button_hold(hold_target : Hold) -> void:
 	
 	if mouse_time != hold_target.get_end_time():
 		hold_target.set_end_time(mouse_time)
+		_pathway_editor.update_target(hold_target, true)
 
 func _hold_left_edit_button_released() -> void:
 	_is_pressing_left_edit_hold_button = false

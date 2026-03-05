@@ -64,8 +64,16 @@ func remove_full_real_clone(real_clone : RealClone, validate_note : bool = false
 	remove_target_at(real_clone.get_path_type(), real_clone, validate_note, free)
 
 func update_target(target : Target, validate_note : bool = false) -> void:
-	remove_target_at(target.get_path_type(), target, validate_note)
-	add_target_at(target.get_path_type(), target, validate_note)
+	if target.get_path_type() == Path.Types.GROUND:
+		if target is ManualTarget:
+			_ground_path.update_manual_target(target)
+		else: ## AUTO TARGET
+			_ground_path.update_auto_target(target)
+	else: ## AIR
+		if target is ManualTarget:
+			_air_path.update_manual_target(target)
+		else: ## AUTO TARGET
+			_air_path.update_auto_target(target)
 
 func change_target_path(to_path_type : Path.Types, target : Target, validate_note : bool = false) -> void:
 	remove_target_at(target.get_path_type(), target, validate_note)
