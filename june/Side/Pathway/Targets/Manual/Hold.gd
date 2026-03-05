@@ -29,6 +29,7 @@ func _init(start_time : float, end_time : float, path_type : Path.Types) -> void
 	_middle_hold.texture = SideEditor.MIDDLE_HOLD_TEXTURE
 	
 	add_child(_end_hold)
+	_end_hold.z_index = z_index - 1
 	_end_hold.texture = SideEditor.END_HOLD_TEXTURE
 	
 	_middle_hold.patch_margin_left = 6
