@@ -13,7 +13,7 @@ func _process(delta: float) -> void:
 			_process_delay()
 		elif _manual_targets[_currently_manual_target_idx] is Spam:
 			_process_spam()
-		elif _manual_targets[_currently_manual_target_idx] is Hold:
+		elif _manual_targets[_currently_manual_target_idx] is HoldManual:
 			_process_hold()
 		elif _manual_targets[_currently_manual_target_idx] is Tap:
 			_process_tap()

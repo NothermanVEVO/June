@@ -1,4 +1,4 @@
-extends Hold
+extends HoldManual
 
 class_name Spam
 

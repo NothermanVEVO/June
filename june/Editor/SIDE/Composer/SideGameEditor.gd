@@ -24,7 +24,7 @@ var _last_zoom_value : float = 1.0
 
 var _sample_target := Sprite2D.new()
 
-var _current_hold_target : Hold
+var _current_hold_target : HoldManual
 
 static var _highest_grid_time : float = 0.0
 
@@ -183,11 +183,11 @@ func _process_select() -> void:
 			## Change time pos
 			if mouse_time_diff:
 				if _leftest_target_selected.get_start_time() + mouse_time_diff >= Song.offset and (
-					(_rightest_target_selected is Hold and _rightest_target_selected.get_end_time() + mouse_time_diff <= _highest_grid_time) or (
+					(_rightest_target_selected is HoldManual and _rightest_target_selected.hold.get_end_time() + mouse_time_diff <= _highest_grid_time) or (
 					_rightest_target_selected.get_start_time() + mouse_time_diff <= _highest_grid_time)):
 						for selected_target in _selected_targets:
 							selected_target.set_start_time(selected_target.get_start_time() + mouse_time_diff)
-							if selected_target is Hold:
+							if selected_target is HoldManual:
 								selected_target.set_end_time(selected_target.get_end_time() + mouse_time_diff)
 			
 			## Change paths
@@ -372,7 +372,7 @@ func _process_hold_item() -> void:
 	_sample_target.texture = SideEditor.START_HOLD_TEXTURE
 	
 	if Input.is_action_just_pressed("Add Item"):
-		_current_hold_target = Hold.new(_get_closest_grid_time_to_mouse(), _get_closest_grid_time_to_mouse(), _get_path_type_at_mouse())
+		_current_hold_target = HoldManual.new(_get_closest_grid_time_to_mouse(), _get_closest_grid_time_to_mouse(), _get_path_type_at_mouse())
 		_current_hold_target.create_target_editor()
 		_pathway_editor.add_target_at(_get_path_type_at_mouse(), _current_hold_target)
 		_current_hold_target.set_process.call_deferred(true)
@@ -450,7 +450,7 @@ func _process_heart_item() -> void:
 		target.create_target_editor()
 		_pathway_editor.add_target_at(_get_path_type_at_mouse(), target)
 
-func _is_pressing_left_edit_button_hold(hold_target : Hold) -> void:
+func _is_pressing_left_edit_button_hold(hold_target : HoldManual) -> void:
 	_is_pressing_left_edit_hold_button = true
 	
 	var mouse_time := _get_closest_grid_time_to_mouse()
@@ -459,7 +459,7 @@ func _is_pressing_left_edit_button_hold(hold_target : Hold) -> void:
 		hold_target.set_start_time(mouse_time)
 		_pathway_editor.update_target(hold_target, true)
 
-func _is_pressing_right_edit_button_hold(hold_target : Hold) -> void:
+func _is_pressing_right_edit_button_hold(hold_target : HoldManual) -> void:
 	_is_pressing_right_edit_hold_button = true
 	
 	var mouse_time := _get_closest_grid_time_to_mouse()
@@ -507,10 +507,10 @@ func _righest_or_leftest_selected(target : Target) -> void:
 		_rightest_target_selected = target
 		return
 	
-	if target is Hold:
+	if target is HoldManual:
 		if target.get_start_time() < _leftest_target_selected.get_start_time():
 			_leftest_target_selected = target
-		if _rightest_target_selected is Hold:
+		if _rightest_target_selected is HoldManual:
 			if target.get_end_time() > _rightest_target_selected.get_end_time():
 				_rightest_target_selected = target
 		else:
@@ -519,7 +519,7 @@ func _righest_or_leftest_selected(target : Target) -> void:
 	else:
 		if target.get_start_time() < _leftest_target_selected.get_start_time():
 			_leftest_target_selected = target
-		if _rightest_target_selected is Hold:
+		if _rightest_target_selected is HoldManual:
 			if target.get_start_time() > _rightest_target_selected.get_end_time():
 				_rightest_target_selected = target
 		else:

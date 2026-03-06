@@ -36,7 +36,7 @@ var _target : Target
 func _init(target : Target) -> void:
 	_shader_material.shader = Global.HIGHLIGHT_SHADER
 	_target = target
-	if _target is Hold:
+	if _target is HoldManual:
 		_target.create_edit_buttons()
 		_target.set_edit_buttons_visibility(false)
 
@@ -66,7 +66,7 @@ func set_selected_highlight(selected : bool) -> void:
 	
 	if _target is TwinTap and _target.is_older():
 		_target.get_twin().target_editor.set_selected_highlight(selected)
-	elif _target is Hold:
+	elif _target is HoldManual:
 		_target.set_edit_buttons_visibility(selected)
 	
 	if selected:

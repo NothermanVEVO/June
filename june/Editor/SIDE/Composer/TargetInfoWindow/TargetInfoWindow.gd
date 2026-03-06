@@ -80,7 +80,7 @@ func setup(target : Target, pathway_editor : PathwayEditor) -> void:
 		_path_type_line_edit.text = "BOTH"
 		_end_time_line_edit.text = Global.time_to_text(_target.get_end_time())
 		_end_time_container.visible = true
-	elif target is Hold:
+	elif target is HoldManual:
 		_target_name.text = "<Hold>"
 		_end_time_line_edit.text = Global.time_to_text(_target.get_end_time())
 		_end_time_container.visible = true

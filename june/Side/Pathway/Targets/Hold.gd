@@ -1,4 +1,4 @@
-extends ManualTarget
+extends Target
 
 class_name Hold
 

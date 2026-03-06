@@ -63,7 +63,7 @@ func get_manual_targets(from : float, to : float) -> Array[ManualTarget]:
 	var high := _manual_targets.size()
 	
 	for target in _manual_targets:
-		if target is Hold and (_is_between(from, to, target.get_start_time()) or
+		if target is HoldManual and (_is_between(from, to, target.get_start_time()) or
 								target.get_start_time() < from and target.get_end_time() >= from):
 			result.append(target)
 		elif target is Delay and _is_between(from, to, target.get_current_time()):
