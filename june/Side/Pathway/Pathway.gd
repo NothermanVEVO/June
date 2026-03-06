@@ -12,6 +12,7 @@ const MAX_WIDTH : float = 1920
 const MAX_HEIGHT : float = 1080
 
 var _ground_path : Path
+var _mid_path : Path
 var _air_path : Path
 
 var _speed : float = 1.0
@@ -26,6 +27,8 @@ func add_target_at(path_type : Path.Types, target : Target, validate_note : bool
 			_ground_path.add_manual_target(target)
 		else: ## AUTO TARGET
 			_ground_path.add_auto_target(target)
+	elif path_type == Path.Types.MID:
+		_mid_path.add_manual_target(target)
 	else: ## AIR
 		if target is ManualTarget:
 			_air_path.add_manual_target(target)
@@ -43,6 +46,8 @@ func remove_target_at(path_type : Path.Types, target : Target, validate_note : b
 			_ground_path.remove_manual_target(target, free)
 		else: ## AUTO TARGET
 			_ground_path.remove_auto_target(target, free)
+	elif path_type == Path.Types.MID:
+		_mid_path.add_manual_target(target)
 	else: ## AIR
 		if target is ManualTarget:
 			_air_path.remove_manual_target(target, free)
@@ -69,6 +74,8 @@ func update_target(target : Target, validate_note : bool = false) -> void:
 			_ground_path.update_manual_target(target)
 		else: ## AUTO TARGET
 			_ground_path.update_auto_target(target)
+	elif target.get_path_type() == Path.Types.MID:
+		_mid_path.add_manual_target(target)
 	else: ## AIR
 		if target is ManualTarget:
 			_air_path.update_manual_target(target)

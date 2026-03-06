@@ -8,6 +8,7 @@ func _init(character : Character, direction : Direction) -> void:
 	_character = character
 	
 	_ground_path = PathPlayer.new(Path.Types.GROUND, direction)
+	_mid_path = PathPlayer.new(Path.Types.MID, direction)
 	_air_path = PathPlayer.new(Path.Types.AIR, direction)
 
 func _ready() -> void:

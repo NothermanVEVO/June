@@ -202,7 +202,7 @@ custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.0
-item_count = 28
+item_count = 35
 item_0/text = "---- Ferramentas ----"
 item_0/selectable = false
 item_1/text = "Selecionar (E)"
@@ -232,16 +232,23 @@ item_20/text = "Coração"
 item_21/text = "---- Efeitos ----"
 item_21/selectable = false
 item_22/text = "Meia Reação"
-item_23/text = "Velocidade (Z)"
-item_23/icon = ExtResource("4_gldp5")
-item_24/text = "Fade (F)"
-item_24/icon = ExtResource("5_pudow")
-item_25/text = "---- Anotações ----"
-item_25/selectable = false
-item_26/text = "Comentário (C)"
-item_26/icon = ExtResource("6_t8781")
-item_27/text = "Seção (X)"
-item_27/icon = ExtResource("7_t2a3l")
+item_23/text = "Servo"
+item_24/text = "---- Anotações ----"
+item_24/selectable = false
+item_25/text = "Comentário (C)"
+item_25/icon = ExtResource("6_t8781")
+item_26/text = "Seção (X)"
+item_26/icon = ExtResource("7_t2a3l")
+item_27/text = "---- Ações ----"
+item_28/text = "Fade (F)"
+item_28/icon = ExtResource("5_pudow")
+item_29/text = "Velocidade (Z)"
+item_29/icon = ExtResource("4_gldp5")
+item_30/text = "Chefão"
+item_31/text = "Diálogo"
+item_32/text = "Cinemática"
+item_33/text = "Mudar cenário"
+item_34/text = "Mudar inimigos"
 script = ExtResource("8_dmxwq")
 
 [node name="Resize Button" type="Button" parent="Middle/Game Components List"]
@@ -254,14 +261,21 @@ grow_vertical = 2
 scale = Vector2(0.5, 1)
 mouse_default_cursor_shape = 10
 
-[node name="SoundBoard" type="FlowContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer"]
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="SoundBoard" type="FlowContainer" parent="MarginContainer"]
 z_index = 2
 clip_contents = true
 layout_mode = 2
 size_flags_vertical = 8
 script = ExtResource("9_6q0i8")
 
-[node name="Time" type="TextEdit" parent="SoundBoard"]
+[node name="Time" type="TextEdit" parent="MarginContainer/SoundBoard"]
 custom_minimum_size = Vector2(120, 50)
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
@@ -271,7 +285,7 @@ emoji_menu_enabled = false
 drag_and_drop_selection_enabled = false
 caret_blink = true
 
-[node name="Time Percentage" type="TextEdit" parent="SoundBoard"]
+[node name="Time Percentage" type="TextEdit" parent="MarginContainer/SoundBoard"]
 custom_minimum_size = Vector2(70, 40)
 layout_mode = 2
 size_flags_vertical = 4
@@ -280,21 +294,21 @@ placeholder_text = "0.0%"
 emoji_menu_enabled = false
 drag_and_drop_selection_enabled = false
 
-[node name="Play" type="Button" parent="SoundBoard"]
+[node name="Play" type="Button" parent="MarginContainer/SoundBoard"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "Play"
 
-[node name="Stop" type="Button" parent="SoundBoard"]
+[node name="Stop" type="Button" parent="MarginContainer/SoundBoard"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "Reset"
 
-[node name="SpeedContainer" type="VBoxContainer" parent="SoundBoard"]
+[node name="SpeedContainer" type="VBoxContainer" parent="MarginContainer/SoundBoard"]
 layout_mode = 2
 alignment = 1
 
-[node name="SpeedText" type="TextEdit" parent="SoundBoard/SpeedContainer"]
+[node name="SpeedText" type="TextEdit" parent="MarginContainer/SoundBoard/SpeedContainer"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -305,7 +319,7 @@ drag_and_drop_selection_enabled = false
 scroll_past_end_of_file = true
 scroll_fit_content_height = true
 
-[node name="SpeedSlider" type="HSlider" parent="SoundBoard/SpeedContainer"]
+[node name="SpeedSlider" type="HSlider" parent="MarginContainer/SoundBoard/SpeedContainer"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_vertical = 4
@@ -315,7 +329,7 @@ value = 100.0
 tick_count = 4
 ticks_on_borders = true
 
-[node name="Time Slider" type="HSlider" parent="SoundBoard"]
+[node name="Time Slider" type="HSlider" parent="MarginContainer/SoundBoard"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -332,16 +346,16 @@ tick_count = 15
 [connection signal="resized" from="Middle/Game Components List" to="Middle/Game Components List" method="_on_resized"]
 [connection signal="button_down" from="Middle/Game Components List/Resize Button" to="Middle/Game Components List" method="_on_resize_button_down"]
 [connection signal="button_up" from="Middle/Game Components List/Resize Button" to="Middle/Game Components List" method="_on_resize_button_up"]
-[connection signal="focus_entered" from="SoundBoard/Time" to="SoundBoard" method="_on_time_focus_entered"]
-[connection signal="focus_exited" from="SoundBoard/Time" to="SoundBoard" method="_on_time_focus_exited"]
-[connection signal="text_changed" from="SoundBoard/Time" to="SoundBoard" method="_on_time_text_changed"]
-[connection signal="focus_exited" from="SoundBoard/Time Percentage" to="SoundBoard" method="_on_time_percentage_focus_exited"]
-[connection signal="text_changed" from="SoundBoard/Time Percentage" to="SoundBoard" method="_on_time_percentage_text_changed"]
-[connection signal="pressed" from="SoundBoard/Play" to="SoundBoard" method="_on_play_pressed"]
-[connection signal="pressed" from="SoundBoard/Stop" to="SoundBoard" method="_on_stop_pressed"]
-[connection signal="focus_exited" from="SoundBoard/SpeedContainer/SpeedText" to="SoundBoard" method="_on_speed_text_focus_exited"]
-[connection signal="text_changed" from="SoundBoard/SpeedContainer/SpeedText" to="SoundBoard" method="_on_speed_text_text_changed"]
-[connection signal="drag_ended" from="SoundBoard/SpeedContainer/SpeedSlider" to="SoundBoard" method="_on_speed_slider_drag_ended"]
-[connection signal="drag_started" from="SoundBoard/SpeedContainer/SpeedSlider" to="SoundBoard" method="_on_speed_slider_drag_started"]
-[connection signal="drag_ended" from="SoundBoard/Time Slider" to="SoundBoard" method="_on_time_slider_drag_ended"]
-[connection signal="drag_started" from="SoundBoard/Time Slider" to="SoundBoard" method="_on_time_slider_drag_started"]
+[connection signal="focus_entered" from="MarginContainer/SoundBoard/Time" to="MarginContainer/SoundBoard" method="_on_time_focus_entered"]
+[connection signal="focus_exited" from="MarginContainer/SoundBoard/Time" to="MarginContainer/SoundBoard" method="_on_time_focus_exited"]
+[connection signal="text_changed" from="MarginContainer/SoundBoard/Time" to="MarginContainer/SoundBoard" method="_on_time_text_changed"]
+[connection signal="focus_exited" from="MarginContainer/SoundBoard/Time Percentage" to="MarginContainer/SoundBoard" method="_on_time_percentage_focus_exited"]
+[connection signal="text_changed" from="MarginContainer/SoundBoard/Time Percentage" to="MarginContainer/SoundBoard" method="_on_time_percentage_text_changed"]
+[connection signal="pressed" from="MarginContainer/SoundBoard/Play" to="MarginContainer/SoundBoard" method="_on_play_pressed"]
+[connection signal="pressed" from="MarginContainer/SoundBoard/Stop" to="MarginContainer/SoundBoard" method="_on_stop_pressed"]
+[connection signal="focus_exited" from="MarginContainer/SoundBoard/SpeedContainer/SpeedText" to="MarginContainer/SoundBoard" method="_on_speed_text_focus_exited"]
+[connection signal="text_changed" from="MarginContainer/SoundBoard/SpeedContainer/SpeedText" to="MarginContainer/SoundBoard" method="_on_speed_text_text_changed"]
+[connection signal="drag_ended" from="MarginContainer/SoundBoard/SpeedContainer/SpeedSlider" to="MarginContainer/SoundBoard" method="_on_speed_slider_drag_ended"]
+[connection signal="drag_started" from="MarginContainer/SoundBoard/SpeedContainer/SpeedSlider" to="MarginContainer/SoundBoard" method="_on_speed_slider_drag_started"]
+[connection signal="drag_ended" from="MarginContainer/SoundBoard/Time Slider" to="MarginContainer/SoundBoard" method="_on_time_slider_drag_ended"]
+[connection signal="drag_started" from="MarginContainer/SoundBoard/Time Slider" to="MarginContainer/SoundBoard" method="_on_time_slider_drag_started"]

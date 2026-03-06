@@ -265,6 +265,8 @@ func _process_heavy_item() -> void:
 	
 	if _get_path_type_at_mouse() == Path.Types.GROUND:
 		_sample_target.global_position.y += - Path.HEIGHT
+	elif _get_path_type_at_mouse() == Path.Types.MID:
+		pass
 	else: ## AIR
 		_sample_target.global_position.y += Path.HEIGHT
 	
@@ -292,6 +294,8 @@ func _process_twins_item() -> void:
 	
 	if _get_path_type_at_mouse() == Path.Types.GROUND:
 		_sample_target.global_position.y += - Path.HEIGHT
+	elif _get_path_type_at_mouse() == Path.Types.MID:
+		pass
 	else: ## AIR
 		_sample_target.global_position.y += Path.HEIGHT
 	

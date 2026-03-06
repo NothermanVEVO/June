@@ -6,7 +6,7 @@ const BASE_HITZONE : float = 400.0
 const WIDTH_IN_SECS : float = 4.0 ## The value of the 'width' in seconds.
 const HEIGHT : float = 160.0
 
-enum Types {GROUND, AIR}
+enum Types {GROUND, MID, AIR}
 
 var _type : Types
 
