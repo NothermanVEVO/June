@@ -16,13 +16,13 @@ func _init(start_time : float, end_time : float, path_type : Path.Types) -> void
 	super._init(start_time, end_time, path_type)
 	z_index = 1
 	texture = SideEditor.HEAVY_TEXTURE
-	_end_hold.texture = texture
-	_middle_hold.modulate.a = 0.75
-	_end_hold.modulate.a = 0.75
+	hold._end_hold.texture = texture
+	hold._middle_hold.modulate.a = 0.75
+	hold._end_hold.modulate.a = 0.75
 
 func hit() -> void:
-	_current_hits += 1
-	_has_hitted = true
+	hold._current_hits += 1
+	hold._has_hitted = true
 	print("ai")
 	if has_hitted_all():
 		_death()
@@ -52,9 +52,9 @@ func set_path_type(path_type : Path.Types) -> void:
 		_hold_blank.set_path_type(Path.Types.GROUND)
 
 func get_time() -> float:
-	if _has_hitted:
+	if hold._has_hitted:
 		return Song.get_time()
-	return _start_time
+	return hold._start_time
 
 func set_end_time(end_time : float) -> void:
 	super.set_end_time(end_time)

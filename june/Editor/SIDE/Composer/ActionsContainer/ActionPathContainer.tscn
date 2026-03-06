@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://dw0or203fuowc"]
+
+[ext_resource type="Script" uid="uid://cqddrp58pmoyl" path="res://Editor/SIDE/Composer/ActionsContainer/ActionPathContainer.gd" id="1_truaq"]
+
+[node name="ActionPathContainer" type="MarginContainer"]
+custom_minimum_size = Vector2(0, 50)
+size_flags_horizontal = 3
+script = ExtResource("1_truaq")
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+text = "x"

@@ -1,0 +1,61 @@
+[gd_scene load_steps=2 format=3 uid="uid://35i0ihjh0r07"]
+
+[ext_resource type="PackedScene" uid="uid://dw0or203fuowc" path="res://Editor/SIDE/Composer/ActionsContainer/ActionPathContainer.tscn" id="1_e0044"]
+
+[node name="ActionsContainer" type="MarginContainer"]
+custom_minimum_size = Vector2(0, 300)
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TopContainer" type="MarginContainer" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Panel" type="Panel" parent="ScrollContainer/VBoxContainer/TopContainer"]
+layout_mode = 2
+
+[node name="AddActionPathButton" type="Button" parent="ScrollContainer/VBoxContainer/TopContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "+ Adicionar novo caminho de ação"
+
+[node name="CloseButton" type="Button" parent="ScrollContainer/VBoxContainer/TopContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 28
+text = " X "
+
+[node name="CenterContainer" type="MarginContainer" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer/VBoxContainer/CenterContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="ActionPathContainer" parent="ScrollContainer/VBoxContainer/CenterContainer/VBoxContainer" instance=ExtResource("1_e0044")]
+layout_mode = 2

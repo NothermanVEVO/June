@@ -633,8 +633,6 @@ func _draw() -> void:
 	var start_time_pos := Song.get_time() + value - rest
 	var n_grids := int(_pathway_editor.WIDTH_IN_SECS_BY_SPEED() / value)
 	
-	#var mouse_time_pos : float = _get_closest_grid_time_to_mouse()
-	
 	for i in (n_grids + 2):
 		var time : float = start_time_pos + (value * (i - 1))
 		
@@ -644,11 +642,6 @@ func _draw() -> void:
 			continue
 		
 		var pos_x = Path.get_pos_x(Song.get_time(), Song.get_time() + _pathway_editor.WIDTH_IN_SECS_BY_SPEED(), time, Path.hitzone, Path.width)
-		
-		#if is_equal_approx(mouse_time_pos, time):
-			#draw_line(Vector2(pos_x, min_y), Vector2(pos_x, min_y + Path.HEIGHT), Color.DEEP_PINK, 8, true)
-			#draw_line(Vector2(pos_x, max_y - Path.HEIGHT), Vector2(pos_x, max_y), Color.DEEP_PINK, 8, true)
-			#continue
 		
 		var is_start_line : bool = is_equal_approx(time, Song.offset)
 		if not is_start_line:
