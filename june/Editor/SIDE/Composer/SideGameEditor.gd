@@ -8,6 +8,8 @@ var _pathway_editor := PathwayEditor.new()
 
 @onready var _side_game_components_list : SideGameComponents = $"../Game Components List"
 
+@onready var _actions_container : ActionsContainer = $"../../ActionsContainer"
+
 var _current_target_info_window : TargetInfoWindow
 
 var _mouse_selection : Selection = Selection.new()
@@ -55,6 +57,8 @@ func _init() -> void: ## TEMP
 func _ready() -> void:
 	add_child(_pathway_editor)
 	add_child(_mouse_selection)
+	
+	_actions_container.setup.call_deferred(_pathway_editor, _highest_grid_time)
 	
 	_sample_target.global_position = Vector2(INF, INF)
 	_sample_target.modulate.a = 0.5

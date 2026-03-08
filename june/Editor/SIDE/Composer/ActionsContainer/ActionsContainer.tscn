@@ -1,12 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://35i0ihjh0r07"]
+[gd_scene load_steps=4 format=3 uid="uid://35i0ihjh0r07"]
 
-[ext_resource type="PackedScene" uid="uid://dw0or203fuowc" path="res://Editor/SIDE/Composer/ActionsContainer/ActionPathContainer.tscn" id="1_e0044"]
+[ext_resource type="Script" uid="uid://cfy0paxff4y1k" path="res://Editor/SIDE/Composer/ActionsContainer/ActionsContainer.gd" id="1_6vc3d"]
+[ext_resource type="PackedScene" uid="uid://dw0or203fuowc" path="res://Editor/SIDE/Composer/ActionsContainer/ActionPathContainer/ActionPathContainer.tscn" id="1_e0044"]
+[ext_resource type="Script" uid="uid://cml07poxkfj" path="res://Editor/SIDE/Composer/ActionsContainer/ActionsVBoxContainer.gd" id="2_d4yn7"]
 
 [node name="ActionsContainer" type="MarginContainer"]
 custom_minimum_size = Vector2(0, 300)
 anchors_preset = 10
 anchor_right = 1.0
 grow_horizontal = 2
+script = ExtResource("1_6vc3d")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 2
@@ -43,7 +46,7 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 theme_override_font_sizes/font_size = 28
-text = " X "
+text = "---"
 
 [node name="CenterContainer" type="MarginContainer" parent="ScrollContainer/VBoxContainer"]
 layout_mode = 2
@@ -53,9 +56,10 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer/VBoxContainer/CenterContainer"]
+[node name="ActionsVBoxContainer" type="VBoxContainer" parent="ScrollContainer/VBoxContainer/CenterContainer"]
 layout_mode = 2
 alignment = 2
+script = ExtResource("2_d4yn7")
 
-[node name="ActionPathContainer" parent="ScrollContainer/VBoxContainer/CenterContainer/VBoxContainer" instance=ExtResource("1_e0044")]
+[node name="ActionPathContainer" parent="ScrollContainer/VBoxContainer/CenterContainer/ActionsVBoxContainer" instance=ExtResource("1_e0044")]
 layout_mode = 2
