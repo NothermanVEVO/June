@@ -5,12 +5,48 @@
 [node name="ActionPathContainer" type="MarginContainer"]
 custom_minimum_size = Vector2(0, 50)
 size_flags_horizontal = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
 script = ExtResource("1_truaq")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 2
 
-[node name="Button" type="Button" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="IndexRichTextLabel" type="RichTextLabel" parent="HBoxContainer"]
+layout_mode = 2
+text = " 0 "
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="UpButton" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Up"
+
+[node name="HSeparator" type="HSeparator" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="DownButton" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Down"
+
+[node name="VSeparator2" type="VSeparator" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="EraseButton" type="Button" parent="."]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4

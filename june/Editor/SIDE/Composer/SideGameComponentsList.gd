@@ -14,13 +14,16 @@ static var _selected_in_text : String = ""
 
 signal resizing
 
+func _ready() -> void:
+	set_process(false)
+
 func _process(delta: float) -> void:
 	if is_resizing:
 		custom_minimum_size.x = start_minimum_size_x + (mouse_position_when_down.x - get_global_mouse_position().x)
 		custom_minimum_size.x = MINIMUM_SIZE_X if custom_minimum_size.x < MINIMUM_SIZE_X else custom_minimum_size.x
 		var screen_difference_x := get_viewport_rect().size.x - custom_minimum_size.x
 		if screen_difference_x < MINIMUM_SIZE_X:
-				custom_minimum_size.x = get_viewport_rect().size.x - MINIMUM_SIZE_X
+			custom_minimum_size.x = get_viewport_rect().size.x - MINIMUM_SIZE_X
 		resizing.emit()
 
 static func get_width() -> float:

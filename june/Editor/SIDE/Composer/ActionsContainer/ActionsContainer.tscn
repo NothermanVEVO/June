@@ -5,10 +5,10 @@
 [ext_resource type="Script" uid="uid://cml07poxkfj" path="res://Editor/SIDE/Composer/ActionsContainer/ActionsVBoxContainer.gd" id="2_d4yn7"]
 
 [node name="ActionsContainer" type="MarginContainer"]
-custom_minimum_size = Vector2(0, 300)
 anchors_preset = 10
 anchor_right = 1.0
 grow_horizontal = 2
+size_flags_horizontal = 10
 script = ExtResource("1_6vc3d")
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -18,48 +18,89 @@ color = Color(0, 0, 0, 1)
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
+[node name="ResizeButton" type="Button" parent="Panel"]
 layout_mode = 2
+offset_top = -2.0
+offset_right = 1920.0
+offset_bottom = 6.0
+scale = Vector2(1, 0.69)
+size_flags_vertical = 0
+mouse_default_cursor_shape = 9
+flat = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+mouse_filter = 2
 
-[node name="TopContainer" type="MarginContainer" parent="ScrollContainer/VBoxContainer"]
+[node name="TopContainer" type="MarginContainer" parent="VBoxContainer"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="Panel" type="Panel" parent="ScrollContainer/VBoxContainer/TopContainer"]
+[node name="Panel" type="Panel" parent="VBoxContainer/TopContainer"]
 layout_mode = 2
+mouse_filter = 2
 
-[node name="AddActionPathButton" type="Button" parent="ScrollContainer/VBoxContainer/TopContainer"]
+[node name="TitleRichTextLabel" type="RichTextLabel" parent="VBoxContainer/TopContainer"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+text = "Editor de ações"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AddActionPathButton" type="Button" parent="VBoxContainer/TopContainer"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 0
+mouse_default_cursor_shape = 2
 text = "+ Adicionar novo caminho de ação"
 
-[node name="CloseButton" type="Button" parent="ScrollContainer/VBoxContainer/TopContainer"]
+[node name="CloseButton" type="Button" parent="VBoxContainer/TopContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
-theme_override_font_sizes/font_size = 28
-text = "---"
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 18
+toggle_mode = true
+text = "Abrir editor de ações"
 
-[node name="CenterContainer" type="MarginContainer" parent="ScrollContainer/VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CenterContainer" type="MarginContainer" parent="VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="ActionsVBoxContainer" type="VBoxContainer" parent="ScrollContainer/VBoxContainer/CenterContainer"]
+[node name="ActionsVBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/CenterContainer"]
 layout_mode = 2
 alignment = 2
 script = ExtResource("2_d4yn7")
 
-[node name="ActionPathContainer" parent="ScrollContainer/VBoxContainer/CenterContainer/ActionsVBoxContainer" instance=ExtResource("1_e0044")]
+[node name="ActionPathContainer" parent="VBoxContainer/ScrollContainer/CenterContainer/ActionsVBoxContainer" instance=ExtResource("1_e0044")]
 layout_mode = 2
+
+[node name="ActionPathContainer2" parent="VBoxContainer/ScrollContainer/CenterContainer/ActionsVBoxContainer" instance=ExtResource("1_e0044")]
+layout_mode = 2
+
+[node name="ActionPathContainer3" parent="VBoxContainer/ScrollContainer/CenterContainer/ActionsVBoxContainer" instance=ExtResource("1_e0044")]
+layout_mode = 2
+
+[node name="ActionPathContainer4" parent="VBoxContainer/ScrollContainer/CenterContainer/ActionsVBoxContainer" instance=ExtResource("1_e0044")]
+layout_mode = 2
+
+[node name="ActionPathContainer5" parent="VBoxContainer/ScrollContainer/CenterContainer/ActionsVBoxContainer" instance=ExtResource("1_e0044")]
+layout_mode = 2
+
+[connection signal="button_down" from="Panel/ResizeButton" to="." method="_on_resize_button_button_down"]
+[connection signal="button_up" from="Panel/ResizeButton" to="." method="_on_resize_button_button_up"]
+[connection signal="toggled" from="VBoxContainer/TopContainer/CloseButton" to="." method="_on_close_button_toggled"]
