@@ -1,7 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://35i0ihjh0r07"]
+[gd_scene load_steps=3 format=3 uid="uid://35i0ihjh0r07"]
 
 [ext_resource type="Script" uid="uid://cfy0paxff4y1k" path="res://Editor/SIDE/Composer/ActionsContainer/ActionsContainer.gd" id="1_6vc3d"]
-[ext_resource type="PackedScene" uid="uid://dw0or203fuowc" path="res://Editor/SIDE/Composer/ActionsContainer/ActionPathContainer/ActionPathContainer.tscn" id="1_e0044"]
 [ext_resource type="Script" uid="uid://cml07poxkfj" path="res://Editor/SIDE/Composer/ActionsContainer/ActionsVBoxContainer.gd" id="2_d4yn7"]
 
 [node name="ActionsContainer" type="MarginContainer"]
@@ -71,6 +70,8 @@ text = "Abrir editor de ações"
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+follow_focus = true
+horizontal_scroll_mode = 0
 
 [node name="CenterContainer" type="MarginContainer" parent="VBoxContainer/ScrollContainer"]
 layout_mode = 2
@@ -86,21 +87,7 @@ layout_mode = 2
 alignment = 2
 script = ExtResource("2_d4yn7")
 
-[node name="ActionPathContainer" parent="VBoxContainer/ScrollContainer/CenterContainer/ActionsVBoxContainer" instance=ExtResource("1_e0044")]
-layout_mode = 2
-
-[node name="ActionPathContainer2" parent="VBoxContainer/ScrollContainer/CenterContainer/ActionsVBoxContainer" instance=ExtResource("1_e0044")]
-layout_mode = 2
-
-[node name="ActionPathContainer3" parent="VBoxContainer/ScrollContainer/CenterContainer/ActionsVBoxContainer" instance=ExtResource("1_e0044")]
-layout_mode = 2
-
-[node name="ActionPathContainer4" parent="VBoxContainer/ScrollContainer/CenterContainer/ActionsVBoxContainer" instance=ExtResource("1_e0044")]
-layout_mode = 2
-
-[node name="ActionPathContainer5" parent="VBoxContainer/ScrollContainer/CenterContainer/ActionsVBoxContainer" instance=ExtResource("1_e0044")]
-layout_mode = 2
-
 [connection signal="button_down" from="Panel/ResizeButton" to="." method="_on_resize_button_button_down"]
 [connection signal="button_up" from="Panel/ResizeButton" to="." method="_on_resize_button_button_up"]
+[connection signal="pressed" from="VBoxContainer/TopContainer/AddActionPathButton" to="." method="_on_add_action_path_button_pressed"]
 [connection signal="toggled" from="VBoxContainer/TopContainer/CloseButton" to="." method="_on_close_button_toggled"]

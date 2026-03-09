@@ -17,13 +17,12 @@ layout_mode = 2
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="IndexRichTextLabel" type="RichTextLabel" parent="HBoxContainer"]
+[node name="IndexLineEdit" type="LineEdit" parent="HBoxContainer"]
 layout_mode = 2
-text = " 0 "
-fit_content = true
-autowrap_mode = 0
-horizontal_alignment = 1
-vertical_alignment = 1
+placeholder_text = "0"
+alignment = 1
+max_length = 64
+expand_to_text_length = true
 
 [node name="VSeparator" type="VSeparator" parent="HBoxContainer"]
 layout_mode = 2
@@ -32,14 +31,14 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 0
 
-[node name="UpButton" type="Button" parent="HBoxContainer/VBoxContainer"]
+[node name="MoveUpButton" type="Button" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Up"
 
 [node name="HSeparator" type="HSeparator" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="DownButton" type="Button" parent="HBoxContainer/VBoxContainer"]
+[node name="MoveDownButton" type="Button" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Down"
 
@@ -51,3 +50,8 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
 text = "x"
+
+[connection signal="text_submitted" from="HBoxContainer/IndexLineEdit" to="." method="_on_index_line_edit_text_submitted"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/MoveUpButton" to="." method="_on_move_up_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/MoveDownButton" to="." method="_on_move_down_button_pressed"]
+[connection signal="pressed" from="EraseButton" to="." method="_on_erase_button_pressed"]
