@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cgj2q01ygjdst"]
+[gd_scene load_steps=20 format=3 uid="uid://cgj2q01ygjdst"]
 
 [ext_resource type="Script" uid="uid://bhhj2hgewfw3m" path="res://Editor/SIDE/Composer/SideGameEditor.gd" id="1_acdfn"]
 [ext_resource type="Script" uid="uid://lrh786wtxfk1" path="res://Editor/SIDE/Composer/SideMenuBarComposer.gd" id="1_h05j0"]
@@ -10,7 +10,15 @@
 [ext_resource type="Texture2D" uid="uid://wt08ilca7rq5" path="res://assets/gameItemsIcons/sectionIcon.png" id="7_t2a3l"]
 [ext_resource type="Script" uid="uid://k8hsx33s76i6" path="res://Editor/SIDE/Composer/SideGameComponentsList.gd" id="8_dmxwq"]
 [ext_resource type="Script" uid="uid://cr1l58jmclcj" path="res://Editor/FALL/Composer/SoundBoard.gd" id="9_6q0i8"]
+[ext_resource type="Texture2D" uid="uid://tqk05s882tul" path="res://assets/Side/sketch/boss_icon.png" id="9_mvwem"]
 [ext_resource type="PackedScene" uid="uid://35i0ihjh0r07" path="res://Editor/SIDE/Composer/ActionsContainer/ActionsContainer.tscn" id="10_h05j0"]
+[ext_resource type="Texture2D" uid="uid://bdebsxwfg6bae" path="res://assets/Side/sketch/dialog_icon.png" id="10_xqhyp"]
+[ext_resource type="Texture2D" uid="uid://32t0etfuyysb" path="res://assets/Side/sketch/cinematic_icon.png" id="11_egb3b"]
+[ext_resource type="Texture2D" uid="uid://dubkkwvb4spo6" path="res://assets/Side/sketch/change_scenario_icon.png" id="12_5r6e7"]
+[ext_resource type="Texture2D" uid="uid://dpf4w0l1728kq" path="res://assets/Side/sketch/change_enemy_icon.png" id="13_gten1"]
+[ext_resource type="Texture2D" uid="uid://bugdoncw3p571" path="res://assets/Side/sketch/shake_icon.png" id="14_eipb6"]
+[ext_resource type="Texture2D" uid="uid://dfcklvlflxkmx" path="res://assets/Side/sketch/camera_icon.png" id="15_8etje"]
+[ext_resource type="Texture2D" uid="uid://bgxdypc2w57kr" path="res://assets/Side/sketch/vignette_icon.png" id="16_1d8er"]
 
 [node name="Side Editor Composer" type="VBoxContainer"]
 anchors_preset = 15
@@ -203,7 +211,7 @@ custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.0
-item_count = 35
+item_count = 38
 item_0/text = "---- Ferramentas ----"
 item_0/selectable = false
 item_1/text = "Selecionar (E)"
@@ -246,10 +254,21 @@ item_28/icon = ExtResource("5_pudow")
 item_29/text = "Velocidade (Z)"
 item_29/icon = ExtResource("4_gldp5")
 item_30/text = "Chefão"
+item_30/icon = ExtResource("9_mvwem")
 item_31/text = "Diálogo"
+item_31/icon = ExtResource("10_xqhyp")
 item_32/text = "Cinemática"
+item_32/icon = ExtResource("11_egb3b")
 item_33/text = "Mudar cenário"
+item_33/icon = ExtResource("12_5r6e7")
 item_34/text = "Mudar inimigos"
+item_34/icon = ExtResource("13_gten1")
+item_35/text = "Tremor"
+item_35/icon = ExtResource("14_eipb6")
+item_36/text = "Câmera"
+item_36/icon = ExtResource("15_8etje")
+item_37/text = "Vinheta"
+item_37/icon = ExtResource("16_1d8er")
 script = ExtResource("8_dmxwq")
 
 [node name="Resize Button" type="Button" parent="Middle/Game Components List"]
