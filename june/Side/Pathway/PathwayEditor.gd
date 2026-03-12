@@ -4,7 +4,6 @@ class_name PathwayEditor
 
 func _init() -> void:
 	_ground_path = PathEditor.new(Path.Types.GROUND, Direction.RIGHT)
-	_mid_path = PathEditor.new(Path.Types.MID, Direction.RIGHT)
 	_air_path = PathEditor.new(Path.Types.AIR, Direction.RIGHT)
 
 func _ready() -> void:
