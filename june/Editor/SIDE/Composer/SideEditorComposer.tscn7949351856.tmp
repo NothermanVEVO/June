@@ -1,0 +1,345 @@
+[gd_scene load_steps=8 format=3 uid="uid://cgj2q01ygjdst"]
+
+[ext_resource type="Script" uid="uid://bhhj2hgewfw3m" path="res://Editor/SIDE/Composer/SideGameEditor.gd" id="1_acdfn"]
+[ext_resource type="Script" uid="uid://lrh786wtxfk1" path="res://Editor/SIDE/Composer/SideMenuBarComposer.gd" id="1_h05j0"]
+[ext_resource type="Texture2D" uid="uid://oyfiimbt1x0y" path="res://assets/gameItemsIcons/selectIcon.png" id="1_vfltv"]
+[ext_resource type="Texture2D" uid="uid://cmb4i22o1gq1y" path="res://assets/gameItemsIcons/unLockIcon.png" id="2_acdfn"]
+[ext_resource type="Script" uid="uid://k8hsx33s76i6" path="res://Editor/SIDE/Composer/SideGameComponentsList.gd" id="8_dmxwq"]
+[ext_resource type="Script" uid="uid://cr1l58jmclcj" path="res://Editor/FALL/Composer/SoundBoard.gd" id="9_6q0i8"]
+[ext_resource type="PackedScene" uid="uid://35i0ihjh0r07" path="res://Editor/SIDE/Composer/ActionsContainer/ActionsContainer.tscn" id="10_h05j0"]
+
+[node name="Side Editor Composer" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MenuBar" type="FlowContainer" parent="."]
+layout_mode = 2
+script = ExtResource("1_h05j0")
+
+[node name="MenuBar" type="MenuBar" parent="MenuBar"]
+layout_mode = 2
+
+[node name="File" type="PopupMenu" parent="MenuBar/MenuBar"]
+auto_translate_mode = 1
+title = "Arquivo"
+size = Vector2i(100, 143)
+item_count = 6
+item_0/text = "Novo"
+item_0/id = 0
+item_1/text = "Abrir"
+item_1/id = 1
+item_2/text = "Salvar"
+item_2/id = 2
+item_3/text = "Exportar"
+item_3/id = 3
+item_4/text = "Abrir Pasta"
+item_4/id = 4
+item_5/text = "Sair"
+item_5/id = 5
+
+[node name="Edit" type="PopupMenu" parent="MenuBar/MenuBar"]
+auto_translate_mode = 1
+title = "Editar"
+
+[node name="Test" type="Button" parent="MenuBar"]
+layout_mode = 2
+text = "Testar"
+
+[node name="Undo" type="Button" parent="MenuBar"]
+layout_mode = 2
+disabled = true
+text = "<"
+
+[node name="Redo" type="Button" parent="MenuBar"]
+layout_mode = 2
+disabled = true
+text = ">"
+
+[node name="Middle" type="VFlowContainer" parent="MenuBar"]
+layout_mode = 2
+size_flags_horizontal = 6
+
+[node name="PlayerType" type="OptionButton" parent="MenuBar/Middle"]
+layout_mode = 2
+selected = 0
+item_count = 2
+popup/item_0/text = "Jogador 1"
+popup/item_0/id = 0
+popup/item_1/text = "Jogador 2"
+popup/item_1/id = 1
+
+[node name="Difficulty" type="OptionButton" parent="MenuBar/Middle"]
+layout_mode = 2
+selected = 0
+item_count = 4
+popup/item_0/text = "Facil"
+popup/item_0/id = 0
+popup/item_1/text = "Normal"
+popup/item_1/id = 1
+popup/item_2/text = "Hard"
+popup/item_2/id = 2
+popup/item_3/text = "Maximus"
+popup/item_3/id = 3
+
+[node name="SpinBox" type="SpinBox" parent="MenuBar/Middle"]
+custom_minimum_size = Vector2(125, 0)
+layout_mode = 2
+min_value = 1.0
+max_value = 15.0
+value = 1.0
+rounded = true
+suffix = "Estrelas"
+
+[node name="Right" type="FlowContainer" parent="MenuBar"]
+layout_mode = 2
+size_flags_horizontal = 10
+vertical = true
+
+[node name="GridText" type="RichTextLabel" parent="MenuBar/Right"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Grade: "
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Grid" type="OptionButton" parent="MenuBar/Right"]
+layout_mode = 2
+tooltip_text = "Faz uma grid baseado no BPM.
+
+1/1 - ... - 1/16: Divisões extras da grid baseado no BPM."
+selected = 0
+item_count = 6
+popup/item_0/text = "1/1"
+popup/item_0/id = 1
+popup/item_1/text = "1/2"
+popup/item_1/id = 2
+popup/item_2/text = "1/4"
+popup/item_2/id = 4
+popup/item_3/text = "1/8"
+popup/item_3/id = 8
+popup/item_4/text = "1/12"
+popup/item_4/id = 12
+popup/item_5/text = "1/16"
+popup/item_5/id = 16
+
+[node name="ZoomText" type="RichTextLabel" parent="MenuBar/Right"]
+layout_mode = 2
+size_flags_vertical = 3
+text = " Zoom: "
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Zoom" type="SpinBox" parent="MenuBar/Right"]
+layout_mode = 2
+tooltip_text = "Define a velocidade de queda das notas. Também pode funcionar como um zoom no Compositor.
+
+Velocidade mínima: 1.0
+Velocidade máxima: 10.0
+
+Observação: Não altera a posição real delas."
+min_value = 0.1
+max_value = 10.0
+step = 0.1
+value = 1.0
+update_on_text_changed = true
+
+[node name="Middle" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Game" type="Button" parent="Middle"]
+layout_mode = 2
+size_flags_horizontal = 3
+flat = true
+script = ExtResource("1_acdfn")
+
+[node name="Focus Effect" type="ReferenceRect" parent="Middle/Game"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+border_color = Color(1, 1, 1, 1)
+border_width = 5.0
+editor_only = false
+
+[node name="MouseTimeDisplay" type="PanelContainer" parent="Middle/Game"]
+z_index = 1
+layout_mode = 0
+offset_right = 83.0
+offset_bottom = 40.0
+
+[node name="MarginContainer" type="MarginContainer" parent="Middle/Game/MouseTimeDisplay"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Middle/Game/MouseTimeDisplay/MarginContainer"]
+layout_mode = 2
+text = "00:00:000"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="Game Components List" type="ItemList" parent="Middle"]
+clip_contents = false
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.0
+item_count = 24
+item_0/text = "---- Ferramentas ----"
+item_0/selectable = false
+item_1/text = "Selecionar (E)"
+item_1/icon = ExtResource("1_vfltv")
+item_2/text = "Un/lock"
+item_2/icon = ExtResource("2_acdfn")
+item_2/disabled = true
+item_3/text = "---- Alvos ----"
+item_3/selectable = false
+item_4/text = "Leve 1"
+item_5/text = "Leve 2"
+item_6/text = "Leve 3"
+item_7/text = "Médio 1"
+item_8/text = "Médio 2"
+item_9/text = "Pesado"
+item_10/text = "Dupla"
+item_11/text = "Shield"
+item_12/text = "Fortified"
+item_13/text = "Clone"
+item_14/text = "Hammer"
+item_15/text = "Hold"
+item_16/text = "Trap"
+item_17/text = "Machado"
+item_18/text = "Nota 1"
+item_19/text = "Nota 2"
+item_20/text = "Coração"
+item_21/text = "---- Efeitos ----"
+item_21/selectable = false
+item_22/text = "Meia Reação"
+item_23/text = "Servo"
+script = ExtResource("8_dmxwq")
+
+[node name="Resize Button" type="Button" parent="Middle/Game Components List"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = -2.0
+offset_right = 6.0
+grow_vertical = 2
+scale = Vector2(0.5, 1)
+mouse_default_cursor_shape = 10
+
+[node name="ActionsContainer" parent="." instance=ExtResource("10_h05j0")]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer"]
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="SoundBoard" type="FlowContainer" parent="MarginContainer"]
+z_index = 2
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 8
+script = ExtResource("9_6q0i8")
+
+[node name="Time" type="TextEdit" parent="MarginContainer/SoundBoard"]
+custom_minimum_size = Vector2(120, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "00:00:000"
+placeholder_text = "00:00:000"
+emoji_menu_enabled = false
+drag_and_drop_selection_enabled = false
+caret_blink = true
+
+[node name="Time Percentage" type="TextEdit" parent="MarginContainer/SoundBoard"]
+custom_minimum_size = Vector2(70, 40)
+layout_mode = 2
+size_flags_vertical = 4
+text = "0.0%"
+placeholder_text = "0.0%"
+emoji_menu_enabled = false
+drag_and_drop_selection_enabled = false
+
+[node name="Play" type="Button" parent="MarginContainer/SoundBoard"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "Play"
+
+[node name="Stop" type="Button" parent="MarginContainer/SoundBoard"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "Reset"
+
+[node name="SpeedContainer" type="VBoxContainer" parent="MarginContainer/SoundBoard"]
+layout_mode = 2
+alignment = 1
+
+[node name="SpeedText" type="TextEdit" parent="MarginContainer/SoundBoard/SpeedContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "100%"
+placeholder_text = "0%"
+emoji_menu_enabled = false
+drag_and_drop_selection_enabled = false
+scroll_past_end_of_file = true
+scroll_fit_content_height = true
+
+[node name="SpeedSlider" type="HSlider" parent="MarginContainer/SoundBoard/SpeedContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_vertical = 4
+min_value = 1.0
+max_value = 300.0
+value = 100.0
+tick_count = 4
+ticks_on_borders = true
+
+[node name="Time Slider" type="HSlider" parent="MarginContainer/SoundBoard"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+step = 0.1
+tick_count = 15
+
+[connection signal="item_selected" from="MenuBar/Right/Grid" to="MenuBar" method="_on_grid_item_selected"]
+[connection signal="value_changed" from="MenuBar/Right/Zoom" to="MenuBar" method="_on_zoom_value_changed"]
+[connection signal="focus_entered" from="Middle/Game" to="Middle/Game" method="_on_focus_entered"]
+[connection signal="focus_exited" from="Middle/Game" to="Middle/Game" method="_on_focus_exited"]
+[connection signal="resized" from="Middle/Game" to="Middle/Game" method="_on_resized"]
+[connection signal="item_selected" from="Middle/Game Components List" to="Middle/Game Components List" method="_on_item_selected"]
+[connection signal="resized" from="Middle/Game Components List" to="Middle/Game Components List" method="_on_resized"]
+[connection signal="button_down" from="Middle/Game Components List/Resize Button" to="Middle/Game Components List" method="_on_resize_button_down"]
+[connection signal="button_up" from="Middle/Game Components List/Resize Button" to="Middle/Game Components List" method="_on_resize_button_up"]
+[connection signal="focus_entered" from="MarginContainer/SoundBoard/Time" to="MarginContainer/SoundBoard" method="_on_time_focus_entered"]
+[connection signal="focus_exited" from="MarginContainer/SoundBoard/Time" to="MarginContainer/SoundBoard" method="_on_time_focus_exited"]
+[connection signal="text_changed" from="MarginContainer/SoundBoard/Time" to="MarginContainer/SoundBoard" method="_on_time_text_changed"]
+[connection signal="focus_exited" from="MarginContainer/SoundBoard/Time Percentage" to="MarginContainer/SoundBoard" method="_on_time_percentage_focus_exited"]
+[connection signal="text_changed" from="MarginContainer/SoundBoard/Time Percentage" to="MarginContainer/SoundBoard" method="_on_time_percentage_text_changed"]
+[connection signal="pressed" from="MarginContainer/SoundBoard/Play" to="MarginContainer/SoundBoard" method="_on_play_pressed"]
+[connection signal="pressed" from="MarginContainer/SoundBoard/Stop" to="MarginContainer/SoundBoard" method="_on_stop_pressed"]
+[connection signal="focus_exited" from="MarginContainer/SoundBoard/SpeedContainer/SpeedText" to="MarginContainer/SoundBoard" method="_on_speed_text_focus_exited"]
+[connection signal="text_changed" from="MarginContainer/SoundBoard/SpeedContainer/SpeedText" to="MarginContainer/SoundBoard" method="_on_speed_text_text_changed"]
+[connection signal="drag_ended" from="MarginContainer/SoundBoard/SpeedContainer/SpeedSlider" to="MarginContainer/SoundBoard" method="_on_speed_slider_drag_ended"]
+[connection signal="drag_started" from="MarginContainer/SoundBoard/SpeedContainer/SpeedSlider" to="MarginContainer/SoundBoard" method="_on_speed_slider_drag_started"]
+[connection signal="drag_ended" from="MarginContainer/SoundBoard/Time Slider" to="MarginContainer/SoundBoard" method="_on_time_slider_drag_ended"]
+[connection signal="drag_started" from="MarginContainer/SoundBoard/Time Slider" to="MarginContainer/SoundBoard" method="_on_time_slider_drag_started"]

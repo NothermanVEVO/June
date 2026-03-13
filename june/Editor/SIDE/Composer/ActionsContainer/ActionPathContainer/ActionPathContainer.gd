@@ -10,7 +10,7 @@ signal request_to_move_down(action_path_container : ActionPathContainer)
 
 var _path : Path
 
-func _init(path : Path = null):
+func _init(path : Path = null) -> void:
 	if path:
 		_path = path
 	else:

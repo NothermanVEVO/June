@@ -6,12 +6,49 @@ var _pathway_editor : PathwayEditor
 
 var _highest_grid_time : float
 
+@onready var _actions_item_list : ItemList = $"../ActionListMarginContainer/ActionsItemList"
+
 func setup(pathway_editor : PathwayEditor, highest_grid_time : float) -> void:
 	_pathway_editor = pathway_editor
 	_highest_grid_time = highest_grid_time
 
 func _process(delta: float) -> void:
 	queue_redraw()
+	
+	var selected_items := _actions_item_list.get_selected_items()
+	
+	if not selected_items.is_empty():
+		_handle_selected_item(_actions_item_list.get_item_text(selected_items[0]))
+
+func _handle_selected_item(item_text : String) -> void:
+	match item_text:
+		"Selecionar":
+			pass
+		"Comentário":
+			pass
+		"Seção":
+			pass
+		"Fade":
+			pass
+		"Speed":
+			pass
+		"Chefão":
+			pass
+		"Dialogo":
+			pass
+		"Cinemática":
+			pass
+		"Trocar cenário":
+			pass
+		"Trocar inimigos":
+			pass
+		"Tremor":
+			pass
+		"Câmera":
+			pass
+		"Vinheta":
+			pass
+	pass
 
 func _draw() -> void:
 	if not _pathway_editor:

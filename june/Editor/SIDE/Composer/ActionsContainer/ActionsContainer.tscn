@@ -1,8 +1,9 @@
-[gd_scene load_steps=15 format=3 uid="uid://35i0ihjh0r07"]
+[gd_scene load_steps=16 format=3 uid="uid://35i0ihjh0r07"]
 
 [ext_resource type="Script" uid="uid://cfy0paxff4y1k" path="res://Editor/SIDE/Composer/ActionsContainer/ActionsContainer.gd" id="1_6vc3d"]
 [ext_resource type="Script" uid="uid://cml07poxkfj" path="res://Editor/SIDE/Composer/ActionsContainer/ActionsVBoxContainer.gd" id="2_d4yn7"]
 [ext_resource type="Texture2D" uid="uid://bnbl4asu7mi5y" path="res://assets/Side/sketch/comment_icon.png" id="3_cno7x"]
+[ext_resource type="Texture2D" uid="uid://oyfiimbt1x0y" path="res://assets/gameItemsIcons/selectIcon.png" id="3_scguc"]
 [ext_resource type="Texture2D" uid="uid://dygqxtvx7vpk8" path="res://assets/Side/sketch/section_icon.png" id="4_scguc"]
 [ext_resource type="Texture2D" uid="uid://0j7a6e8ypfix" path="res://assets/Side/sketch/fade_icon.png" id="5_vmhx0"]
 [ext_resource type="Texture2D" uid="uid://kckq6lmnkqjh" path="res://assets/Side/sketch/speed_icon.png" id="6_yyej7"]
@@ -113,31 +114,36 @@ color = Color(0, 0, 0, 1)
 [node name="ActionsItemList" type="ItemList" parent="VBoxContainer/ScrollContainer/CenterContainer/HBoxContainer/ActionListMarginContainer"]
 layout_mode = 2
 text_overrun_behavior = 1
-item_count = 12
-item_0/text = "Comentário"
-item_0/icon = ExtResource("3_cno7x")
-item_1/text = "Seção"
-item_1/icon = ExtResource("4_scguc")
-item_2/text = "Fade"
-item_2/icon = ExtResource("5_vmhx0")
-item_3/text = "Velocidade"
-item_3/icon = ExtResource("6_yyej7")
-item_4/text = "Chefão"
-item_4/icon = ExtResource("7_55afu")
-item_5/text = "Diálogo"
-item_5/icon = ExtResource("8_xo0fn")
-item_6/text = "Cinemática"
-item_6/icon = ExtResource("9_tc3no")
-item_7/text = "Trocar cenário"
-item_7/icon = ExtResource("10_4sbbd")
-item_8/text = "Trocar inimigos"
-item_8/icon = ExtResource("11_525ps")
-item_9/text = "Tremor"
-item_9/icon = ExtResource("12_4lntw")
-item_10/text = "Câmera"
-item_10/icon = ExtResource("13_xfruf")
-item_11/text = "Vinheta"
-item_11/icon = ExtResource("14_w86ec")
+item_count = 15
+item_0/text = "---- Ferramentas ----"
+item_0/selectable = false
+item_1/text = "Selecionar"
+item_1/icon = ExtResource("3_scguc")
+item_2/text = "---- Ações ----"
+item_3/text = "Comentário"
+item_3/icon = ExtResource("3_cno7x")
+item_4/text = "Seção"
+item_4/icon = ExtResource("4_scguc")
+item_5/text = "Fade"
+item_5/icon = ExtResource("5_vmhx0")
+item_6/text = "Velocidade"
+item_6/icon = ExtResource("6_yyej7")
+item_7/text = "Chefão"
+item_7/icon = ExtResource("7_55afu")
+item_8/text = "Diálogo"
+item_8/icon = ExtResource("8_xo0fn")
+item_9/text = "Cinemática"
+item_9/icon = ExtResource("9_tc3no")
+item_10/text = "Trocar cenário"
+item_10/icon = ExtResource("10_4sbbd")
+item_11/text = "Trocar inimigos"
+item_11/icon = ExtResource("11_525ps")
+item_12/text = "Tremor"
+item_12/icon = ExtResource("12_4lntw")
+item_13/text = "Câmera"
+item_13/icon = ExtResource("13_xfruf")
+item_14/text = "Vinheta"
+item_14/icon = ExtResource("14_w86ec")
 
 [connection signal="button_down" from="Panel/ResizeButton" to="." method="_on_resize_button_button_down"]
 [connection signal="button_up" from="Panel/ResizeButton" to="." method="_on_resize_button_button_up"]
