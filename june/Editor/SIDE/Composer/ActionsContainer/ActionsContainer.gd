@@ -22,7 +22,9 @@ var _last_size_y_before_close : float = 300
 @onready var _add_action_path_button : Button = $VBoxContainer/TopContainer/AddActionPathButton
 @onready var _close_button : Button = $VBoxContainer/TopContainer/CloseButton
 
-@onready var _actions_vbox_container : ActionsVBoxContainer = $VBoxContainer/ScrollContainer/CenterContainer/ActionsVBoxContainer
+@onready var _actions_vbox_container : ActionsVBoxContainer = $VBoxContainer/ScrollContainer/CenterContainer/HBoxContainer/ActionsVBoxContainer
+
+@onready var _action_list_margin_container : MarginContainer = $VBoxContainer/ScrollContainer/CenterContainer/HBoxContainer/ActionListMarginContainer
 
 func _ready() -> void:
 	set_process(false)
@@ -53,6 +55,7 @@ func _on_close_button_toggled(toggled_on: bool) -> void:
 		_add_action_path_button.visible = true
 		_actions_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		custom_minimum_size.y = _last_size_y_before_close
+		_action_list_margin_container.custom_minimum_size.x = 200
 	else:
 		_close_button.text = "Abrir editor de ações"
 		_title_rich_text_label.visible = false
@@ -60,6 +63,7 @@ func _on_close_button_toggled(toggled_on: bool) -> void:
 		_actions_container.size_flags_horizontal = Control.SIZE_SHRINK_END
 		_last_size_y_before_close = custom_minimum_size.y
 		custom_minimum_size.y = 0
+		_action_list_margin_container.custom_minimum_size.x = 0
 
 func _on_add_action_path_button_pressed() -> void:
 	var action_path_container : ActionPathContainer = _ACTION_PATH_CONTAINER_SCENE.instantiate()

@@ -1,7 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://35i0ihjh0r07"]
+[gd_scene load_steps=15 format=3 uid="uid://35i0ihjh0r07"]
 
 [ext_resource type="Script" uid="uid://cfy0paxff4y1k" path="res://Editor/SIDE/Composer/ActionsContainer/ActionsContainer.gd" id="1_6vc3d"]
 [ext_resource type="Script" uid="uid://cml07poxkfj" path="res://Editor/SIDE/Composer/ActionsContainer/ActionsVBoxContainer.gd" id="2_d4yn7"]
+[ext_resource type="Texture2D" uid="uid://bnbl4asu7mi5y" path="res://assets/Side/sketch/comment_icon.png" id="3_cno7x"]
+[ext_resource type="Texture2D" uid="uid://dygqxtvx7vpk8" path="res://assets/Side/sketch/section_icon.png" id="4_scguc"]
+[ext_resource type="Texture2D" uid="uid://0j7a6e8ypfix" path="res://assets/Side/sketch/fade_icon.png" id="5_vmhx0"]
+[ext_resource type="Texture2D" uid="uid://kckq6lmnkqjh" path="res://assets/Side/sketch/speed_icon.png" id="6_yyej7"]
+[ext_resource type="Texture2D" uid="uid://tqk05s882tul" path="res://assets/Side/sketch/boss_icon.png" id="7_55afu"]
+[ext_resource type="Texture2D" uid="uid://bdebsxwfg6bae" path="res://assets/Side/sketch/dialog_icon.png" id="8_xo0fn"]
+[ext_resource type="Texture2D" uid="uid://32t0etfuyysb" path="res://assets/Side/sketch/cinematic_icon.png" id="9_tc3no"]
+[ext_resource type="Texture2D" uid="uid://dteq1ullgnfl1" path="res://assets/Side/sketch/change_scenario_icon_v2.png" id="10_4sbbd"]
+[ext_resource type="Texture2D" uid="uid://cqhm48a6l7ccw" path="res://assets/Side/sketch/change_enemy_icon_v2.png" id="11_525ps"]
+[ext_resource type="Texture2D" uid="uid://bugdoncw3p571" path="res://assets/Side/sketch/shake_icon.png" id="12_4lntw"]
+[ext_resource type="Texture2D" uid="uid://dfcklvlflxkmx" path="res://assets/Side/sketch/camera_icon.png" id="13_xfruf"]
+[ext_resource type="Texture2D" uid="uid://bgxdypc2w57kr" path="res://assets/Side/sketch/vignette_icon.png" id="14_w86ec"]
 
 [node name="ActionsContainer" type="MarginContainer"]
 anchors_preset = 10
@@ -82,10 +94,50 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="ActionsVBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/CenterContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/CenterContainer"]
 layout_mode = 2
+
+[node name="ActionsVBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/CenterContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 alignment = 2
 script = ExtResource("2_d4yn7")
+
+[node name="ActionListMarginContainer" type="MarginContainer" parent="VBoxContainer/ScrollContainer/CenterContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer/ScrollContainer/CenterContainer/HBoxContainer/ActionListMarginContainer"]
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="ActionsItemList" type="ItemList" parent="VBoxContainer/ScrollContainer/CenterContainer/HBoxContainer/ActionListMarginContainer"]
+layout_mode = 2
+text_overrun_behavior = 1
+item_count = 12
+item_0/text = "Comentário"
+item_0/icon = ExtResource("3_cno7x")
+item_1/text = "Seção"
+item_1/icon = ExtResource("4_scguc")
+item_2/text = "Fade"
+item_2/icon = ExtResource("5_vmhx0")
+item_3/text = "Velocidade"
+item_3/icon = ExtResource("6_yyej7")
+item_4/text = "Chefão"
+item_4/icon = ExtResource("7_55afu")
+item_5/text = "Diálogo"
+item_5/icon = ExtResource("8_xo0fn")
+item_6/text = "Cinemática"
+item_6/icon = ExtResource("9_tc3no")
+item_7/text = "Trocar cenário"
+item_7/icon = ExtResource("10_4sbbd")
+item_8/text = "Trocar inimigos"
+item_8/icon = ExtResource("11_525ps")
+item_9/text = "Tremor"
+item_9/icon = ExtResource("12_4lntw")
+item_10/text = "Câmera"
+item_10/icon = ExtResource("13_xfruf")
+item_11/text = "Vinheta"
+item_11/icon = ExtResource("14_w86ec")
 
 [connection signal="button_down" from="Panel/ResizeButton" to="." method="_on_resize_button_button_down"]
 [connection signal="button_up" from="Panel/ResizeButton" to="." method="_on_resize_button_button_up"]

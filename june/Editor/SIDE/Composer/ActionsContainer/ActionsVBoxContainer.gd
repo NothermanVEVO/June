@@ -40,10 +40,10 @@ func _draw() -> void:
 			var is_end_line : bool = is_equal_approx(_highest_grid_time, time)
 			if not is_end_line:
 				draw_line(Vector2(pos_x, min_y), Vector2(pos_x, max_y), Color.WHITE, 1, true)
-				#draw_line(Vector2(pos_x, max_y - Path.HEIGHT), Vector2(pos_x, max_y), Color.WHITE, 1, true)
 			else:
 				draw_line(Vector2(pos_x, min_y), Vector2(pos_x, max_y), Color.MEDIUM_SPRING_GREEN, 5, true)
-				#draw_line(Vector2(pos_x, max_y - Path.HEIGHT), Vector2(pos_x, max_y), Color.MEDIUM_SPRING_GREEN, 5, true)
 		else:
 			draw_line(Vector2(pos_x, min_y), Vector2(pos_x, max_y), Color.CRIMSON, 5, true)
-			#draw_line(Vector2(pos_x, max_y - Path.HEIGHT), Vector2(pos_x, max_y), Color.CRIMSON, 5, true)
+	
+	var start_path_line_x := Path.get_pos_x(0, _pathway_editor.WIDTH_IN_SECS_BY_SPEED(), 0, Path.hitzone, Path.width)
+	draw_line(Vector2(start_path_line_x, min_y), Vector2(start_path_line_x, max_y), Color.YELLOW, 5, true)

@@ -8,6 +8,14 @@ signal request_to_erase(action_path_container : ActionPathContainer)
 signal request_to_move_up(action_path_container : ActionPathContainer)
 signal request_to_move_down(action_path_container : ActionPathContainer)
 
+var _path : Path
+
+func _init(path : Path = null):
+	if path:
+		_path = path
+	else:
+		_path = Path.new(Path.Types.AIR, Pathway.Direction.RIGHT)
+
 func update_index_text() -> void:
 	var text := _index_line_edit.text.strip_edges()
 	if text.is_empty() or text.is_valid_int():

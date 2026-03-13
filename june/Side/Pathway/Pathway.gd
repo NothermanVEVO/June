@@ -98,6 +98,45 @@ func get_global_targets_intersected_with(rect : Rect2, from : float, to : float)
 	
 	return intersected_targets
 
+func add_action(action : Action) -> void:
+	var low := 0
+	var high := _actions.size()
+
+	while low < high:
+		@warning_ignore("integer_division")
+		var mid := (low + high) / 2
+		if action.get_current_time() < _actions[mid].get_current_time():
+			high = mid
+		else:
+			low = mid + 1
+
+	_actions.insert(low, action)
+
+func remove_action(action : Action) -> void:
+	_actions.erase(action)
+
+#func add_action_at(start_time : float) -> void:
+	#pass
+#
+#func remove_action_at(start_time : float) -> void:
+	#pass
+
+func update_action(action : Action) -> void:
+	_actions.erase(action)
+	
+	var low := 0
+	var high := _actions.size()
+
+	while low < high:
+		@warning_ignore("integer_division")
+		var mid := (low + high) / 2
+		if action.get_time() < _actions[mid].get_time():
+			high = mid
+		else:
+			low = mid + 1
+
+	_actions.insert(low, action)
+
 static func _set_distance_from_border(distance : float) -> void:
 	_distance_from_border = distance
 
