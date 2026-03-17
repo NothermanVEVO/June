@@ -3,14 +3,22 @@ extends VBoxContainer
 class_name ActionsVBoxContainer
 
 var _pathway_editor : PathwayEditor
-
 var _highest_grid_time : float
+
+var _sample_action := Sprite2D.new()
+var _current_hold_action : ManualTargetActionHold
 
 @onready var _actions_item_list : ItemList = $"../ActionListMarginContainer/ActionsItemList"
 
 func setup(pathway_editor : PathwayEditor, highest_grid_time : float) -> void:
 	_pathway_editor = pathway_editor
 	_highest_grid_time = highest_grid_time
+
+func _ready() -> void:
+	_sample_action.global_position = Vector2(INF, INF)
+	_sample_action.modulate.a = 0.5
+	
+	add_child(_sample_action)
 
 func _process(delta: float) -> void:
 	queue_redraw()
@@ -25,7 +33,7 @@ func _handle_selected_item(item_text : String) -> void:
 		"Selecionar":
 			pass
 		"Comentário":
-			pass
+			_process_comment() ## DOING
 		"Seção":
 			pass
 		"Fade":
@@ -48,7 +56,9 @@ func _handle_selected_item(item_text : String) -> void:
 			pass
 		"Vinheta":
 			pass
-	pass
+
+func _process_comment() -> void:
+	_sample_action.texture = SideEditor.COMMENT_ICON_TEXTURE
 
 func _draw() -> void:
 	if not _pathway_editor:

@@ -2,7 +2,7 @@ extends Action
 
 class_name ActionComment
 
-func create_auto_target() -> AutoTarget:
-	var auto_target := AutoTarget.new(start_time, Path.Types.GROUND)
-	auto_target.texture = SideEditor.COMMENT_ICON_TEXTURE
-	return auto_target
+func create_manual_target() -> ManualTarget:
+	var manual_target := ManualTargetAction.new(start_time, Path.Types.GROUND, self)
+	manual_target.texture = SideEditor.COMMENT_ICON_TEXTURE
+	return manual_target
