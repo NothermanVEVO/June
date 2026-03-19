@@ -590,7 +590,6 @@ func _get_closest_grid_time_to_mouse_in_x() -> float:
 	return Path.get_pos_x(Song.get_time(), Song.get_time() + _pathway_editor.WIDTH_IN_SECS_BY_SPEED(),time, Path.hitzone, Path.width)
 
 func _get_closest_grid_time_to_mouse() -> float:
-	var mouse_pos : Vector2 = _get_limited_by_pathway_mouse_position()
 	return clampf(get_closest_grid_time_pos(Path.get_time_x(Path.hitzone, Path.width, get_global_mouse_position().x, Song.get_time(), Song.get_time() + _pathway_editor.WIDTH_IN_SECS_BY_SPEED())), 0, _highest_grid_time)
 
 func _calculate_highest_grid_time() -> void:

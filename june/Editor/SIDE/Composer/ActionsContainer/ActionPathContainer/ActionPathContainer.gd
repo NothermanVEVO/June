@@ -16,6 +16,9 @@ func _init(path : Path = null) -> void:
 	else:
 		_path = Path.new(Path.Types.AIR, Pathway.Direction.RIGHT)
 
+func get_middle_y() -> float:
+	return position.y + (get_rect().size.y / 2)
+
 func update_index_text() -> void:
 	var text := _index_line_edit.text.strip_edges()
 	if text.is_empty() or text.is_valid_int():

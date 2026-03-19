@@ -14,6 +14,8 @@ var _mouse_position_when_down : Vector2
 var _start_minimum_size_y : float
 var _last_size_y_before_close : float = 300
 
+var _actions_paths_containers : Array[ActionPathContainer] = []
+
 ## ONREADY THINGS
 
 @onready var _actions_container : ActionsContainer = $"."
@@ -30,7 +32,7 @@ func _ready() -> void:
 	set_process(false)
 
 func setup(pathway_editor : PathwayEditor, highest_grid_time : float) -> void:
-	_actions_vbox_container.setup(pathway_editor, highest_grid_time)
+	_actions_vbox_container.setup(pathway_editor, highest_grid_time, _actions_paths_containers)
 
 func _process(delta: float) -> void:
 	if _is_resizing:
@@ -69,6 +71,7 @@ func _on_add_action_path_button_pressed() -> void:
 	var action_path_container : ActionPathContainer = _ACTION_PATH_CONTAINER_SCENE.instantiate()
 	_actions_vbox_container.add_child(action_path_container)
 	_actions_vbox_container.move_child(action_path_container, 0)
+	_actions_paths_containers.append(action_path_container)
 	
 	_update_all_action_path_container_indexes()
 	
@@ -78,6 +81,7 @@ func _on_add_action_path_button_pressed() -> void:
 
 func _requested_to_erase(action_path_container : ActionPathContainer) -> void:
 	_actions_vbox_container.remove_child(action_path_container)
+	_actions_paths_containers.erase(action_path_container)
 	action_path_container.queue_free()
 	
 	_update_all_action_path_container_indexes()
