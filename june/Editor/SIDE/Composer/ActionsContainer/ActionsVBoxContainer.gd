@@ -8,6 +8,8 @@ var _highest_grid_time : float
 var _sample_action := Sprite2D.new()
 var _current_hold_action : ManualTargetActionHold
 
+var _closest_action_path_container : ActionPathContainer = null
+
 var _actions_paths_containers : Array[ActionPathContainer]
 
 @onready var _actions_item_list : ItemList = $"../ActionListMarginContainer/ActionsItemList"
@@ -26,6 +28,8 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	queue_redraw()
+	
+	_closest_action_path_container = _get_closest_action_path_container()
 	
 	var selected_items := _actions_item_list.get_selected_items()
 	
@@ -70,6 +74,10 @@ func _process_comment() -> void:
 	
 	_sample_action.texture = SideEditor.COMMENT_ICON_TEXTURE
 	_sample_action.position = _get_global_locked_mouse_position()
+	
+	if Input.is_action_just_pressed("Add Item") and _closest_action_path_container:
+		var comment_action := ActionComment.new(_get_closest_grid_time_to_mouse())
+		_closest_action_path_container.get_path_editor().add_manual_target(comment_action.create_manual_target())
 
 func _get_global_locked_mouse_position() -> Vector2:
 	var mouse_pos : Vector2
@@ -79,17 +87,20 @@ func _get_global_locked_mouse_position() -> Vector2:
 	
 	return mouse_pos
 
-func _get_closest_action_path_container_mouse_y() -> float:
+func _get_closest_action_path_container() -> ActionPathContainer:
 	var closest_distance : float = INF
-	var closest_y : float = INF
+	var closest_action_path_container : ActionPathContainer
 	
 	for action_path_container in _actions_paths_containers:
 		var current_distance : float = (action_path_container.global_position + (action_path_container.get_global_rect().size / 2)).distance_squared_to(get_global_mouse_position())
 		if current_distance < closest_distance:
-			closest_y = action_path_container.get_middle_y()
+			closest_action_path_container = action_path_container
 			closest_distance = current_distance
 	
-	return closest_y
+	return closest_action_path_container
+
+func _get_closest_action_path_container_mouse_y() -> float:
+	return _closest_action_path_container.get_middle_y() if _closest_action_path_container else INF
 
 func _get_closest_grid_time_to_mouse_in_x() -> float:
 	var time : float = clampf(_get_closest_grid_time_to_mouse(), 0, _highest_grid_time)
