@@ -42,31 +42,34 @@ func _handle_selected_item(item_text : String) -> void:
 	
 	match item_text:
 		"Selecionar":
-			pass
-		"Comentário":
-			_process_comment() ## DOING
-		"Seção":
-			pass
+			_process_select()
+		"Comentário": ## TAP
+			_process_comment()
+		"Seção": ## TAP
+			_process_section()
 		"Fade":
-			pass
-		"Speed":
-			pass
+			_process_fade()
+		"Velocidade": ## TAP
+			_process_speed()
 		"Chefão":
-			pass
+			_process_boss()
 		"Dialogo":
-			pass
+			_process_dialog()
 		"Cinemática":
-			pass
-		"Trocar cenário":
-			pass
-		"Trocar inimigos":
-			pass
-		"Tremor":
-			pass
+			_process_cinematic()
+		"Trocar cenário": ## TAP
+			_process_change_scenario()
+		"Trocar inimigos": ## TAP
+			_process_change_enemy()
+		"Tremor": ## TAP
+			_process_shake()
 		"Câmera":
-			pass
+			_process_camera()
 		"Vinheta":
-			pass
+			_process_vignette()
+
+func _process_select() -> void:
+	pass
 
 func _process_comment() -> void:
 	if not _is_mouse_inside():
@@ -78,6 +81,79 @@ func _process_comment() -> void:
 	if Input.is_action_just_pressed("Add Item") and _closest_action_path_container:
 		var comment_action := ActionComment.new(_get_closest_grid_time_to_mouse())
 		_closest_action_path_container.get_path_editor().add_manual_target(comment_action.create_manual_target())
+
+func _process_section() -> void:
+	if not _is_mouse_inside():
+		return
+	
+	_sample_action.texture = SideEditor.SECTION_ICON_TEXTURE
+	_sample_action.position = _get_global_locked_mouse_position()
+	
+	if Input.is_action_just_pressed("Add Item") and _closest_action_path_container:
+		var section_action := ActionSection.new(_get_closest_grid_time_to_mouse())
+		_closest_action_path_container.get_path_editor().add_manual_target(section_action.create_manual_target())
+
+func _process_fade() -> void:
+	pass
+
+func _process_speed() -> void:
+	if not _is_mouse_inside():
+		return
+	
+	_sample_action.texture = SideEditor.SPEED_ICON_TEXTURE
+	_sample_action.position = _get_global_locked_mouse_position()
+	
+	if Input.is_action_just_pressed("Add Item") and _closest_action_path_container:
+		var speed_action := ActionSpeed.new(_get_closest_grid_time_to_mouse())
+		_closest_action_path_container.get_path_editor().add_manual_target(speed_action.create_manual_target())
+
+func _process_boss() -> void:
+	pass
+
+func _process_dialog() -> void:
+	pass
+
+func _process_cinematic() -> void:
+	pass
+
+func _process_change_scenario() -> void:
+	if not _is_mouse_inside():
+		return
+	
+	_sample_action.texture = SideEditor.CHANGE_SCENARIO_ICON_TEXTURE
+	_sample_action.position = _get_global_locked_mouse_position()
+	
+	if Input.is_action_just_pressed("Add Item") and _closest_action_path_container:
+		var change_scenario_action := ActionChangeScenerio.new(_get_closest_grid_time_to_mouse())
+		_closest_action_path_container.get_path_editor().add_manual_target(change_scenario_action.create_manual_target())
+
+func _process_change_enemy() -> void:
+	if not _is_mouse_inside():
+		return
+	
+	_sample_action.texture = SideEditor.CHANGE_ENEMIES_ICON_TEXTURE
+	_sample_action.position = _get_global_locked_mouse_position()
+	
+	if Input.is_action_just_pressed("Add Item") and _closest_action_path_container:
+		var change_enemy_action := ActionChangeEnemy.new(_get_closest_grid_time_to_mouse())
+		_closest_action_path_container.get_path_editor().add_manual_target(change_enemy_action.create_manual_target())
+
+func _process_shake() -> void:
+	if not _is_mouse_inside():
+		return
+	
+	_sample_action.texture = SideEditor.SHAKE_ICON_TEXTURE
+	_sample_action.position = _get_global_locked_mouse_position()
+	
+	if Input.is_action_just_pressed("Add Item") and _closest_action_path_container:
+		var shake_action := ActionShake.new(_get_closest_grid_time_to_mouse())
+		_closest_action_path_container.get_path_editor().add_manual_target(shake_action.create_manual_target())
+
+func _process_camera() -> void:
+	pass
+
+func _process_vignette() -> void:
+	pass
 
 func _get_global_locked_mouse_position() -> Vector2:
 	var mouse_pos : Vector2
