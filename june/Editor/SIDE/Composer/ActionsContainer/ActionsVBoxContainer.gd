@@ -42,7 +42,7 @@ func _handle_selected_item(item_text : String) -> void:
 	
 	match item_text:
 		"Selecionar":
-			_process_select()
+			_process_select() ## WORKING
 		"Comentário": ## TAP
 			_process_comment()
 		"Seção": ## TAP
