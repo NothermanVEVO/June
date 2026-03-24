@@ -28,10 +28,13 @@ var _actions_paths_containers : Array[ActionPathContainer] = []
 
 @onready var _action_list_margin_container : MarginContainer = $VBoxContainer/ScrollContainer/CenterContainer/HBoxContainer/ActionListMarginContainer
 
+var _pathway_editor : PathwayEditor
+
 func _ready() -> void:
 	set_process(false)
 
 func setup(pathway_editor : PathwayEditor, highest_grid_time : float) -> void:
+	_pathway_editor = pathway_editor
 	_actions_vbox_container.setup(pathway_editor, highest_grid_time, _actions_paths_containers)
 
 func _process(delta: float) -> void:
@@ -72,6 +75,8 @@ func _on_add_action_path_button_pressed() -> void:
 	_actions_vbox_container.add_child(action_path_container)
 	_actions_vbox_container.move_child(action_path_container, 0)
 	_actions_paths_containers.append(action_path_container)
+	
+	action_path_container.get_path_editor().set_speed(_pathway_editor.get_speed())
 	
 	_update_all_action_path_container_indexes()
 	

@@ -73,6 +73,7 @@ func get_manual_targets(from : float, to : float) -> Array[ManualTarget]:
 	return result
 
 func add_manual_target(manual_target : ManualTarget) -> void:
+	manual_target.set_current_speed(_speed)
 	_add_value(_manual_targets, manual_target)
 
 func remove_manual_target(manual_target : ManualTarget, free : bool = false) -> void:
@@ -102,6 +103,7 @@ func get_auto_targets(from : float, to : float) -> Array[AutoTarget]:
 	return result
 
 func add_auto_target(auto_target : AutoTarget) -> void:
+	auto_target.set_current_speed(_speed)
 	_add_value(_auto_targets, auto_target)
 
 func remove_auto_target(auto_target : AutoTarget, free : bool = false) -> void:

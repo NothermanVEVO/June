@@ -12,10 +12,17 @@ var _closest_action_path_container : ActionPathContainer = null
 
 var _actions_paths_containers : Array[ActionPathContainer]
 
+var _is_pressing_left_edit_hold_button : bool = false
+var _is_pressing_right_edit_hold_button : bool = false
+
 @onready var _actions_item_list : ItemList = $"../ActionListMarginContainer/ActionsItemList"
 
 func setup(pathway_editor : PathwayEditor, highest_grid_time : float, actions_paths_containers : Array[ActionPathContainer]) -> void:
 	_pathway_editor = pathway_editor
+	
+	if _pathway_editor:
+		_pathway_editor.changed_speed.connect(_changed_speed)
+	
 	_highest_grid_time = highest_grid_time
 	_actions_paths_containers = actions_paths_containers
 
@@ -25,6 +32,10 @@ func _ready() -> void:
 	_sample_action.scale *= 1.5
 	
 	add_child(_sample_action)
+
+func _changed_speed(speed : float) -> void:
+	for action_path_container in _actions_paths_containers:
+		action_path_container.get_path_editor().set_speed(speed)
 
 func _process(delta: float) -> void:
 	queue_redraw()
@@ -42,20 +53,20 @@ func _handle_selected_item(item_text : String) -> void:
 	
 	match item_text:
 		"Selecionar":
-			_process_select() ## WORKING
+			_process_select()
 		"Comentário": ## TAP
 			_process_comment()
 		"Seção": ## TAP
 			_process_section()
-		"Fade":
+		"Fade": ## HOLD
 			_process_fade()
 		"Velocidade": ## TAP
 			_process_speed()
-		"Chefão":
+		"Chefão": ## HOLD
 			_process_boss()
-		"Dialogo":
+		"Dialogo": ## HOLD
 			_process_dialog()
-		"Cinemática":
+		"Cinemática": ## HOLD
 			_process_cinematic()
 		"Trocar cenário": ## TAP
 			_process_change_scenario()
@@ -63,9 +74,9 @@ func _handle_selected_item(item_text : String) -> void:
 			_process_change_enemy()
 		"Tremor": ## TAP
 			_process_shake()
-		"Câmera":
+		"Câmera": ## HOLD
 			_process_camera()
-		"Vinheta":
+		"Vinheta": ## HOLD
 			_process_vignette()
 
 func _process_select() -> void:
@@ -76,7 +87,7 @@ func _process_comment() -> void:
 		return
 	
 	_sample_action.texture = SideEditor.COMMENT_ICON_TEXTURE
-	_sample_action.position = _get_global_locked_mouse_position()
+	_sample_action.global_position = _get_global_locked_mouse_position()
 	
 	if Input.is_action_just_pressed("Add Item") and _closest_action_path_container:
 		var comment_action := ActionComment.new(_get_closest_grid_time_to_mouse())
@@ -87,21 +98,39 @@ func _process_section() -> void:
 		return
 	
 	_sample_action.texture = SideEditor.SECTION_ICON_TEXTURE
-	_sample_action.position = _get_global_locked_mouse_position()
+	_sample_action.global_position = _get_global_locked_mouse_position()
 	
 	if Input.is_action_just_pressed("Add Item") and _closest_action_path_container:
 		var section_action := ActionSection.new(_get_closest_grid_time_to_mouse())
 		_closest_action_path_container.get_path_editor().add_manual_target(section_action.create_manual_target())
 
 func _process_fade() -> void:
-	pass
+	if not _is_mouse_inside():
+		return
+	
+	_sample_action.texture = SideEditor.FADE_ICON_TEXTURE
+	_sample_action.global_position = _get_global_locked_mouse_position()
+	
+	if Input.is_action_just_pressed("Add Item"):
+		var time : float = _get_closest_grid_time_to_mouse()
+		var fade_action := ActionFade.new(time, time)
+		_current_hold_action = fade_action.create_manual_target()
+		
+		_closest_action_path_container.get_path_editor().add_manual_target(_current_hold_action)
+		_current_hold_action.set_process.call_deferred(true)
+		_current_hold_action.is_pressing_left_edit_button.connect(_is_pressing_left_edit_button_hold)
+		_current_hold_action.is_pressing_right_edit_button.connect(_is_pressing_right_edit_button_hold)
+		_current_hold_action.released_left_edit_button.connect(_hold_left_edit_button_released)
+		_current_hold_action.released_right_edit_button.connect(_hold_right_edit_button_released)
+	elif _current_hold_action != null and Input.is_action_pressed("Add Item"):
+		_current_hold_action.set_end_time(_get_closest_grid_time_to_mouse())
 
 func _process_speed() -> void:
 	if not _is_mouse_inside():
 		return
 	
 	_sample_action.texture = SideEditor.SPEED_ICON_TEXTURE
-	_sample_action.position = _get_global_locked_mouse_position()
+	_sample_action.global_position = _get_global_locked_mouse_position()
 	
 	if Input.is_action_just_pressed("Add Item") and _closest_action_path_container:
 		var speed_action := ActionSpeed.new(_get_closest_grid_time_to_mouse())
@@ -121,7 +150,7 @@ func _process_change_scenario() -> void:
 		return
 	
 	_sample_action.texture = SideEditor.CHANGE_SCENARIO_ICON_TEXTURE
-	_sample_action.position = _get_global_locked_mouse_position()
+	_sample_action.global_position = _get_global_locked_mouse_position()
 	
 	if Input.is_action_just_pressed("Add Item") and _closest_action_path_container:
 		var change_scenario_action := ActionChangeScenerio.new(_get_closest_grid_time_to_mouse())
@@ -132,7 +161,7 @@ func _process_change_enemy() -> void:
 		return
 	
 	_sample_action.texture = SideEditor.CHANGE_ENEMIES_ICON_TEXTURE
-	_sample_action.position = _get_global_locked_mouse_position()
+	_sample_action.global_position = _get_global_locked_mouse_position()
 	
 	if Input.is_action_just_pressed("Add Item") and _closest_action_path_container:
 		var change_enemy_action := ActionChangeEnemy.new(_get_closest_grid_time_to_mouse())
@@ -143,7 +172,7 @@ func _process_shake() -> void:
 		return
 	
 	_sample_action.texture = SideEditor.SHAKE_ICON_TEXTURE
-	_sample_action.position = _get_global_locked_mouse_position()
+	_sample_action.global_position = _get_global_locked_mouse_position()
 	
 	if Input.is_action_just_pressed("Add Item") and _closest_action_path_container:
 		var shake_action := ActionShake.new(_get_closest_grid_time_to_mouse())
@@ -155,10 +184,34 @@ func _process_camera() -> void:
 func _process_vignette() -> void:
 	pass
 
+func _is_pressing_left_edit_button_hold(hold_target : HoldManual) -> void:
+	_is_pressing_left_edit_hold_button = true
+	
+	var mouse_time := _get_closest_grid_time_to_mouse()
+	
+	if mouse_time != hold_target.get_start_time():
+		hold_target.set_start_time(mouse_time)
+		_pathway_editor.update_target(hold_target, true)
+
+func _is_pressing_right_edit_button_hold(hold_target : HoldManual) -> void:
+	_is_pressing_right_edit_hold_button = true
+	
+	var mouse_time := _get_closest_grid_time_to_mouse()
+	
+	if mouse_time != hold_target.get_end_time():
+		hold_target.set_end_time(mouse_time)
+		_pathway_editor.update_target(hold_target, true)
+
+func _hold_left_edit_button_released() -> void:
+	_is_pressing_left_edit_hold_button = false
+
+func _hold_right_edit_button_released() -> void:
+	_is_pressing_right_edit_hold_button = false
+
 func _get_global_locked_mouse_position() -> Vector2:
 	var mouse_pos : Vector2
 	
-	mouse_pos.x = _get_closest_grid_time_to_mouse_in_x()
+	mouse_pos.x = _get_closest_grid_time_to_mouse_in_x() + _closest_action_path_container.global_position.x
 	mouse_pos.y = _get_closest_action_path_container_mouse_y()
 	
 	return mouse_pos
@@ -176,11 +229,11 @@ func _get_closest_action_path_container() -> ActionPathContainer:
 	return closest_action_path_container
 
 func _get_closest_action_path_container_mouse_y() -> float:
-	return _closest_action_path_container.get_middle_y() if _closest_action_path_container else INF
+	return _closest_action_path_container.global_position.y + _closest_action_path_container.get_rect().size.y / 2 if _closest_action_path_container else INF
 
 func _get_closest_grid_time_to_mouse_in_x() -> float:
 	var time : float = clampf(_get_closest_grid_time_to_mouse(), 0, _highest_grid_time)
-	return Path.get_pos_x(Song.get_time(), Song.get_time() + _pathway_editor.WIDTH_IN_SECS_BY_SPEED(),time, Path.hitzone, Path.width)
+	return Path.get_pos_x(Song.get_time(), Song.get_time() + _pathway_editor.WIDTH_IN_SECS_BY_SPEED(), time, Path.hitzone, Path.width)
 
 func _get_closest_grid_time_to_mouse() -> float:
 	return clampf(SideGameEditor.get_closest_grid_time_pos(Path.get_time_x(Path.hitzone, Path.width, get_global_mouse_position().x, Song.get_time(), Song.get_time() + _pathway_editor.WIDTH_IN_SECS_BY_SPEED())), 0, _highest_grid_time)

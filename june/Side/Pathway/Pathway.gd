@@ -18,6 +18,8 @@ var _actions : Array[Action] ## TODO
 
 var _speed : float = 1.0
 
+signal changed_speed(speed : float)
+
 func add_target_at(path_type : Path.Types, target : Target, validate_note : bool = false) -> void:
 	target.set_path_type(path_type)
 	
@@ -156,6 +158,7 @@ func set_speed(speed : float) -> void:
 	_speed = speed
 	_ground_path.set_speed(speed)
 	_air_path.set_speed(speed)
+	changed_speed.emit(speed)
 
 func WIDTH_IN_SECS_BY_SPEED() -> float:
 	return Path.WIDTH_IN_SECS * _speed
