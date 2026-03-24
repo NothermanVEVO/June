@@ -86,7 +86,7 @@ func set_end_time(end_time : float) -> void:
 		end_time -= get_width_in_secs_by_speed()
 		end_pos += Path.get_pos_x(0, get_width_in_secs_by_speed(), end_time - _start_time, Path.hitzone, Path.width) - Path.hitzone
 	
-	_end_hold.position = Vector2(end_pos, 0)
+	_end_hold.global_position.x = global_position.x + end_pos
 	
 	_middle_hold.size = Vector2(end_pos, Path.HEIGHT * 0.7)
 	_middle_hold.position = Vector2(0, -_middle_hold.size.y / 2)

@@ -31,17 +31,10 @@ func set_start_time(start_time : float) -> void:
 		_action.start_time = start_time
 
 func set_end_time(end_time : float) -> void:
-	_end_time = end_time
+	super.set_end_time(end_time)
 	
-	var end_pos = Path.get_pos_x(0, get_width_in_secs_by_speed(), end_time - _start_time, Path.hitzone, Path.width) - Path.hitzone
-	
-	while end_time - _start_time > get_width_in_secs_by_speed():
-		end_time -= get_width_in_secs_by_speed()
-		end_pos += Path.get_pos_x(0, get_width_in_secs_by_speed(), end_time - _start_time, Path.hitzone, Path.width) - Path.hitzone
-	
-	_end_hold.position = Vector2(end_pos, 0)
-	
-	_update_edit_buttons_positions()
+	_middle_hold.size = Vector2(_end_hold.position.x, get_rect().size.y * 0.6)
+	_middle_hold.position = Vector2(0, -_middle_hold.size.y / 2)
 	
 	if _action and _action is ActionHold:
 		_action.end_time = end_time
