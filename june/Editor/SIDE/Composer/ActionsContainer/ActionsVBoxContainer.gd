@@ -64,7 +64,7 @@ func _handle_selected_item(item_text : String) -> void:
 			_process_speed()
 		"Chefão": ## HOLD
 			_process_boss()
-		"Dialogo": ## HOLD
+		"Diálogo": ## HOLD
 			_process_dialog()
 		"Cinemática": ## HOLD
 			_process_cinematic()
@@ -137,13 +137,67 @@ func _process_speed() -> void:
 		_closest_action_path_container.get_path_editor().add_manual_target(speed_action.create_manual_target())
 
 func _process_boss() -> void:
-	pass
+	if not _is_mouse_inside():
+		return
+	
+	_sample_action.texture = SideEditor.BOSS_ICON_TEXTURE
+	_sample_action.global_position = _get_global_locked_mouse_position()
+	
+	if Input.is_action_just_pressed("Add Item"):
+		var time : float = _get_closest_grid_time_to_mouse()
+		var fade_action := ActionBoss.new(time, time)
+		_current_hold_action = fade_action.create_manual_target()
+		
+		_closest_action_path_container.get_path_editor().add_manual_target(_current_hold_action)
+		_current_hold_action.set_process.call_deferred(true)
+		_current_hold_action.is_pressing_left_edit_button.connect(_is_pressing_left_edit_button_hold)
+		_current_hold_action.is_pressing_right_edit_button.connect(_is_pressing_right_edit_button_hold)
+		_current_hold_action.released_left_edit_button.connect(_hold_left_edit_button_released)
+		_current_hold_action.released_right_edit_button.connect(_hold_right_edit_button_released)
+	elif _current_hold_action != null and Input.is_action_pressed("Add Item"):
+		_current_hold_action.set_end_time(_get_closest_grid_time_to_mouse())
 
 func _process_dialog() -> void:
-	pass
+	if not _is_mouse_inside():
+		return
+	
+	_sample_action.texture = SideEditor.DIALOG_ICON_TEXTURE
+	_sample_action.global_position = _get_global_locked_mouse_position()
+	
+	if Input.is_action_just_pressed("Add Item"):
+		var time : float = _get_closest_grid_time_to_mouse()
+		var fade_action := ActionDialog.new(time, time)
+		_current_hold_action = fade_action.create_manual_target()
+		
+		_closest_action_path_container.get_path_editor().add_manual_target(_current_hold_action)
+		_current_hold_action.set_process.call_deferred(true)
+		_current_hold_action.is_pressing_left_edit_button.connect(_is_pressing_left_edit_button_hold)
+		_current_hold_action.is_pressing_right_edit_button.connect(_is_pressing_right_edit_button_hold)
+		_current_hold_action.released_left_edit_button.connect(_hold_left_edit_button_released)
+		_current_hold_action.released_right_edit_button.connect(_hold_right_edit_button_released)
+	elif _current_hold_action != null and Input.is_action_pressed("Add Item"):
+		_current_hold_action.set_end_time(_get_closest_grid_time_to_mouse())
 
 func _process_cinematic() -> void:
-	pass
+	if not _is_mouse_inside():
+		return
+	
+	_sample_action.texture = SideEditor.CINEMATIC_ICON_TEXTURE
+	_sample_action.global_position = _get_global_locked_mouse_position()
+	
+	if Input.is_action_just_pressed("Add Item"):
+		var time : float = _get_closest_grid_time_to_mouse()
+		var fade_action := ActionCinematic.new(time, time)
+		_current_hold_action = fade_action.create_manual_target()
+		
+		_closest_action_path_container.get_path_editor().add_manual_target(_current_hold_action)
+		_current_hold_action.set_process.call_deferred(true)
+		_current_hold_action.is_pressing_left_edit_button.connect(_is_pressing_left_edit_button_hold)
+		_current_hold_action.is_pressing_right_edit_button.connect(_is_pressing_right_edit_button_hold)
+		_current_hold_action.released_left_edit_button.connect(_hold_left_edit_button_released)
+		_current_hold_action.released_right_edit_button.connect(_hold_right_edit_button_released)
+	elif _current_hold_action != null and Input.is_action_pressed("Add Item"):
+		_current_hold_action.set_end_time(_get_closest_grid_time_to_mouse())
 
 func _process_change_scenario() -> void:
 	if not _is_mouse_inside():
@@ -179,10 +233,46 @@ func _process_shake() -> void:
 		_closest_action_path_container.get_path_editor().add_manual_target(shake_action.create_manual_target())
 
 func _process_camera() -> void:
-	pass
+	if not _is_mouse_inside():
+		return
+	
+	_sample_action.texture = SideEditor.CAMERA_ICON_TEXTURE
+	_sample_action.global_position = _get_global_locked_mouse_position()
+	
+	if Input.is_action_just_pressed("Add Item"):
+		var time : float = _get_closest_grid_time_to_mouse()
+		var fade_action := ActionCamera.new(time, time)
+		_current_hold_action = fade_action.create_manual_target()
+		
+		_closest_action_path_container.get_path_editor().add_manual_target(_current_hold_action)
+		_current_hold_action.set_process.call_deferred(true)
+		_current_hold_action.is_pressing_left_edit_button.connect(_is_pressing_left_edit_button_hold)
+		_current_hold_action.is_pressing_right_edit_button.connect(_is_pressing_right_edit_button_hold)
+		_current_hold_action.released_left_edit_button.connect(_hold_left_edit_button_released)
+		_current_hold_action.released_right_edit_button.connect(_hold_right_edit_button_released)
+	elif _current_hold_action != null and Input.is_action_pressed("Add Item"):
+		_current_hold_action.set_end_time(_get_closest_grid_time_to_mouse())
 
 func _process_vignette() -> void:
-	pass
+	if not _is_mouse_inside():
+		return
+	
+	_sample_action.texture = SideEditor.VIGNETTE_ICON_TEXTURE
+	_sample_action.global_position = _get_global_locked_mouse_position()
+	
+	if Input.is_action_just_pressed("Add Item"):
+		var time : float = _get_closest_grid_time_to_mouse()
+		var fade_action := ActionVignette.new(time, time)
+		_current_hold_action = fade_action.create_manual_target()
+		
+		_closest_action_path_container.get_path_editor().add_manual_target(_current_hold_action)
+		_current_hold_action.set_process.call_deferred(true)
+		_current_hold_action.is_pressing_left_edit_button.connect(_is_pressing_left_edit_button_hold)
+		_current_hold_action.is_pressing_right_edit_button.connect(_is_pressing_right_edit_button_hold)
+		_current_hold_action.released_left_edit_button.connect(_hold_left_edit_button_released)
+		_current_hold_action.released_right_edit_button.connect(_hold_right_edit_button_released)
+	elif _current_hold_action != null and Input.is_action_pressed("Add Item"):
+		_current_hold_action.set_end_time(_get_closest_grid_time_to_mouse())
 
 func _is_pressing_left_edit_button_hold(hold_target : HoldManual) -> void:
 	_is_pressing_left_edit_hold_button = true
