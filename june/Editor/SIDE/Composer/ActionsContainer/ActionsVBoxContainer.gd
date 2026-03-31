@@ -51,6 +51,13 @@ func _ready() -> void:
 	add_child(_sample_action)
 	
 	resized.connect(_resized)
+	
+	_actions_container.changed_actions_path_order.connect(_changed_actions_path_order)
+
+func _changed_actions_path_order() -> void:
+	_actions_paths_containers.sort_custom(func(a, b):
+		return a.index < b.index
+		)
 
 func _resized() -> void:
 	if _mouse_selection:
@@ -110,7 +117,7 @@ func _process_select() -> void:
 		return
 	
 	#if Input.is_action_just_pressed("Inspect Note"):
-		#var selected_targets := _pathway_editor.get_global_targets_intersected_with(Rect2(get_global_mouse_position().x, get_global_mouse_position().y, 1, 1), Song.get_time(), Song.get_time() + _pathway_editor.WIDTH_IN_SECS_BY_SPEED())
+		#var selected_targets := _get_global_targets_intersected_with(Rect2(get_global_mouse_position().x, get_global_mouse_position().y, 1, 1), Song.get_time(), Song.get_time() + _pathway_editor.WIDTH_IN_SECS_BY_SPEED())
 		#
 		#if selected_targets and selected_targets[0]:
 			#_current_target_info_window = _TARGET_INFO_WINDOW_SCENE.instantiate()
@@ -119,7 +126,8 @@ func _process_select() -> void:
 			#_current_target_info_window.popup_centered()
 	
 	if Input.is_action_just_pressed("Add Item"):
-		var selected_targets := []# _pathway_editor.get_global_targets_intersected_with(Rect2(get_global_mouse_position().x, get_global_mouse_position().y, 1, 1), Song.get_time(), Song.get_time() + _pathway_editor.WIDTH_IN_SECS_BY_SPEED())
+		
+		var selected_targets := _get_global_targets_intersected_with(Rect2(get_global_mouse_position().x, get_global_mouse_position().y, 1, 1), Song.get_time(), Song.get_time() + _pathway_editor.WIDTH_IN_SECS_BY_SPEED())
 		_clicked_on_target = not selected_targets.is_empty()
 		
 		if not _clicked_on_target:
@@ -141,12 +149,12 @@ func _process_select() -> void:
 			var mouse_time_pos := _get_closest_grid_time_to_mouse()
 			var mouse_time_diff : float = mouse_time_pos - _last_mouse_time_pos
 			_last_mouse_time_pos = mouse_time_pos
-			#var mouse_path_type := _get_path_type_at_mouse()
+			var mouse_path_idx := _get_action_path_idx_in_mouse()
 			
 			## Change time pos
 			if mouse_time_diff:
 				if _leftest_target_selected.get_start_time() + mouse_time_diff >= Song.offset and (
-					(_rightest_target_selected is HoldManual and _rightest_target_selected.hold.get_end_time() + mouse_time_diff <= _highest_grid_time) or (
+					(_rightest_target_selected is HoldManual and _rightest_target_selected.get_end_time() + mouse_time_diff <= _highest_grid_time) or (
 					_rightest_target_selected.get_start_time() + mouse_time_diff <= _highest_grid_time)):
 						for selected_target in _selected_targets:
 							selected_target.set_start_time(selected_target.get_start_time() + mouse_time_diff)
@@ -154,13 +162,9 @@ func _process_select() -> void:
 								selected_target.set_end_time(selected_target.get_end_time() + mouse_time_diff)
 			
 			## Change paths
-			#if not _has_both_paths_selected and _target_selected_clicked.get_path_type() != mouse_path_type:
-				#for selected_target in _selected_targets:
-					#_pathway_editor.change_target_path(mouse_path_type, selected_target, true)
-					#if selected_target is OneTimeDelayEditor:
-						#_pathway_editor.change_target_path(mouse_path_type, selected_target.get_first_delay_tap(), true)
-						#if selected_target is TwoTimesDelayEditor:
-							#_pathway_editor.change_target_path(mouse_path_type, selected_target.get_second_delay_tap(), true)
+			if _target_selected_clicked.path_index >= 0 and mouse_path_idx >= 0 and _target_selected_clicked.path_index != mouse_path_idx:
+				for selected_target in _selected_targets:
+					change_target_path(selected_target, selected_target.path_index, _target_selected_clicked.path_index + (mouse_path_idx - _target_selected_clicked.path_index), true)
 		
 		else: ## NOT CLICKED ON TARGET
 			_mouse_selection.set_global_rect(Rect2(_start_selection_global_position.x, _start_selection_global_position.y, get_global_mouse_position().x - _start_selection_global_position.x, get_global_mouse_position().y - _start_selection_global_position.y))
@@ -169,7 +173,7 @@ func _process_select() -> void:
 			_target_selected_clicked = null
 			
 		else: ## NOT CLICKED ON TARGET
-			#_select_targets(_pathway_editor.get_global_targets_intersected_with(_mouse_selection.get_global_rect(), Song.get_time(), Song.get_time() + _pathway_editor.WIDTH_IN_SECS_BY_SPEED()))
+			_select_targets(_get_global_targets_intersected_with(_mouse_selection.get_global_rect(), Song.get_time(), Song.get_time() + _pathway_editor.WIDTH_IN_SECS_BY_SPEED()))
 			_mouse_selection.set_global_rect(Rect2(0, 0, 0, 0))
 
 func _process_comment() -> void:
@@ -181,7 +185,7 @@ func _process_comment() -> void:
 	
 	if Input.is_action_just_pressed("Add Item") and _closest_action_path_container:
 		var comment_action := ActionComment.new(_get_closest_grid_time_to_mouse())
-		_closest_action_path_container.get_path_editor().add_manual_target(comment_action.create_manual_target())
+		_closest_action_path_container.add_manual_target(comment_action.create_manual_target())
 
 func _process_section() -> void:
 	if not _is_mouse_inside():
@@ -192,7 +196,7 @@ func _process_section() -> void:
 	
 	if Input.is_action_just_pressed("Add Item") and _closest_action_path_container:
 		var section_action := ActionSection.new(_get_closest_grid_time_to_mouse())
-		_closest_action_path_container.get_path_editor().add_manual_target(section_action.create_manual_target())
+		_closest_action_path_container.add_manual_target(section_action.create_manual_target())
 
 func _process_fade() -> void:
 	if not _is_mouse_inside():
@@ -206,7 +210,7 @@ func _process_fade() -> void:
 		var fade_action := ActionFade.new(time, time)
 		_current_hold_action = fade_action.create_manual_target()
 		
-		_closest_action_path_container.get_path_editor().add_manual_target(_current_hold_action)
+		_closest_action_path_container.add_manual_target(_current_hold_action)
 		_current_hold_action.set_process.call_deferred(true)
 		_current_hold_action.is_pressing_left_edit_button.connect(_is_pressing_left_edit_button_hold)
 		_current_hold_action.is_pressing_right_edit_button.connect(_is_pressing_right_edit_button_hold)
@@ -224,7 +228,7 @@ func _process_speed() -> void:
 	
 	if Input.is_action_just_pressed("Add Item") and _closest_action_path_container:
 		var speed_action := ActionSpeed.new(_get_closest_grid_time_to_mouse())
-		_closest_action_path_container.get_path_editor().add_manual_target(speed_action.create_manual_target())
+		_closest_action_path_container.add_manual_target(speed_action.create_manual_target())
 
 func _process_boss() -> void:
 	if not _is_mouse_inside():
@@ -238,7 +242,7 @@ func _process_boss() -> void:
 		var fade_action := ActionBoss.new(time, time)
 		_current_hold_action = fade_action.create_manual_target()
 		
-		_closest_action_path_container.get_path_editor().add_manual_target(_current_hold_action)
+		_closest_action_path_container.add_manual_target(_current_hold_action)
 		_current_hold_action.set_process.call_deferred(true)
 		_current_hold_action.is_pressing_left_edit_button.connect(_is_pressing_left_edit_button_hold)
 		_current_hold_action.is_pressing_right_edit_button.connect(_is_pressing_right_edit_button_hold)
@@ -259,7 +263,7 @@ func _process_dialog() -> void:
 		var fade_action := ActionDialog.new(time, time)
 		_current_hold_action = fade_action.create_manual_target()
 		
-		_closest_action_path_container.get_path_editor().add_manual_target(_current_hold_action)
+		_closest_action_path_container.add_manual_target(_current_hold_action)
 		_current_hold_action.set_process.call_deferred(true)
 		_current_hold_action.is_pressing_left_edit_button.connect(_is_pressing_left_edit_button_hold)
 		_current_hold_action.is_pressing_right_edit_button.connect(_is_pressing_right_edit_button_hold)
@@ -280,7 +284,7 @@ func _process_cinematic() -> void:
 		var fade_action := ActionCinematic.new(time, time)
 		_current_hold_action = fade_action.create_manual_target()
 		
-		_closest_action_path_container.get_path_editor().add_manual_target(_current_hold_action)
+		_closest_action_path_container.add_manual_target(_current_hold_action)
 		_current_hold_action.set_process.call_deferred(true)
 		_current_hold_action.is_pressing_left_edit_button.connect(_is_pressing_left_edit_button_hold)
 		_current_hold_action.is_pressing_right_edit_button.connect(_is_pressing_right_edit_button_hold)
@@ -298,7 +302,7 @@ func _process_change_scenario() -> void:
 	
 	if Input.is_action_just_pressed("Add Item") and _closest_action_path_container:
 		var change_scenario_action := ActionChangeScenerio.new(_get_closest_grid_time_to_mouse())
-		_closest_action_path_container.get_path_editor().add_manual_target(change_scenario_action.create_manual_target())
+		_closest_action_path_container.add_manual_target(change_scenario_action.create_manual_target())
 
 func _process_change_enemy() -> void:
 	if not _is_mouse_inside():
@@ -309,7 +313,7 @@ func _process_change_enemy() -> void:
 	
 	if Input.is_action_just_pressed("Add Item") and _closest_action_path_container:
 		var change_enemy_action := ActionChangeEnemy.new(_get_closest_grid_time_to_mouse())
-		_closest_action_path_container.get_path_editor().add_manual_target(change_enemy_action.create_manual_target())
+		_closest_action_path_container.add_manual_target(change_enemy_action.create_manual_target())
 
 func _process_shake() -> void:
 	if not _is_mouse_inside():
@@ -320,7 +324,7 @@ func _process_shake() -> void:
 	
 	if Input.is_action_just_pressed("Add Item") and _closest_action_path_container:
 		var shake_action := ActionShake.new(_get_closest_grid_time_to_mouse())
-		_closest_action_path_container.get_path_editor().add_manual_target(shake_action.create_manual_target())
+		_closest_action_path_container.add_manual_target(shake_action.create_manual_target())
 
 func _process_camera() -> void:
 	if not _is_mouse_inside():
@@ -334,7 +338,7 @@ func _process_camera() -> void:
 		var fade_action := ActionCamera.new(time, time)
 		_current_hold_action = fade_action.create_manual_target()
 		
-		_closest_action_path_container.get_path_editor().add_manual_target(_current_hold_action)
+		_closest_action_path_container.add_manual_target(_current_hold_action)
 		_current_hold_action.set_process.call_deferred(true)
 		_current_hold_action.is_pressing_left_edit_button.connect(_is_pressing_left_edit_button_hold)
 		_current_hold_action.is_pressing_right_edit_button.connect(_is_pressing_right_edit_button_hold)
@@ -355,7 +359,7 @@ func _process_vignette() -> void:
 		var fade_action := ActionVignette.new(time, time)
 		_current_hold_action = fade_action.create_manual_target()
 		
-		_closest_action_path_container.get_path_editor().add_manual_target(_current_hold_action)
+		_closest_action_path_container.add_manual_target(_current_hold_action)
 		_current_hold_action.set_process.call_deferred(true)
 		_current_hold_action.is_pressing_left_edit_button.connect(_is_pressing_left_edit_button_hold)
 		_current_hold_action.is_pressing_right_edit_button.connect(_is_pressing_right_edit_button_hold)
@@ -363,6 +367,34 @@ func _process_vignette() -> void:
 		_current_hold_action.released_right_edit_button.connect(_hold_right_edit_button_released)
 	elif _current_hold_action != null and Input.is_action_pressed("Add Item"):
 		_current_hold_action.set_end_time(_get_closest_grid_time_to_mouse())
+
+func _get_global_targets_intersected_with(rect : Rect2, from : float, to : float) -> Array[Target]:
+	var intersected_targets : Array[Target] = []
+	
+	var targets : Array[Target] = []
+	for action_path_container in _actions_paths_containers:
+		targets.append_array(action_path_container.get_path_editor().get_targets(from, to))
+	
+	for target in targets:
+		if target is Blank or target is HoldBlank or not target.get_global_rect().intersects(rect, true):
+			continue
+		intersected_targets.append(target)
+	
+	return intersected_targets
+
+func change_target_path(manual_target : ManualTarget, from_path_idx : int, to_path_idx : int, validate : bool) -> void:
+	_actions_paths_containers[from_path_idx].get_path_editor().remove_manual_target(manual_target)
+	_actions_paths_containers[to_path_idx].add_manual_target(manual_target)
+
+func _get_action_path_idx_in_mouse() -> int:
+	var idx := -1
+	
+	for action_path_container in _actions_paths_containers:
+		if action_path_container.get_global_rect().has_point(get_global_mouse_position()):
+			idx = action_path_container.index
+			break
+	
+	return idx
 
 func _clear_selected_targets() -> void:
 	for selected_target in _selected_targets:

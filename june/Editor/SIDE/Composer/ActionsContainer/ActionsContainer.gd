@@ -30,6 +30,8 @@ var _actions_paths_containers : Array[ActionPathContainer] = []
 
 var _pathway_editor : PathwayEditor
 
+signal changed_actions_path_order
+
 func _ready() -> void:
 	set_process(false)
 
@@ -115,9 +117,14 @@ func get_action_vbox_container_actions_count() -> int:
 	return i
 
 func _update_all_action_path_container_indexes() -> void:
-	for child in _actions_vbox_container.get_children():
-		if child is ActionPathContainer:
-			child.update_index_text()
+	var index : int = 0
+	var children := _actions_vbox_container.get_children()
+	for i in _actions_vbox_container.get_child_count():
+		if children[i] is ActionPathContainer:
+			children[i].update_index_text(index)
+			index += 1
+	
+	changed_actions_path_order.emit()
 
 func is_resizing() -> bool:
 	return _is_resizing

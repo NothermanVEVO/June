@@ -4,12 +4,15 @@ class_name ManualTargetActionHold
 
 var _action : Action
 
+var path_index : int
+
 func _init(start_time : float, end_time : float, path_type : Path.Types, action : Action) -> void:
 	super._init(start_time, end_time, path_type)
 	
 	z_index = 1 ## TEMP, TALVEZ
 	
 	_action = action
+	
 	create_target_editor()
 	
 	if action is ActionBoss:
