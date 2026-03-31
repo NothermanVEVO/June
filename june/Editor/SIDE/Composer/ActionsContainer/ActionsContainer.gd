@@ -92,18 +92,27 @@ func _requested_to_erase(action_path_container : ActionPathContainer) -> void:
 	_update_all_action_path_container_indexes()
 
 func _requested_to_move_up(action_path_container : ActionPathContainer) -> void:
-	if _actions_vbox_container.get_child_count() <= 1:
+	if get_action_vbox_container_actions_count() <= 1:
 		return
 	
 	_actions_vbox_container.move_child(action_path_container, action_path_container.get_index() - 1)
 	_update_all_action_path_container_indexes()
 
 func _requested_to_move_down(action_path_container : ActionPathContainer) -> void:
-	if _actions_vbox_container.get_child_count() <= 1:
+	if get_action_vbox_container_actions_count() <= 1:
 		return
 	
 	_actions_vbox_container.move_child(action_path_container, action_path_container.get_index() + 1)
 	_update_all_action_path_container_indexes()
+
+func get_action_vbox_container_actions_count() -> int:
+	var i := 0
+	
+	for child in _actions_vbox_container.get_children():
+		if child is ActionPathContainer:
+			i += 1
+	
+	return i
 
 func _update_all_action_path_container_indexes() -> void:
 	for child in _actions_vbox_container.get_children():
