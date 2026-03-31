@@ -2,6 +2,8 @@ extends VBoxContainer
 
 class_name ActionsVBoxContainer
 
+@onready var _actions_container : ActionsContainer = $"../../../../.."
+
 var _pathway_editor : PathwayEditor
 var _highest_grid_time : float
 
@@ -15,6 +17,19 @@ var _actions_paths_containers : Array[ActionPathContainer]
 var _is_pressing_left_edit_hold_button : bool = false
 var _is_pressing_right_edit_hold_button : bool = false
 
+var _mouse_selection : Selection = Selection.new()
+
+var _start_selection_global_position : Vector2
+var _clicked_on_target : bool = false
+var _selected_targets : Array[Target] = []
+var _target_selected_clicked : Target
+
+var _mouse_was_pressed_inside : bool = false
+var _last_mouse_time_pos : float
+
+var _leftest_target_selected : ManualTarget
+var _rightest_target_selected : ManualTarget
+
 @onready var _actions_item_list : ItemList = $"../ActionListMarginContainer/ActionsItemList"
 
 func setup(pathway_editor : PathwayEditor, highest_grid_time : float, actions_paths_containers : Array[ActionPathContainer]) -> void:
@@ -27,11 +42,19 @@ func setup(pathway_editor : PathwayEditor, highest_grid_time : float, actions_pa
 	_actions_paths_containers = actions_paths_containers
 
 func _ready() -> void:
+	add_child(_mouse_selection)
+	
 	_sample_action.global_position = Vector2(INF, INF)
 	_sample_action.modulate.a = 0.5
 	_sample_action.scale *= 1.5
 	
 	add_child(_sample_action)
+	
+	resized.connect(_resized)
+
+func _resized() -> void:
+	if _mouse_selection:
+		_mouse_selection.set_global_rect(Rect2(0, 0, 0, 0))
 
 func _changed_speed(speed : float) -> void:
 	for action_path_container in _actions_paths_containers:
@@ -41,6 +64,9 @@ func _process(delta: float) -> void:
 	queue_redraw()
 	
 	_closest_action_path_container = _get_closest_action_path_container()
+	
+	if Input.is_action_just_pressed("Add Item"):
+		_mouse_was_pressed_inside = _is_mouse_inside() and not _actions_container.is_resizing()
 	
 	var selected_items := _actions_item_list.get_selected_items()
 	
@@ -80,7 +106,71 @@ func _handle_selected_item(item_text : String) -> void:
 			_process_vignette()
 
 func _process_select() -> void:
-	pass
+	if _is_pressing_left_edit_hold_button or _is_pressing_right_edit_hold_button:
+		return
+	
+	#if Input.is_action_just_pressed("Inspect Note"):
+		#var selected_targets := _pathway_editor.get_global_targets_intersected_with(Rect2(get_global_mouse_position().x, get_global_mouse_position().y, 1, 1), Song.get_time(), Song.get_time() + _pathway_editor.WIDTH_IN_SECS_BY_SPEED())
+		#
+		#if selected_targets and selected_targets[0]:
+			#_current_target_info_window = _TARGET_INFO_WINDOW_SCENE.instantiate()
+			#add_child(_current_target_info_window)
+			#_current_target_info_window.setup(selected_targets[0], _pathway_editor)
+			#_current_target_info_window.popup_centered()
+	
+	if Input.is_action_just_pressed("Add Item"):
+		var selected_targets := []# _pathway_editor.get_global_targets_intersected_with(Rect2(get_global_mouse_position().x, get_global_mouse_position().y, 1, 1), Song.get_time(), Song.get_time() + _pathway_editor.WIDTH_IN_SECS_BY_SPEED())
+		_clicked_on_target = not selected_targets.is_empty()
+		
+		if not _clicked_on_target:
+			_target_selected_clicked = null
+			_clear_selected_targets()
+			_start_selection_global_position = get_global_mouse_position()
+		else: ## CLICKED ON TARGET
+			
+			_target_selected_clicked = selected_targets[0]
+			
+			_last_mouse_time_pos = _get_closest_grid_time_to_mouse()
+			
+			if not _target_selected_clicked.target_editor.is_selected():
+				_clear_selected_targets()
+				_select_targets(selected_targets.slice(0, 1))
+		
+	elif Input.is_action_pressed("Add Item") and _mouse_was_pressed_inside:
+		if _clicked_on_target:
+			var mouse_time_pos := _get_closest_grid_time_to_mouse()
+			var mouse_time_diff : float = mouse_time_pos - _last_mouse_time_pos
+			_last_mouse_time_pos = mouse_time_pos
+			#var mouse_path_type := _get_path_type_at_mouse()
+			
+			## Change time pos
+			if mouse_time_diff:
+				if _leftest_target_selected.get_start_time() + mouse_time_diff >= Song.offset and (
+					(_rightest_target_selected is HoldManual and _rightest_target_selected.hold.get_end_time() + mouse_time_diff <= _highest_grid_time) or (
+					_rightest_target_selected.get_start_time() + mouse_time_diff <= _highest_grid_time)):
+						for selected_target in _selected_targets:
+							selected_target.set_start_time(selected_target.get_start_time() + mouse_time_diff)
+							if selected_target is HoldManual:
+								selected_target.set_end_time(selected_target.get_end_time() + mouse_time_diff)
+			
+			## Change paths
+			#if not _has_both_paths_selected and _target_selected_clicked.get_path_type() != mouse_path_type:
+				#for selected_target in _selected_targets:
+					#_pathway_editor.change_target_path(mouse_path_type, selected_target, true)
+					#if selected_target is OneTimeDelayEditor:
+						#_pathway_editor.change_target_path(mouse_path_type, selected_target.get_first_delay_tap(), true)
+						#if selected_target is TwoTimesDelayEditor:
+							#_pathway_editor.change_target_path(mouse_path_type, selected_target.get_second_delay_tap(), true)
+		
+		else: ## NOT CLICKED ON TARGET
+			_mouse_selection.set_global_rect(Rect2(_start_selection_global_position.x, _start_selection_global_position.y, get_global_mouse_position().x - _start_selection_global_position.x, get_global_mouse_position().y - _start_selection_global_position.y))
+	elif Input.is_action_just_released("Add Item"):
+		if _clicked_on_target:
+			_target_selected_clicked = null
+			
+		else: ## NOT CLICKED ON TARGET
+			#_select_targets(_pathway_editor.get_global_targets_intersected_with(_mouse_selection.get_global_rect(), Song.get_time(), Song.get_time() + _pathway_editor.WIDTH_IN_SECS_BY_SPEED()))
+			_mouse_selection.set_global_rect(Rect2(0, 0, 0, 0))
 
 func _process_comment() -> void:
 	if not _is_mouse_inside():
@@ -273,6 +363,58 @@ func _process_vignette() -> void:
 		_current_hold_action.released_right_edit_button.connect(_hold_right_edit_button_released)
 	elif _current_hold_action != null and Input.is_action_pressed("Add Item"):
 		_current_hold_action.set_end_time(_get_closest_grid_time_to_mouse())
+
+func _clear_selected_targets() -> void:
+	for selected_target in _selected_targets:
+		selected_target.target_editor.set_selected_highlight(false)
+	_selected_targets.clear()
+	_rightest_target_selected = null
+	_leftest_target_selected = null
+
+func _righest_or_leftest_selected(target : Target) -> void:
+	if not _leftest_target_selected or not _rightest_target_selected:
+		_leftest_target_selected = target
+		_rightest_target_selected = target
+		return
+	
+	if target is HoldManual:
+		if target.get_start_time() < _leftest_target_selected.get_start_time():
+			_leftest_target_selected = target
+		if _rightest_target_selected is HoldManual:
+			if target.get_end_time() > _rightest_target_selected.get_end_time():
+				_rightest_target_selected = target
+		else:
+			if target.get_end_time() > _rightest_target_selected.get_start_time():
+				_rightest_target_selected = target
+	else:
+		if target.get_start_time() < _leftest_target_selected.get_start_time():
+			_leftest_target_selected = target
+		if _rightest_target_selected is HoldManual:
+			if target.get_start_time() > _rightest_target_selected.get_end_time():
+				_rightest_target_selected = target
+		else:
+			if target.get_start_time() > _rightest_target_selected.get_start_time():
+				_rightest_target_selected = target
+
+func _select_targets(targets : Array[Target]) -> void:
+	#_has_both_paths_selected = false
+	var has_air_target : bool = false
+	var has_ground_target : bool = false
+	
+	for target in targets:
+		_righest_or_leftest_selected(target)
+		if target is Spam or target is TwinTap:
+			has_air_target = true
+			has_ground_target = true
+		elif target.get_path_type() == Path.Types.AIR:
+			has_air_target = true
+		else:
+			has_ground_target = true
+		
+		target.target_editor.set_selected_highlight(true)
+		_selected_targets.append(target)
+	
+	#_has_both_paths_selected = has_air_target and has_ground_target
 
 func _is_pressing_left_edit_button_hold(hold_target : HoldManual) -> void:
 	_is_pressing_left_edit_hold_button = true

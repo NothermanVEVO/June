@@ -109,3 +109,6 @@ func _update_all_action_path_container_indexes() -> void:
 	for child in _actions_vbox_container.get_children():
 		if child is ActionPathContainer:
 			child.update_index_text()
+
+func is_resizing() -> bool:
+	return _is_resizing
