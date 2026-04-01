@@ -9,6 +9,9 @@ var path_index : int
 func _init(start_time : float, end_time : float, path_type : Path.Types, action : Action) -> void:
 	super._init(start_time, end_time, path_type)
 	
+	texture_changed.connect(_texture_changed)
+	scale *= 1.5
+	
 	z_index = 1 ## TEMP, TALVEZ
 	
 	_action = action
@@ -27,6 +30,11 @@ func _init(start_time : float, end_time : float, path_type : Path.Types, action 
 		pass
 	elif action is ActionVignette:
 		pass
+
+func _texture_changed() -> void:
+	## DO THIS BECAUSE OF THE SCALE, IMPROVE THIS SHIT LATER
+	position.y += (get_rect().size.y * 1.25) + 2 ## WHY 2?? I DON'T KNOW, AND I'M NOT GONNA STRESS WITH IT FOR NOW
+	_update_edit_buttons_size()
 
 func set_start_time(start_time : float) -> void:
 	super.set_start_time(start_time)

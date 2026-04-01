@@ -120,13 +120,16 @@ func create_edit_buttons() -> void:
 	if not texture:
 		return
 	
+	_update_edit_buttons_size()
+	
+	_update_edit_buttons_positions()
+
+func _update_edit_buttons_size() -> void:
 	var size := texture.get_size()
 	size.x = size.x / 2
 	
 	left_edit_button.size = size
 	right_edit_button.size = size
-	
-	_update_edit_buttons_positions()
 
 func _update_edit_buttons_positions() -> void:
 	if not left_edit_button or not right_edit_button:

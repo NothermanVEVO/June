@@ -163,8 +163,9 @@ func _process_select() -> void:
 			
 			## Change paths
 			if _target_selected_clicked.path_index >= 0 and mouse_path_idx >= 0 and _target_selected_clicked.path_index != mouse_path_idx:
+				var index_difference : int = (mouse_path_idx - _target_selected_clicked.path_index)
 				for selected_target in _selected_targets:
-					change_target_path(selected_target, selected_target.path_index, _target_selected_clicked.path_index + (mouse_path_idx - _target_selected_clicked.path_index), true)
+					change_target_path(selected_target, selected_target.path_index, clampi(selected_target.path_index + index_difference, 0, _actions_paths_containers.size()), true)
 		
 		else: ## NOT CLICKED ON TARGET
 			_mouse_selection.set_global_rect(Rect2(_start_selection_global_position.x, _start_selection_global_position.y, get_global_mouse_position().x - _start_selection_global_position.x, get_global_mouse_position().y - _start_selection_global_position.y))
@@ -510,7 +511,8 @@ func _get_next_grid_time_pos(time_pos : float) -> float:
 	return clampf(_get_closest_grid_time_pos(grid_time_pos + SideMenuBarComposer.get_divisor()), 0.0, _highest_grid_time)
 
 func _is_mouse_inside() -> bool:
-	return get_global_rect().has_point(get_global_mouse_position())
+	var mouse_pos := get_global_mouse_position()
+	return mouse_pos.x >= Path.hitzone and get_global_rect().has_point(mouse_pos)
 
 func _draw() -> void:
 	if not _pathway_editor:
