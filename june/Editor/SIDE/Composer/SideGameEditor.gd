@@ -150,6 +150,11 @@ func _process_select() -> void:
 	if _is_pressing_left_edit_hold_button or _is_pressing_right_edit_hold_button:
 		return
 	
+	if Input.is_action_just_pressed("Delete"):
+		for target in _selected_targets:
+			_pathway_editor.remove_target_at(target.get_path_type(), target, true, true)
+		_selected_targets.clear()
+	
 	if Input.is_action_just_pressed("Inspect Note"):
 		var selected_targets := _pathway_editor.get_global_targets_intersected_with(Rect2(get_global_mouse_position().x, get_global_mouse_position().y, 1, 1), Song.get_time(), Song.get_time() + _pathway_editor.WIDTH_IN_SECS_BY_SPEED())
 		
