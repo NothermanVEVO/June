@@ -165,7 +165,7 @@ func _process_select() -> void:
 			if mouse_time_diff:
 				if _leftest_target_selected.get_start_time() + mouse_time_diff >= Song.offset and (
 					(_rightest_target_selected is HoldManual and _rightest_target_selected.get_end_time() + mouse_time_diff <= _highest_grid_time) or (
-					_rightest_target_selected.get_start_time() + mouse_time_diff <= _highest_grid_time)):
+					not _rightest_target_selected is HoldManual and _rightest_target_selected.get_start_time() + mouse_time_diff <= _highest_grid_time)):
 						for selected_target in _selected_targets:
 							selected_target.set_start_time(selected_target.get_start_time() + mouse_time_diff)
 							if selected_target is HoldManual:
