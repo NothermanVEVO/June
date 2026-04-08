@@ -97,14 +97,20 @@ func _requested_to_move_up(action_path_container : ActionPathContainer) -> void:
 	if get_action_vbox_container_actions_count() <= 1:
 		return
 	
-	_actions_vbox_container.move_child(action_path_container, action_path_container.get_index() - 1)
+	var index := action_path_container.index - 1
+	var to_index : int = index if index >= 0 else _actions_paths_containers.size() - 1
+	
+	_actions_vbox_container.move_child(action_path_container, to_index)
 	_update_all_action_path_container_indexes()
 
 func _requested_to_move_down(action_path_container : ActionPathContainer) -> void:
 	if get_action_vbox_container_actions_count() <= 1:
 		return
 	
-	_actions_vbox_container.move_child(action_path_container, action_path_container.get_index() + 1)
+	var index := action_path_container.index + 1
+	var to_index : int = index if index < _actions_paths_containers.size() else 0
+	
+	_actions_vbox_container.move_child(action_path_container, to_index)
 	_update_all_action_path_container_indexes()
 
 func get_action_vbox_container_actions_count() -> int:

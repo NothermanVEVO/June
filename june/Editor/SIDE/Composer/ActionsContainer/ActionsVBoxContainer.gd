@@ -23,6 +23,8 @@ var _start_selection_global_position : Vector2
 var _clicked_on_target : bool = false
 var _selected_targets : Array[Target] = []
 var _target_selected_clicked : Target
+var _lowest_selected_target_index : int
+var _highest_selected_target_index : int
 
 var _mouse_was_pressed_inside : bool = false
 var _last_mouse_time_pos : float
@@ -58,6 +60,9 @@ func _changed_actions_path_order() -> void:
 	_actions_paths_containers.sort_custom(func(a, b):
 		return a.index < b.index
 		)
+	
+	for target in _selected_targets:
+		_lowest_and_highest_selected(target)
 
 func _resized() -> void:
 	if _mouse_selection:
@@ -169,8 +174,11 @@ func _process_select() -> void:
 			## Change paths
 			if _target_selected_clicked.path_index >= 0 and mouse_path_idx >= 0 and _target_selected_clicked.path_index != mouse_path_idx:
 				var index_difference : int = (mouse_path_idx - _target_selected_clicked.path_index)
-				for selected_target in _selected_targets:
-					change_target_path(selected_target, selected_target.path_index, clampi(selected_target.path_index + index_difference, 0, _actions_paths_containers.size()), true)
+				if _lowest_selected_target_index + index_difference >= 0 and _highest_selected_target_index + index_difference < _actions_paths_containers.size():
+					_lowest_selected_target_index += index_difference
+					_highest_selected_target_index += index_difference
+					for selected_target in _selected_targets:
+						change_target_path(selected_target, selected_target.path_index, clampi(selected_target.path_index + index_difference, 0, _actions_paths_containers.size()), true)
 		
 		else: ## NOT CLICKED ON TARGET
 			_mouse_selection.set_global_rect(Rect2(_start_selection_global_position.x, _start_selection_global_position.y, get_global_mouse_position().x - _start_selection_global_position.x, get_global_mouse_position().y - _start_selection_global_position.y))
@@ -435,24 +443,21 @@ func _righest_or_leftest_selected(target : Target) -> void:
 				_rightest_target_selected = target
 
 func _select_targets(targets : Array[Target]) -> void:
-	#_has_both_paths_selected = false
-	var has_air_target : bool = false
-	var has_ground_target : bool = false
+	_lowest_selected_target_index = 9223372036854775807
+	_highest_selected_target_index = -9223372036854775807
 	
 	for target in targets:
 		_righest_or_leftest_selected(target)
-		if target is Spam or target is TwinTap:
-			has_air_target = true
-			has_ground_target = true
-		elif target.get_path_type() == Path.Types.AIR:
-			has_air_target = true
-		else:
-			has_ground_target = true
+		_lowest_and_highest_selected(target)
 		
 		target.target_editor.set_selected_highlight(true)
 		_selected_targets.append(target)
-	
-	#_has_both_paths_selected = has_air_target and has_ground_target
+
+func _lowest_and_highest_selected(target : Target) -> void:
+	if target.path_index < _lowest_selected_target_index:
+		_lowest_selected_target_index = target.path_index
+	if target.path_index > _highest_selected_target_index:
+		_highest_selected_target_index = target.path_index
 
 func _is_pressing_left_edit_button_hold(hold_target : HoldManual) -> void:
 	_is_pressing_left_edit_hold_button = true
