@@ -120,6 +120,7 @@ item_0/selectable = false
 item_1/text = "Selecionar"
 item_1/icon = ExtResource("3_scguc")
 item_2/text = "---- Ações ----"
+item_2/selectable = false
 item_3/text = "Comentário"
 item_3/icon = ExtResource("3_cno7x")
 item_4/text = "Seção"
