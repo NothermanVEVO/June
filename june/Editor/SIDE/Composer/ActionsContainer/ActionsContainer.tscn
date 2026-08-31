@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://35i0ihjh0r07"]
+[gd_scene format=3 uid="uid://35i0ihjh0r07"]
 
 [ext_resource type="Script" uid="uid://cfy0paxff4y1k" path="res://Editor/SIDE/Composer/ActionsContainer/ActionsContainer.gd" id="1_6vc3d"]
 [ext_resource type="Script" uid="uid://cml07poxkfj" path="res://Editor/SIDE/Composer/ActionsContainer/ActionsVBoxContainer.gd" id="2_d4yn7"]
@@ -16,22 +16,22 @@
 [ext_resource type="Texture2D" uid="uid://dfcklvlflxkmx" path="res://assets/Side/sketch/camera_icon.png" id="13_xfruf"]
 [ext_resource type="Texture2D" uid="uid://bgxdypc2w57kr" path="res://assets/Side/sketch/vignette_icon.png" id="14_w86ec"]
 
-[node name="ActionsContainer" type="MarginContainer"]
+[node name="ActionsContainer" type="MarginContainer" unique_id=875548853]
 anchors_preset = 10
 anchor_right = 1.0
 grow_horizontal = 2
 size_flags_horizontal = 10
 script = ExtResource("1_6vc3d")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=2035155213]
 layout_mode = 2
 color = Color(0, 0, 0, 1)
 
-[node name="Panel" type="Panel" parent="."]
+[node name="Panel" type="Panel" parent="." unique_id=610738293]
 layout_mode = 2
 
-[node name="ResizeButton" type="Button" parent="Panel"]
-layout_mode = 2
+[node name="ResizeButton" type="Button" parent="Panel" unique_id=1411942053]
+layout_mode = 0
 offset_top = -2.0
 offset_right = 1920.0
 offset_bottom = 6.0
@@ -40,11 +40,11 @@ size_flags_vertical = 0
 mouse_default_cursor_shape = 9
 flat = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=541126588]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="TopContainer" type="MarginContainer" parent="VBoxContainer"]
+[node name="TopContainer" type="MarginContainer" parent="VBoxContainer" unique_id=1605898153]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 5
@@ -52,11 +52,11 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="Panel" type="Panel" parent="VBoxContainer/TopContainer"]
+[node name="Panel" type="Panel" parent="VBoxContainer/TopContainer" unique_id=2119660094]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="TitleRichTextLabel" type="RichTextLabel" parent="VBoxContainer/TopContainer"]
+[node name="TitleRichTextLabel" type="RichTextLabel" parent="VBoxContainer/TopContainer" unique_id=722615222]
 visible = false
 layout_mode = 2
 mouse_filter = 2
@@ -64,29 +64,30 @@ text = "Editor de ações"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AddActionPathButton" type="Button" parent="VBoxContainer/TopContainer"]
+[node name="AddActionPathButton" type="Button" parent="VBoxContainer/TopContainer" unique_id=1550414738]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 0
 mouse_default_cursor_shape = 2
 text = "+ Adicionar novo caminho de ação"
 
-[node name="CloseButton" type="Button" parent="VBoxContainer/TopContainer"]
+[node name="CloseButton" type="Button" parent="VBoxContainer/TopContainer" unique_id=850201717]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 18
+disabled = true
 toggle_mode = true
 text = "Abrir editor de ações"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer" unique_id=588605729]
 layout_mode = 2
 size_flags_vertical = 3
 follow_focus = true
 horizontal_scroll_mode = 0
 
-[node name="CenterContainer" type="MarginContainer" parent="VBoxContainer/ScrollContainer"]
+[node name="CenterContainer" type="MarginContainer" parent="VBoxContainer/ScrollContainer" unique_id=601109068]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -95,23 +96,23 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/CenterContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/CenterContainer" unique_id=1427980078]
 layout_mode = 2
 
-[node name="ActionsVBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/CenterContainer/HBoxContainer"]
+[node name="ActionsVBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/CenterContainer/HBoxContainer" unique_id=1397631597]
 layout_mode = 2
 size_flags_horizontal = 3
 alignment = 2
 script = ExtResource("2_d4yn7")
 
-[node name="ActionListMarginContainer" type="MarginContainer" parent="VBoxContainer/ScrollContainer/CenterContainer/HBoxContainer"]
+[node name="ActionListMarginContainer" type="MarginContainer" parent="VBoxContainer/ScrollContainer/CenterContainer/HBoxContainer" unique_id=1639296565]
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="VBoxContainer/ScrollContainer/CenterContainer/HBoxContainer/ActionListMarginContainer"]
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer/ScrollContainer/CenterContainer/HBoxContainer/ActionListMarginContainer" unique_id=182119904]
 layout_mode = 2
 color = Color(0, 0, 0, 1)
 
-[node name="ActionsItemList" type="ItemList" parent="VBoxContainer/ScrollContainer/CenterContainer/HBoxContainer/ActionListMarginContainer"]
+[node name="ActionsItemList" type="ItemList" parent="VBoxContainer/ScrollContainer/CenterContainer/HBoxContainer/ActionListMarginContainer" unique_id=340322628]
 layout_mode = 2
 text_overrun_behavior = 1
 item_count = 15

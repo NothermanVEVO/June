@@ -82,6 +82,9 @@ func remove_manual_target(manual_target : ManualTarget, free : bool = false) -> 
 func update_manual_target(manual_target : ManualTarget) -> void:
 	_update_value(_manual_targets, manual_target)
 
+func has_manual_target(manual_target : ManualTarget) -> bool:
+	return _has_value(_manual_targets, manual_target)
+
 ## AUTO TARGETS
 
 func get_auto_targets(from : float, to : float) -> Array[AutoTarget]:
@@ -111,6 +114,9 @@ func remove_auto_target(auto_target : AutoTarget, free : bool = false) -> void:
 
 func update_auto_target(auto_target : AutoTarget) -> void:
 	_update_value(_auto_targets, auto_target)
+
+func has_auto_target(auto_target : AutoTarget) -> bool:
+	return _has_value(_auto_targets, auto_target)
 
 ## BASE FOR ARRAY TARGETS
 
@@ -153,12 +159,15 @@ func _update_value(array : Array, target : Target) -> void:
 	while low < high:
 		@warning_ignore("integer_division")
 		var mid := (low + high) / 2
-		if target.get_time() < array[mid].get_time():
+		if target.get_current_time() < array[mid].get_current_time():
 			high = mid
 		else:
 			low = mid + 1
 
 	array.insert(low, target)
+
+func _has_value(array : Array, target : Target) -> bool:
+	return array.has(target)
 
 func set_speed(speed : float) -> void:
 	_speed = speed

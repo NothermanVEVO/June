@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cgj2q01ygjdst"]
+[gd_scene format=3 uid="uid://cgj2q01ygjdst"]
 
 [ext_resource type="Script" uid="uid://bhhj2hgewfw3m" path="res://Editor/SIDE/Composer/SideGameEditor.gd" id="1_acdfn"]
 [ext_resource type="Script" uid="uid://lrh786wtxfk1" path="res://Editor/SIDE/Composer/SideMenuBarComposer.gd" id="1_h05j0"]
@@ -8,21 +8,21 @@
 [ext_resource type="Script" uid="uid://cr1l58jmclcj" path="res://Editor/FALL/Composer/SoundBoard.gd" id="9_6q0i8"]
 [ext_resource type="PackedScene" uid="uid://35i0ihjh0r07" path="res://Editor/SIDE/Composer/ActionsContainer/ActionsContainer.tscn" id="10_h05j0"]
 
-[node name="Side Editor Composer" type="VBoxContainer"]
+[node name="Side Editor Composer" type="VBoxContainer" unique_id=2035652106]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MenuBar" type="FlowContainer" parent="."]
+[node name="MenuBar" type="FlowContainer" parent="." unique_id=831523477]
 layout_mode = 2
 script = ExtResource("1_h05j0")
 
-[node name="MenuBar" type="MenuBar" parent="MenuBar"]
+[node name="MenuBar" type="MenuBar" parent="MenuBar" unique_id=1436544512]
 layout_mode = 2
 
-[node name="File" type="PopupMenu" parent="MenuBar/MenuBar"]
+[node name="File" type="PopupMenu" parent="MenuBar/MenuBar" unique_id=280485641]
 auto_translate_mode = 1
 title = "Arquivo"
 size = Vector2i(100, 143)
@@ -40,29 +40,29 @@ item_4/id = 4
 item_5/text = "Sair"
 item_5/id = 5
 
-[node name="Edit" type="PopupMenu" parent="MenuBar/MenuBar"]
+[node name="Edit" type="PopupMenu" parent="MenuBar/MenuBar" unique_id=661545543]
 auto_translate_mode = 1
 title = "Editar"
 
-[node name="Test" type="Button" parent="MenuBar"]
+[node name="Test" type="Button" parent="MenuBar" unique_id=2093618158]
 layout_mode = 2
 text = "Testar"
 
-[node name="Undo" type="Button" parent="MenuBar"]
+[node name="Undo" type="Button" parent="MenuBar" unique_id=855862957]
 layout_mode = 2
 disabled = true
 text = "<"
 
-[node name="Redo" type="Button" parent="MenuBar"]
+[node name="Redo" type="Button" parent="MenuBar" unique_id=75716832]
 layout_mode = 2
 disabled = true
 text = ">"
 
-[node name="Middle" type="VFlowContainer" parent="MenuBar"]
+[node name="Middle" type="VFlowContainer" parent="MenuBar" unique_id=1958336374]
 layout_mode = 2
 size_flags_horizontal = 6
 
-[node name="PlayerType" type="OptionButton" parent="MenuBar/Middle"]
+[node name="PlayerType" type="OptionButton" parent="MenuBar/Middle" unique_id=21081188]
 layout_mode = 2
 selected = 0
 item_count = 2
@@ -71,7 +71,7 @@ popup/item_0/id = 0
 popup/item_1/text = "Jogador 2"
 popup/item_1/id = 1
 
-[node name="Difficulty" type="OptionButton" parent="MenuBar/Middle"]
+[node name="Difficulty" type="OptionButton" parent="MenuBar/Middle" unique_id=395416845]
 layout_mode = 2
 selected = 0
 item_count = 4
@@ -84,7 +84,7 @@ popup/item_2/id = 2
 popup/item_3/text = "Maximus"
 popup/item_3/id = 3
 
-[node name="SpinBox" type="SpinBox" parent="MenuBar/Middle"]
+[node name="SpinBox" type="SpinBox" parent="MenuBar/Middle" unique_id=925153020]
 custom_minimum_size = Vector2(125, 0)
 layout_mode = 2
 min_value = 1.0
@@ -93,12 +93,12 @@ value = 1.0
 rounded = true
 suffix = "Estrelas"
 
-[node name="Right" type="FlowContainer" parent="MenuBar"]
+[node name="Right" type="FlowContainer" parent="MenuBar" unique_id=1543690979]
 layout_mode = 2
 size_flags_horizontal = 10
 vertical = true
 
-[node name="GridText" type="RichTextLabel" parent="MenuBar/Right"]
+[node name="GridText" type="RichTextLabel" parent="MenuBar/Right" unique_id=330852033]
 layout_mode = 2
 size_flags_vertical = 3
 text = "Grade: "
@@ -107,7 +107,7 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Grid" type="OptionButton" parent="MenuBar/Right"]
+[node name="Grid" type="OptionButton" parent="MenuBar/Right" unique_id=1827125958]
 layout_mode = 2
 tooltip_text = "Faz uma grid baseado no BPM.
 
@@ -127,7 +127,7 @@ popup/item_4/id = 12
 popup/item_5/text = "1/16"
 popup/item_5/id = 16
 
-[node name="ZoomText" type="RichTextLabel" parent="MenuBar/Right"]
+[node name="ZoomText" type="RichTextLabel" parent="MenuBar/Right" unique_id=117353890]
 layout_mode = 2
 size_flags_vertical = 3
 text = " Zoom: "
@@ -136,7 +136,7 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Zoom" type="SpinBox" parent="MenuBar/Right"]
+[node name="Zoom" type="SpinBox" parent="MenuBar/Right" unique_id=1282898144]
 layout_mode = 2
 tooltip_text = "Define a velocidade de queda das notas. Também pode funcionar como um zoom no Compositor.
 
@@ -150,17 +150,17 @@ step = 0.1
 value = 1.0
 update_on_text_changed = true
 
-[node name="Middle" type="HBoxContainer" parent="."]
+[node name="Middle" type="HBoxContainer" parent="." unique_id=923473307]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Game" type="Button" parent="Middle"]
+[node name="Game" type="Button" parent="Middle" unique_id=1262612922]
 layout_mode = 2
 size_flags_horizontal = 3
 flat = true
 script = ExtResource("1_acdfn")
 
-[node name="Focus Effect" type="ReferenceRect" parent="Middle/Game"]
+[node name="Focus Effect" type="ReferenceRect" parent="Middle/Game" unique_id=758999043]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -172,20 +172,20 @@ border_color = Color(1, 1, 1, 1)
 border_width = 5.0
 editor_only = false
 
-[node name="MouseTimeDisplay" type="PanelContainer" parent="Middle/Game"]
+[node name="MouseTimeDisplay" type="PanelContainer" parent="Middle/Game" unique_id=898835673]
 z_index = 1
 layout_mode = 0
 offset_right = 83.0
 offset_bottom = 40.0
 
-[node name="MarginContainer" type="MarginContainer" parent="Middle/Game/MouseTimeDisplay"]
+[node name="MarginContainer" type="MarginContainer" parent="Middle/Game/MouseTimeDisplay" unique_id=265575539]
 layout_mode = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Middle/Game/MouseTimeDisplay/MarginContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Middle/Game/MouseTimeDisplay/MarginContainer" unique_id=1235993760]
 layout_mode = 2
 text = "00:00:000"
 fit_content = true
@@ -193,9 +193,9 @@ scroll_active = false
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="Game Components List" type="ItemList" parent="Middle"]
-clip_contents = false
+[node name="Game Components List" type="ItemList" parent="Middle" unique_id=211525142]
 custom_minimum_size = Vector2(200, 0)
+clip_contents = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.0
@@ -232,7 +232,7 @@ item_22/text = "Meia Reação"
 item_23/text = "Servo"
 script = ExtResource("8_dmxwq")
 
-[node name="Resize Button" type="Button" parent="Middle/Game Components List"]
+[node name="Resize Button" type="Button" parent="Middle/Game Components List" unique_id=492060392]
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -242,24 +242,24 @@ grow_vertical = 2
 scale = Vector2(0.5, 1)
 mouse_default_cursor_shape = 10
 
-[node name="ActionsContainer" parent="." instance=ExtResource("10_h05j0")]
+[node name="ActionsContainer" parent="." unique_id=1510251422 instance=ExtResource("10_h05j0")]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=968294894]
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="MarginContainer"]
+[node name="ColorRect" type="ColorRect" parent="MarginContainer" unique_id=1540741281]
 layout_mode = 2
 color = Color(0, 0, 0, 1)
 
-[node name="SoundBoard" type="FlowContainer" parent="MarginContainer"]
+[node name="SoundBoard" type="FlowContainer" parent="MarginContainer" unique_id=1314474882]
 z_index = 2
 clip_contents = true
 layout_mode = 2
 size_flags_vertical = 8
 script = ExtResource("9_6q0i8")
 
-[node name="Time" type="TextEdit" parent="MarginContainer/SoundBoard"]
+[node name="Time" type="TextEdit" parent="MarginContainer/SoundBoard" unique_id=1004311169]
 custom_minimum_size = Vector2(120, 50)
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
@@ -269,7 +269,7 @@ emoji_menu_enabled = false
 drag_and_drop_selection_enabled = false
 caret_blink = true
 
-[node name="Time Percentage" type="TextEdit" parent="MarginContainer/SoundBoard"]
+[node name="Time Percentage" type="TextEdit" parent="MarginContainer/SoundBoard" unique_id=636151320]
 custom_minimum_size = Vector2(70, 40)
 layout_mode = 2
 size_flags_vertical = 4
@@ -278,21 +278,21 @@ placeholder_text = "0.0%"
 emoji_menu_enabled = false
 drag_and_drop_selection_enabled = false
 
-[node name="Play" type="Button" parent="MarginContainer/SoundBoard"]
+[node name="Play" type="Button" parent="MarginContainer/SoundBoard" unique_id=1617300635]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "Play"
 
-[node name="Stop" type="Button" parent="MarginContainer/SoundBoard"]
+[node name="Stop" type="Button" parent="MarginContainer/SoundBoard" unique_id=1608841012]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "Reset"
 
-[node name="SpeedContainer" type="VBoxContainer" parent="MarginContainer/SoundBoard"]
+[node name="SpeedContainer" type="VBoxContainer" parent="MarginContainer/SoundBoard" unique_id=1203727708]
 layout_mode = 2
 alignment = 1
 
-[node name="SpeedText" type="TextEdit" parent="MarginContainer/SoundBoard/SpeedContainer"]
+[node name="SpeedText" type="TextEdit" parent="MarginContainer/SoundBoard/SpeedContainer" unique_id=13020010]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -303,7 +303,7 @@ drag_and_drop_selection_enabled = false
 scroll_past_end_of_file = true
 scroll_fit_content_height = true
 
-[node name="SpeedSlider" type="HSlider" parent="MarginContainer/SoundBoard/SpeedContainer"]
+[node name="SpeedSlider" type="HSlider" parent="MarginContainer/SoundBoard/SpeedContainer" unique_id=1253126941]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_vertical = 4
@@ -313,7 +313,7 @@ value = 100.0
 tick_count = 4
 ticks_on_borders = true
 
-[node name="Time Slider" type="HSlider" parent="MarginContainer/SoundBoard"]
+[node name="Time Slider" type="HSlider" parent="MarginContainer/SoundBoard" unique_id=1245161212]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 3

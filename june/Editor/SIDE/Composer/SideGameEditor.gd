@@ -152,6 +152,13 @@ func _process_select() -> void:
 	
 	if Input.is_action_just_pressed("Delete"):
 		for target in _selected_targets:
+			if target is FakeClone:
+				target.real_clone.fake_clones.erase(target)
+			if target is RealClone:
+				_pathway_editor.remove_full_real_clone(target, true, true)
+			elif target is DelayTapEditor:
+				_pathway_editor.remove_target_at(target.get_delay_parent().get_path_type(), target.get_delay_parent(), true, true)
+				continue
 			_pathway_editor.remove_target_at(target.get_path_type(), target, true, true)
 		_selected_targets.clear()
 	

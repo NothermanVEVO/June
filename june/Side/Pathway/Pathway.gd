@@ -54,9 +54,13 @@ func remove_target_at(path_type : Path.Types, target : Target, validate_note : b
 			_air_path.remove_auto_target(target, free)
 	
 	if target is Spam:
-		remove_target_at(target.get_hold_blank().get_path_type(), target.get_hold_blank(), validate_note)
+		remove_target_at(target.get_hold_blank().get_path_type(), target.get_hold_blank(), validate_note, free)
 	if target is TwinTap and target.is_older():
-		remove_target_at(target.get_twin().get_path_type(), target.get_twin(), validate_note)
+		remove_target_at(target.get_twin().get_path_type(), target.get_twin(), validate_note, free)
+	if target is OneTimeDelayEditor:
+		remove_target_at(path_type, target.get_first_delay_tap(), validate_note, free)
+		if target is TwoTimesDelayEditor:
+			remove_target_at(path_type, target.get_second_delay_tap(), validate_note, free)
 
 func add_full_real_clone(real_clone : RealClone, validate_note : bool = false) -> void:
 	for fake_clone in real_clone.fake_clones:
