@@ -209,11 +209,10 @@ func _process_select() -> void:
 			## Change paths
 			if not _has_both_paths_selected and _target_selected_clicked.get_path_type() != mouse_path_type:
 				for selected_target in _selected_targets:
-					_pathway_editor.change_target_path(mouse_path_type, selected_target, true)
-					if selected_target is OneTimeDelayEditor:
-						_pathway_editor.change_target_path(mouse_path_type, selected_target.get_first_delay_tap(), true)
-						if selected_target is TwoTimesDelayEditor:
-							_pathway_editor.change_target_path(mouse_path_type, selected_target.get_second_delay_tap(), true)
+					if selected_target is DelayTapEditor:
+						_pathway_editor.change_target_path(mouse_path_type, selected_target.get_delay_parent(), true)
+					else:
+						_pathway_editor.change_target_path(mouse_path_type, selected_target, true)
 		
 		else: ## NOT CLICKED ON TARGET
 			_mouse_selection.set_global_rect(Rect2(_start_selection_global_position.x, _start_selection_global_position.y, get_global_mouse_position().x - _start_selection_global_position.x, get_global_mouse_position().y - _start_selection_global_position.y))
@@ -335,14 +334,11 @@ func _process_shield_item(type : String) -> void:
 			var shield_target = OneTimeDelayEditor.new(_get_closest_grid_time_to_mouse(), _get_next_avaliabe_time_from(_get_closest_grid_time_to_mouse()), _get_path_type_at_mouse())
 			shield_target.create_target_editor()
 			_pathway_editor.add_target_at(_get_path_type_at_mouse(), shield_target)
-			_pathway_editor.add_target_at(_get_path_type_at_mouse(), shield_target.get_first_delay_tap())
 		elif type == "Fortified":
 			var fortified_target = TwoTimesDelayEditor.new(_get_closest_grid_time_to_mouse(), _get_next_avaliabe_time_from(_get_closest_grid_time_to_mouse()), 0, _get_path_type_at_mouse())
 			fortified_target.create_target_editor()
 			fortified_target.set_second_time_delay(_get_next_avaliabe_time_from(fortified_target.get_first_time_delay()))
 			_pathway_editor.add_target_at(_get_path_type_at_mouse(), fortified_target)
-			_pathway_editor.add_target_at(_get_path_type_at_mouse(), fortified_target.get_first_delay_tap())
-			_pathway_editor.add_target_at(_get_path_type_at_mouse(), fortified_target.get_second_delay_tap())
 
 func _process_clone_item() -> void:
 	if not _is_mouse_inside():
