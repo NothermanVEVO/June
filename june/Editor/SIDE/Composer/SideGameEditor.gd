@@ -313,7 +313,7 @@ func _process_twins_item() -> void:
 	_sample_target.texture = SideEditor.TWINS_TEXTURE
 	
 	if Input.is_action_just_pressed("Add Item"):
-		var target : Target = TwinTap.new(_get_closest_grid_time_to_mouse(), _get_path_type_at_mouse(), true)
+		var target : Target = TwinTap.new(_get_closest_grid_time_to_mouse(), _get_path_type_at_mouse())
 		target.create_target_editor()
 		_pathway_editor.add_target_at(_get_path_type_at_mouse(), target)
 

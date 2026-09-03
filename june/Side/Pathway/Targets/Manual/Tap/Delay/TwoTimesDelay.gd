@@ -4,6 +4,10 @@ class_name TwoTimesDelay
 
 var _second_time_delay : float
 
+func _init(start_time : float, path_type : Path.Types, first_time_delay : float, second_time_delay : float) -> void:
+	super._init(start_time, path_type, first_time_delay)
+	set_second_time_delay(second_time_delay)
+
 func hit() -> void:
 	if _has_hitted_first_delay:
 		_current_time = _second_time_delay

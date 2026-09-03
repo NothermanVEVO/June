@@ -1,0 +1,3 @@
+extends TargetResource
+
+class_name TwinTapResource

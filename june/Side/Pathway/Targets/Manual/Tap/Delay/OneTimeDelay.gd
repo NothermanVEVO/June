@@ -5,7 +5,7 @@ class_name OneTimeDelay
 var _first_time_delay : float
 var _has_hitted_first_delay : bool = false
 
-func _init(start_time : float, first_time_delay : float, path_type : Path.Types) -> void:
+func _init(start_time : float, path_type : Path.Types, first_time_delay : float) -> void:
 	super._init(start_time, path_type)
 	set_first_time_delay(first_time_delay)
 
