@@ -6,7 +6,6 @@ class_name TargetResource
 
 @export var path_type : int
 
-
 enum Targets {LIGHT_TAP, MEDIUM_TAP, HEAVY, TWIN, SHIELD, FORTIFIED, REAL_CLONE, FAKE_CLONE, HAMMER, HOLD, TRAP, AXE, NOTE_1, NOTE_2, HEART, CHILD}
 
 @warning_ignore("shadowed_variable")
