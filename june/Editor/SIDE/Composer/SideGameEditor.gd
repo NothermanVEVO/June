@@ -331,11 +331,11 @@ func _process_shield_item(type : String) -> void:
 	
 	if Input.is_action_just_pressed("Add Item"):
 		if type == "Shield":
-			var shield_target = OneTimeDelayEditor.new(_get_closest_grid_time_to_mouse(), _get_next_avaliabe_time_from(_get_closest_grid_time_to_mouse()), _get_path_type_at_mouse())
+			var shield_target = OneTimeDelayEditor.new(_get_closest_grid_time_to_mouse(), _get_path_type_at_mouse(), _get_next_avaliabe_time_from(_get_closest_grid_time_to_mouse()))
 			shield_target.create_target_editor()
 			_pathway_editor.add_target_at(_get_path_type_at_mouse(), shield_target)
 		elif type == "Fortified":
-			var fortified_target = TwoTimesDelayEditor.new(_get_closest_grid_time_to_mouse(), _get_next_avaliabe_time_from(_get_closest_grid_time_to_mouse()), 0, _get_path_type_at_mouse())
+			var fortified_target = TwoTimesDelayEditor.new(_get_closest_grid_time_to_mouse(), _get_path_type_at_mouse(), _get_next_avaliabe_time_from(_get_closest_grid_time_to_mouse()), 0)
 			fortified_target.create_target_editor()
 			fortified_target.set_second_time_delay(_get_next_avaliabe_time_from(fortified_target.get_first_time_delay()))
 			_pathway_editor.add_target_at(_get_path_type_at_mouse(), fortified_target)

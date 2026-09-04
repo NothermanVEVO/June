@@ -4,11 +4,11 @@ class_name OneTimeDelayEditor
 
 var _first_delay_tap : DelayTapEditor
 
-func _init(start_time : float, first_time_delay : float, path_type : Path.Types) -> void:
+func _init(start_time : float, path_type : Path.Types, first_time_delay : float) -> void:
 	_first_delay_tap = DelayTapEditor.new(first_time_delay, path_type, self)
 	texture = SideEditor.SHIELD_1_TEXTURE
 	_first_delay_tap.texture = SideEditor.SHIELD_0_TEXTURE
-	super._init(start_time, first_time_delay, path_type)
+	super._init(start_time, path_type, first_time_delay)
 
 func get_first_delay_tap() -> DelayTapEditor:
 	return _first_delay_tap

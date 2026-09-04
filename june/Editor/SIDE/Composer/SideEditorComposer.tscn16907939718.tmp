@@ -194,7 +194,6 @@ autowrap_mode = 0
 vertical_alignment = 1
 
 [node name="Game Components List" type="ItemList" parent="Middle" unique_id=211525142]
-z_index = 5
 custom_minimum_size = Vector2(200, 0)
 clip_contents = false
 layout_mode = 2
