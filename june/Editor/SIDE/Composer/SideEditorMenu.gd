@@ -9,6 +9,7 @@ enum FileType {SAVE, EXPORT, OPEN}
 var _last_file_type : FileType
 
 func _open_file(path : String) -> Error:
+	
 	return FAILED
 
 func _on_file_id_pressed(id: int) -> void:
@@ -20,6 +21,10 @@ func _on_file_id_pressed(id: int) -> void:
 			file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
 			file_dialog.popup_file_dialog()
 		"Salvar":
+			if SideEditor.get_file_path():
+				SideEditor.save_file(SideEditor.get_file_path())
+				return
+			
 			_last_file_type = FileType.SAVE
 			file_dialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
 			file_dialog.popup_file_dialog()
@@ -34,11 +39,10 @@ func _on_file_dialog_file_selected(path: String) -> void:
 	match _last_file_type:
 		FileType.SAVE:
 			SideEditor.save_file(path)
-			pass
 		FileType.EXPORT:
 			pass
 		FileType.OPEN:
-			pass
+			SideEditor.open_file(path)
 
 func _on_player_type_item_selected(index: int) -> void:
 	var existed_song_map : SideSongMap = SideEditor.get_song_map(SideEditor.current_song_map.difficulty, index)

@@ -1,6 +1,6 @@
 extends Resource
 
-class_name SideEditorSave
+class_name SideEditorResource
 
 ## Details
 @export var song_name : String = ""

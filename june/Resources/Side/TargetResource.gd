@@ -14,6 +14,9 @@ func _init(start_time : float = 0.0, path_type : int = 0) -> void:
 	self.path_type = path_type
 
 static func target_to_resource(target : Target) -> TargetResource:
+	if target is Blank or target is HoldBlank:
+		return null
+	
 	if target is LightTap:
 		return LightTapResource.new(target.get_start_time(), target.get_path_type(), target.get_variant())
 	elif target is MediumTap:
@@ -21,14 +24,12 @@ static func target_to_resource(target : Target) -> TargetResource:
 	elif target is Spam:
 		return SpamResource.new(target.get_start_time(), target.get_end_time(), target.get_path_type())
 	elif target is TwinTap:
-		return TwinTapResource.new(target.get_start_time(), target.get_path_type())
-	elif target is TwoTimesDelay:
+		if target.is_older():
+			return TwinTapResource.new(target.get_start_time(), target.get_path_type())
+		return null
+	elif target is TwoTimesDelay or target is TwoTimesDelayEditor:
 		return TwoTimesDelayResource.new(target.get_start_time(), target.get_path_type(), target.get_first_time_delay(), target.get_second_time_delay())
-	elif target is OneTimeDelay:
-		return OneTimeDelayResource.new(target.get_start_time(), target.get_path_type(), target.get_first_time_delay())
-	elif target is TwoTimesDelayEditor:
-		return TwoTimesDelayResource.new(target.get_start_time(), target.get_path_type(), target.get_first_time_delay(), target.get_second_time_delay())
-	elif target is OneTimeDelayEditor:
+	elif target is OneTimeDelay or target is OneTimeDelayEditor:
 		return OneTimeDelayResource.new(target.get_start_time(), target.get_path_type(), target.get_first_time_delay())
 	elif target is RealClone:
 		var real_clone := RealCloneResource.new(target.get_start_time(), target.get_path_type(), [])
@@ -62,13 +63,13 @@ static func resource_to_target(target_resource : TargetResource) -> Target:
 	elif target_resource is TwinTapResource:
 		return TwinTap.new(target_resource.start_time, target_resource.path_type)
 	elif target_resource is TwoTimesDelayResource:
-		return TwoTimesDelay.new(target_resource.start_time, target_resource.path_type, target_resource.first_time_delay, target_resource.second_time_delay)
+		return TwoTimesDelay.new(target_resource.start_time, target_resource.path_type, target_resource.first_delay_time, target_resource.second_delay_time)
 	elif target_resource is OneTimeDelayResource:
-		return OneTimeDelay.new(target_resource.start_time, target_resource.path_type, target_resource.first_time_delay)
+		return OneTimeDelay.new(target_resource.start_time, target_resource.path_type, target_resource.first_delay_time)
 	elif target_resource is RealCloneResource:
 		var real_clone := RealClone.new(target_resource.start_time, target_resource.path_type)
 		for fake_clone_resource in target_resource.fake_clones:
-			real_clone.add_new_fake_clone(FakeClone.new(fake_clone_resource.start_time, fake_clone_resource.path_type))
+			real_clone.fake_clones.append(FakeClone.new(fake_clone_resource.start_time, fake_clone_resource.path_type))
 		return real_clone
 	elif target_resource is FakeCloneResource:
 		return null
@@ -81,7 +82,7 @@ static func resource_to_target(target_resource : TargetResource) -> Target:
 	elif target_resource is AxeTrapResource:
 		return AxeTrap.new(target_resource.start_time, target_resource.path_type)
 	elif target_resource is MusicalNoteResource:
-		return MusicalNote.new(target_resource.start_time, target_resource.path_type, target_resource.get_variant())
+		return MusicalNote.new(target_resource.start_time, target_resource.path_type, target_resource.variant)
 	elif target_resource is HeartResource:
 		return Heart.new(target_resource.start_time, target_resource.path_type)
 	

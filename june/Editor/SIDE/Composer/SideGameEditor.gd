@@ -72,6 +72,7 @@ func _ready() -> void:
 	_side_game_components_list.resizing.connect(_is_resizing_game_components_list)
 	
 	SideEditor.changed_current_song_map.connect(_side_editor_changed_song_map)
+	SideEditor.save_changes.connect(_side_editor_save_changes)
 
 func _on_resized() -> void:
 	_pathway_editor.global_position.y = global_position.y + (get_global_rect().size.y / 2)
@@ -86,6 +87,10 @@ func _is_resizing_game_components_list() -> void:
 	if _mouse_selection:
 		_mouse_selection.set_global_rect(Rect2(0, 0, 0, 0))
 
+func _side_editor_save_changes() -> void:
+	if _current_song_map:
+		_save_targets_in_song_map(_current_song_map)
+
 func _side_editor_changed_song_map() -> void:
 	if _current_song_map:
 		_save_targets_in_song_map(_current_song_map)
@@ -97,11 +102,35 @@ func _side_editor_changed_song_map() -> void:
 	add_child.call_deferred(_pathway_editor)
 	_on_resized.call_deferred()
 	
+	print("change song map")
+	
 	for target_resource in SideEditor.current_song_map.targets:
 		var target : Target = TargetResource.resource_to_target(target_resource)
 		
 		if not target:
 			continue
+		
+		target.create_target_editor()
+		
+		if target is RealClone:
+			for fake in target.fake_clones:
+				fake.create_target_editor()
+				fake.real_clone = target
+				_pathway_editor.add_target_at(fake.get_path_type(), fake, true)
+		elif target is HoldManual:
+			target.set_process.call_deferred.call_deferred(true)
+			target.is_pressing_left_edit_button.connect(_is_pressing_left_edit_button_hold)
+			target.is_pressing_right_edit_button.connect(_is_pressing_right_edit_button_hold)
+			target.released_left_edit_button.connect(_hold_left_edit_button_released)
+			target.released_right_edit_button.connect(_hold_right_edit_button_released)
+		elif target is TwoTimesDelay:
+			target.queue_free()
+			target = TwoTimesDelayEditor.new(target.get_start_time(), target.get_path_type(), target.get_first_time_delay(), target.get_second_time_delay())
+			target.create_target_editor()
+		elif target is OneTimeDelay:
+			target.queue_free()
+			target = OneTimeDelayEditor.new(target.get_start_time(), target.get_path_type(), target.get_first_time_delay())
+			target.create_target_editor()
 		
 		_pathway_editor.add_target_at(target.get_path_type(), target, true)
 	
@@ -110,10 +139,12 @@ func _side_editor_changed_song_map() -> void:
 func _save_targets_in_song_map(song_map : SideSongMap) -> void:
 	song_map.targets.clear()
 	
+	print("save song map")
+	
 	for target in _pathway_editor.get_all_targets():
 		var target_resource : TargetResource = TargetResource.target_to_resource(target)
 		
-		if not target:
+		if not target_resource:
 			continue
 		
 		song_map.targets.append(target_resource)
