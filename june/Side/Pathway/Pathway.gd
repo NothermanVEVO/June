@@ -108,6 +108,17 @@ func get_global_targets_intersected_with(rect : Rect2, from : float, to : float)
 	
 	return intersected_targets
 
+func get_all_targets() -> Array[Target]:
+	var targets : Array[Target] = []
+	targets.append_array(_ground_path.get_targets(-1, INF))
+	targets.append_array(_air_path.get_targets(-1, INF))
+	
+	targets.sort_custom(func(a : Target, b : Target):
+		return a.get_start_time() < b.get_start_time()
+		)
+	
+	return targets
+
 func add_action(action : Action) -> void:
 	var low := 0
 	var high := _actions.size()

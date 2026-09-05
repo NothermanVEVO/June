@@ -15,9 +15,9 @@ func set_variant(variant : Variants) -> void:
 	
 	match variant:
 		Variants.ONE:
-			texture = SideEditor.MEDIUM_1_TEXTURE
+			texture = SideEditorTexture.MEDIUM_1_TEXTURE
 		Variants.TWO:
-			texture = SideEditor.MEDIUM_2_TEXTURE
+			texture = SideEditorTexture.MEDIUM_2_TEXTURE
 
 func get_variant() -> Variants:
 	return _variant

@@ -4,11 +4,11 @@ class_name SideGameEditor
 
 const _TARGET_INFO_WINDOW_SCENE : PackedScene = preload("res://Editor/SIDE/Composer/TargetInfoWindow/TargetInfoWindow.tscn")
 
-var _pathway_editor := PathwayEditor.new()
+static var _pathway_editor := PathwayEditor.new()
 
 @onready var _side_game_components_list : SideGameComponents = $"../Game Components List"
 
-@onready var _actions_container : ActionsContainer = $"../../ActionsContainer"
+#@onready var _actions_container : ActionsContainer = $"../../ActionsContainer"
 
 var _current_target_info_window : TargetInfoWindow
 
@@ -47,6 +47,8 @@ var _has_both_paths_selected : bool = false
 var _is_pressing_left_edit_hold_button : bool = false
 var _is_pressing_right_edit_hold_button : bool = false
 
+var _current_song_map : SideSongMap = null
+
 func _init() -> void: ## TEMP
 	Song.set_song(load("res://Sound Test Sample/Brutal, acabou pro beta versão globo.mp3"))
 	Song.BPM = 60
@@ -55,10 +57,12 @@ func _init() -> void: ## TEMP
 	_calculate_highest_grid_time()
 
 func _ready() -> void:
+	_current_song_map = SideEditor.current_song_map
+	
 	add_child(_pathway_editor)
 	add_child(_mouse_selection)
 	
-	_actions_container.setup.call_deferred(_pathway_editor, _highest_grid_time)
+	#_actions_container.setup.call_deferred(_pathway_editor, _highest_grid_time) ## ACTIONS
 	
 	_sample_target.global_position = Vector2(INF, INF)
 	_sample_target.modulate.a = 0.5
@@ -66,6 +70,8 @@ func _ready() -> void:
 	add_child(_sample_target)
 	
 	_side_game_components_list.resizing.connect(_is_resizing_game_components_list)
+	
+	SideEditor.changed_current_song_map.connect(_side_editor_changed_song_map)
 
 func _on_resized() -> void:
 	_pathway_editor.global_position.y = global_position.y + (get_global_rect().size.y / 2)
@@ -79,6 +85,38 @@ func _is_resizing_game_components_list() -> void:
 		_pathway_editor.set_speed(zoom_value)
 	if _mouse_selection:
 		_mouse_selection.set_global_rect(Rect2(0, 0, 0, 0))
+
+func _side_editor_changed_song_map() -> void:
+	if _current_song_map:
+		_save_targets_in_song_map(_current_song_map)
+	
+	remove_child.call_deferred(_pathway_editor)
+	_pathway_editor.queue_free()
+	
+	_pathway_editor = PathwayEditor.new()
+	add_child.call_deferred(_pathway_editor)
+	_on_resized.call_deferred()
+	
+	for target_resource in SideEditor.current_song_map.targets:
+		var target : Target = TargetResource.resource_to_target(target_resource)
+		
+		if not target:
+			continue
+		
+		_pathway_editor.add_target_at(target.get_path_type(), target, true)
+	
+	_current_song_map = SideEditor.current_song_map
+
+func _save_targets_in_song_map(song_map : SideSongMap) -> void:
+	song_map.targets.clear()
+	
+	for target in _pathway_editor.get_all_targets():
+		var target_resource : TargetResource = TargetResource.target_to_resource(target)
+		
+		if not target:
+			continue
+		
+		song_map.targets.append(target_resource)
 
 func _process(delta: float) -> void:
 	queue_redraw()
@@ -236,13 +274,13 @@ func _process_light_items(type : String) -> void:
 	match type:
 		"Leve 1":
 			light_variant = LightTap.Variants.ONE
-			_sample_target.texture = SideEditor.LIGHT_1_TEXTURE
+			_sample_target.texture = SideEditorTexture.LIGHT_1_TEXTURE
 		"Leve 2":
 			light_variant = LightTap.Variants.TWO
-			_sample_target.texture = SideEditor.LIGHT_2_TEXTURE
+			_sample_target.texture = SideEditorTexture.LIGHT_2_TEXTURE
 		"Leve 3":
 			light_variant = LightTap.Variants.THREE
-			_sample_target.texture = SideEditor.LIGHT_3_TEXTURE
+			_sample_target.texture = SideEditorTexture.LIGHT_3_TEXTURE
 	
 	if Input.is_action_just_pressed("Add Item"):
 		var target : Target = LightTap.new(_get_closest_grid_time_to_mouse(), _get_path_type_at_mouse(), light_variant)
@@ -261,10 +299,10 @@ func _process_medium_items(type : String) -> void:
 	match type:
 		"Médio 1":
 			medium_variant = MediumTap.Variants.ONE
-			_sample_target.texture = SideEditor.MEDIUM_1_TEXTURE
+			_sample_target.texture = SideEditorTexture.MEDIUM_1_TEXTURE
 		"Médio 2":
 			medium_variant = MediumTap.Variants.TWO
-			_sample_target.texture = SideEditor.MEDIUM_2_TEXTURE
+			_sample_target.texture = SideEditorTexture.MEDIUM_2_TEXTURE
 	
 	if Input.is_action_just_pressed("Add Item"):
 		var target : Target = MediumTap.new(_get_closest_grid_time_to_mouse(), _get_path_type_at_mouse(), medium_variant)
@@ -283,7 +321,7 @@ func _process_heavy_item() -> void:
 	else: ## AIR
 		_sample_target.global_position.y += Path.HEIGHT
 	
-	_sample_target.texture = SideEditor.HEAVY_TEXTURE
+	_sample_target.texture = SideEditorTexture.HEAVY_TEXTURE
 	
 	if Input.is_action_just_pressed("Add Item"):
 		_current_hold_target = Spam.new(_get_closest_grid_time_to_mouse(), _get_closest_grid_time_to_mouse(), _get_path_type_at_mouse())
@@ -310,7 +348,7 @@ func _process_twins_item() -> void:
 	else: ## AIR
 		_sample_target.global_position.y += Path.HEIGHT
 	
-	_sample_target.texture = SideEditor.TWINS_TEXTURE
+	_sample_target.texture = SideEditorTexture.TWINS_TEXTURE
 	
 	if Input.is_action_just_pressed("Add Item"):
 		var target : Target = TwinTap.new(_get_closest_grid_time_to_mouse(), _get_path_type_at_mouse())
@@ -325,9 +363,9 @@ func _process_shield_item(type : String) -> void:
 	_sample_target.global_position = _get_mouse_position_locked_by_paths()
 	
 	if type == "Shield":
-		_sample_target.texture = SideEditor.SHIELD_1_TEXTURE
+		_sample_target.texture = SideEditorTexture.SHIELD_1_TEXTURE
 	else:
-		_sample_target.texture = SideEditor.SHIELD_2_TEXTURE
+		_sample_target.texture = SideEditorTexture.SHIELD_2_TEXTURE
 	
 	if Input.is_action_just_pressed("Add Item"):
 		if type == "Shield":
@@ -347,7 +385,7 @@ func _process_clone_item() -> void:
 	_attach_mouse_display = true
 	_sample_target.global_position = _get_mouse_position_locked_by_paths()
 	
-	_sample_target.texture = SideEditor.CLONE_FINAL_TEXTURE
+	_sample_target.texture = SideEditorTexture.CLONE_FINAL_TEXTURE
 	
 	if Input.is_action_just_pressed("Add Item"):
 		var target : Target = RealClone.new(_get_closest_grid_time_to_mouse(), _get_path_type_at_mouse())
@@ -361,7 +399,7 @@ func _process_hammer_item() -> void:
 	_attach_mouse_display = true
 	_sample_target.global_position = _get_mouse_position_locked_by_paths()
 	
-	_sample_target.texture = SideEditor.HAMMER_TEXTURE
+	_sample_target.texture = SideEditorTexture.HAMMER_TEXTURE
 	
 	_sample_target.flip_v = _get_path_type_at_mouse() == Path.Types.GROUND
 	
@@ -377,7 +415,7 @@ func _process_hold_item() -> void:
 	_attach_mouse_display = true
 	_sample_target.global_position = _get_mouse_position_locked_by_paths()
 	
-	_sample_target.texture = SideEditor.START_HOLD_TEXTURE
+	_sample_target.texture = SideEditorTexture.START_HOLD_TEXTURE
 	
 	if Input.is_action_just_pressed("Add Item"):
 		_current_hold_target = HoldManual.new(_get_closest_grid_time_to_mouse(), _get_closest_grid_time_to_mouse(), _get_path_type_at_mouse())
@@ -399,7 +437,7 @@ func _process_trap_item() -> void:
 	_attach_mouse_display = true
 	_sample_target.global_position = _get_mouse_position_locked_by_paths()
 	
-	_sample_target.texture = SideEditor.TRAP_TEXTURE
+	_sample_target.texture = SideEditorTexture.TRAP_TEXTURE
 	
 	if Input.is_action_just_pressed("Add Item"):
 		var target = Trap.new(_get_closest_grid_time_to_mouse(), _get_path_type_at_mouse())
@@ -413,7 +451,7 @@ func _process_axe_item() -> void:
 	_attach_mouse_display = true
 	_sample_target.global_position = _get_mouse_position_locked_by_paths()
 	
-	_sample_target.texture = SideEditor.AXE_TEXTURE
+	_sample_target.texture = SideEditorTexture.AXE_TEXTURE
 	
 	_sample_target.flip_v = _get_path_type_at_mouse() == Path.Types.GROUND
 	
@@ -434,10 +472,10 @@ func _process_note_item(type : String) -> void:
 	match type:
 		"Nota 1":
 			note_variant = MusicalNote.Variants.ONE
-			_sample_target.texture = SideEditor.NOTE_1_TEXTURE
+			_sample_target.texture = SideEditorTexture.NOTE_1_TEXTURE
 		"Nota 2":
 			note_variant = MusicalNote.Variants.TWO
-			_sample_target.texture = SideEditor.NOTE_2_TEXTURE
+			_sample_target.texture = SideEditorTexture.NOTE_2_TEXTURE
 	
 	if Input.is_action_just_pressed("Add Item"):
 		var target = MusicalNote.new(_get_closest_grid_time_to_mouse(), _get_path_type_at_mouse(), note_variant)
@@ -451,7 +489,7 @@ func _process_heart_item() -> void:
 	_attach_mouse_display = true
 	_sample_target.global_position = _get_mouse_position_locked_by_paths()
 	
-	_sample_target.texture = SideEditor.HEART_TEXTURE
+	_sample_target.texture = SideEditorTexture.HEART_TEXTURE
 	
 	if Input.is_action_just_pressed("Add Item"):
 		var target = Heart.new(_get_closest_grid_time_to_mouse(), _get_path_type_at_mouse())

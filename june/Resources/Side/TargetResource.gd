@@ -56,7 +56,7 @@ static func resource_to_target(target_resource : TargetResource) -> Target:
 	if target_resource is LightTapResource:
 		return LightTap.new(target_resource.start_time, target_resource.path_type, target_resource.variant)
 	elif target_resource is MediumTapResource:
-		return MediumTap.new(target_resource.start_time, target_resource.path_type, target_resource.get_variant())
+		return MediumTap.new(target_resource.start_time, target_resource.path_type, target_resource.variant)
 	elif target_resource is SpamResource:
 		return Spam.new(target_resource.start_time, target_resource.end_time, target_resource.path_type)
 	elif target_resource is TwinTapResource:

@@ -4,7 +4,7 @@ class_name AxeTrap
 
 func _init(start_time : float, path_type : Path.Types) -> void:
 	super._init(start_time, path_type)
-	texture = SideEditor.AXE_TEXTURE
+	texture = SideEditorTexture.AXE_TEXTURE
 
 func set_path_type(path_type : Path.Types) -> void:
 	super.set_path_type(path_type)

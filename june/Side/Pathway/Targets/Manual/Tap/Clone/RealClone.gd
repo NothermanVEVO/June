@@ -6,7 +6,7 @@ var fake_clones : Array[FakeClone] = []
 
 func _init(start_time : float, path_type : Path.Types) -> void:
 	super._init(start_time, path_type)
-	texture = SideEditor.CLONE_FINAL_TEXTURE
+	texture = SideEditorTexture.CLONE_FINAL_TEXTURE
 
 func add_new_fake_clone(fake_clone : FakeClone) -> void:
 	var path_type := get_path_type()

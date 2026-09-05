@@ -194,7 +194,7 @@ func _process_comment() -> void:
 	if not _is_mouse_inside():
 		return
 	
-	_sample_action.texture = SideEditor.COMMENT_ICON_TEXTURE
+	_sample_action.texture = SideEditorTexture.COMMENT_ICON_TEXTURE
 	_sample_action.global_position = _get_global_locked_mouse_position()
 	
 	if Input.is_action_just_pressed("Add Item") and _closest_action_path_container:
@@ -205,7 +205,7 @@ func _process_section() -> void:
 	if not _is_mouse_inside():
 		return
 	
-	_sample_action.texture = SideEditor.SECTION_ICON_TEXTURE
+	_sample_action.texture = SideEditorTexture.SECTION_ICON_TEXTURE
 	_sample_action.global_position = _get_global_locked_mouse_position()
 	
 	if Input.is_action_just_pressed("Add Item") and _closest_action_path_container:
@@ -216,7 +216,7 @@ func _process_fade() -> void:
 	if not _is_mouse_inside():
 		return
 	
-	_sample_action.texture = SideEditor.FADE_ICON_TEXTURE
+	_sample_action.texture = SideEditorTexture.FADE_ICON_TEXTURE
 	_sample_action.global_position = _get_global_locked_mouse_position()
 	
 	if Input.is_action_just_pressed("Add Item"):
@@ -237,7 +237,7 @@ func _process_speed() -> void:
 	if not _is_mouse_inside():
 		return
 	
-	_sample_action.texture = SideEditor.SPEED_ICON_TEXTURE
+	_sample_action.texture = SideEditorTexture.SPEED_ICON_TEXTURE
 	_sample_action.global_position = _get_global_locked_mouse_position()
 	
 	if Input.is_action_just_pressed("Add Item") and _closest_action_path_container:
@@ -248,7 +248,7 @@ func _process_boss() -> void:
 	if not _is_mouse_inside():
 		return
 	
-	_sample_action.texture = SideEditor.BOSS_ICON_TEXTURE
+	_sample_action.texture = SideEditorTexture.BOSS_ICON_TEXTURE
 	_sample_action.global_position = _get_global_locked_mouse_position()
 	
 	if Input.is_action_just_pressed("Add Item"):
@@ -269,7 +269,7 @@ func _process_dialog() -> void:
 	if not _is_mouse_inside():
 		return
 	
-	_sample_action.texture = SideEditor.DIALOG_ICON_TEXTURE
+	_sample_action.texture = SideEditorTexture.DIALOG_ICON_TEXTURE
 	_sample_action.global_position = _get_global_locked_mouse_position()
 	
 	if Input.is_action_just_pressed("Add Item"):
@@ -290,7 +290,7 @@ func _process_cinematic() -> void:
 	if not _is_mouse_inside():
 		return
 	
-	_sample_action.texture = SideEditor.CINEMATIC_ICON_TEXTURE
+	_sample_action.texture = SideEditorTexture.CINEMATIC_ICON_TEXTURE
 	_sample_action.global_position = _get_global_locked_mouse_position()
 	
 	if Input.is_action_just_pressed("Add Item"):
@@ -311,7 +311,7 @@ func _process_change_scenario() -> void:
 	if not _is_mouse_inside():
 		return
 	
-	_sample_action.texture = SideEditor.CHANGE_SCENARIO_ICON_TEXTURE
+	_sample_action.texture = SideEditorTexture.CHANGE_SCENARIO_ICON_TEXTURE
 	_sample_action.global_position = _get_global_locked_mouse_position()
 	
 	if Input.is_action_just_pressed("Add Item") and _closest_action_path_container:
@@ -322,7 +322,7 @@ func _process_change_enemy() -> void:
 	if not _is_mouse_inside():
 		return
 	
-	_sample_action.texture = SideEditor.CHANGE_ENEMIES_ICON_TEXTURE
+	_sample_action.texture = SideEditorTexture.CHANGE_ENEMIES_ICON_TEXTURE
 	_sample_action.global_position = _get_global_locked_mouse_position()
 	
 	if Input.is_action_just_pressed("Add Item") and _closest_action_path_container:
@@ -333,7 +333,7 @@ func _process_shake() -> void:
 	if not _is_mouse_inside():
 		return
 	
-	_sample_action.texture = SideEditor.SHAKE_ICON_TEXTURE
+	_sample_action.texture = SideEditorTexture.SHAKE_ICON_TEXTURE
 	_sample_action.global_position = _get_global_locked_mouse_position()
 	
 	if Input.is_action_just_pressed("Add Item") and _closest_action_path_container:
@@ -344,7 +344,7 @@ func _process_camera() -> void:
 	if not _is_mouse_inside():
 		return
 	
-	_sample_action.texture = SideEditor.CAMERA_ICON_TEXTURE
+	_sample_action.texture = SideEditorTexture.CAMERA_ICON_TEXTURE
 	_sample_action.global_position = _get_global_locked_mouse_position()
 	
 	if Input.is_action_just_pressed("Add Item"):
@@ -365,7 +365,7 @@ func _process_vignette() -> void:
 	if not _is_mouse_inside():
 		return
 	
-	_sample_action.texture = SideEditor.VIGNETTE_ICON_TEXTURE
+	_sample_action.texture = SideEditorTexture.VIGNETTE_ICON_TEXTURE
 	_sample_action.global_position = _get_global_locked_mouse_position()
 	
 	if Input.is_action_just_pressed("Add Item"):

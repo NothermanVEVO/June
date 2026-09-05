@@ -15,7 +15,7 @@ func _init(start_time : float, end_time : float, path_type : Path.Types) -> void
 	_hold_blank = HoldBlank.new(start_time, end_time, path_type)
 	super._init(start_time, end_time, path_type)
 	z_index = 1
-	texture = SideEditor.HEAVY_TEXTURE
+	texture = SideEditorTexture.HEAVY_TEXTURE
 	_end_hold.texture = texture
 	_middle_hold.modulate.a = 0.75
 	_end_hold.modulate.a = 0.75

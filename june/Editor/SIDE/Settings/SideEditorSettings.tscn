@@ -1,10 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://c2eryr2qmqbr4"]
+[gd_scene format=3 uid="uid://c2eryr2qmqbr4"]
 
 [ext_resource type="PackedScene" uid="uid://dj8t1madbd5pe" path="res://Background/AnimatedBackgroundV1.tscn" id="1_bnhj5"]
 [ext_resource type="Theme" uid="uid://oe21uoww8ls3" path="res://themes/JuneThemeV1.tres" id="1_fopwg"]
 [ext_resource type="FontFile" uid="uid://bk7uiutchpno7" path="res://assets/fonts/Kalufira.otf" id="2_ua2qd"]
 
-[node name="Side Editor Settings" type="VBoxContainer"]
+[node name="Side Editor Settings" type="VBoxContainer" unique_id=1539592104]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -12,9 +12,9 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 25
 
-[node name="Background" type="Node2D" parent="."]
+[node name="Background" type="Node2D" parent="." unique_id=449197396]
 
-[node name="AnimatedBackground" parent="Background" instance=ExtResource("1_bnhj5")]
+[node name="AnimatedBackground" parent="Background" unique_id=293683249 instance=ExtResource("1_bnhj5")]
 custom_minimum_size = Vector2(1920, 1080)
 anchors_preset = 0
 anchor_right = 0.0
@@ -23,13 +23,13 @@ grow_horizontal = 1
 grow_vertical = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="MenuBar" type="FlowContainer" parent="."]
+[node name="MenuBar" type="FlowContainer" parent="." unique_id=981721730]
 layout_mode = 2
 
-[node name="MenuBar" type="MenuBar" parent="MenuBar"]
+[node name="MenuBar" type="MenuBar" parent="MenuBar" unique_id=550430655]
 layout_mode = 2
 
-[node name="File" type="PopupMenu" parent="MenuBar/MenuBar"]
+[node name="File" type="PopupMenu" parent="MenuBar/MenuBar" unique_id=1994742505]
 auto_translate_mode = 1
 title = "Arquivo"
 size = Vector2i(100, 143)
@@ -47,23 +47,23 @@ item_4/id = 4
 item_5/text = "Sair"
 item_5/id = 5
 
-[node name="Compose" type="Button" parent="MenuBar"]
+[node name="Compose" type="Button" parent="MenuBar" unique_id=58881221]
 layout_mode = 2
 disabled = true
 text = "Compor"
 
-[node name="First" type="HBoxContainer" parent="."]
+[node name="First" type="HBoxContainer" parent="." unique_id=887566933]
 layout_mode = 2
 
-[node name="Left" type="MarginContainer" parent="First"]
+[node name="Left" type="MarginContainer" parent="First" unique_id=699609042]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="First/Left"]
+[node name="VBoxContainer" type="VBoxContainer" parent="First/Left" unique_id=1771316701]
 layout_mode = 2
 
-[node name="Title" type="RichTextLabel" parent="First/Left/VBoxContainer"]
+[node name="Title" type="RichTextLabel" parent="First/Left/VBoxContainer" unique_id=653022249]
 layout_mode = 2
 theme_override_fonts/normal_font = ExtResource("2_ua2qd")
 theme_override_font_sizes/normal_font_size = 50
@@ -71,10 +71,10 @@ text = "Detalhes"
 fit_content = true
 autowrap_mode = 0
 
-[node name="Name" type="HBoxContainer" parent="First/Left/VBoxContainer"]
+[node name="Name" type="HBoxContainer" parent="First/Left/VBoxContainer" unique_id=1166661618]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="First/Left/VBoxContainer/Name"]
+[node name="RichTextLabel" type="RichTextLabel" parent="First/Left/VBoxContainer/Name" unique_id=273118022]
 layout_mode = 2
 text = "Nome: "
 fit_content = true
@@ -82,15 +82,15 @@ scroll_active = false
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="LineEdit" type="LineEdit" parent="First/Left/VBoxContainer/Name"]
+[node name="LineEdit" type="LineEdit" parent="First/Left/VBoxContainer/Name" unique_id=1916251047]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "O nome da música aqui..."
 
-[node name="Author" type="HBoxContainer" parent="First/Left/VBoxContainer"]
+[node name="Author" type="HBoxContainer" parent="First/Left/VBoxContainer" unique_id=616475703]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="First/Left/VBoxContainer/Author"]
+[node name="RichTextLabel" type="RichTextLabel" parent="First/Left/VBoxContainer/Author" unique_id=1749938090]
 layout_mode = 2
 text = "Autor: "
 fit_content = true
@@ -98,15 +98,15 @@ scroll_active = false
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="LineEdit" type="LineEdit" parent="First/Left/VBoxContainer/Author"]
+[node name="LineEdit" type="LineEdit" parent="First/Left/VBoxContainer/Author" unique_id=811940377]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "O nome do autor da música aqui..."
 
-[node name="Collection" type="HBoxContainer" parent="First/Left/VBoxContainer"]
+[node name="Collection" type="HBoxContainer" parent="First/Left/VBoxContainer" unique_id=1087598627]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="First/Left/VBoxContainer/Collection"]
+[node name="RichTextLabel" type="RichTextLabel" parent="First/Left/VBoxContainer/Collection" unique_id=1338653277]
 layout_mode = 2
 text = "Coleção: "
 fit_content = true
@@ -114,15 +114,15 @@ scroll_active = false
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="LineEdit" type="LineEdit" parent="First/Left/VBoxContainer/Collection"]
+[node name="LineEdit" type="LineEdit" parent="First/Left/VBoxContainer/Collection" unique_id=909272733]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "O nome da coleção aqui..."
 
-[node name="Creator" type="HBoxContainer" parent="First/Left/VBoxContainer"]
+[node name="Creator" type="HBoxContainer" parent="First/Left/VBoxContainer" unique_id=895357862]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="First/Left/VBoxContainer/Creator"]
+[node name="RichTextLabel" type="RichTextLabel" parent="First/Left/VBoxContainer/Creator" unique_id=11983360]
 layout_mode = 2
 text = "Criador: "
 fit_content = true
@@ -130,23 +130,23 @@ scroll_active = false
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="LineEdit" type="LineEdit" parent="First/Left/VBoxContainer/Creator"]
+[node name="LineEdit" type="LineEdit" parent="First/Left/VBoxContainer/Creator" unique_id=1112105797]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "O nome do criador do SongMap aqui..."
 
-[node name="VSeparator" type="VSeparator" parent="First"]
+[node name="VSeparator" type="VSeparator" parent="First" unique_id=953023837]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Right" type="MarginContainer" parent="First"]
+[node name="Right" type="MarginContainer" parent="First" unique_id=827221540]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="First/Right"]
+[node name="VBoxContainer" type="VBoxContainer" parent="First/Right" unique_id=1577298147]
 layout_mode = 2
 
-[node name="Title" type="RichTextLabel" parent="First/Right/VBoxContainer"]
+[node name="Title" type="RichTextLabel" parent="First/Right/VBoxContainer" unique_id=699265894]
 layout_mode = 2
 theme_override_fonts/normal_font = ExtResource("2_ua2qd")
 theme_override_font_sizes/normal_font_size = 50
@@ -154,10 +154,10 @@ text = "Música"
 fit_content = true
 autowrap_mode = 0
 
-[node name="Song" type="HBoxContainer" parent="First/Right/VBoxContainer"]
+[node name="Song" type="HBoxContainer" parent="First/Right/VBoxContainer" unique_id=1800596052]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="First/Right/VBoxContainer/Song"]
+[node name="RichTextLabel" type="RichTextLabel" parent="First/Right/VBoxContainer/Song" unique_id=1165591133]
 layout_mode = 2
 size_flags_vertical = 4
 text = "Música: "
@@ -165,21 +165,21 @@ fit_content = true
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="SongButton" type="Button" parent="First/Right/VBoxContainer/Song"]
+[node name="SongButton" type="Button" parent="First/Right/VBoxContainer/Song" unique_id=459472467]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 tooltip_text = "Só aceita nos formatos \".mp3\", \".ogg\" and \".wav\"."
 text = "Selecione um arquivo ou arraste e solte aqui"
 
-[node name="PlaySongButton" type="Button" parent="First/Right/VBoxContainer/Song"]
+[node name="PlaySongButton" type="Button" parent="First/Right/VBoxContainer/Song" unique_id=1066115753]
 layout_mode = 2
 disabled = true
 text = "Tocar"
 
-[node name="SongTimeSample" type="HBoxContainer" parent="First/Right/VBoxContainer"]
+[node name="SongTimeSample" type="HBoxContainer" parent="First/Right/VBoxContainer" unique_id=676769717]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="First/Right/VBoxContainer/SongTimeSample"]
+[node name="RichTextLabel" type="RichTextLabel" parent="First/Right/VBoxContainer/SongTimeSample" unique_id=672635343]
 layout_mode = 2
 size_flags_vertical = 4
 text = "Tempo de amostra da música: "
@@ -187,7 +187,7 @@ fit_content = true
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="SongTimeSampleText" type="TextEdit" parent="First/Right/VBoxContainer/SongTimeSample"]
+[node name="SongTimeSampleText" type="TextEdit" parent="First/Right/VBoxContainer/SongTimeSample" unique_id=1636286262]
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 tooltip_text = "Na tela de seleção de mapas, quando esse mapa estiver em foco, vai começar a tocar a música 
@@ -196,7 +196,7 @@ placeholder_text = "00:00:000"
 editable = false
 scroll_fit_content_width = true
 
-[node name="SongSampleSlider" type="HSlider" parent="First/Right/VBoxContainer/SongTimeSample"]
+[node name="SongSampleSlider" type="HSlider" parent="First/Right/VBoxContainer/SongTimeSample" unique_id=106107594]
 custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -206,15 +206,15 @@ editable = false
 tick_count = 7
 ticks_on_borders = true
 
-[node name="SongSampleTestButton" type="Button" parent="First/Right/VBoxContainer/SongTimeSample"]
+[node name="SongSampleTestButton" type="Button" parent="First/Right/VBoxContainer/SongTimeSample" unique_id=104272545]
 layout_mode = 2
 disabled = true
 text = "Testar"
 
-[node name="Offset" type="HBoxContainer" parent="First/Right/VBoxContainer"]
+[node name="Offset" type="HBoxContainer" parent="First/Right/VBoxContainer" unique_id=1492172080]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="First/Right/VBoxContainer/Offset"]
+[node name="RichTextLabel" type="RichTextLabel" parent="First/Right/VBoxContainer/Offset" unique_id=1611504791]
 layout_mode = 2
 size_flags_vertical = 4
 text = "Offset: "
@@ -222,17 +222,17 @@ fit_content = true
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="OffsetSpinBox" type="SpinBox" parent="First/Right/VBoxContainer/Offset"]
+[node name="OffsetSpinBox" type="SpinBox" parent="First/Right/VBoxContainer/Offset" unique_id=1825596003]
 layout_mode = 2
 tooltip_text = "Em qual segundo a música começa de fato."
 max_value = 999.0
 step = 0.1
 suffix = "s"
 
-[node name="BPM" type="HBoxContainer" parent="First/Right/VBoxContainer"]
+[node name="BPM" type="HBoxContainer" parent="First/Right/VBoxContainer" unique_id=1112203319]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="First/Right/VBoxContainer/BPM"]
+[node name="RichTextLabel" type="RichTextLabel" parent="First/Right/VBoxContainer/BPM" unique_id=900046422]
 layout_mode = 2
 size_flags_vertical = 4
 text = "BPM: "
@@ -240,7 +240,7 @@ fit_content = true
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="SpinBox" type="SpinBox" parent="First/Right/VBoxContainer/BPM"]
+[node name="SpinBox" type="SpinBox" parent="First/Right/VBoxContainer/BPM" unique_id=1757891355]
 layout_mode = 2
 tooltip_text = "Batidas por minuto.
 Afeta a posição de como você pode colar as notas, além de sincronizar melhor com a música. 
@@ -249,23 +249,23 @@ min_value = 1.0
 max_value = 1000.0
 value = 60.0
 
-[node name="HSeparator" type="HSeparator" parent="."]
+[node name="HSeparator" type="HSeparator" parent="." unique_id=476142397]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Second" type="HBoxContainer" parent="."]
+[node name="Second" type="HBoxContainer" parent="." unique_id=32627721]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Left" type="MarginContainer" parent="Second"]
+[node name="Left" type="MarginContainer" parent="Second" unique_id=1920571178]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Second/Left"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Second/Left" unique_id=470539812]
 layout_mode = 2
 
-[node name="Title" type="RichTextLabel" parent="Second/Left/VBoxContainer"]
+[node name="Title" type="RichTextLabel" parent="Second/Left/VBoxContainer" unique_id=1586895933]
 layout_mode = 2
 theme_override_fonts/normal_font = ExtResource("2_ua2qd")
 theme_override_font_sizes/normal_font_size = 50
@@ -273,10 +273,10 @@ text = "Jogo"
 fit_content = true
 autowrap_mode = 0
 
-[node name="Main Speed" type="HBoxContainer" parent="Second/Left/VBoxContainer"]
+[node name="Main Speed" type="HBoxContainer" parent="Second/Left/VBoxContainer" unique_id=346318586]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Second/Left/VBoxContainer/Main Speed"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Second/Left/VBoxContainer/Main Speed" unique_id=1642592837]
 layout_mode = 2
 text = "Velocidade Principal: "
 fit_content = true
@@ -284,17 +284,17 @@ scroll_active = false
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="SpinBox" type="SpinBox" parent="Second/Left/VBoxContainer/Main Speed"]
+[node name="SpinBox" type="SpinBox" parent="Second/Left/VBoxContainer/Main Speed" unique_id=45608863]
 layout_mode = 2
 min_value = 1.0
 max_value = 10.0
 step = 0.1
 value = 1.0
 
-[node name="Main Scenario" type="HBoxContainer" parent="Second/Left/VBoxContainer"]
+[node name="Main Scenario" type="HBoxContainer" parent="Second/Left/VBoxContainer" unique_id=1604945868]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Second/Left/VBoxContainer/Main Scenario"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Second/Left/VBoxContainer/Main Scenario" unique_id=1228755728]
 layout_mode = 2
 text = "Cenário Principal: "
 fit_content = true
@@ -302,7 +302,7 @@ scroll_active = false
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="OptionButton" type="OptionButton" parent="Second/Left/VBoxContainer/Main Scenario"]
+[node name="OptionButton" type="OptionButton" parent="Second/Left/VBoxContainer/Main Scenario" unique_id=1644355482]
 layout_mode = 2
 selected = 0
 item_count = 2
@@ -311,10 +311,10 @@ popup/item_0/id = 0
 popup/item_1/text = "Praia"
 popup/item_1/id = 1
 
-[node name="Main Boss" type="HBoxContainer" parent="Second/Left/VBoxContainer"]
+[node name="Main Boss" type="HBoxContainer" parent="Second/Left/VBoxContainer" unique_id=1858252087]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Second/Left/VBoxContainer/Main Boss"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Second/Left/VBoxContainer/Main Boss" unique_id=850246745]
 layout_mode = 2
 text = "Chefão Principal: "
 fit_content = true
@@ -322,30 +322,30 @@ scroll_active = false
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="OptionButton" type="OptionButton" parent="Second/Left/VBoxContainer/Main Boss"]
+[node name="OptionButton" type="OptionButton" parent="Second/Left/VBoxContainer/Main Boss" unique_id=1776420800]
 layout_mode = 2
 selected = 0
 item_count = 1
 popup/item_0/text = "Bobo"
 popup/item_0/id = 0
 
-[node name="VSeparator" type="VSeparator" parent="Second"]
+[node name="VSeparator" type="VSeparator" parent="Second" unique_id=93459320]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Right" type="MarginContainer" parent="Second"]
+[node name="Right" type="MarginContainer" parent="Second" unique_id=1460289281]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Second/Right"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Second/Right" unique_id=877040180]
 layout_mode = 2
 
-[node name="Bottom" type="MarginContainer" parent="."]
+[node name="Bottom" type="MarginContainer" parent="." unique_id=762804444]
 layout_mode = 2
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="Button" type="Button" parent="Bottom"]
+[node name="Button" type="Button" parent="Bottom" unique_id=767424261]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 8

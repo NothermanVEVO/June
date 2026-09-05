@@ -22,15 +22,15 @@ func _init(start_time : float, end_time : float, path_type : Path.Types) -> void
 	set_start_time(start_time)
 	set_path_type(path_type)
 	
-	texture = SideEditor.START_HOLD_TEXTURE
+	texture = SideEditorTexture.START_HOLD_TEXTURE
 	
 	add_child(_middle_hold)
 	_middle_hold.z_index = z_index - 1
-	_middle_hold.texture = SideEditor.MIDDLE_HOLD_TEXTURE
+	_middle_hold.texture = SideEditorTexture.MIDDLE_HOLD_TEXTURE
 	
 	add_child(_end_hold)
 	_end_hold.z_index = z_index - 1
-	_end_hold.texture = SideEditor.END_HOLD_TEXTURE
+	_end_hold.texture = SideEditorTexture.END_HOLD_TEXTURE
 	
 	_middle_hold.patch_margin_left = 6
 	_middle_hold.patch_margin_top = 6

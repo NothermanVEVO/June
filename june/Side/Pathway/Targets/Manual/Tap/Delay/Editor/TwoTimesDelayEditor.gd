@@ -7,9 +7,9 @@ var _second_delay_tap : DelayTapEditor
 func _init(start_time : float, path_type : Path.Types, first_time_delay : float, second_time_delay : float) -> void:
 	_second_delay_tap = DelayTapEditor.new(second_time_delay, path_type, self)
 	super._init(start_time, path_type, first_time_delay)
-	texture = SideEditor.SHIELD_2_TEXTURE
-	_first_delay_tap.texture = SideEditor.SHIELD_1_TEXTURE
-	_second_delay_tap.texture = SideEditor.SHIELD_0_TEXTURE
+	texture = SideEditorTexture.SHIELD_2_TEXTURE
+	_first_delay_tap.texture = SideEditorTexture.SHIELD_1_TEXTURE
+	_second_delay_tap.texture = SideEditorTexture.SHIELD_0_TEXTURE
 
 func get_second_delay_tap() -> DelayTapEditor:
 	return _second_delay_tap

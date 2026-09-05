@@ -15,11 +15,11 @@ func set_variant(variant : Variants) -> void:
 	
 	match variant:
 		Variants.ONE:
-			texture = SideEditor.LIGHT_1_TEXTURE
+			texture = SideEditorTexture.LIGHT_1_TEXTURE
 		Variants.TWO:
-			texture = SideEditor.LIGHT_2_TEXTURE
+			texture = SideEditorTexture.LIGHT_2_TEXTURE
 		Variants.THREE:
-			texture = SideEditor.LIGHT_3_TEXTURE
+			texture = SideEditorTexture.LIGHT_3_TEXTURE
 
 func get_variant() -> Variants:
 	return _variant

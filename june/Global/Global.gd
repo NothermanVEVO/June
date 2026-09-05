@@ -3,6 +3,7 @@ extends Node
 enum TitleType {BASE, EDITOR_UNSAVED, EDITOR_SAVED, EDITOR_SAVED_CHANGED}
 
 const EDITOR_PATH : String = "user://editor"
+const SIDE_EDITOR_PATH : String = "user://sideeditor"
 const SONGS_PATH : String = "user://songs"
 const SETTINGS_PATH : String = "user://settings.json"
 const SAVE_PATH : String = "user://save.json"
@@ -47,6 +48,8 @@ func _ready() -> void:
 	
 	if not DirAccess.dir_exists_absolute(EDITOR_PATH):
 		DirAccess.make_dir_absolute(EDITOR_PATH)
+	if not DirAccess.dir_exists_absolute(SIDE_EDITOR_PATH):
+		DirAccess.make_dir_absolute(SIDE_EDITOR_PATH)
 	if not DirAccess.dir_exists_absolute(SONGS_PATH):
 		DirAccess.make_dir_absolute(SONGS_PATH)
 	if not FileAccess.file_exists(SETTINGS_PATH):

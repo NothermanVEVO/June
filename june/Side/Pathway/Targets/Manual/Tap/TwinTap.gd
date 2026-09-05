@@ -23,9 +23,9 @@ func set_start_time(start_time : float) -> void:
 func set_path_type(path_type : Path.Types) -> void:
 	_path_type = path_type
 	if _path_type == Path.Types.GROUND:
-		texture = SideEditor.GROUND_TWIN_TEXTURE
+		texture = SideEditorTexture.GROUND_TWIN_TEXTURE
 	else:
-		texture = SideEditor.AIR_TWIN_TEXTURE
+		texture = SideEditorTexture.AIR_TWIN_TEXTURE
 	if _older and _twin:
 		_twin.set_path_type(Path.reverse_path_type(path_type))
 

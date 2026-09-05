@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bhhj2hgewfw3m" path="res://Editor/SIDE/Composer/SideGameEditor.gd" id="1_acdfn"]
 [ext_resource type="Script" uid="uid://lrh786wtxfk1" path="res://Editor/SIDE/Composer/SideMenuBarComposer.gd" id="1_h05j0"]
 [ext_resource type="Texture2D" uid="uid://oyfiimbt1x0y" path="res://assets/gameItemsIcons/selectIcon.png" id="1_vfltv"]
+[ext_resource type="Script" uid="uid://bdtc8h14t3yro" path="res://Editor/SIDE/Composer/SideEditorMenu.gd" id="2_3b7o2"]
 [ext_resource type="Texture2D" uid="uid://cmb4i22o1gq1y" path="res://assets/gameItemsIcons/unLockIcon.png" id="2_acdfn"]
 [ext_resource type="Script" uid="uid://k8hsx33s76i6" path="res://Editor/SIDE/Composer/SideGameComponentsList.gd" id="8_dmxwq"]
 [ext_resource type="Script" uid="uid://cr1l58jmclcj" path="res://Editor/FALL/Composer/SoundBoard.gd" id="9_6q0i8"]
@@ -21,6 +22,7 @@ script = ExtResource("1_h05j0")
 
 [node name="MenuBar" type="MenuBar" parent="MenuBar" unique_id=1436544512]
 layout_mode = 2
+script = ExtResource("2_3b7o2")
 
 [node name="File" type="PopupMenu" parent="MenuBar/MenuBar" unique_id=280485641]
 auto_translate_mode = 1
@@ -43,6 +45,12 @@ item_5/id = 5
 [node name="Edit" type="PopupMenu" parent="MenuBar/MenuBar" unique_id=661545543]
 auto_translate_mode = 1
 title = "Editar"
+
+[node name="FileDialog" type="FileDialog" parent="MenuBar/MenuBar" unique_id=644878368]
+access = 1
+root_subfolder = "user://sideeditor"
+filters = PackedStringArray("*.tres")
+use_native_dialog = true
 
 [node name="Test" type="Button" parent="MenuBar" unique_id=2093618158]
 layout_mode = 2
@@ -95,7 +103,6 @@ suffix = "Estrelas"
 
 [node name="Right" type="FlowContainer" parent="MenuBar" unique_id=1543690979]
 layout_mode = 2
-size_flags_horizontal = 10
 vertical = true
 
 [node name="GridText" type="RichTextLabel" parent="MenuBar/Right" unique_id=330852033]
@@ -322,6 +329,10 @@ size_flags_vertical = 4
 step = 0.1
 tick_count = 15
 
+[connection signal="id_pressed" from="MenuBar/MenuBar/File" to="MenuBar/MenuBar" method="_on_file_id_pressed"]
+[connection signal="file_selected" from="MenuBar/MenuBar/FileDialog" to="MenuBar/MenuBar" method="_on_file_dialog_file_selected"]
+[connection signal="item_selected" from="MenuBar/Middle/PlayerType" to="MenuBar/MenuBar" method="_on_player_type_item_selected"]
+[connection signal="item_selected" from="MenuBar/Middle/Difficulty" to="MenuBar/MenuBar" method="_on_difficulty_item_selected"]
 [connection signal="item_selected" from="MenuBar/Right/Grid" to="MenuBar" method="_on_grid_item_selected"]
 [connection signal="value_changed" from="MenuBar/Right/Zoom" to="MenuBar" method="_on_zoom_value_changed"]
 [connection signal="focus_entered" from="Middle/Game" to="Middle/Game" method="_on_focus_entered"]
