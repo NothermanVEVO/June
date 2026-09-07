@@ -4,7 +4,7 @@ class_name SideGameEditor
 
 const _TARGET_INFO_WINDOW_SCENE : PackedScene = preload("res://Editor/SIDE/Composer/TargetInfoWindow/TargetInfoWindow.tscn")
 
-static var _pathway_editor := PathwayEditor.new()
+var _pathway_editor := PathwayEditor.new()
 
 @onready var _side_game_components_list : SideGameComponents = $"../Game Components List"
 
@@ -50,14 +50,17 @@ var _is_pressing_right_edit_hold_button : bool = false
 var _current_song_map : SideSongMap = null
 
 func _init() -> void: ## TEMP
-	Song.set_song(load("res://Sound Test Sample/Brutal, acabou pro beta versão globo.mp3"))
-	Song.BPM = 60
-	Song.offset = 1.0
+	#Song.set_song(load("res://Sound Test Sample/Brutal, acabou pro beta versão globo.mp3"))
+	#Song.BPM = 60
+	#Song.offset = 1.0
 	_highest_grid_time = 0
-	_calculate_highest_grid_time()
+	#_calculate_highest_grid_time()
 
 func _ready() -> void:
 	_current_song_map = SideEditor.current_song_map
+	
+	if Song.stream:
+		_calculate_highest_grid_time()
 	
 	add_child(_pathway_editor)
 	add_child(_mouse_selection)
@@ -69,10 +72,14 @@ func _ready() -> void:
 	
 	add_child(_sample_target)
 	
+	#_side_editor_changed_song_map()
+	
 	_side_game_components_list.resizing.connect(_is_resizing_game_components_list)
 	
 	SideEditor.changed_current_song_map.connect(_side_editor_changed_song_map)
 	SideEditor.save_changes.connect(_side_editor_save_changes)
+	
+	_load()
 
 func _on_resized() -> void:
 	_pathway_editor.global_position.y = global_position.y + (get_global_rect().size.y / 2)
@@ -95,12 +102,17 @@ func _side_editor_changed_song_map() -> void:
 	if _current_song_map:
 		_save_targets_in_song_map(_current_song_map)
 	
-	remove_child.call_deferred(_pathway_editor)
-	_pathway_editor.queue_free()
+	_load()
+	
+	_current_song_map = SideEditor.current_song_map
+
+func _load() -> void:
+	remove_child(_pathway_editor)
+	_pathway_editor.free()
 	
 	_pathway_editor = PathwayEditor.new()
-	add_child.call_deferred(_pathway_editor)
-	_on_resized.call_deferred()
+	add_child(_pathway_editor)
+	_on_resized()
 	
 	print("change song map")
 	
@@ -133,8 +145,6 @@ func _side_editor_changed_song_map() -> void:
 			target.create_target_editor()
 		
 		_pathway_editor.add_target_at(target.get_path_type(), target, true)
-	
-	_current_song_map = SideEditor.current_song_map
 
 func _save_targets_in_song_map(song_map : SideSongMap) -> void:
 	song_map.targets.clear()
@@ -149,7 +159,7 @@ func _save_targets_in_song_map(song_map : SideSongMap) -> void:
 		
 		song_map.targets.append(target_resource)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	queue_redraw()
 	
 	_attach_mouse_display = false

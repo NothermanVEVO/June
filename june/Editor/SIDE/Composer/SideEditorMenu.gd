@@ -5,11 +5,14 @@ class_name SideEditorMenu
 @onready var file : PopupMenu = $File
 @onready var file_dialog : FileDialog = $FileDialog
 
+@onready var stars_spin_box: SpinBox = $"../Middle/StarsSpinBox"
+
+@onready var _editor_settings_scene : PackedScene = load("res://Editor/SIDE/Settings/SideEditorSettings.tscn")
+
 enum FileType {SAVE, EXPORT, OPEN}
 var _last_file_type : FileType
 
 func _open_file(path : String) -> Error:
-	
 	return FAILED
 
 func _on_file_id_pressed(id: int) -> void:
@@ -55,6 +58,8 @@ func _on_player_type_item_selected(index: int) -> void:
 		song_map.player = index
 		SideEditor.current_editor_save.song_maps.append(song_map)
 		SideEditor.set_current_song_map(song_map)
+	
+	stars_spin_box.value = SideEditor.current_song_map.stars
 
 func _on_difficulty_item_selected(index: int) -> void:
 	var existed_song_map : SideSongMap = SideEditor.get_song_map(index, SideEditor.current_song_map.player)
@@ -67,3 +72,10 @@ func _on_difficulty_item_selected(index: int) -> void:
 		song_map.player = SideEditor.current_song_map.player
 		SideEditor.current_editor_save.song_maps.append(song_map)
 		SideEditor.set_current_song_map(song_map)
+	
+	stars_spin_box.value = SideEditor.current_song_map.stars
+
+
+func _on_settings_pressed() -> void:
+	SideEditor.save_changes.emit()
+	get_tree().change_scene_to_packed(_editor_settings_scene)

@@ -1,6 +1,6 @@
 extends Node
 
-func load_music_stream(path : String):
+func load_music_stream(path : String) -> AudioStream:
 	if not FileAccess.file_exists(path):
 		return null
 	
@@ -16,7 +16,7 @@ func load_music_stream(path : String):
 		return stream
 	return null
 
-func load_image(path : String):
+func load_image(path : String) -> ImageTexture:
 	if not FileAccess.file_exists(path):
 		return null
 	var image := Image.load_from_file(path)

@@ -12,13 +12,7 @@ signal changed_current_song_map
 signal save_changes
 
 func _ready() -> void:
-	current_editor_save = SideEditorResource.new()
-	
-	current_song_map = SideSongMap.new()
-	current_song_map.difficulty = SideSongMap.Difficulty.EASY
-	current_song_map.player = SideSongMap.Player.ONE
-	
-	current_editor_save.song_maps.append(current_song_map)
+	new_file()
 
 func new_file() -> void:
 	_current_file_path = ""
@@ -27,6 +21,9 @@ func new_file() -> void:
 	current_song_map = SideSongMap.new()
 	current_song_map.difficulty = SideSongMap.Difficulty.EASY
 	current_song_map.player = SideSongMap.Player.ONE
+	
+	Song.BPM = 60
+	Song.offset = 0.0
 	
 	current_editor_save.song_maps.append(current_song_map)
 	
@@ -43,10 +40,19 @@ func save_file(path : String) -> Error:
 	return status
 
 func open_file(path : String) -> Error:
-	current_editor_save = ResourceLoader.load(path)
+	var resource = ResourceLoader.load(path)
+	
+	if not resource or not resource is SideEditorResource:
+		return FAILED
+	
+	current_editor_save = resource
 	if current_editor_save and current_editor_save is SideEditorResource and not current_editor_save.song_maps.is_empty():
 		_current_file_path = path
 		_is_saved = true
+		if current_editor_save.song_stream:
+			Song.set_song(current_editor_save.song_stream)
+		Song.BPM = current_editor_save.BPM
+		Song.offset = current_editor_save.song_offset
 		set_current_song_map(current_editor_save.song_maps[0])
 		return OK
 	return FAILED

@@ -52,6 +52,10 @@ root_subfolder = "user://sideeditor"
 filters = PackedStringArray("*.tres")
 use_native_dialog = true
 
+[node name="Settings" type="Button" parent="MenuBar" unique_id=1005316333]
+layout_mode = 2
+text = "Configurações"
+
 [node name="Test" type="Button" parent="MenuBar" unique_id=2093618158]
 layout_mode = 2
 text = "Testar"
@@ -92,7 +96,7 @@ popup/item_2/id = 2
 popup/item_3/text = "Maximus"
 popup/item_3/id = 3
 
-[node name="SpinBox" type="SpinBox" parent="MenuBar/Middle" unique_id=925153020]
+[node name="StarsSpinBox" type="SpinBox" parent="MenuBar/Middle" unique_id=925153020]
 custom_minimum_size = Vector2(125, 0)
 layout_mode = 2
 min_value = 1.0
@@ -331,6 +335,7 @@ tick_count = 15
 
 [connection signal="id_pressed" from="MenuBar/MenuBar/File" to="MenuBar/MenuBar" method="_on_file_id_pressed"]
 [connection signal="file_selected" from="MenuBar/MenuBar/FileDialog" to="MenuBar/MenuBar" method="_on_file_dialog_file_selected"]
+[connection signal="pressed" from="MenuBar/Settings" to="MenuBar/MenuBar" method="_on_settings_pressed"]
 [connection signal="item_selected" from="MenuBar/Middle/PlayerType" to="MenuBar/MenuBar" method="_on_player_type_item_selected"]
 [connection signal="item_selected" from="MenuBar/Middle/Difficulty" to="MenuBar/MenuBar" method="_on_difficulty_item_selected"]
 [connection signal="item_selected" from="MenuBar/Right/Grid" to="MenuBar" method="_on_grid_item_selected"]

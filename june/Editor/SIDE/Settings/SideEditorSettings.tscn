@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://c2eryr2qmqbr4"]
 
 [ext_resource type="PackedScene" uid="uid://dj8t1madbd5pe" path="res://Background/AnimatedBackgroundV1.tscn" id="1_bnhj5"]
+[ext_resource type="Script" uid="uid://dsajn2mg0uiic" path="res://Editor/SIDE/Settings/SideEditorSettings.gd" id="1_ffawi"]
 [ext_resource type="Theme" uid="uid://oe21uoww8ls3" path="res://themes/JuneThemeV1.tres" id="1_fopwg"]
 [ext_resource type="FontFile" uid="uid://bk7uiutchpno7" path="res://assets/fonts/Kalufira.otf" id="2_ua2qd"]
 
@@ -11,6 +12,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 25
+script = ExtResource("1_ffawi")
 
 [node name="Background" type="Node2D" parent="." unique_id=449197396]
 
@@ -22,6 +24,19 @@ anchor_bottom = 0.0
 grow_horizontal = 1
 grow_vertical = 1
 metadata/_edit_use_anchors_ = true
+
+[node name="FileDialogSave" type="FileDialog" parent="." unique_id=1611628689]
+title = "Open a File"
+file_mode = 0
+access = 1
+root_subfolder = "user://sideeditor"
+use_native_dialog = true
+
+[node name="FileDialog" type="FileDialog" parent="." unique_id=1349068577]
+title = "Open a File"
+file_mode = 0
+access = 2
+use_native_dialog = true
 
 [node name="MenuBar" type="FlowContainer" parent="." unique_id=981721730]
 layout_mode = 2
@@ -82,7 +97,7 @@ scroll_active = false
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="LineEdit" type="LineEdit" parent="First/Left/VBoxContainer/Name" unique_id=1916251047]
+[node name="SongNameLineEdit" type="LineEdit" parent="First/Left/VBoxContainer/Name" unique_id=1916251047]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "O nome da música aqui..."
@@ -98,7 +113,7 @@ scroll_active = false
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="LineEdit" type="LineEdit" parent="First/Left/VBoxContainer/Author" unique_id=811940377]
+[node name="SongAuthorLineEdit" type="LineEdit" parent="First/Left/VBoxContainer/Author" unique_id=811940377]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "O nome do autor da música aqui..."
@@ -114,7 +129,7 @@ scroll_active = false
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="LineEdit" type="LineEdit" parent="First/Left/VBoxContainer/Collection" unique_id=909272733]
+[node name="CollectionLineEdit" type="LineEdit" parent="First/Left/VBoxContainer/Collection" unique_id=909272733]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "O nome da coleção aqui..."
@@ -130,7 +145,7 @@ scroll_active = false
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="LineEdit" type="LineEdit" parent="First/Left/VBoxContainer/Creator" unique_id=1112105797]
+[node name="MapCreatorLineEdit" type="LineEdit" parent="First/Left/VBoxContainer/Creator" unique_id=1112105797]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "O nome do criador do SongMap aqui..."
@@ -165,7 +180,7 @@ fit_content = true
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="SongButton" type="Button" parent="First/Right/VBoxContainer/Song" unique_id=459472467]
+[node name="ChooseSongButton" type="Button" parent="First/Right/VBoxContainer/Song" unique_id=459472467]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 tooltip_text = "Só aceita nos formatos \".mp3\", \".ogg\" and \".wav\"."
@@ -240,7 +255,7 @@ fit_content = true
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="SpinBox" type="SpinBox" parent="First/Right/VBoxContainer/BPM" unique_id=1757891355]
+[node name="BPMSpinBox" type="SpinBox" parent="First/Right/VBoxContainer/BPM" unique_id=1757891355]
 layout_mode = 2
 tooltip_text = "Batidas por minuto.
 Afeta a posição de como você pode colar as notas, além de sincronizar melhor com a música. 
@@ -257,7 +272,79 @@ theme_override_constants/separation = 10
 layout_mode = 2
 size_flags_vertical = 3
 
+[node name="Left2" type="MarginContainer" parent="Second" unique_id=2118438988]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Second/Left2" unique_id=1994757668]
+layout_mode = 2
+
+[node name="Title" type="RichTextLabel" parent="Second/Left2/VBoxContainer" unique_id=1541808209]
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("2_ua2qd")
+theme_override_font_sizes/normal_font_size = 50
+text = "IMAGENS"
+fit_content = true
+autowrap_mode = 0
+
+[node name="Icon" type="HBoxContainer" parent="Second/Left2/VBoxContainer" unique_id=638700086]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Second/Left2/VBoxContainer/Icon" unique_id=1862221739]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Ícone: "
+fit_content = true
+autowrap_mode = 0
+
+[node name="IconButton" type="Button" parent="Second/Left2/VBoxContainer/Icon" unique_id=1412044283]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+tooltip_text = "Suporta todos os tipos básicos de imagens."
+text = "Selecione um arquivo ou arraste e solte aqui"
+icon_alignment = 1
+expand_icon = true
+
+[node name="RemoveIconButton" type="Button" parent="Second/Left2/VBoxContainer/Icon" unique_id=771768063]
+layout_mode = 2
+disabled = true
+text = "Remover"
+
+[node name="IconTexture" type="TextureRect" parent="Second/Left2/VBoxContainer/Icon" unique_id=1739365415]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Banner" type="HBoxContainer" parent="Second/Left2/VBoxContainer" unique_id=1201098835]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Second/Left2/VBoxContainer/Banner" unique_id=1341777091]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Banner: "
+fit_content = true
+autowrap_mode = 0
+
+[node name="ImageButton" type="Button" parent="Second/Left2/VBoxContainer/Banner" unique_id=851729534]
+layout_mode = 2
+tooltip_text = "Suporta todos os tipos básicos de imagens."
+text = "Selecione um arquivo ou arraste e solte aqui"
+
+[node name="RemoveImageButton" type="Button" parent="Second/Left2/VBoxContainer/Banner" unique_id=1009015857]
+layout_mode = 2
+disabled = true
+text = "Remover"
+
+[node name="BannerTexture" type="TextureRect" parent="Second/Left2/VBoxContainer/Banner" unique_id=1671245113]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 4
+
 [node name="Left" type="MarginContainer" parent="Second" unique_id=1920571178]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 10
@@ -354,3 +441,19 @@ mouse_default_cursor_shape = 2
 theme = ExtResource("1_fopwg")
 theme_override_font_sizes/font_size = 50
 text = "Sair"
+
+[connection signal="file_selected" from="FileDialogSave" to="." method="_on_file_dialog_save_file_selected"]
+[connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
+[connection signal="id_pressed" from="MenuBar/MenuBar/File" to="." method="_on_file_id_pressed"]
+[connection signal="pressed" from="MenuBar/Compose" to="." method="_on_compose_pressed"]
+[connection signal="text_changed" from="First/Left/VBoxContainer/Name/SongNameLineEdit" to="." method="_on_song_name_line_edit_text_changed"]
+[connection signal="text_changed" from="First/Left/VBoxContainer/Author/SongAuthorLineEdit" to="." method="_on_song_author_line_edit_text_changed"]
+[connection signal="text_changed" from="First/Left/VBoxContainer/Collection/CollectionLineEdit" to="." method="_on_collection_line_edit_text_changed"]
+[connection signal="text_changed" from="First/Left/VBoxContainer/Creator/MapCreatorLineEdit" to="." method="_on_map_creator_line_edit_text_changed"]
+[connection signal="pressed" from="First/Right/VBoxContainer/Song/ChooseSongButton" to="." method="_on_choose_song_button_pressed"]
+[connection signal="pressed" from="First/Right/VBoxContainer/Song/PlaySongButton" to="." method="_on_play_song_button_pressed"]
+[connection signal="value_changed" from="First/Right/VBoxContainer/SongTimeSample/SongSampleSlider" to="." method="_on_song_sample_slider_value_changed"]
+[connection signal="value_changed" from="First/Right/VBoxContainer/Offset/OffsetSpinBox" to="." method="_on_offset_spin_box_value_changed"]
+[connection signal="value_changed" from="First/Right/VBoxContainer/BPM/BPMSpinBox" to="." method="_on_bpm_spin_box_value_changed"]
+[connection signal="pressed" from="Second/Left2/VBoxContainer/Icon/IconButton" to="." method="_on_icon_button_pressed"]
+[connection signal="pressed" from="Second/Left2/VBoxContainer/Banner/ImageButton" to="." method="_on_image_button_pressed"]

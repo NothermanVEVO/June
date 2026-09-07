@@ -1,11 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://b3ljeq5vwy67a"]
+[gd_scene format=3 uid="uid://b3ljeq5vwy67a"]
 
 [ext_resource type="Script" uid="uid://cxngxkql6desj" path="res://Editor/FALL/Setttings/EditorSettings.gd" id="1_33eqs"]
 [ext_resource type="PackedScene" uid="uid://dj8t1madbd5pe" path="res://Background/AnimatedBackgroundV1.tscn" id="1_vxgxl"]
 [ext_resource type="Script" uid="uid://cuhkonamt3aus" path="res://Editor/FALL/MenuBar/File.gd" id="2_iy5o1"]
 [ext_resource type="Theme" uid="uid://oe21uoww8ls3" path="res://themes/JuneThemeV1.tres" id="4_nm0sj"]
 
-[node name="Settings" type="VBoxContainer"]
+[node name="Settings" type="VBoxContainer" unique_id=1609828206]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -13,9 +13,9 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_33eqs")
 
-[node name="Background" type="Node2D" parent="."]
+[node name="Background" type="Node2D" parent="." unique_id=966868313]
 
-[node name="AnimatedBackground" parent="Background" instance=ExtResource("1_vxgxl")]
+[node name="AnimatedBackground" parent="Background" unique_id=596566692 instance=ExtResource("1_vxgxl")]
 custom_minimum_size = Vector2(1920, 1080)
 anchors_preset = 0
 anchor_right = 0.0
@@ -24,18 +24,18 @@ grow_horizontal = 1
 grow_vertical = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="Menu" type="MarginContainer" parent="."]
+[node name="Menu" type="MarginContainer" parent="." unique_id=1670577345]
 layout_mode = 2
 theme_override_constants/margin_bottom = 5
 
-[node name="FlowContainer" type="FlowContainer" parent="Menu"]
+[node name="FlowContainer" type="FlowContainer" parent="Menu" unique_id=1105289169]
 layout_mode = 2
 
-[node name="MenuBar" type="MenuBar" parent="Menu/FlowContainer"]
+[node name="MenuBar" type="MenuBar" parent="Menu/FlowContainer" unique_id=510228212]
 layout_mode = 2
 size_flags_horizontal = 0
 
-[node name="File" type="PopupMenu" parent="Menu/FlowContainer/MenuBar"]
+[node name="File" type="PopupMenu" parent="Menu/FlowContainer/MenuBar" unique_id=1975184483]
 auto_translate_mode = 1
 title = "Arquivo"
 item_count = 6
@@ -54,20 +54,20 @@ item_5/id = 5
 script = ExtResource("2_iy5o1")
 _editor_scene = 1
 
-[node name="Compose" type="Button" parent="Menu/FlowContainer"]
+[node name="Compose" type="Button" parent="Menu/FlowContainer" unique_id=2056459213]
 layout_mode = 2
 tooltip_text = "Você precisar escolher uma música para começar a compor."
 mouse_default_cursor_shape = 2
 disabled = true
 text = "Compor"
 
-[node name="Test" type="Button" parent="Menu/FlowContainer"]
+[node name="Test" type="Button" parent="Menu/FlowContainer" unique_id=1129481515]
 visible = false
 layout_mode = 2
 disabled = true
 text = "Test"
 
-[node name="FileDialog" type="FileDialog" parent="."]
+[node name="FileDialog" type="FileDialog" parent="." unique_id=892094398]
 title = "Open a File"
 initial_position = 1
 ok_button_text = "Open"
@@ -76,14 +76,14 @@ file_mode = 0
 access = 2
 use_native_dialog = true
 
-[node name="AcceptDialog" type="AcceptDialog" parent="."]
+[node name="AcceptDialog" type="AcceptDialog" parent="." unique_id=403359769]
 title = "Warning!"
 initial_position = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=759310898]
 layout_mode = 2
 
-[node name="Left" type="MarginContainer" parent="HBoxContainer"]
+[node name="Left" type="MarginContainer" parent="HBoxContainer" unique_id=705412546]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 5
@@ -91,54 +91,54 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Left"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Left" unique_id=1014545316]
 layout_mode = 2
 
-[node name="Name" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer"]
+[node name="Name" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer" unique_id=992088161]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/Name"]
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/Name" unique_id=1949094850]
 layout_mode = 2
 size_flags_vertical = 4
 text = "Nome: "
 fit_content = true
 autowrap_mode = 0
 
-[node name="NameTextEdit" type="LineEdit" parent="HBoxContainer/Left/VBoxContainer/Name"]
+[node name="NameTextEdit" type="LineEdit" parent="HBoxContainer/Left/VBoxContainer/Name" unique_id=1671928566]
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "O nome da música aqui..."
 clear_button_enabled = true
 
-[node name="Author" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer"]
+[node name="Author" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer" unique_id=679908445]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/Author"]
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/Author" unique_id=75695896]
 layout_mode = 2
 size_flags_vertical = 4
 text = "Autor: "
 fit_content = true
 autowrap_mode = 0
 
-[node name="AuthorTextEdit" type="LineEdit" parent="HBoxContainer/Left/VBoxContainer/Author"]
+[node name="AuthorTextEdit" type="LineEdit" parent="HBoxContainer/Left/VBoxContainer/Author" unique_id=1607483673]
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "O nome do autor da música aqui..."
 clear_button_enabled = true
 
-[node name="Track" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer"]
+[node name="Track" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer" unique_id=1838479382]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/Track"]
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/Track" unique_id=1542532452]
 layout_mode = 2
 size_flags_vertical = 4
 text = "Coleção: "
 fit_content = true
 autowrap_mode = 0
 
-[node name="TrackTextEdit" type="LineEdit" parent="HBoxContainer/Left/VBoxContainer/Track"]
+[node name="TrackTextEdit" type="LineEdit" parent="HBoxContainer/Left/VBoxContainer/Track" unique_id=39383718]
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -149,17 +149,17 @@ por mais que sejam de autores diferentes. Sacou?"
 placeholder_text = "Nome da coleção aqui..."
 clear_button_enabled = true
 
-[node name="BPM" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer"]
+[node name="BPM" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer" unique_id=940379742]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/BPM"]
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/BPM" unique_id=1263412465]
 layout_mode = 2
 size_flags_vertical = 4
 text = "BPM: "
 fit_content = true
 autowrap_mode = 0
 
-[node name="SpinBox" type="SpinBox" parent="HBoxContainer/Left/VBoxContainer/BPM"]
+[node name="SpinBox" type="SpinBox" parent="HBoxContainer/Left/VBoxContainer/BPM" unique_id=1880536372]
 layout_mode = 2
 tooltip_text = "Batidas por minuto.
 Afeta a posição de como você pode colar as notas, além de sincronizar melhor com a música. 
@@ -168,34 +168,34 @@ min_value = 1.0
 max_value = 1000.0
 value = 60.0
 
-[node name="Offset" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer"]
+[node name="Offset" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer" unique_id=792847188]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/Offset"]
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/Offset" unique_id=2136044263]
 layout_mode = 2
 size_flags_vertical = 4
 text = "Offset: "
 fit_content = true
 autowrap_mode = 0
 
-[node name="OffsetSpinBox" type="SpinBox" parent="HBoxContainer/Left/VBoxContainer/Offset"]
+[node name="OffsetSpinBox" type="SpinBox" parent="HBoxContainer/Left/VBoxContainer/Offset" unique_id=1698035603]
 layout_mode = 2
 tooltip_text = "Em qual segundo a música começa de fato."
 max_value = 999.0
 step = 0.01
 suffix = "s"
 
-[node name="Creator" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer"]
+[node name="Creator" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer" unique_id=359089240]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/Creator"]
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/Creator" unique_id=1747723142]
 layout_mode = 2
 size_flags_vertical = 4
 text = "Criador: "
 fit_content = true
 autowrap_mode = 0
 
-[node name="CreatorTextEdit" type="LineEdit" parent="HBoxContainer/Left/VBoxContainer/Creator"]
+[node name="CreatorTextEdit" type="LineEdit" parent="HBoxContainer/Left/VBoxContainer/Creator" unique_id=1149018512]
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -203,17 +203,17 @@ tooltip_text = "Coloque o seu nome ou apelido aqui."
 placeholder_text = "O nome do criador do Song Map aqui..."
 clear_button_enabled = true
 
-[node name="SongTimeSample" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer"]
+[node name="SongTimeSample" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer" unique_id=1802696565]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/SongTimeSample"]
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/SongTimeSample" unique_id=699076013]
 layout_mode = 2
 size_flags_vertical = 4
 text = "Tempo de amostra da música: "
 fit_content = true
 autowrap_mode = 0
 
-[node name="SongTimeSampleText" type="TextEdit" parent="HBoxContainer/Left/VBoxContainer/SongTimeSample"]
+[node name="SongTimeSampleText" type="TextEdit" parent="HBoxContainer/Left/VBoxContainer/SongTimeSample" unique_id=115425308]
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 tooltip_text = "Na tela de seleção de mapas, quando esse mapa estiver em foco, vai começar a tocar a música 
@@ -222,7 +222,7 @@ placeholder_text = "00:00:000"
 editable = false
 scroll_fit_content_width = true
 
-[node name="SongSampleSlider" type="HSlider" parent="HBoxContainer/Left/VBoxContainer/SongTimeSample"]
+[node name="SongSampleSlider" type="HSlider" parent="HBoxContainer/Left/VBoxContainer/SongTimeSample" unique_id=584756037]
 custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -232,23 +232,23 @@ editable = false
 tick_count = 7
 ticks_on_borders = true
 
-[node name="SongSampleTestButton" type="Button" parent="HBoxContainer/Left/VBoxContainer/SongTimeSample"]
+[node name="SongSampleTestButton" type="Button" parent="HBoxContainer/Left/VBoxContainer/SongTimeSample" unique_id=1544843547]
 layout_mode = 2
 disabled = true
 text = "Testar"
 
-[node name="VideoTimeSample" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer"]
+[node name="VideoTimeSample" type="HBoxContainer" parent="HBoxContainer/Left/VBoxContainer" unique_id=42187096]
 visible = false
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/VideoTimeSample"]
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Left/VBoxContainer/VideoTimeSample" unique_id=284893564]
 layout_mode = 2
 size_flags_vertical = 4
 text = "Video time sample:"
 fit_content = true
 autowrap_mode = 0
 
-[node name="VideoTimeSampleText" type="TextEdit" parent="HBoxContainer/Left/VBoxContainer/VideoTimeSample"]
+[node name="VideoTimeSampleText" type="TextEdit" parent="HBoxContainer/Left/VBoxContainer/VideoTimeSample" unique_id=1383359033]
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 tooltip_text = "Not implemented yet."
@@ -256,7 +256,7 @@ placeholder_text = "00:00:000"
 editable = false
 scroll_fit_content_width = true
 
-[node name="Right" type="MarginContainer" parent="HBoxContainer"]
+[node name="Right" type="MarginContainer" parent="HBoxContainer" unique_id=1660357256]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 5
@@ -264,41 +264,41 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Right"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Right" unique_id=1322012429]
 layout_mode = 2
 
-[node name="Song" type="HBoxContainer" parent="HBoxContainer/Right/VBoxContainer"]
+[node name="Song" type="HBoxContainer" parent="HBoxContainer/Right/VBoxContainer" unique_id=1196869306]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Right/VBoxContainer/Song"]
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Right/VBoxContainer/Song" unique_id=1178443489]
 layout_mode = 2
 size_flags_vertical = 4
 text = "Música: "
 fit_content = true
 autowrap_mode = 0
 
-[node name="SongButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Song"]
+[node name="SongButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Song" unique_id=765433218]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 tooltip_text = "Só aceita nos formatos \".mp3\", \".ogg\" and \".wav\"."
 text = "Selecione um arquivo ou arraste e solte aqui"
 
-[node name="PlaySongButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Song"]
+[node name="PlaySongButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Song" unique_id=1315202364]
 layout_mode = 2
 disabled = true
 text = "Tocar"
 
-[node name="Icon" type="HBoxContainer" parent="HBoxContainer/Right/VBoxContainer"]
+[node name="Icon" type="HBoxContainer" parent="HBoxContainer/Right/VBoxContainer" unique_id=1037004471]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Right/VBoxContainer/Icon"]
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Right/VBoxContainer/Icon" unique_id=1620667089]
 layout_mode = 2
 size_flags_vertical = 4
 text = "Ícone: "
 fit_content = true
 autowrap_mode = 0
 
-[node name="IconButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Icon"]
+[node name="IconButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Icon" unique_id=1684402810]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 tooltip_text = "Suporta todos os tipos básicos de imagens."
@@ -306,54 +306,54 @@ text = "Selecione um arquivo ou arraste e solte aqui"
 icon_alignment = 1
 expand_icon = true
 
-[node name="RemoveIconButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Icon"]
+[node name="RemoveIconButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Icon" unique_id=1038602501]
 layout_mode = 2
 disabled = true
 text = "Remover"
 
-[node name="IconTexture" type="TextureRect" parent="HBoxContainer/Right/VBoxContainer/Icon"]
+[node name="IconTexture" type="TextureRect" parent="HBoxContainer/Right/VBoxContainer/Icon" unique_id=1158545654]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 expand_mode = 1
 stretch_mode = 4
 
-[node name="Image" type="HBoxContainer" parent="HBoxContainer/Right/VBoxContainer"]
+[node name="Image" type="HBoxContainer" parent="HBoxContainer/Right/VBoxContainer" unique_id=1955397004]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Right/VBoxContainer/Image"]
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Right/VBoxContainer/Image" unique_id=973894428]
 layout_mode = 2
 size_flags_vertical = 4
 text = "Imagem: "
 fit_content = true
 autowrap_mode = 0
 
-[node name="ImageButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Image"]
+[node name="ImageButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Image" unique_id=904606139]
 layout_mode = 2
 tooltip_text = "Suporta todos os tipos básicos de imagens."
 text = "Selecione um arquivo ou arraste e solte aqui"
 
-[node name="RemoveImageButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Image"]
+[node name="RemoveImageButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Image" unique_id=1905203247]
 layout_mode = 2
 disabled = true
 text = "Remover"
 
-[node name="ImageTexture" type="TextureRect" parent="HBoxContainer/Right/VBoxContainer/Image"]
+[node name="ImageTexture" type="TextureRect" parent="HBoxContainer/Right/VBoxContainer/Image" unique_id=1742418910]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 expand_mode = 1
 stretch_mode = 4
 
-[node name="Video" type="HBoxContainer" parent="HBoxContainer/Right/VBoxContainer"]
+[node name="Video" type="HBoxContainer" parent="HBoxContainer/Right/VBoxContainer" unique_id=1302828677]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Right/VBoxContainer/Video"]
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/Right/VBoxContainer/Video" unique_id=775104784]
 layout_mode = 2
 size_flags_vertical = 4
 text = "Vídeo: "
 fit_content = true
 autowrap_mode = 0
 
-[node name="VideoButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Video"]
+[node name="VideoButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Video" unique_id=844626226]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 tooltip_text = "Por agora só suporta vídeos no formato \".ogv\".
@@ -361,12 +361,12 @@ Há diversos sites e aplicativos que podem fazer a conversão bem simples de out
 de vídeo para \".ogv\" de graça."
 text = "Selecione um arquivo ou arraste e solte aqui"
 
-[node name="RemoveVideoButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Video"]
+[node name="RemoveVideoButton" type="Button" parent="HBoxContainer/Right/VBoxContainer/Video" unique_id=1475317917]
 layout_mode = 2
 disabled = true
 text = "Remover"
 
-[node name="VideoPlayer" type="VideoStreamPlayer" parent="HBoxContainer/Right/VBoxContainer/Video"]
+[node name="VideoPlayer" type="VideoStreamPlayer" parent="HBoxContainer/Right/VBoxContainer/Video" unique_id=2018682613]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 volume_db = -80.0
@@ -374,14 +374,14 @@ autoplay = true
 expand = true
 loop = true
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=502368125]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="Return" type="Button" parent="MarginContainer"]
+[node name="Return" type="Button" parent="MarginContainer" unique_id=1191019663]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 mouse_default_cursor_shape = 2

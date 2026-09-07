@@ -39,7 +39,6 @@ var _song_time_sample : float = 0.0
 
 @onready var song_sample_test_button : Button = $HBoxContainer/Left/VBoxContainer/SongTimeSample/SongSampleTestButton
 var song_sample_tween : Tween
-var _original_volume_db : float
 var _song_sample_test_id : int = 0
 
 @onready var offset_spin_box : SpinBox = $HBoxContainer/Left/VBoxContainer/Offset/OffsetSpinBox
