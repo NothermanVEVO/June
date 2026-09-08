@@ -24,7 +24,7 @@ func pop_up(cancel_text : String, ok_text : String, dialog : String, custom_butt
 	else:
 		custom_button.visible = false
 	reset_size()
-	popup()
+	popup_centered()
 	return _id
 
 func get_last_caller() -> int:

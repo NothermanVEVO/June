@@ -338,6 +338,7 @@ tick_count = 15
 [connection signal="pressed" from="MenuBar/Settings" to="MenuBar/MenuBar" method="_on_settings_pressed"]
 [connection signal="item_selected" from="MenuBar/Middle/PlayerType" to="MenuBar/MenuBar" method="_on_player_type_item_selected"]
 [connection signal="item_selected" from="MenuBar/Middle/Difficulty" to="MenuBar/MenuBar" method="_on_difficulty_item_selected"]
+[connection signal="value_changed" from="MenuBar/Middle/StarsSpinBox" to="MenuBar/MenuBar" method="_on_stars_spin_box_value_changed"]
 [connection signal="item_selected" from="MenuBar/Right/Grid" to="MenuBar" method="_on_grid_item_selected"]
 [connection signal="value_changed" from="MenuBar/Right/Zoom" to="MenuBar" method="_on_zoom_value_changed"]
 [connection signal="focus_entered" from="Middle/Game" to="Middle/Game" method="_on_focus_entered"]

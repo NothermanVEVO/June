@@ -114,8 +114,6 @@ func _load() -> void:
 	add_child(_pathway_editor)
 	_on_resized()
 	
-	print("change song map")
-	
 	for target_resource in SideEditor.current_song_map.targets:
 		var target : Target = TargetResource.resource_to_target(target_resource)
 		
@@ -149,8 +147,6 @@ func _load() -> void:
 func _save_targets_in_song_map(song_map : SideSongMap) -> void:
 	song_map.targets.clear()
 	
-	print("save song map")
-	
 	for target in _pathway_editor.get_all_targets():
 		var target_resource : TargetResource = TargetResource.target_to_resource(target)
 		
@@ -161,6 +157,9 @@ func _save_targets_in_song_map(song_map : SideSongMap) -> void:
 
 func _process(_delta: float) -> void:
 	queue_redraw()
+	
+	if Input.is_action_just_pressed("Save") and SideEditor.get_file_path():
+		SideEditor.save_file(SideEditor.get_file_path())
 	
 	_attach_mouse_display = false
 	

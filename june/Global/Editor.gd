@@ -21,10 +21,6 @@ func _ready() -> void:
 	
 	get_tree().set_auto_accept_quit(false)
 
-func _process(_delta: float) -> void:
-	#print(_is_saved)
-	pass
-
 func get_current_scene() -> Scenes:
 	return _current_scene
 
@@ -86,8 +82,8 @@ func to_resource() -> SongResource:
 func _on_close_requested() -> void:
 	if not _is_saved:
 		_dialog_confirmation_id = DialogConfirmation.pop_up("Cancelar", "Salvar e sair", "Você tem modificações não salvas.", "Sair sem salvar")
-	else:
-		get_tree().quit()
+	#else:
+		#get_tree().quit() ## TODO CONFLICT WITH ''SIDE EDITOR'' GLOBAL CLASS
 
 func _confirmation_dialog_confirmed() -> void: ## QUIT WITH SAVING
 	var saved_id : int
@@ -103,6 +99,6 @@ func _confirmation_dialog_confirmed() -> void: ## QUIT WITH SAVING
 		if saved_id == FileMenu.get_last_saved_id():
 			get_tree().quit()
 
-func _confirmation_dialog_canceled(custom_action : StringName) -> void: ## QUIT WITHOUT SAVING
+func _confirmation_dialog_canceled(_custom_action : StringName) -> void: ## QUIT WITHOUT SAVING
 	if _dialog_confirmation_id == DialogConfirmation.get_last_caller():
 		get_tree().quit()

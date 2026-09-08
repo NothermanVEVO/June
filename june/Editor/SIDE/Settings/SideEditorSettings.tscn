@@ -25,19 +25,6 @@ grow_horizontal = 1
 grow_vertical = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="FileDialogSave" type="FileDialog" parent="." unique_id=1611628689]
-title = "Open a File"
-file_mode = 0
-access = 1
-root_subfolder = "user://sideeditor"
-use_native_dialog = true
-
-[node name="FileDialog" type="FileDialog" parent="." unique_id=1349068577]
-title = "Open a File"
-file_mode = 0
-access = 2
-use_native_dialog = true
-
 [node name="MenuBar" type="FlowContainer" parent="." unique_id=981721730]
 layout_mode = 2
 
@@ -442,8 +429,6 @@ theme = ExtResource("1_fopwg")
 theme_override_font_sizes/font_size = 50
 text = "Sair"
 
-[connection signal="file_selected" from="FileDialogSave" to="." method="_on_file_dialog_save_file_selected"]
-[connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
 [connection signal="id_pressed" from="MenuBar/MenuBar/File" to="." method="_on_file_id_pressed"]
 [connection signal="pressed" from="MenuBar/Compose" to="." method="_on_compose_pressed"]
 [connection signal="text_changed" from="First/Left/VBoxContainer/Name/SongNameLineEdit" to="." method="_on_song_name_line_edit_text_changed"]
@@ -453,6 +438,7 @@ text = "Sair"
 [connection signal="pressed" from="First/Right/VBoxContainer/Song/ChooseSongButton" to="." method="_on_choose_song_button_pressed"]
 [connection signal="pressed" from="First/Right/VBoxContainer/Song/PlaySongButton" to="." method="_on_play_song_button_pressed"]
 [connection signal="value_changed" from="First/Right/VBoxContainer/SongTimeSample/SongSampleSlider" to="." method="_on_song_sample_slider_value_changed"]
+[connection signal="pressed" from="First/Right/VBoxContainer/SongTimeSample/SongSampleTestButton" to="." method="_on_song_sample_test_button_pressed"]
 [connection signal="value_changed" from="First/Right/VBoxContainer/Offset/OffsetSpinBox" to="." method="_on_offset_spin_box_value_changed"]
 [connection signal="value_changed" from="First/Right/VBoxContainer/BPM/BPMSpinBox" to="." method="_on_bpm_spin_box_value_changed"]
 [connection signal="pressed" from="Second/Left2/VBoxContainer/Icon/IconButton" to="." method="_on_icon_button_pressed"]

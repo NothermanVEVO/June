@@ -7,14 +7,34 @@ var current_song_map := SideSongMap.new()
 
 var _is_saved : bool = false
 
-signal changed_current_song_map
+var is_on_editor : bool = true ## TODO WARNING NOTE THIS SHOULD BE ''FALSE''
+var _last_confirmation_id : int = -1
+var _last_file_dialog_id : int = -1
 
+enum SaveBefore {LEAVE, NEW_FILE}
+var _last_save_before_type
+
+signal created_new_file
+signal changed_current_song_map
 signal save_changes
 
 func _ready() -> void:
 	new_file()
+	
+	get_tree().root.close_requested.connect(_on_close_requested)
+	DialogConfirmation.confirmed.connect(_confirmation_dialog_confirmed)
+	DialogConfirmation.custom_action.connect(_confirmation_dialog_canceled)
+	
+	get_tree().set_auto_accept_quit(false)
+	
+	DialogFile.file_selected.connect(_dialog_file_file_selected)
 
-func new_file() -> void:
+func new_file(ask_for_save : bool = false) -> void:
+	if ask_for_save:
+		_last_save_before_type = SaveBefore.NEW_FILE
+		_last_confirmation_id = DialogConfirmation.pop_up("Cancelar", "Salvar", "Você tem modificações não salvas.", "Não salvar")
+		return
+	
 	_current_file_path = ""
 	current_editor_save = SideEditorResource.new()
 	
@@ -28,6 +48,7 @@ func new_file() -> void:
 	current_editor_save.song_maps.append(current_song_map)
 	
 	changed_current_song_map.emit()
+	created_new_file.emit()
 
 func save_file(path : String) -> Error:
 	save_changes.emit()
@@ -36,6 +57,9 @@ func save_file(path : String) -> Error:
 	if status == OK:
 		_current_file_path = path
 		_is_saved = true
+		DialogConfirmation.pop_up("Cancelar", "Ok", "O arquivo foi salvo com sucesso!")
+	else:
+		DialogConfirmation.pop_up("Cancelar", "Ok", "Erro ao salvar o arquivo. Status " + str(status))
 	
 	return status
 
@@ -76,3 +100,39 @@ func changed_file() -> void:
 
 func get_file_path() -> String:
 	return _current_file_path
+
+func _on_close_requested() -> void:
+	_last_save_before_type = SaveBefore.LEAVE
+	_last_confirmation_id = DialogConfirmation.pop_up("Cancelar", "Salvar e sair", "Você tem modificações não salvas.", "Sair sem salvar")
+
+func _confirmation_dialog_confirmed() -> void:
+	if _last_confirmation_id == DialogConfirmation.get_last_caller():
+		if _current_file_path:
+			var status = save_file(_current_file_path)
+			
+			if _last_save_before_type == SaveBefore.LEAVE: ## TODO E SE DER ERRO E NÃO SALVAR O ARQUIVO??
+				get_tree().quit()
+			elif _last_save_before_type == SaveBefore.NEW_FILE:
+				if status == OK:
+					new_file()
+		else:
+			_last_file_dialog_id = DialogFile.pop_up(FileDialog.FILE_MODE_SAVE_FILE, FileDialog.ACCESS_USERDATA, Global.SIDE_EDITOR_PATH)
+
+func _confirmation_dialog_canceled(_custom_action : StringName) -> void:
+	if _last_confirmation_id == DialogConfirmation.get_last_caller():
+		DialogConfirmation.remove_last_caller()
+		if _last_save_before_type == SaveBefore.LEAVE:
+			get_tree().quit()
+		elif _last_save_before_type == SaveBefore.NEW_FILE:
+			new_file()
+
+func _dialog_file_file_selected(path: String) -> void:
+	if DialogFile.get_last_caller() != _last_file_dialog_id:
+		return
+	
+	DialogFile.remove_last_caller()
+	
+	var status = save_file(path)
+	
+	if status == OK:
+		get_tree().quit()
