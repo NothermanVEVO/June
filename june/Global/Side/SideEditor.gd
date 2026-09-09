@@ -35,8 +35,7 @@ func new_file(ask_for_save : bool = false) -> void:
 		_last_confirmation_id = DialogConfirmation.pop_up("Cancelar", "Salvar", "Você tem modificações não salvas.", "Não salvar")
 		return
 	
-	SideGameEditor.song_time = 0.0
-	SideGameEditor.pitch_scale = 1.0
+	SideGameEditor.reset_song_vars.call_deferred()
 	
 	_current_file_path = ""
 	current_editor_save = SideEditorResource.new()

@@ -92,6 +92,10 @@ func _ready() -> void:
 	
 	_load()
 
+static func reset_song_vars() -> void:
+	song_time = 0.0
+	pitch_scale = 1.0
+
 func _on_resized() -> void:
 	_pathway_editor.global_position.y = global_position.y + (get_global_rect().size.y / 2)
 	
