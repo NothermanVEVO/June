@@ -396,3 +396,6 @@ func get_time_pos() -> float:
 func _on_editor_composer_visibility_changed() -> void:
 	if speed_slider:
 		Song.pitch_scale = speed_slider.value / 100
+
+func set_pitch_scale(pitch_scale : float) -> void:
+	speed_slider.value = pitch_scale * 100

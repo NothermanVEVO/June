@@ -2,11 +2,16 @@ extends Button
 
 class_name SideGameEditor
 
+static var song_time : float = 0.0
+static var pitch_scale : float = 1.0
+
 const _TARGET_INFO_WINDOW_SCENE : PackedScene = preload("res://Editor/SIDE/Composer/TargetInfoWindow/TargetInfoWindow.tscn")
 
 var _pathway_editor := PathwayEditor.new()
 
 @onready var _side_game_components_list : SideGameComponents = $"../Game Components List"
+
+@onready var sound_board: SoundBoard = $"../../MarginContainer/SoundBoard"
 
 #@onready var _actions_container : ActionsContainer = $"../../ActionsContainer"
 
@@ -61,6 +66,12 @@ func _ready() -> void:
 	
 	if Song.stream:
 		_calculate_highest_grid_time()
+	
+		Song.stop()
+	
+		Song.set_time(song_time)
+		Song.pitch_scale = pitch_scale
+		sound_board.set_pitch_scale.call_deferred(pitch_scale)
 	
 	add_child(_pathway_editor)
 	add_child(_mouse_selection)
@@ -753,3 +764,7 @@ func _on_focus_entered() -> void:
 
 func _on_focus_exited() -> void:
 	_focus_effect.visible = false
+
+func _on_side_editor_composer_tree_exiting() -> void:
+	song_time = Song.get_time()
+	pitch_scale = Song.pitch_scale

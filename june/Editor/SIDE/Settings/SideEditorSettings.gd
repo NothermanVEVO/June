@@ -34,6 +34,8 @@ var _last_dialog_choice : DialogChoice
 var _last_dialog_id : int = -1
 
 func _ready() -> void:
+	Song.pitch_scale = 1.0
+	
 	SideEditor.changed_current_song_map.connect(_load_editor_save)
 	
 	DialogFile.file_selected.connect(_dialog_file_file_selected)

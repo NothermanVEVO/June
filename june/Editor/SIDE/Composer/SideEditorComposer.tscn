@@ -341,6 +341,7 @@ size_flags_vertical = 4
 step = 0.1
 tick_count = 15
 
+[connection signal="tree_exiting" from="." to="Middle/Game" method="_on_side_editor_composer_tree_exiting"]
 [connection signal="id_pressed" from="MenuBar/MenuBar/File" to="MenuBar/MenuBar" method="_on_file_id_pressed"]
 [connection signal="id_pressed" from="MenuBar/MenuBar/Edit" to="MenuBar/MenuBar" method="_on_edit_id_pressed"]
 [connection signal="file_selected" from="MenuBar/MenuBar/FileDialog" to="MenuBar/MenuBar" method="_on_file_dialog_file_selected"]
