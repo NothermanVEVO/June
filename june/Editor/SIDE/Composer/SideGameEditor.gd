@@ -99,7 +99,7 @@ func _side_editor_save_changes() -> void:
 		_save_targets_in_song_map(_current_song_map)
 
 func _side_editor_changed_song_map() -> void:
-	if _current_song_map:
+	if _current_song_map and _current_song_map != SideEditor.current_song_map:
 		_save_targets_in_song_map(_current_song_map)
 	
 	_load()
@@ -283,6 +283,7 @@ func _process_select() -> void:
 							selected_target.set_start_time(selected_target.get_start_time() + mouse_time_diff)
 							if selected_target is HoldManual:
 								selected_target.set_end_time(selected_target.get_end_time() + mouse_time_diff)
+							_pathway_editor.update_target(selected_target, true)
 			
 			## Change paths
 			if not _has_both_paths_selected and _target_selected_clicked.get_path_type() != mouse_path_type:
@@ -372,9 +373,12 @@ func _process_heavy_item() -> void:
 		_current_hold_target.is_pressing_right_edit_button.connect(_is_pressing_right_edit_button_hold)
 		_current_hold_target.released_left_edit_button.connect(_hold_left_edit_button_released)
 		_current_hold_target.released_right_edit_button.connect(_hold_right_edit_button_released)
-	elif _current_hold_target != null and Input.is_action_pressed("Add Item"):
-		_sample_target.visible = false
-		_current_hold_target.set_end_time(_get_closest_grid_time_to_mouse())
+	elif _current_hold_target != null:
+		if Input.is_action_pressed("Add Item"):
+			_sample_target.visible = false
+			_current_hold_target.set_end_time(_get_closest_grid_time_to_mouse())
+		elif Input.is_action_just_released("Add Item"):
+			_pathway_editor.update_target(_current_hold_target, true)
 
 func _process_twins_item() -> void:
 	if not _is_mouse_inside():
@@ -466,9 +470,12 @@ func _process_hold_item() -> void:
 		_current_hold_target.is_pressing_right_edit_button.connect(_is_pressing_right_edit_button_hold)
 		_current_hold_target.released_left_edit_button.connect(_hold_left_edit_button_released)
 		_current_hold_target.released_right_edit_button.connect(_hold_right_edit_button_released)
-	elif _current_hold_target != null and Input.is_action_pressed("Add Item"):
-		_sample_target.visible = false
-		_current_hold_target.set_end_time(_get_closest_grid_time_to_mouse())
+	elif _current_hold_target != null:
+		if Input.is_action_pressed("Add Item"):
+			_sample_target.visible = false
+			_current_hold_target.set_end_time(_get_closest_grid_time_to_mouse())
+		elif Input.is_action_just_released("Add Item"):
+			_pathway_editor.update_target(_current_hold_target, true)
 
 func _process_trap_item() -> void:
 	if not _is_mouse_inside():

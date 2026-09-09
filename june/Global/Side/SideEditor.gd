@@ -92,6 +92,19 @@ func get_song_map(difficulty : int, player : int) -> SideSongMap:
 	
 	return null
 
+func create_new_song_map(player : int, difficulty : int) -> SideSongMap:
+	var song_map := SideSongMap.new()
+	song_map.difficulty = difficulty
+	song_map.player = player
+	current_editor_save.song_maps.append(song_map)
+	
+	return song_map
+
+func copy(from : SideSongMap, to : SideSongMap) -> void:
+	to.targets.clear()
+	for target in from.targets:
+		to.targets.append(target.duplicate(true))
+
 func is_saved() -> bool:
 	return _is_saved
 

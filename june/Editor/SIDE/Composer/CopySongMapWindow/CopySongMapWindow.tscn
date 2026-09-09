@@ -1,0 +1,123 @@
+[gd_scene format=3 uid="uid://dplwehk4jv6to"]
+
+[ext_resource type="Script" uid="uid://7y584q4xjqpa" path="res://Editor/SIDE/Composer/CopySongMapWindow/CopySongMapWindow.gd" id="1_2yxrl"]
+[ext_resource type="PackedScene" uid="uid://dj8t1madbd5pe" path="res://Background/AnimatedBackgroundV1.tscn" id="1_om2vn"]
+
+[node name="Window" type="Window" unique_id=1817660190]
+oversampling_override = 1.0
+title = "Copy SongMap"
+initial_position = 2
+size = Vector2i(400, 200)
+visible = false
+transient = true
+exclusive = true
+force_native = true
+script = ExtResource("1_2yxrl")
+
+[node name="Background" type="Node2D" parent="." unique_id=1121174516]
+
+[node name="AnimatedBackground" parent="Background" unique_id=902682222 instance=ExtResource("1_om2vn")]
+custom_minimum_size = Vector2(1920, 1080)
+metadata/_edit_use_anchors_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=434374912]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=614643303]
+layout_mode = 2
+theme_override_constants/separation = 14
+alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer" unique_id=460332428]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer" unique_id=448493937]
+layout_mode = 2
+alignment = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=2015084512]
+layout_mode = 2
+text = "De:"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=760525055]
+layout_mode = 2
+
+[node name="FromPlayer" type="OptionButton" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer" unique_id=347983007]
+layout_mode = 2
+selected = 0
+item_count = 2
+popup/item_0/text = "Jogador 1"
+popup/item_0/id = 0
+popup/item_1/text = "Jogador 2"
+popup/item_1/id = 1
+
+[node name="FromDifficulty" type="OptionButton" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer" unique_id=1887486570]
+layout_mode = 2
+selected = 0
+item_count = 4
+popup/item_0/text = "Facil"
+popup/item_0/id = 0
+popup/item_1/text = "Normal"
+popup/item_1/id = 1
+popup/item_2/text = "Hard"
+popup/item_2/id = 2
+popup/item_3/text = "Maximus"
+popup/item_3/id = 3
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer" unique_id=1262346229]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer2" unique_id=1369388443]
+layout_mode = 2
+alignment = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer" unique_id=179277811]
+layout_mode = 2
+text = "Para:"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer" unique_id=1614667156]
+layout_mode = 2
+
+[node name="ToPlayer" type="OptionButton" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/HBoxContainer" unique_id=845177794]
+layout_mode = 2
+selected = 0
+item_count = 2
+popup/item_0/text = "Jogador 1"
+popup/item_0/id = 0
+popup/item_1/text = "Jogador 2"
+popup/item_1/id = 1
+
+[node name="ToDifficulty" type="OptionButton" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/HBoxContainer" unique_id=1239710810]
+layout_mode = 2
+selected = 0
+item_count = 4
+popup/item_0/text = "Facil"
+popup/item_0/id = 0
+popup/item_1/text = "Normal"
+popup/item_1/id = 1
+popup/item_2/text = "Hard"
+popup/item_2/id = 2
+popup/item_3/text = "Maximus"
+popup/item_3/id = 3
+
+[node name="CopyButton" type="Button" parent="MarginContainer/VBoxContainer" unique_id=679075521]
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_default_cursor_shape = 2
+text = " Copiar "
+
+[connection signal="about_to_popup" from="." to="." method="_on_about_to_popup"]
+[connection signal="close_requested" from="." to="." method="_on_close_requested"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/CopyButton" to="." method="_on_copy_button_pressed"]

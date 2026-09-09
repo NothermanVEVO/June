@@ -3,11 +3,14 @@ extends MenuBar
 class_name SideEditorMenu
 
 @onready var file : PopupMenu = $File
+@onready var edit: PopupMenu = $Edit
 @onready var file_dialog : FileDialog = $FileDialog
 
 @onready var player_type: OptionButton = $"../Middle/PlayerType"
 @onready var difficulty: OptionButton = $"../Middle/Difficulty"
 @onready var stars_spin_box: SpinBox = $"../Middle/StarsSpinBox"
+
+@onready var copy_song_map_window: Window = $"../../CopySongMapWindow"
 
 @onready var _editor_settings_scene : PackedScene = load("res://Editor/SIDE/Settings/SideEditorSettings.tscn")
 
@@ -71,10 +74,7 @@ func _on_player_type_item_selected(index: int) -> void:
 	if existed_song_map:
 		SideEditor.set_current_song_map(existed_song_map)
 	else:
-		var song_map := SideSongMap.new()
-		song_map.difficulty = SideEditor.current_song_map.difficulty
-		song_map.player = index
-		SideEditor.current_editor_save.song_maps.append(song_map)
+		var song_map := SideEditor.create_new_song_map(index, SideEditor.current_song_map.difficulty)
 		SideEditor.set_current_song_map(song_map)
 	
 	stars_spin_box.value = SideEditor.current_song_map.stars
@@ -85,14 +85,10 @@ func _on_difficulty_item_selected(index: int) -> void:
 	if existed_song_map:
 		SideEditor.set_current_song_map(existed_song_map)
 	else:
-		var song_map := SideSongMap.new()
-		song_map.difficulty = index
-		song_map.player = SideEditor.current_song_map.player
-		SideEditor.current_editor_save.song_maps.append(song_map)
+		var song_map := SideEditor.create_new_song_map(SideEditor.current_song_map.player, index)
 		SideEditor.set_current_song_map(song_map)
 	
 	stars_spin_box.value = SideEditor.current_song_map.stars
-
 
 func _on_settings_pressed() -> void:
 	SideEditor.save_changes.emit()
@@ -104,3 +100,8 @@ func _on_stars_spin_box_value_changed(value: float) -> void:
 
 func _side_editor_created_new_file() -> void:
 	get_tree().change_scene_to_packed(_editor_settings_scene)
+
+func _on_edit_id_pressed(id: int) -> void:
+	match edit.get_item_text(id):
+		"Copiar para":
+			copy_song_map_window.popup_centered()

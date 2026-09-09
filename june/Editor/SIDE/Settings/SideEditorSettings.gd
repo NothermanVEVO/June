@@ -37,6 +37,8 @@ func _ready() -> void:
 	SideEditor.changed_current_song_map.connect(_load_editor_save)
 	
 	DialogFile.file_selected.connect(_dialog_file_file_selected)
+	
+	_load_editor_save()
 
 func _load_editor_save() -> void:
 	var editor_save : SideEditorResource = SideEditor.current_editor_save
@@ -91,9 +93,11 @@ func _on_song_sample_slider_value_changed(value: float) -> void:
 
 func _on_offset_spin_box_value_changed(value: float) -> void:
 	SideEditor.current_editor_save.song_offset = value
+	Song.offset = value
 
 func _on_bpm_spin_box_value_changed(value: float) -> void:
 	SideEditor.current_editor_save.BPM = int(value)
+	Song.BPM = int(value)
 
 func _on_choose_song_button_pressed() -> void:
 	_last_dialog_choice = DialogChoice.SONG

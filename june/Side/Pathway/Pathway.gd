@@ -44,6 +44,9 @@ func add_target_at(path_type : Path.Types, target : Target, validate_note : bool
 		add_target_at(target.get_path_type(), target.get_first_delay_tap(), validate_note)
 		if target is TwoTimesDelayEditor:
 			add_target_at(target.get_path_type(), target.get_second_delay_tap(), validate_note)
+	
+	if validate_note:
+		validate_all_targets()
 
 func remove_target_at(path_type : Path.Types, target : Target, validate_note : bool = false, free : bool = false) -> void:
 	if path_type == Path.Types.GROUND:
@@ -65,15 +68,21 @@ func remove_target_at(path_type : Path.Types, target : Target, validate_note : b
 		remove_target_at(path_type, target.get_first_delay_tap(), validate_note, free)
 		if target is TwoTimesDelayEditor:
 			remove_target_at(path_type, target.get_second_delay_tap(), validate_note, free)
+	
+	if validate_note:
+		validate_all_targets()
 
-func add_full_real_clone(real_clone : RealClone, validate_note : bool = false) -> void:
-	for fake_clone in real_clone.fake_clones:
-		add_target_at(fake_clone.get_path_type(), fake_clone, validate_note)
+#func add_full_real_clone(real_clone : RealClone, validate_note : bool = false) -> void:
+	#for fake_clone in real_clone.fake_clones:
+		#add_target_at(fake_clone.get_path_type(), fake_clone, validate_note)
 
 func remove_full_real_clone(real_clone : RealClone, validate_note : bool = false, free : bool = false) -> void:
 	for fake_clone in real_clone.fake_clones:
-		remove_target_at(fake_clone.get_path_type(), fake_clone, validate_note)
-	remove_target_at(real_clone.get_path_type(), real_clone, validate_note, free)
+		remove_target_at(fake_clone.get_path_type(), fake_clone, false, free)
+	remove_target_at(real_clone.get_path_type(), real_clone, false, free)
+	
+	if validate_note:
+		validate_all_targets()
 
 func update_target(target : Target, validate_note : bool = false) -> void:
 	if target.get_path_type() == Path.Types.GROUND:
@@ -86,13 +95,74 @@ func update_target(target : Target, validate_note : bool = false) -> void:
 			_air_path.update_manual_target(target)
 		else: ## AUTO TARGET
 			_air_path.update_auto_target(target)
+	
+	if validate_note:
+		validate_all_targets()
 
 func change_target_path(to_path_type : Path.Types, target : Target, validate_note : bool = false) -> void:
-	remove_target_at(target.get_path_type(), target, validate_note)
-	add_target_at(to_path_type, target, validate_note)
+	remove_target_at(target.get_path_type(), target, false)
+	add_target_at(to_path_type, target, false)
+	
+	if validate_note:
+		validate_all_targets()
 
 #func remove_target_at_time(time : float, end_time : float, idx : int, type : NoteResource.Type, validate_note : bool = false, free : bool = false) -> void:
 	#_note_holders[idx].remove_note_at_time(time, end_time, type, validate_note, free) ## TODO
+
+func validate_all_targets() -> void:
+	var ground_targets := _ground_path.get_targets(-1, INF)
+	var air_targets := _air_path.get_targets(-1, INF)
+	
+	#ground_targets.sort_custom(sort_by_time)
+	#air_targets.sort_custom(sort_by_time)
+	
+	validate_targets(ground_targets)
+	validate_targets(air_targets)
+
+func validate_targets(targets: Array[Target]) -> void:
+	for i in range(targets.size()):
+		var target := targets[i]
+		var valid := true
+
+		var target_start := target.get_start_time()
+		var target_end := target.get_start_time()
+
+		if target is HoldManual:
+			target_end = target.get_end_time()
+
+		for j in range(targets.size()):
+			if i == j:
+				continue
+
+			var other := targets[j]
+
+			var other_start := other.get_start_time()
+			var other_end := other.get_start_time()
+
+			if other is HoldManual:
+				other_end = other.get_end_time()
+
+			# Start time duplicado
+			if is_equal_approx(target_start, other_start):
+				valid = false
+				if target.target_editor:
+					target.target_editor.set_invalid_highlight(true)
+				break
+
+			# Interseção
+			if (target_start < other_end or is_equal_approx(target_start, other_end)) and (
+				other_start < target_end or is_equal_approx(other_start, target_end)):
+				valid = false
+				if target.target_editor:
+					target.target_editor.set_invalid_highlight(true)
+				break
+
+		if valid:
+			if target.target_editor:
+				target.target_editor.set_invalid_highlight(false)
+
+func sort_by_time(a : Target, b : Target):
+		return a.get_start_time() < b.get_start_time()
 
 func get_global_targets_intersected_with(rect : Rect2, from : float, to : float) -> Array[Target]:
 	var intersected_targets : Array[Target] = []
@@ -113,9 +183,7 @@ func get_all_targets() -> Array[Target]:
 	targets.append_array(_ground_path.get_targets(-1, INF))
 	targets.append_array(_air_path.get_targets(-1, INF))
 	
-	targets.sort_custom(func(a : Target, b : Target):
-		return a.get_start_time() < b.get_start_time()
-		)
+	targets.sort_custom(sort_by_time)
 	
 	return targets
 
