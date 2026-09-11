@@ -91,7 +91,6 @@ func has_target(target : Target) -> bool:
 func remove_full_real_clone(real_clone : RealClone, validate_note : bool = false, free : bool = false) -> void:
 	for fake_clone in real_clone.fake_clones:
 		remove_target_at(fake_clone.get_path_type(), fake_clone, false, free)
-		#print("bro")
 	remove_target_at(real_clone.get_path_type(), real_clone, false, free)
 	
 	if validate_note:

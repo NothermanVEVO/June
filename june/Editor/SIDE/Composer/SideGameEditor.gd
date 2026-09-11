@@ -1,4 +1,4 @@
-extends Button
+extends Control
 
 class_name SideGameEditor
 
@@ -176,12 +176,9 @@ func _save_targets_in_song_map(song_map : SideSongMap) -> void:
 		song_map.targets.append(target_resource)
 
 func _process(_delta: float) -> void:
-	#print_orphan_nodes()
-	#print(get_orphan_node_ids())
-	
 	queue_redraw()
 	
-	if Input.is_action_just_pressed("Save") and SideEditor.get_file_path():
+	if Input.is_action_just_pressed("Save"):
 		SideEditor.save_file(SideEditor.get_file_path())
 	
 	_attach_mouse_display = false
@@ -205,7 +202,10 @@ func _process(_delta: float) -> void:
 		_last_zoom_value = SideMenuBarComposer.get_zoom_value()
 	
 	var selected_in_text : String = SideGameComponents.get_selected_in_text()
-	if selected_in_text: ## and is_hovered():
+	var viewport := get_viewport()
+	var control = viewport.gui_get_hovered_control()
+	
+	if selected_in_text and self == control:
 		_process_selected_game_component(selected_in_text)
 	
 	_adjust_mouse_time_display()

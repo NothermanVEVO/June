@@ -29,9 +29,6 @@ func _adjust_mid_bar() -> void:
 		difficulty.select(song_map.difficulty)
 		stars_spin_box.value = song_map.stars
 
-func _open_file(path : String) -> Error:
-	return FAILED
-
 func _on_file_id_pressed(id: int) -> void:
 	match file.get_item_text(id):
 		"Novo":
@@ -66,7 +63,7 @@ func _on_file_dialog_file_selected(path: String) -> void:
 			pass
 		FileType.OPEN:
 			SideEditor.open_file(path)
-			_adjust_mid_bar()
+			get_tree().change_scene_to_packed(_editor_settings_scene)
 
 func _on_player_type_item_selected(index: int) -> void:
 	var existed_song_map : SideSongMap = SideEditor.get_song_map(SideEditor.current_song_map.difficulty, index)

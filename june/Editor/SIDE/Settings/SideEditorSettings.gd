@@ -70,7 +70,7 @@ func _load_editor_save() -> void:
 		icon_texture.texture = editor_save.icon_texture
 
 func _physics_process(_delta: float) -> void:
-	if Input.is_action_just_pressed("Save") and SideEditor.get_file_path():
+	if Input.is_action_just_pressed("Save"):
 		SideEditor.save_file(SideEditor.get_file_path())
 
 func _on_song_name_line_edit_text_changed(new_text: String) -> void:

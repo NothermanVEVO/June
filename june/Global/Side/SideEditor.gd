@@ -14,6 +14,9 @@ var _last_file_dialog_id : int = -1
 enum SaveBefore {LEAVE, NEW_FILE}
 var _last_save_before_type
 
+enum DialogFileReason {JUST_SAVE, TO_QUIT}
+var _last_dialog_file_reason : DialogFileReason
+
 signal created_new_file
 signal changed_current_song_map
 signal save_changes
@@ -53,6 +56,11 @@ func new_file(ask_for_save : bool = false) -> void:
 	created_new_file.emit()
 
 func save_file(path : String) -> Error:
+	if not path:
+		_last_dialog_file_reason = DialogFileReason.JUST_SAVE
+		_last_file_dialog_id = DialogFile.pop_up(FileDialog.FILE_MODE_SAVE_FILE, FileDialog.ACCESS_USERDATA, Global.SIDE_EDITOR_PATH)
+		return Error.ERR_DOES_NOT_EXIST
+	
 	save_changes.emit()
 	
 	var status = ResourceSaver.save(current_editor_save, path)
@@ -131,6 +139,7 @@ func _confirmation_dialog_confirmed() -> void:
 				if status == OK:
 					new_file()
 		else:
+			_last_dialog_file_reason = DialogFileReason.TO_QUIT
 			_last_file_dialog_id = DialogFile.pop_up(FileDialog.FILE_MODE_SAVE_FILE, FileDialog.ACCESS_USERDATA, Global.SIDE_EDITOR_PATH)
 
 func _confirmation_dialog_canceled(_custom_action : StringName) -> void:
@@ -147,7 +156,10 @@ func _dialog_file_file_selected(path: String) -> void:
 	
 	DialogFile.remove_last_caller()
 	
+	if _last_dialog_file_reason == DialogFileReason.JUST_SAVE:
+		path += ".tres"
+	
 	var status = save_file(path)
 	
-	if status == OK:
+	if status == OK and _last_dialog_file_reason == DialogFileReason.TO_QUIT:
 		get_tree().quit()
