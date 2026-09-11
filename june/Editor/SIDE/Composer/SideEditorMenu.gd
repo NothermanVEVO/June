@@ -104,4 +104,5 @@ func _side_editor_created_new_file() -> void:
 func _on_edit_id_pressed(id: int) -> void:
 	match edit.get_item_text(id):
 		"Copiar para":
+			SideEditor.save_changes.emit()
 			copy_song_map_window.popup_centered()

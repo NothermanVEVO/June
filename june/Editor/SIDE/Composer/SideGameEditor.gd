@@ -205,7 +205,7 @@ func _process(_delta: float) -> void:
 		_last_zoom_value = SideMenuBarComposer.get_zoom_value()
 	
 	var selected_in_text : String = SideGameComponents.get_selected_in_text()
-	if selected_in_text:
+	if selected_in_text: ## and is_hovered():
 		_process_selected_game_component(selected_in_text)
 	
 	_adjust_mouse_time_display()
@@ -808,14 +808,14 @@ func _draw() -> void:
 		if not is_start_line:
 			var is_end_line : bool = is_equal_approx(_highest_grid_time, time)
 			if not is_end_line:
-				draw_line(Vector2(pos_x, min_y), Vector2(pos_x, min_y + Path.HEIGHT), Color.WHITE, 2, true)
-				draw_line(Vector2(pos_x, max_y - Path.HEIGHT), Vector2(pos_x, max_y), Color.WHITE, 2, true)
+				draw_line(Vector2(pos_x, min_y), Vector2(pos_x, min_y + Path.HEIGHT), Color.WHITE, 4, true)
+				draw_line(Vector2(pos_x, max_y - Path.HEIGHT), Vector2(pos_x, max_y), Color.WHITE, 4, true)
 			else:
-				draw_line(Vector2(pos_x, min_y), Vector2(pos_x, min_y + Path.HEIGHT), Color.MEDIUM_SPRING_GREEN, 5, true)
-				draw_line(Vector2(pos_x, max_y - Path.HEIGHT), Vector2(pos_x, max_y), Color.MEDIUM_SPRING_GREEN, 5, true)
+				draw_line(Vector2(pos_x, min_y), Vector2(pos_x, min_y + Path.HEIGHT), Color.MEDIUM_SPRING_GREEN, 8, true)
+				draw_line(Vector2(pos_x, max_y - Path.HEIGHT), Vector2(pos_x, max_y), Color.MEDIUM_SPRING_GREEN, 8, true)
 		else:
-			draw_line(Vector2(pos_x, min_y), Vector2(pos_x, min_y + Path.HEIGHT), Color.CRIMSON, 5, true)
-			draw_line(Vector2(pos_x, max_y - Path.HEIGHT), Vector2(pos_x, max_y), Color.CRIMSON, 5, true)
+			draw_line(Vector2(pos_x, min_y), Vector2(pos_x, min_y + Path.HEIGHT), Color.CRIMSON, 8, true)
+			draw_line(Vector2(pos_x, max_y - Path.HEIGHT), Vector2(pos_x, max_y), Color.CRIMSON, 8, true)
 
 func _on_focus_entered() -> void:
 	_focus_effect.visible = true
