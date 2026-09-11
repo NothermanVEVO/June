@@ -4,6 +4,7 @@ class_name SideGameEditor
 
 static var song_time : float = 0.0
 static var pitch_scale : float = 1.0
+static var copy_targets : Array[TargetResource] = []
 
 const _TARGET_INFO_WINDOW_SCENE : PackedScene = preload("res://Editor/SIDE/Composer/TargetInfoWindow/TargetInfoWindow.tscn")
 
@@ -122,7 +123,6 @@ func _side_editor_changed_song_map() -> void:
 	_current_song_map = SideEditor.current_song_map
 
 func _load() -> void:
-	remove_child(_pathway_editor)
 	_pathway_editor.free()
 	
 	_pathway_editor = PathwayEditor.new()
@@ -130,34 +130,39 @@ func _load() -> void:
 	_on_resized()
 	
 	for target_resource in SideEditor.current_song_map.targets:
-		var target : Target = TargetResource.resource_to_target(target_resource)
+		_add_target_resource(target_resource)
+
+func _add_target_resource(target_resource : TargetResource) -> void:
+	var target : Target = _target_resource_to_editor(target_resource)
+	if not target:
+		return
+	
+	_pathway_editor.add_target_at(target.get_path_type(), target, true)
+
+func _target_resource_to_editor(target_resource) -> Target:
+	var target : Target = TargetResource.resource_to_target(target_resource)
+	if not target:
+		return
 		
-		if not target:
-			continue
 		
-		target.create_target_editor()
-		
-		if target is RealClone:
-			for fake in target.fake_clones:
-				fake.create_target_editor()
-				fake.real_clone = target
-				_pathway_editor.add_target_at(fake.get_path_type(), fake, true)
-		elif target is HoldManual:
-			target.set_process.call_deferred.call_deferred(true)
-			target.is_pressing_left_edit_button.connect(_is_pressing_left_edit_button_hold)
-			target.is_pressing_right_edit_button.connect(_is_pressing_right_edit_button_hold)
-			target.released_left_edit_button.connect(_hold_left_edit_button_released)
-			target.released_right_edit_button.connect(_hold_right_edit_button_released)
-		elif target is TwoTimesDelay:
-			target.queue_free()
-			target = TwoTimesDelayEditor.new(target.get_start_time(), target.get_path_type(), target.get_first_time_delay(), target.get_second_time_delay())
-			target.create_target_editor()
-		elif target is OneTimeDelay:
-			target.queue_free()
-			target = OneTimeDelayEditor.new(target.get_start_time(), target.get_path_type(), target.get_first_time_delay())
-			target.create_target_editor()
-		
-		_pathway_editor.add_target_at(target.get_path_type(), target, true)
+	if target is RealClone:
+		for fake in target.fake_clones:
+			fake.real_clone = target
+			_pathway_editor.add_target_at(fake.get_path_type(), fake, true)
+	elif target is HoldManual:
+		target.set_process.call_deferred.call_deferred(true)
+		target.is_pressing_left_edit_button.connect(_is_pressing_left_edit_button_hold)
+		target.is_pressing_right_edit_button.connect(_is_pressing_right_edit_button_hold)
+		target.released_left_edit_button.connect(_hold_left_edit_button_released)
+		target.released_right_edit_button.connect(_hold_right_edit_button_released)
+	elif target is TwoTimesDelay:
+		target.queue_free()
+		target = TwoTimesDelayEditor.new(target.get_start_time(), target.get_path_type(), target.get_first_time_delay(), target.get_second_time_delay())
+	elif target is OneTimeDelay:
+		target.queue_free()
+		target = OneTimeDelayEditor.new(target.get_start_time(), target.get_path_type(), target.get_first_time_delay())
+	
+	return target
 
 func _save_targets_in_song_map(song_map : SideSongMap) -> void:
 	song_map.targets.clear()
@@ -171,6 +176,9 @@ func _save_targets_in_song_map(song_map : SideSongMap) -> void:
 		song_map.targets.append(target_resource)
 
 func _process(_delta: float) -> void:
+	#print_orphan_nodes()
+	#print(get_orphan_node_ids())
+	
 	queue_redraw()
 	
 	if Input.is_action_just_pressed("Save") and SideEditor.get_file_path():
@@ -243,12 +251,71 @@ func _process_select() -> void:
 	if _is_pressing_left_edit_hold_button or _is_pressing_right_edit_hold_button:
 		return
 	
+	if Input.is_action_just_pressed("Copy") and not _selected_targets.is_empty():
+		copy_targets.clear()
+		for target in _selected_targets:
+			var target_resource := TargetResource.target_to_resource(target)
+			if target_resource:
+				copy_targets.append(target_resource)
+	
+	if Input.is_action_just_pressed("Paste"):
+		_clear_selected_targets()
+		
+		var leftest : float = INF
+		var rightest : float = 0.0
+		
+		for target_res in copy_targets:
+			if target_res.start_time < leftest:
+				leftest = target_res.start_time
+			if target_res.start_time > rightest:
+				rightest = target_res.start_time
+			
+			if (target_res is RealCloneResource):
+				for fake_clone in target_res.fake_clones:
+					if fake_clone.start_time < leftest:
+						leftest = fake_clone.start_time
+					if fake_clone.start_time > rightest:
+						rightest = fake_clone.start_time
+			
+			if (target_res is HoldResource and target_res.end_time > rightest):
+				rightest = target_res.end_time
+		
+		var current_time := get_closest_grid_time_pos(Song.get_time())
+		if current_time < Song.get_time():
+			current_time = get_next_grid_time_pos(current_time)
+		var time_diff : float = current_time - leftest
+		
+		var targets : Array[Target] = []
+		
+		for target_res in copy_targets:
+			var target := _target_resource_to_editor(target_res)
+			if not target:
+				continue
+			target.set_start_time(target.get_start_time() + time_diff)
+			if target is HoldManual:
+				target.set_end_time(target.get_end_time() + time_diff)
+			elif target is RealClone:
+				for fake_clone in target.fake_clones:
+					fake_clone.set_start_time(fake_clone.get_start_time() + time_diff)
+			elif target is OneTimeDelayEditor:
+				target.set_first_time_delay(target.get_first_time_delay() + time_diff)
+				if target is TwoTimesDelayEditor:
+					target.set_second_time_delay(target.get_second_time_delay() + time_diff)
+			
+			targets.append(target)
+			_pathway_editor.add_target_at(target.get_path_type(), target, true)
+		
+		_select_targets(targets)
+	
 	if Input.is_action_just_pressed("Delete"):
 		for target in _selected_targets:
 			if target is FakeClone:
-				target.real_clone.fake_clones.erase(target)
+				if not target.real_clone in _selected_targets:
+					_pathway_editor.remove_target_at(target.get_path_type(), target, true, true)
+				continue
 			if target is RealClone:
 				_pathway_editor.remove_full_real_clone(target, true, true)
+				continue
 			elif target is DelayTapEditor:
 				_pathway_editor.remove_target_at(target.get_delay_parent().get_path_type(), target.get_delay_parent(), true, true)
 				continue
@@ -340,7 +407,6 @@ func _process_light_items(type : String) -> void:
 	
 	if Input.is_action_just_pressed("Add Item"):
 		var target : Target = LightTap.new(_get_closest_grid_time_to_mouse(), _get_path_type_at_mouse(), light_variant)
-		target.create_target_editor()
 		_pathway_editor.add_target_at(_get_path_type_at_mouse(), target)
 
 func _process_medium_items(type : String) -> void:
@@ -362,7 +428,6 @@ func _process_medium_items(type : String) -> void:
 	
 	if Input.is_action_just_pressed("Add Item"):
 		var target : Target = MediumTap.new(_get_closest_grid_time_to_mouse(), _get_path_type_at_mouse(), medium_variant)
-		target.create_target_editor()
 		_pathway_editor.add_target_at(_get_path_type_at_mouse(), target)
 
 func _process_heavy_item() -> void:
@@ -381,7 +446,6 @@ func _process_heavy_item() -> void:
 	
 	if Input.is_action_just_pressed("Add Item"):
 		_current_hold_target = Spam.new(_get_closest_grid_time_to_mouse(), _get_closest_grid_time_to_mouse(), _get_path_type_at_mouse())
-		_current_hold_target.create_target_editor()
 		_pathway_editor.add_target_at(_get_path_type_at_mouse(), _current_hold_target)
 		_current_hold_target.set_process.call_deferred(true)
 		_current_hold_target.is_pressing_left_edit_button.connect(_is_pressing_left_edit_button_hold)
@@ -411,7 +475,6 @@ func _process_twins_item() -> void:
 	
 	if Input.is_action_just_pressed("Add Item"):
 		var target : Target = TwinTap.new(_get_closest_grid_time_to_mouse(), _get_path_type_at_mouse())
-		target.create_target_editor()
 		_pathway_editor.add_target_at(_get_path_type_at_mouse(), target)
 
 func _process_shield_item(type : String) -> void:
@@ -429,11 +492,9 @@ func _process_shield_item(type : String) -> void:
 	if Input.is_action_just_pressed("Add Item"):
 		if type == "Shield":
 			var shield_target = OneTimeDelayEditor.new(_get_closest_grid_time_to_mouse(), _get_path_type_at_mouse(), _get_next_avaliabe_time_from(_get_closest_grid_time_to_mouse()))
-			shield_target.create_target_editor()
 			_pathway_editor.add_target_at(_get_path_type_at_mouse(), shield_target)
 		elif type == "Fortified":
 			var fortified_target = TwoTimesDelayEditor.new(_get_closest_grid_time_to_mouse(), _get_path_type_at_mouse(), _get_next_avaliabe_time_from(_get_closest_grid_time_to_mouse()), 0)
-			fortified_target.create_target_editor()
 			fortified_target.set_second_time_delay(_get_next_avaliabe_time_from(fortified_target.get_first_time_delay()))
 			_pathway_editor.add_target_at(_get_path_type_at_mouse(), fortified_target)
 
@@ -448,7 +509,6 @@ func _process_clone_item() -> void:
 	
 	if Input.is_action_just_pressed("Add Item"):
 		var target : Target = RealClone.new(_get_closest_grid_time_to_mouse(), _get_path_type_at_mouse())
-		target.create_target_editor()
 		_pathway_editor.add_target_at(_get_path_type_at_mouse(), target)
 
 func _process_hammer_item() -> void:
@@ -464,7 +524,6 @@ func _process_hammer_item() -> void:
 	
 	if Input.is_action_just_pressed("Add Item"):
 		var target : Target = HammerTap.new(_get_closest_grid_time_to_mouse(), _get_path_type_at_mouse())
-		target.create_target_editor()
 		_pathway_editor.add_target_at(_get_path_type_at_mouse(), target)
 
 func _process_hold_item() -> void:
@@ -478,7 +537,6 @@ func _process_hold_item() -> void:
 	
 	if Input.is_action_just_pressed("Add Item"):
 		_current_hold_target = HoldManual.new(_get_closest_grid_time_to_mouse(), _get_closest_grid_time_to_mouse(), _get_path_type_at_mouse())
-		_current_hold_target.create_target_editor()
 		_pathway_editor.add_target_at(_get_path_type_at_mouse(), _current_hold_target)
 		_current_hold_target.set_process.call_deferred(true)
 		_current_hold_target.is_pressing_left_edit_button.connect(_is_pressing_left_edit_button_hold)
@@ -503,7 +561,6 @@ func _process_trap_item() -> void:
 	
 	if Input.is_action_just_pressed("Add Item"):
 		var target = Trap.new(_get_closest_grid_time_to_mouse(), _get_path_type_at_mouse())
-		target.create_target_editor()
 		_pathway_editor.add_target_at(_get_path_type_at_mouse(), target)
 
 func _process_axe_item() -> void:
@@ -519,7 +576,6 @@ func _process_axe_item() -> void:
 	
 	if Input.is_action_just_pressed("Add Item"):
 		var target = AxeTrap.new(_get_closest_grid_time_to_mouse(), _get_path_type_at_mouse())
-		target.create_target_editor()
 		_pathway_editor.add_target_at(_get_path_type_at_mouse(), target)
 
 func _process_note_item(type : String) -> void:
@@ -541,7 +597,6 @@ func _process_note_item(type : String) -> void:
 	
 	if Input.is_action_just_pressed("Add Item"):
 		var target = MusicalNote.new(_get_closest_grid_time_to_mouse(), _get_path_type_at_mouse(), note_variant)
-		target.create_target_editor()
 		_pathway_editor.add_target_at(_get_path_type_at_mouse(), target)
 
 func _process_heart_item() -> void:
@@ -555,7 +610,6 @@ func _process_heart_item() -> void:
 	
 	if Input.is_action_just_pressed("Add Item"):
 		var target = Heart.new(_get_closest_grid_time_to_mouse(), _get_path_type_at_mouse())
-		target.create_target_editor()
 		_pathway_editor.add_target_at(_get_path_type_at_mouse(), target)
 
 func _is_pressing_left_edit_button_hold(hold_target : HoldManual) -> void:
@@ -754,8 +808,8 @@ func _draw() -> void:
 		if not is_start_line:
 			var is_end_line : bool = is_equal_approx(_highest_grid_time, time)
 			if not is_end_line:
-				draw_line(Vector2(pos_x, min_y), Vector2(pos_x, min_y + Path.HEIGHT), Color.WHITE, 1, true)
-				draw_line(Vector2(pos_x, max_y - Path.HEIGHT), Vector2(pos_x, max_y), Color.WHITE, 1, true)
+				draw_line(Vector2(pos_x, min_y), Vector2(pos_x, min_y + Path.HEIGHT), Color.WHITE, 2, true)
+				draw_line(Vector2(pos_x, max_y - Path.HEIGHT), Vector2(pos_x, max_y), Color.WHITE, 2, true)
 			else:
 				draw_line(Vector2(pos_x, min_y), Vector2(pos_x, min_y + Path.HEIGHT), Color.MEDIUM_SPRING_GREEN, 5, true)
 				draw_line(Vector2(pos_x, max_y - Path.HEIGHT), Vector2(pos_x, max_y), Color.MEDIUM_SPRING_GREEN, 5, true)

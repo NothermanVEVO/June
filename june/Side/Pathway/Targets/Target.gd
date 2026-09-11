@@ -40,6 +40,7 @@ func get_global_rect() -> Rect2:
 func create_target_editor() -> void:
 	if not target_editor:
 		target_editor = TargetEditor.new(self)
+		add_child(target_editor)
 
 func is_just_pressed() -> bool:
 	if _path_type == Path.Types.GROUND:

@@ -20,3 +20,7 @@ func _process(delta: float) -> void:
 
 func _draw() -> void:
 	draw_circle(Vector2.ZERO, 10, Color.BLUE)
+
+func add_target_at(path_type : Path.Types, target : Target, validate_note : bool = false) -> void:
+	target.create_target_editor()
+	super.add_target_at(path_type, target, validate_note)
