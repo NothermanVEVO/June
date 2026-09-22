@@ -65,7 +65,6 @@ text = "Configurações"
 
 [node name="Test" type="Button" parent="MenuBar" unique_id=2093618158]
 layout_mode = 2
-disabled = true
 text = "Testar"
 
 [node name="Undo" type="Button" parent="MenuBar" unique_id=855862957]
@@ -345,6 +344,7 @@ tick_count = 15
 [connection signal="id_pressed" from="MenuBar/MenuBar/Edit" to="MenuBar/MenuBar" method="_on_edit_id_pressed"]
 [connection signal="file_selected" from="MenuBar/MenuBar/FileDialog" to="MenuBar/MenuBar" method="_on_file_dialog_file_selected"]
 [connection signal="pressed" from="MenuBar/Settings" to="MenuBar/MenuBar" method="_on_settings_pressed"]
+[connection signal="pressed" from="MenuBar/Test" to="MenuBar/MenuBar" method="_on_test_pressed"]
 [connection signal="item_selected" from="MenuBar/Middle/PlayerType" to="MenuBar/MenuBar" method="_on_player_type_item_selected"]
 [connection signal="item_selected" from="MenuBar/Middle/Difficulty" to="MenuBar/MenuBar" method="_on_difficulty_item_selected"]
 [connection signal="value_changed" from="MenuBar/Middle/StarsSpinBox" to="MenuBar/MenuBar" method="_on_stars_spin_box_value_changed"]

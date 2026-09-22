@@ -22,5 +22,5 @@ func set_variant(variant : Variants) -> void:
 func get_variant() -> Variants:
 	return _variant
 
-func collide() -> void:
+func collide(character : Character) -> void:
 	print("ganhei pontos de nota")

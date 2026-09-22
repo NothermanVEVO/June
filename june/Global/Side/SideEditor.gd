@@ -1,5 +1,7 @@
 extends Node
 
+@onready var editor_composer_scene : PackedScene = load("res://Editor/SIDE/Composer/SideEditorComposer.tscn")
+
 var _current_file_path : String = ""
 
 var current_editor_save := SideEditorResource.new()

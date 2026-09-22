@@ -1,0 +1,124 @@
+[gd_scene format=3 uid="uid://daxifawuewyw1"]
+
+[ext_resource type="Script" uid="uid://bikdo4uhv4amf" path="res://Side/GamePlayer/SideGame.gd" id="1_5o8fh"]
+[ext_resource type="PackedScene" uid="uid://cl4iwe8cygow8" path="res://Side/GamePlayer/JuneV1.tscn" id="2_t6ium"]
+[ext_resource type="PackedScene" uid="uid://c05fvl4fjh7fc" path="res://Side/GamePlayer/Combo/Combo.tscn" id="3_73rga"]
+[ext_resource type="PackedScene" uid="uid://dqd5d4beip2ry" path="res://Side/GamePlayer/Precision/Precision.tscn" id="4_h2edh"]
+[ext_resource type="Texture2D" uid="uid://dcjxsuc735wn6" path="res://assets/Gear/JuneV1/base_estrela_vazia.png" id="5_knd0q"]
+[ext_resource type="Texture2D" uid="uid://4ivwdoufdycq" path="res://assets/Gear/JuneV1/base_estrela_1x.png" id="6_h2edh"]
+[ext_resource type="Texture2D" uid="uid://jjdh5jcmxe4c" path="res://concepts/light.png" id="7_73rga"]
+[ext_resource type="PackedScene" uid="uid://cg7brwyq2tlvu" path="res://Side/GamePlayer/Finalization/Finalization.tscn" id="7_h2edh"]
+[ext_resource type="Texture2D" uid="uid://c630b24qjtr8u" path="res://concepts/hit_effect_small_desaturated.png" id="8_3f2rh"]
+
+[sub_resource type="Curve" id="Curve_gcghl"]
+_limits = [-200.0, 200.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.511364, 200), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_lypd0"]
+colors = PackedColorArray(0.945909, 0.852722, 0, 1, 1, 1, 1, 1)
+
+[node name="SideGame" type="Control" unique_id=152225474]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5o8fh")
+
+[node name="JuneV1" parent="." unique_id=896800401 instance=ExtResource("2_t6ium")]
+visible = false
+position = Vector2(205, 786)
+
+[node name="Combo" parent="." unique_id=209331064 instance=ExtResource("3_73rga")]
+layout_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2036894472]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -170.5
+offset_right = 170.5
+offset_bottom = 153.0
+grow_horizontal = 2
+theme_override_constants/margin_top = 203
+
+[node name="Precision" parent="MarginContainer" unique_id=1954068054 instance=ExtResource("4_h2edh")]
+layout_mode = 2
+
+[node name="FeverBar" type="TextureProgressBar" parent="." unique_id=218579105]
+visible = false
+layout_mode = 0
+offset_left = 692.0
+offset_top = 838.0
+offset_right = 918.0
+offset_bottom = 1074.0
+fill_mode = 4
+nine_patch_stretch = true
+texture_under = ExtResource("5_knd0q")
+texture_progress = ExtResource("6_h2edh")
+
+[node name="Finalization" parent="." unique_id=1684758897 instance=ExtResource("7_h2edh")]
+layout_mode = 1
+offset_left = -372.0
+offset_top = -98.5
+offset_right = 372.0
+offset_bottom = 98.5
+
+[node name="Fever Effect Star" type="Node2D" parent="." unique_id=192547899]
+visible = false
+position = Vector2(803, 952)
+
+[node name="PointLight2D" type="PointLight2D" parent="Fever Effect Star" unique_id=1917580575]
+color = Color(0.106, 0.89, 0.8, 0)
+energy = 3.62
+range_z_min = 0
+range_z_max = 8
+texture = ExtResource("7_73rga")
+texture_scale = 1.1
+
+[node name="Explosion" type="CPUParticles2D" parent="Fever Effect Star" unique_id=1049176060]
+scale = Vector2(10, 10)
+emitting = false
+amount = 50
+texture = ExtResource("8_3f2rh")
+one_shot = true
+explosiveness = 1.0
+lifetime_randomness = 0.5
+particle_flag_align_y = true
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 100.0
+initial_velocity_max = 100.0
+angular_velocity_min = -720.0
+angular_velocity_max = 720.0
+linear_accel_min = -100.0
+linear_accel_max = -100.0
+radial_accel_min = -100.0
+radial_accel_max = -100.0
+radial_accel_curve = SubResource("Curve_gcghl")
+tangential_accel_min = -10.0
+tangential_accel_max = 10.0
+scale_amount_min = 0.0
+scale_amount_max = 0.5
+color = Color(1.106, 4.89, 4.8, 1)
+color_ramp = SubResource("Gradient_lypd0")
+
+[node name="MarginContainer2" type="MarginContainer" parent="." unique_id=1999872224]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -191.0
+offset_bottom = 23.0
+grow_horizontal = 0
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+
+[node name="Label" type="Label" parent="MarginContainer2" unique_id=1765967924]
+layout_mode = 2
+text = "Pressione \"Esc\" para sair"
+horizontal_alignment = 1
+vertical_alignment = 1

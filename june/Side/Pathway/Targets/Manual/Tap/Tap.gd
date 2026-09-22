@@ -2,12 +2,15 @@ extends ManualTarget
 
 class_name Tap
 
+func _process(delta: float) -> void:
+	if _in_knockback_state:
+		_knockback_process(delta)
+
 func hit() -> void:
-	print("ai")
 	_death()
 
 func _death() -> void:
-	print("morri")
+	throw_back()
 
 func is_colliding(time : float) -> bool:
 	return (time >= get_start_time() - get_collision_radius_in_time()

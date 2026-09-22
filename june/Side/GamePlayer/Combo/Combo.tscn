@@ -1,0 +1,85 @@
+[gd_scene format=3 uid="uid://c05fvl4fjh7fc"]
+
+[ext_resource type="Script" uid="uid://58npvjy41ql" path="res://Side/GamePlayer/Combo/Combo.gd" id="1_87pk0"]
+[ext_resource type="FontFile" uid="uid://ccptv2g4gl5oq" path="res://assets/fonts/Baby Donuts.ttf" id="1_vr8uc"]
+
+[sub_resource type="Gradient" id="Gradient_1nofc"]
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_73rga"]
+gradient = SubResource("Gradient_1nofc")
+fill_from = Vector2(1, 1)
+
+[sub_resource type="Animation" id="Animation_87pk0"]
+resource_name = "Pop"
+length = 0.19999999999999998
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:offset_transform_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(2.9281707, 0.5000002, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.26, 1.05), Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_lanwd"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:offset_transform_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qejj0"]
+_data = {
+&"Pop": SubResource("Animation_87pk0"),
+&"RESET": SubResource("Animation_lanwd")
+}
+
+[node name="Combo" type="MarginContainer" unique_id=209331064]
+z_index = 6
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -205.0
+offset_right = 205.0
+offset_bottom = 194.0
+grow_horizontal = 2
+offset_transform_enabled = true
+theme_override_constants/margin_top = 87
+script = ExtResource("1_87pk0")
+
+[node name="ComboText" type="RichTextLabel" parent="." unique_id=900190649]
+modulate = Color(1, 1, 1, 0.705882)
+clip_children = 2
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("1_vr8uc")
+theme_override_font_sizes/normal_font_size = 80
+text = "COMBO 60000"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="ComboText" unique_id=2139357649]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_73rga")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=370428287]
+libraries/ = SubResource("AnimationLibrary_qejj0")

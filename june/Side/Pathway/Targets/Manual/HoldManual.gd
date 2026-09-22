@@ -50,7 +50,7 @@ func hit() -> void:
 	print("ai")
 	_has_hitted = true
 
-func released() -> void:
+func release() -> void:
 	_death()
 
 func _death() -> void:
@@ -92,6 +92,18 @@ func set_end_time(end_time : float) -> void:
 	_middle_hold.position = Vector2(0, -_middle_hold.size.y / 2)
 	
 	_update_edit_buttons_positions()
+
+func fake_end_time(end_time : float) -> void:
+	var end_pos = Path.get_pos_x(0, get_width_in_secs_by_speed(), end_time - _start_time, Path.hitzone, Path.width) - Path.hitzone
+	
+	while end_time - _start_time > get_width_in_secs_by_speed():
+		end_time -= get_width_in_secs_by_speed()
+		end_pos += Path.get_pos_x(0, get_width_in_secs_by_speed(), end_time - _start_time, Path.hitzone, Path.width) - Path.hitzone
+	
+	_end_hold.global_position.x = global_position.x + end_pos
+	
+	_middle_hold.size = Vector2(end_pos, Path.HEIGHT * 0.7)
+	_middle_hold.position = Vector2(0, -_middle_hold.size.y / 2)
 
 func get_duration() -> float:
 	return _end_time - _start_time

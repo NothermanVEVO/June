@@ -11,6 +11,8 @@ var _current_hits : float = 0
 
 var _hold_blank : HoldBlank
 
+var _hided_editor_visual : bool = false
+
 func _init(start_time : float, end_time : float, path_type : Path.Types) -> void:
 	_hold_blank = HoldBlank.new(start_time, end_time, path_type)
 	super._init(start_time, end_time, path_type)
@@ -20,15 +22,28 @@ func _init(start_time : float, end_time : float, path_type : Path.Types) -> void
 	_middle_hold.modulate.a = 0.75
 	_end_hold.modulate.a = 0.75
 
+func _process(delta: float) -> void:
+	if not _hided_editor_visual:
+		super._process(delta)
+	elif _in_knockback_state:
+		_knockback_process(delta)
+
+func hide_editor_visual() -> void:
+	_end_hold.visible = false
+	_middle_hold.visible = false
+	
+	_hided_editor_visual = true
+	set_process(true)
+
 func hit() -> void:
 	_current_hits += 1
 	_has_hitted = true
-	print("ai")
-	if has_hitted_all():
-		_death()
+	#if has_hitted_all():
+		#_death()
 
 func _death() -> void:
-	print("morri")
+	_is_dead = true
+	throw_back()
 
 #func is_colliding(time : float) -> bool:
 	#return _current_hits == 0 and (time >= get_start_time() - get_collision_radius_in_time()

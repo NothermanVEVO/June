@@ -3,7 +3,7 @@ extends Node2D
 class_name Path
 
 const BASE_HITZONE : float = 400.0
-const WIDTH_IN_SECS : float = 4.0 ## The value of the 'width' in seconds.
+const WIDTH_IN_SECS : float = 2.0 ## The value of the 'width' in seconds.
 const HEIGHT : float = 160.0
 
 enum Types {GROUND, AIR}
@@ -18,7 +18,7 @@ var _direction : Pathway.Direction
 var _manual_targets : Array[ManualTarget]
 var _auto_targets : Array[AutoTarget]
 
-const MAX_TIME_HIT : float = 0.25
+const MAX_TIME_HIT : float = 0.175
 
 var _speed : float = 1.0
 

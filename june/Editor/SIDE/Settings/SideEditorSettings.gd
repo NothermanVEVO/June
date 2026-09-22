@@ -19,8 +19,6 @@ extends VBoxContainer
 
 @onready var file: PopupMenu = $MenuBar/MenuBar/File
 
-@onready var _editor_composer_scene : PackedScene = load("res://Editor/SIDE/Composer/SideEditorComposer.tscn")
-
 @onready var song_time_sample_text: TextEdit = $First/Right/VBoxContainer/SongTimeSample/SongTimeSampleText
 @onready var song_sample_slider: HSlider = $First/Right/VBoxContainer/SongTimeSample/SongSampleSlider
 @onready var song_sample_test_button: Button = $First/Right/VBoxContainer/SongTimeSample/SongSampleTestButton
@@ -114,7 +112,7 @@ func _on_image_button_pressed() -> void:
 	_last_dialog_id = DialogFile.pop_up(FileDialog.FILE_MODE_OPEN_FILE, FileDialog.ACCESS_FILESYSTEM)
 
 func _on_compose_pressed() -> void:
-	get_tree().change_scene_to_packed(_editor_composer_scene)
+	get_tree().change_scene_to_packed(SideEditor.editor_composer_scene)
 
 func _on_file_id_pressed(id: int) -> void:
 	match file.get_item_text(id):

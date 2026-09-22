@@ -1,4 +1,4 @@
-[gd_scene load_steps=80 format=3 uid="uid://ygpxmyrvsexw"]
+[gd_scene format=3 uid="uid://ygpxmyrvsexw"]
 
 [ext_resource type="Script" uid="uid://bhrlpa2ttx82t" path="res://Gear/GearSkin.gd" id="1_g01tw"]
 [ext_resource type="FontFile" uid="uid://ccptv2g4gl5oq" path="res://assets/fonts/Baby Donuts.ttf" id="2_apgu0"]
@@ -36,11 +36,11 @@ colors = PackedColorArray(0.933172, 0.669321, 0, 1, 1, 1, 1, 1, 1.92523e-07, 0.8
 gradient = SubResource("Gradient_jii80")
 fill_from = Vector2(1, 1)
 
-[sub_resource type="Gradient" id="Gradient_1nofc"]
+[sub_resource type="Gradient" id="Gradient_l1bnb"]
 colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_vvqmb"]
-gradient = SubResource("Gradient_1nofc")
+gradient = SubResource("Gradient_l1bnb")
 fill_from = Vector2(1, 1)
 
 [sub_resource type="Animation" id="Animation_54wux"]
@@ -1656,7 +1656,7 @@ shader_parameter/highlight_strength = 0.25
 shader_parameter/color_mode_toggle = false
 shader_parameter/is_horizontal = false
 
-[node name="JuneSkin" type="Control"]
+[node name="JuneSkin" type="Control" unique_id=1418576142]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -1666,7 +1666,7 @@ grow_vertical = 2
 script = ExtResource("1_g01tw")
 metadata/_edit_use_anchors_ = true
 
-[node name="FullGear" type="Control" parent="."]
+[node name="FullGear" type="Control" parent="." unique_id=1582953624]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1674,7 +1674,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Precision" type="VBoxContainer" parent="FullGear"]
+[node name="Precision" type="VBoxContainer" parent="FullGear" unique_id=164746413]
 visible = false
 z_index = 5
 layout_mode = 1
@@ -1692,7 +1692,7 @@ grow_vertical = 2
 pivot_offset = Vector2(170.5, 76.5)
 theme_override_constants/separation = -15
 
-[node name="Speed" type="RichTextLabel" parent="FullGear/Precision"]
+[node name="Speed" type="RichTextLabel" parent="FullGear/Precision" unique_id=743431282]
 clip_children = 2
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1703,7 +1703,7 @@ autowrap_mode = 0
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="FullGear/Precision/Speed"]
+[node name="TextureRect" type="TextureRect" parent="FullGear/Precision/Speed" unique_id=1458753972]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1712,11 +1712,11 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_kmhpc")
 
-[node name="MarginContainer" type="MarginContainer" parent="FullGear/Precision"]
+[node name="MarginContainer" type="MarginContainer" parent="FullGear/Precision" unique_id=606943350]
 layout_mode = 2
 theme_override_constants/margin_right = 7
 
-[node name="Percentage" type="RichTextLabel" parent="FullGear/Precision/MarginContainer"]
+[node name="Percentage" type="RichTextLabel" parent="FullGear/Precision/MarginContainer" unique_id=705398480]
 clip_children = 2
 layout_mode = 2
 theme_override_fonts/normal_font = ExtResource("2_apgu0")
@@ -1727,7 +1727,7 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="FullGear/Precision/MarginContainer/Percentage"]
+[node name="TextureRect" type="TextureRect" parent="FullGear/Precision/MarginContainer/Percentage" unique_id=2117136609]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1735,7 +1735,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Base" type="MarginContainer" parent="FullGear"]
+[node name="Base" type="MarginContainer" parent="FullGear" unique_id=1495156801]
 z_index = 6
 layout_mode = 1
 anchors_preset = -1
@@ -1753,11 +1753,11 @@ size_flags_vertical = 10
 theme_override_constants/margin_right = 26
 theme_override_constants/margin_bottom = 26
 
-[node name="VBoxContainer" type="VBoxContainer" parent="FullGear/Base"]
+[node name="VBoxContainer" type="VBoxContainer" parent="FullGear/Base" unique_id=1173297601]
 layout_mode = 2
 theme_override_constants/separation = -5
 
-[node name="Score" type="RichTextLabel" parent="FullGear/Base/VBoxContainer"]
+[node name="Score" type="RichTextLabel" parent="FullGear/Base/VBoxContainer" unique_id=1481448992]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 25
 text = "Score: 0"
@@ -1765,11 +1765,11 @@ fit_content = true
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="FullGear/Base/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="FullGear/Base/VBoxContainer" unique_id=642036691]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 
-[node name="Speed" type="RichTextLabel" parent="FullGear/Base/VBoxContainer/MarginContainer"]
+[node name="Speed" type="RichTextLabel" parent="FullGear/Base/VBoxContainer/MarginContainer" unique_id=911625686]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 20
 text = "Speed: 0.0x"
@@ -1777,7 +1777,7 @@ fit_content = true
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="Combo" type="MarginContainer" parent="FullGear"]
+[node name="Combo" type="MarginContainer" parent="FullGear" unique_id=1595141319]
 z_index = 6
 layout_mode = 1
 anchors_preset = 5
@@ -1789,7 +1789,7 @@ offset_bottom = 194.0
 grow_horizontal = 2
 theme_override_constants/margin_top = 87
 
-[node name="ComboText" type="RichTextLabel" parent="FullGear/Combo"]
+[node name="ComboText" type="RichTextLabel" parent="FullGear/Combo" unique_id=1172001689]
 modulate = Color(1, 1, 1, 0.705882)
 clip_children = 2
 layout_mode = 2
@@ -1801,7 +1801,7 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="FullGear/Combo/ComboText"]
+[node name="TextureRect" type="TextureRect" parent="FullGear/Combo/ComboText" unique_id=2142190837]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1810,43 +1810,31 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_vvqmb")
 
-[node name="ComboAnimation" type="AnimationPlayer" parent="FullGear"]
+[node name="ComboAnimation" type="AnimationPlayer" parent="FullGear" unique_id=1449139103]
 root_node = NodePath("../Combo")
-libraries = {
-&"": SubResource("AnimationLibrary_jii80")
-}
+libraries/ = SubResource("AnimationLibrary_jii80")
 
-[node name="TextAnimation" type="AnimationPlayer" parent="FullGear"]
+[node name="TextAnimation" type="AnimationPlayer" parent="FullGear" unique_id=51485049]
 root_node = NodePath("../..")
-libraries = {
-&"": SubResource("AnimationLibrary_r0du0")
-}
+libraries/ = SubResource("AnimationLibrary_r0du0")
 
-[node name="BeatAnimation" type="AnimationPlayer" parent="FullGear"]
+[node name="BeatAnimation" type="AnimationPlayer" parent="FullGear" unique_id=1132546769]
 root_node = NodePath("../TextAnimation")
-libraries = {
-&"": SubResource("AnimationLibrary_dh8pw")
-}
+libraries/ = SubResource("AnimationLibrary_dh8pw")
 
-[node name="Fever Star Effect" type="AnimationPlayer" parent="FullGear"]
+[node name="Fever Star Effect" type="AnimationPlayer" parent="FullGear" unique_id=1904555463]
 root_node = NodePath("../BeatAnimation")
-libraries = {
-&"": SubResource("AnimationLibrary_najma")
-}
+libraries/ = SubResource("AnimationLibrary_najma")
 
-[node name="FinalizationAnimation" type="AnimationPlayer" parent="FullGear"]
+[node name="FinalizationAnimation" type="AnimationPlayer" parent="FullGear" unique_id=1947826174]
 root_node = NodePath("../..")
-libraries = {
-&"": SubResource("AnimationLibrary_pmcdu")
-}
+libraries/ = SubResource("AnimationLibrary_pmcdu")
 
-[node name="ControlsAnimation" type="AnimationPlayer" parent="FullGear"]
+[node name="ControlsAnimation" type="AnimationPlayer" parent="FullGear" unique_id=1349983942]
 root_node = NodePath("../..")
-libraries = {
-&"": SubResource("AnimationLibrary_goqav")
-}
+libraries/ = SubResource("AnimationLibrary_goqav")
 
-[node name="Gear" type="Control" parent="FullGear"]
+[node name="Gear" type="Control" parent="FullGear" unique_id=1961014849]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1854,7 +1842,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Hitzone" type="NinePatchRect" parent="FullGear/Gear"]
+[node name="Hitzone" type="NinePatchRect" parent="FullGear/Gear" unique_id=2088326638]
 z_index = 4
 z_as_relative = false
 material = SubResource("ShaderMaterial_dh8pw")
@@ -1865,20 +1853,20 @@ offset_right = 1212.0
 offset_bottom = 770.0
 texture = ExtResource("2_syavq")
 
-[node name="Control" type="Control" parent="FullGear/Gear"]
+[node name="Control" type="Control" parent="FullGear/Gear" unique_id=1368929014]
 z_index = 5
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Base" type="NinePatchRect" parent="FullGear/Gear/Control"]
+[node name="Base" type="NinePatchRect" parent="FullGear/Gear/Control" unique_id=786198810]
 layout_mode = 0
 offset_left = 679.0
 offset_right = 1241.0
 offset_bottom = 1082.0
 texture = ExtResource("3_u7dcu")
 
-[node name="Background" type="ColorRect" parent="FullGear/Gear/Control/Base"]
+[node name="Background" type="ColorRect" parent="FullGear/Gear/Control/Base" unique_id=1182996758]
 z_index = 3
 z_as_relative = false
 layout_mode = 1
@@ -1889,7 +1877,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.498039)
 
-[node name="FeverGradient" type="TextureRect" parent="FullGear/Gear/Control/Base"]
+[node name="FeverGradient" type="TextureRect" parent="FullGear/Gear/Control/Base" unique_id=1504264546]
 modulate = Color(1.1, 1.1, 1.1, 1)
 z_index = 3
 z_as_relative = false
@@ -1900,7 +1888,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="FeverLineLeft" type="TextureRect" parent="FullGear/Gear/Control/Base"]
+[node name="FeverLineLeft" type="TextureRect" parent="FullGear/Gear/Control/Base" unique_id=1901296821]
 visible = false
 modulate = Color(1, 1, 1, 0.0392157)
 z_index = 3
@@ -1913,7 +1901,7 @@ offset_right = 69.0
 offset_bottom = 829.0
 texture = ExtResource("6_xxuof")
 
-[node name="FeverLineRight" type="TextureRect" parent="FullGear/Gear/Control/Base"]
+[node name="FeverLineRight" type="TextureRect" parent="FullGear/Gear/Control/Base" unique_id=453232183]
 visible = false
 modulate = Color(1, 1, 1, 0.0392157)
 z_index = 3
@@ -1928,7 +1916,7 @@ offset_bottom = 830.0
 texture = ExtResource("6_xxuof")
 flip_h = true
 
-[node name="Superior Base" type="NinePatchRect" parent="FullGear/Gear/Control"]
+[node name="Superior Base" type="NinePatchRect" parent="FullGear/Gear/Control" unique_id=1195955792]
 layout_mode = 0
 offset_left = 705.0
 offset_top = 848.0
@@ -1936,7 +1924,7 @@ offset_right = 1214.0
 offset_bottom = 1063.0
 texture = ExtResource("4_dtqx8")
 
-[node name="FeverBar" type="TextureProgressBar" parent="FullGear/Gear/Control"]
+[node name="FeverBar" type="TextureProgressBar" parent="FullGear/Gear/Control" unique_id=487200860]
 layout_mode = 0
 offset_left = 692.0
 offset_top = 838.0
@@ -1947,10 +1935,10 @@ nine_patch_stretch = true
 texture_under = ExtResource("5_dh8pw")
 texture_progress = ExtResource("6_ofatc")
 
-[node name="Fever Effect Star" type="Node2D" parent="FullGear/Gear/Control"]
+[node name="Fever Effect Star" type="Node2D" parent="FullGear/Gear/Control" unique_id=756042081]
 position = Vector2(803, 952)
 
-[node name="PointLight2D" type="PointLight2D" parent="FullGear/Gear/Control/Fever Effect Star"]
+[node name="PointLight2D" type="PointLight2D" parent="FullGear/Gear/Control/Fever Effect Star" unique_id=1993811636]
 color = Color(0.106, 0.89, 0.8, 0)
 energy = 3.62
 range_z_min = 0
@@ -1958,7 +1946,7 @@ range_z_max = 8
 texture = ExtResource("10_2ksjx")
 texture_scale = 1.1
 
-[node name="Explosion" type="CPUParticles2D" parent="FullGear/Gear/Control/Fever Effect Star"]
+[node name="Explosion" type="CPUParticles2D" parent="FullGear/Gear/Control/Fever Effect Star" unique_id=1694121805]
 scale = Vector2(10, 10)
 emitting = false
 amount = 50
@@ -1985,7 +1973,7 @@ scale_amount_max = 0.5
 color = Color(1.106, 4.89, 4.8, 1)
 color_ramp = SubResource("Gradient_2ksjx")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="FullGear/Gear/Control/Fever Effect Star"]
+[node name="RichTextLabel" type="RichTextLabel" parent="FullGear/Gear/Control/Fever Effect Star" unique_id=1890590688]
 visible = false
 modulate = Color(1, 1, 1, 0)
 clip_children = 2
@@ -2009,7 +1997,7 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="FullGear/Gear/Control/Fever Effect Star/RichTextLabel"]
+[node name="TextureRect" type="TextureRect" parent="FullGear/Gear/Control/Fever Effect Star/RichTextLabel" unique_id=805040953]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -2018,7 +2006,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_apgu0")
 
-[node name="Side" type="NinePatchRect" parent="FullGear/Gear/Control"]
+[node name="Side" type="NinePatchRect" parent="FullGear/Gear/Control" unique_id=560393261]
 layout_mode = 0
 offset_left = 1239.0
 offset_top = 243.0
@@ -2026,7 +2014,7 @@ offset_right = 1265.0
 offset_bottom = 780.0
 texture = ExtResource("7_xxuof")
 
-[node name="LifeBar" type="TextureProgressBar" parent="FullGear/Gear/Control"]
+[node name="LifeBar" type="TextureProgressBar" parent="FullGear/Gear/Control" unique_id=986135090]
 layout_mode = 0
 offset_left = 1243.0
 offset_top = 270.0
@@ -2038,7 +2026,7 @@ nine_patch_stretch = true
 texture_under = ExtResource("8_omd5l")
 texture_progress = ExtResource("9_2ksjx")
 
-[node name="Star" type="NinePatchRect" parent="FullGear/Gear/Control"]
+[node name="Star" type="NinePatchRect" parent="FullGear/Gear/Control" unique_id=2050213737]
 z_index = 1
 layout_mode = 1
 anchors_preset = -1
@@ -2054,7 +2042,7 @@ pivot_offset = Vector2(98.03, 106.41)
 texture = ExtResource("10_u7dcu")
 metadata/_edit_use_anchors_ = true
 
-[node name="Controls" type="MarginContainer" parent="FullGear"]
+[node name="Controls" type="MarginContainer" parent="FullGear" unique_id=1600515123]
 z_index = 5
 layout_mode = 1
 anchors_preset = -1
@@ -2070,18 +2058,10 @@ theme_override_constants/margin_left = 5
 theme_override_constants/margin_right = 5
 metadata/_edit_use_anchors_ = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="FullGear/Controls"]
+[node name="HBoxContainer" type="HBoxContainer" parent="FullGear/Controls" unique_id=147784901]
 layout_mode = 2
 
-[node name="Button1" type="Button" parent="FullGear/Controls/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-mouse_filter = 2
-theme = ExtResource("26_0dwk1")
-theme_override_font_sizes/font_size = 50
-text = "A"
-
-[node name="Button2" type="Button" parent="FullGear/Controls/HBoxContainer"]
+[node name="Button1" type="Button" parent="FullGear/Controls/HBoxContainer" unique_id=876598243]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
@@ -2089,7 +2069,7 @@ theme = ExtResource("26_0dwk1")
 theme_override_font_sizes/font_size = 50
 text = "A"
 
-[node name="Button3" type="Button" parent="FullGear/Controls/HBoxContainer"]
+[node name="Button2" type="Button" parent="FullGear/Controls/HBoxContainer" unique_id=929986158]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
@@ -2097,7 +2077,7 @@ theme = ExtResource("26_0dwk1")
 theme_override_font_sizes/font_size = 50
 text = "A"
 
-[node name="Button4" type="Button" parent="FullGear/Controls/HBoxContainer"]
+[node name="Button3" type="Button" parent="FullGear/Controls/HBoxContainer" unique_id=1596121195]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
@@ -2105,7 +2085,7 @@ theme = ExtResource("26_0dwk1")
 theme_override_font_sizes/font_size = 50
 text = "A"
 
-[node name="Button5" type="Button" parent="FullGear/Controls/HBoxContainer"]
+[node name="Button4" type="Button" parent="FullGear/Controls/HBoxContainer" unique_id=144824506]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
@@ -2113,7 +2093,7 @@ theme = ExtResource("26_0dwk1")
 theme_override_font_sizes/font_size = 50
 text = "A"
 
-[node name="Button6" type="Button" parent="FullGear/Controls/HBoxContainer"]
+[node name="Button5" type="Button" parent="FullGear/Controls/HBoxContainer" unique_id=1504630925]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
@@ -2121,7 +2101,15 @@ theme = ExtResource("26_0dwk1")
 theme_override_font_sizes/font_size = 50
 text = "A"
 
-[node name="Finalization" type="MarginContainer" parent="."]
+[node name="Button6" type="Button" parent="FullGear/Controls/HBoxContainer" unique_id=750234730]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme = ExtResource("26_0dwk1")
+theme_override_font_sizes/font_size = 50
+text = "A"
+
+[node name="Finalization" type="MarginContainer" parent="." unique_id=9290727]
 z_index = 6
 layout_mode = 1
 anchors_preset = 8
@@ -2137,12 +2125,12 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(253.5, 98.5)
 
-[node name="Control" type="Control" parent="Finalization"]
+[node name="Control" type="Control" parent="Finalization" unique_id=584547017]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="CPUParticles2D" type="CPUParticles2D" parent="Finalization/Control"]
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Finalization/Control" unique_id=2056595325]
 emitting = false
 amount = 200
 explosiveness = 1.0
@@ -2164,14 +2152,14 @@ tangential_accel_curve = SubResource("Curve_vvqmb")
 scale_amount_max = 15.0
 color_ramp = SubResource("Gradient_0dwk1")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Finalization"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Finalization" unique_id=1620951526]
 modulate = Color(1, 1, 1, 0)
 clip_children = 2
 layout_mode = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.1)
-theme_override_constants/shadow_offset_y = 5
-theme_override_constants/shadow_offset_x = -5
 theme_override_constants/shadow_outline_size = 20
+theme_override_constants/shadow_offset_x = -5
+theme_override_constants/shadow_offset_y = 5
 theme_override_fonts/normal_font = ExtResource("24_kmhpc")
 theme_override_font_sizes/normal_font_size = 205
 bbcode_enabled = true
@@ -2180,7 +2168,7 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="Finalization/RichTextLabel"]
+[node name="TextureRect" type="TextureRect" parent="Finalization/RichTextLabel" unique_id=619076653]
 material = SubResource("ShaderMaterial_oprfg")
 layout_mode = 1
 anchors_preset = 15
@@ -2189,5 +2177,5 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="Finalization"]
+[node name="MarginContainer" type="MarginContainer" parent="Finalization" unique_id=1693671426]
 layout_mode = 2

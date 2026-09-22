@@ -103,3 +103,7 @@ func _on_edit_id_pressed(id: int) -> void:
 		"Copiar para":
 			SideEditor.save_changes.emit()
 			copy_song_map_window.popup_centered()
+
+func _on_test_pressed() -> void:
+	SideEditor.save_changes.emit()
+	SideGlobal.play_song_map(SideEditor.current_song_map, true)

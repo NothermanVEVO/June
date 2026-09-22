@@ -1,0 +1,163 @@
+[gd_scene format=3 uid="uid://dqd5d4beip2ry"]
+
+[ext_resource type="Script" uid="uid://bau6bfjj82vl6" path="res://Side/GamePlayer/Precision/Precision.gd" id="1_5xqft"]
+[ext_resource type="FontFile" uid="uid://ccptv2g4gl5oq" path="res://assets/fonts/Baby Donuts.ttf" id="1_qw0vx"]
+[ext_resource type="Texture2D" uid="uid://bsj3g8pji1cfg" path="res://Effects/JuneGearV1Letter/100 MAX.tres" id="2_5xqft"]
+
+[sub_resource type="Gradient" id="Gradient_jii80"]
+offsets = PackedFloat32Array(0, 0.831169, 0.993506)
+colors = PackedColorArray(0.933172, 0.669321, 0, 1, 1, 1, 1, 1, 1.92523e-07, 0.803892, 0.960422, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_h154r"]
+gradient = SubResource("Gradient_jii80")
+fill_from = Vector2(1, 1)
+
+[sub_resource type="Animation" id="Animation_5xqft"]
+resource_name = "Pop"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:offset_transform_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(0.3186404, 0.3186422, 1),
+"update": 0,
+"values": [Vector2(0.9, 0.9), Vector2(1.2, 1.2), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_w54pc"]
+resource_name = "PopAppear"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:offset_transform_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(2.7320802, 3.249009, 1),
+"update": 0,
+"values": [Vector2(0.3, 0.3), Vector2(1.2, 1.2), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 1, 1.5),
+"transitions": PackedFloat32Array(0.707107, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_r20hw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:offset_transform_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_w54pc"]
+_data = {
+&"Pop": SubResource("Animation_5xqft"),
+&"PopAppear": SubResource("Animation_w54pc"),
+&"RESET": SubResource("Animation_r20hw")
+}
+
+[node name="Precision" type="VBoxContainer" unique_id=1954068054]
+modulate = Color(1, 1, 1, 0)
+z_index = 5
+offset_left = -91.5
+offset_top = -27.0
+offset_right = 249.5
+offset_bottom = 126.0
+pivot_offset = Vector2(170.5, 76.5)
+offset_transform_enabled = true
+theme_override_constants/separation = -15
+script = ExtResource("1_5xqft")
+
+[node name="SpeedText" type="RichTextLabel" parent="." unique_id=1662698429]
+visible = false
+clip_children = 2
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/normal_font_size = 25
+text = "Fast"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="SpeedText" unique_id=1855242112]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_h154r")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=614417771]
+layout_mode = 2
+theme_override_constants/margin_right = 7
+
+[node name="PrecisionPercentage" type="RichTextLabel" parent="MarginContainer" unique_id=406619804]
+clip_children = 2
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("1_qw0vx")
+theme_override_font_sizes/normal_font_size = 100
+text = "100% MAX"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PrecisionTextureRect" type="TextureRect" parent="MarginContainer/PrecisionPercentage" unique_id=1337471673]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_5xqft")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=673003288]
+libraries/ = SubResource("AnimationLibrary_w54pc")
