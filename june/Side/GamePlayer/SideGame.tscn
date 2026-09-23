@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://jjdh5jcmxe4c" path="res://concepts/light.png" id="7_73rga"]
 [ext_resource type="PackedScene" uid="uid://cg7brwyq2tlvu" path="res://Side/GamePlayer/Finalization/Finalization.tscn" id="7_h2edh"]
 [ext_resource type="Texture2D" uid="uid://c630b24qjtr8u" path="res://concepts/hit_effect_small_desaturated.png" id="8_3f2rh"]
+[ext_resource type="PackedScene" uid="uid://csuo7bctkh2w3" path="res://Side/GamePlayer/Background/BackgroundV1.tscn" id="10_3f2rh"]
 
 [sub_resource type="Curve" id="Curve_gcghl"]
 _limits = [-200.0, 200.0, 0.0, 1.0]
@@ -28,7 +29,6 @@ grow_vertical = 2
 script = ExtResource("1_5o8fh")
 
 [node name="JuneV1" parent="." unique_id=896800401 instance=ExtResource("2_t6ium")]
-visible = false
 position = Vector2(205, 786)
 
 [node name="Combo" parent="." unique_id=209331064 instance=ExtResource("3_73rga")]
@@ -122,3 +122,6 @@ layout_mode = 2
 text = "Pressione \"Esc\" para sair"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="BackgroundV1" parent="." unique_id=1547852944 instance=ExtResource("10_3f2rh")]
+position = Vector2(0, 545)

@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://csuo7bctkh2w3"]
+
+[ext_resource type="Script" uid="uid://ew4vlgw8xwug" path="res://Side/GamePlayer/Background/BackgroundV1.gd" id="1_2bf3w"]
+[ext_resource type="Texture2D" uid="uid://w72dafhq3vac" path="res://assets/Side/BackgroundV1/sky.png" id="1_ns2om"]
+[ext_resource type="Texture2D" uid="uid://bnpxgpeb2viib" path="res://assets/Side/BackgroundV1/back_clouds.png" id="2_2bf3w"]
+[ext_resource type="Texture2D" uid="uid://div45my8cmrb1" path="res://assets/Side/BackgroundV1/front_clouds.png" id="3_ldfhu"]
+[ext_resource type="Texture2D" uid="uid://yhqnjhs0522g" path="res://assets/Side/BackgroundV1/mega_back_floor.png" id="4_6fxjk"]
+[ext_resource type="Texture2D" uid="uid://lwepspmiyeat" path="res://assets/Side/BackgroundV1/back_floor.png" id="5_0r8ne"]
+[ext_resource type="Texture2D" uid="uid://ds6ypqreewo7f" path="res://assets/Side/BackgroundV1/front_floor.png" id="6_coael"]
+
+[node name="BackgroundV1" type="Node2D" unique_id=1547852944]
+z_index = -4096
+script = ExtResource("1_2bf3w")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=196486507]
+texture = ExtResource("1_ns2om")
+offset = Vector2(1280, 0)
+
+[node name="BackClouds" type="Node2D" parent="." unique_id=813445371]
+
+[node name="BackClouds" type="Sprite2D" parent="BackClouds" unique_id=1551513737]
+texture = ExtResource("2_2bf3w")
+offset = Vector2(1280, 0)
+
+[node name="BackClouds2" type="Sprite2D" parent="BackClouds" unique_id=129255970]
+texture = ExtResource("2_2bf3w")
+offset = Vector2(1280, 0)
+
+[node name="FrontClouds" type="Node2D" parent="." unique_id=496248738]
+
+[node name="FrontClouds" type="Sprite2D" parent="FrontClouds" unique_id=1956889339]
+texture = ExtResource("3_ldfhu")
+offset = Vector2(1280, 0)
+
+[node name="FrontClouds2" type="Sprite2D" parent="FrontClouds" unique_id=714617130]
+texture = ExtResource("3_ldfhu")
+offset = Vector2(1280, 0)
+
+[node name="MegaBackFloor" type="Node2D" parent="." unique_id=885313542]
+
+[node name="MegaBackFloor" type="Sprite2D" parent="MegaBackFloor" unique_id=1113137947]
+texture = ExtResource("4_6fxjk")
+offset = Vector2(1280, 0)
+
+[node name="MegaBackFloor2" type="Sprite2D" parent="MegaBackFloor" unique_id=1467992797]
+texture = ExtResource("4_6fxjk")
+offset = Vector2(1280, 0)
+
+[node name="BackFloor" type="Node2D" parent="." unique_id=1869376678]
+
+[node name="BackFloor" type="Sprite2D" parent="BackFloor" unique_id=615381823]
+texture = ExtResource("5_0r8ne")
+offset = Vector2(1280, 0)
+
+[node name="BackFloor2" type="Sprite2D" parent="BackFloor" unique_id=1317527370]
+texture = ExtResource("5_0r8ne")
+offset = Vector2(1280, 0)
+
+[node name="FrontFloor" type="Node2D" parent="." unique_id=1634725146]
+
+[node name="FrontFloor" type="Sprite2D" parent="FrontFloor" unique_id=1091542488]
+texture = ExtResource("6_coael")
+offset = Vector2(1280, 0)
+
+[node name="FrontFloor2" type="Sprite2D" parent="FrontFloor" unique_id=1306849350]
+texture = ExtResource("6_coael")
+offset = Vector2(1280, 0)
