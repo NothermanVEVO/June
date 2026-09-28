@@ -9,19 +9,18 @@ SIDE_EDITOR_PATH="user://sideeditor"). Its only top-level entries are
 Subcommands:
     pack             build a .junes file from a source folder
     install          install June and extract a .junes into user://
-    export           bundle a .junes into the Godot export
+    export           bundle a .junes's files into the Godot export
     build-installer  build a standalone JuneInstaller executable
                      (PyInstaller, build machine only) embedding a .junes
-
-is_valid_entry must accept exactly the same entries as
-Global._is_valid_bundled_entry in june/Global/Global.gd.
 """
 from __future__ import annotations
 
 import argparse
+import contextlib
 import importlib.util
 import os
 import shutil
+import signal
 import subprocess
 import sys
 import tempfile
@@ -210,40 +209,66 @@ def find_godot() -> Path:
     return Path(found)
 
 
-def export(junes_path: Path, output: Path, godot: Path, preset: str) -> int:
-    """Bundle junes_path into the Godot project and run a headless export.
+KEEP_AS_IS_IMPORT = '[remap]\n\nimporter="keep"\n'
 
-    Copies junes_path to June/june/bundled_songs.junes, runs Godot's headless
-    exporter, then restores the project to its original state (backing up
-    and restoring any bundled_songs.junes that was already there). Returns
-    Godot's exit code.
+
+def write_bundled_files(junes_path: Path, bundled_dir: Path) -> None:
+    """Extract junes_path into bundled_dir, marking every file "keep" so Godot exports it as-is."""
+    extract_junes(junes_path, bundled_dir)
+    for path in list(bundled_dir.rglob("*")):
+        if path.is_file():
+            path.with_name(path.name + ".import").write_text(KEEP_AS_IS_IMPORT)
+
+
+def _exit_on_signal(signum, frame):
+    sys.exit(128 + signum)
+
+
+@contextlib.contextmanager
+def exit_cleanly_on_termination():
+    """Turn SIGTERM/SIGHUP into SystemExit so finally blocks still run."""
+    signums = [getattr(signal, name) for name in ("SIGTERM", "SIGHUP") if hasattr(signal, name)]
+    previous = [signal.signal(signum, _exit_on_signal) for signum in signums]
+    try:
+        yield
+    finally:
+        for signum, handler in zip(signums, previous):
+            signal.signal(signum, handler or signal.SIG_DFL)
+
+
+def export(junes_path: Path, output: Path, godot: Path, preset: str) -> int:
+    """Bundle junes_path's files into the Godot project and run a headless export.
+
+    Extracts junes_path into June/june/bundled/ (exported raw into the .pck by
+    the presets' include_filter, read in place by the game from res://bundled),
+    runs Godot's headless exporter, then always deletes june/bundled/ again,
+    also on Ctrl+C, SIGTERM, or SIGHUP. Refuses to run if june/bundled/
+    already exists. Returns Godot's exit code.
     """
     if not junes_path.is_file():
         raise JunesError(f"{junes_path} is not a file")
     validate_junes(junes_path)
-    output.parent.mkdir(parents=True, exist_ok=True)
 
     project_dir = Path(__file__).resolve().parent.parent / "june"
-    bundled = project_dir / "bundled_songs.junes"
-    backup = bundled.with_suffix(".junes.backup")
+    bundled_dir = project_dir / "bundled"
+    if bundled_dir.exists():
+        raise JunesError(f"{bundled_dir} already exists (left over from an interrupted export?); remove it and retry")
+    output.parent.mkdir(parents=True, exist_ok=True)
 
-    had_bundled = bundled.exists()
-    if had_bundled:
-        bundled.replace(backup)
-    try:
-        shutil.copy2(junes_path, bundled)
-        result = subprocess.run([
-            str(godot),
-            "--headless",
-            "--path", str(project_dir),
-            "--export-release", preset,
-            str(output.resolve()),
-        ])
-        return result.returncode
-    finally:
-        bundled.unlink(missing_ok=True)
-        if had_bundled:
-            backup.replace(bundled)
+    with exit_cleanly_on_termination():
+        try:
+            write_bundled_files(junes_path, bundled_dir)
+            result = subprocess.run([
+                str(godot),
+                "--headless",
+                "--path", str(project_dir),
+                "--export-release", preset,
+                str(output.resolve()),
+            ])
+            return result.returncode
+        finally:
+            if bundled_dir.exists():
+                shutil.rmtree(bundled_dir)
 
 
 def build_installer(junes_path: Path, dist_dir: Path) -> int:
@@ -288,7 +313,7 @@ def build_parser() -> argparse.ArgumentParser:
     install_parser.add_argument("junes_file", type=Path, help=".junes file to extract after install")
     install_parser.add_argument("--install-dir", type=Path, help="installation directory (default: platform-specific)")
 
-    export_parser = sub.add_parser("export", help="Bundle a .junes into a headless Godot export")
+    export_parser = sub.add_parser("export", help="Bundle a .junes's files into a headless Godot export")
     export_parser.add_argument("junes_file", type=Path, help=".junes file to embed in the build")
     export_parser.add_argument("output", type=Path, help="export output path (e.g. June.exe)")
     export_parser.add_argument("--godot", type=Path, help="Godot binary (default: $GODOT or 'godot' on PATH)")

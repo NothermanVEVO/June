@@ -14,8 +14,7 @@ Um arquivo `.junes` é um arquivo ZIP (deflate) que espelha os dados de músicas
 `Global.SIDE_EDITOR_PATH` do Godot). Suas únicas entradas de nível superior são `songs/...`
 e/ou `sideeditor/...` — pelo menos uma das duas deve estar presente. O arquivo inteiro é rejeitado (proteção zip-slip) se estiver vazio ou se alguma entrada estiver
 fora dessas raízes, for absoluta, ou contiver `\`, `:`, ou um segmento de caminho vazio, `.` ou
-`..`. `junes.py` e o jogo (`june/Global/Global.gd`) aplicam
-as mesmas regras.
+`..`. Todo comando do `junes.py` que abre um `.junes` aplica essas regras.
 
 ### `pack`
 
@@ -62,7 +61,7 @@ inseguro ou corrompido aborta a instalação sem fazer alterações.
 
 ### `export`
 
-Agrupa um arquivo `.junes` em uma exportação Godot headless do June:
+Embute as músicas de um arquivo `.junes` em uma exportação Godot headless do June:
 
 ```
 python tools/junes.py export <file.junes> <output path> [--godot PATH] [--preset NAME]
@@ -73,18 +72,27 @@ python tools/junes.py export <file.junes> <output path> [--godot PATH] [--preset
   senão `godot` no `PATH`.
 - `--preset` escolhe o preset de `export_presets.cfg`; o padrão é `June Windows`
   no Windows e `June Linux` em outro lugar.
-- Copia `<file.junes>` para `june/bundled_songs.junes` (para que seja embutido
-  no `.pck` da compilação de acordo com o `include_filter` de `export_presets.cfg`), executa
-  `godot --headless --path june --export-release <preset> <output path>`,
-  depois sempre remove o arquivo copiado depois. Se um `bundled_songs.junes`
-  já existisse em `june/`, é feito backup primeiro e restaurado depois
-  em vez de ser deletado, para que a árvore do projeto seja deixada exatamente como estava.
+- Extrai `<file.junes>` em `june/bundled/` (`songs/` e `sideeditor/`) e cria, ao lado
+  de cada arquivo, um `.import` com `importer="keep"`. Assim o editor não importa
+  mp3/ogg/png/webp/etc. e o export grava cada arquivo cru no `.pck`, no mesmo caminho,
+  de acordo com o `include_filter="bundled/*"` de `export_presets.cfg`. Depois executa
+  `godot --headless --path june --export-release <preset> <output path>` e sempre
+  apaga `june/bundled/`, inclusive com Ctrl+C, SIGTERM ou SIGHUP.
+- Se `june/bundled/` já existir (por exemplo, sobra de um export morto com `kill -9`),
+  o comando falha sem mexer em nada; apague a pasta e rode de novo. Ela está no
+  `june/.gitignore`.
 - O diretório pai da saída é criado se não existir.
 - Sai com o código de saída do próprio Godot, então falhas de exportação são visíveis para
   scripts/CI.
 
-Na inicialização, June extrai `res://bundled_songs.junes` (se presente) em
-`user://` sem sobrescrever arquivos existentes — veja `june/Global/Global.gd`.
+No jogo, as músicas embutidas são lidas direto de `res://bundled`, sem cópia em
+`user://`:
+
+- a seleção de músicas lista `res://bundled/songs` junto com `user://songs`; se as
+  duas tiverem uma música com o mesmo UUID, vale a do usuário;
+- no editor Side, `Arquivo > Abrir Embutido` abre um mapa de `res://bundled/sideeditor`.
+  O conteúdo embutido é só leitura: ao salvar, o editor pede um caminho em
+  `user://sideeditor`.
 
 ### `build-installer`
 

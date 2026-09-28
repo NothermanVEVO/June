@@ -5,6 +5,8 @@ import contextlib
 import io
 import json
 import os
+import shutil
+import signal
 import stat
 import sys
 import tempfile
@@ -203,21 +205,25 @@ class ExportTests(unittest.TestCase):
         self.addCleanup(self.tmp_dir.cleanup)
         self.junes_path = Path(self.tmp_dir.name) / "songs.junes"
         with zipfile.ZipFile(self.junes_path, "w") as zf:
-            zf.writestr("songs/a.tres", "data")
+            zf.writestr("songs/a/song_map.json", "{}")
+            zf.writestr("sideeditor/map.tres", "data")
         self.output = Path(self.tmp_dir.name) / "out" / "June.export"
         self.project_dir = Path(junes.__file__).resolve().parent.parent / "june"
-        self.bundled = self.project_dir / "bundled_songs.junes"
-        self.backup = self.bundled.with_suffix(".junes.backup")
-        self.addCleanup(self.bundled.unlink, missing_ok=True)
-        self.addCleanup(self.backup.unlink, missing_ok=True)
+        self.bundled_dir = self.project_dir / "bundled"
+        if self.bundled_dir.exists():
+            self.skipTest(f"{self.bundled_dir} exists; remove it to run export tests")
 
-    def make_fake_godot(self, exit_code, record_path):
+    def make_fake_godot(self, exit_code, record_path, body=""):
         script = Path(self.tmp_dir.name) / f"fake_godot_{exit_code}.py"
         script.write_text(
             "#!/usr/bin/env python3\n"
-            "import json, pathlib, sys\n"
-            f"record = {{'argv': sys.argv, 'bundled_exists': pathlib.Path({str(self.bundled)!r}).is_file()}}\n"
+            "import json, os, pathlib, signal, sys, time\n"
+            f"bundled = pathlib.Path({str(self.bundled_dir)!r})\n"
+            "files = sorted(p.relative_to(bundled).as_posix() for p in bundled.rglob('*') if p.is_file())\n"
+            "imports = {f: (bundled / f).read_text() for f in files if f.endswith('.import')}\n"
+            "record = {'argv': sys.argv, 'files': files, 'imports': imports}\n"
             f"pathlib.Path({str(record_path)!r}).write_text(json.dumps(record))\n"
+            f"{body}"
             f"sys.exit({exit_code})\n"
         )
         script.chmod(0o755)
@@ -229,36 +235,58 @@ class ExportTests(unittest.TestCase):
         exit_code = junes.export(self.junes_path, self.output, godot, "June Linux")
         self.assertEqual(exit_code, 7)
         record = json.loads(record_path.read_text())
-        self.assertTrue(record["bundled_exists"])
         self.assertEqual(record["argv"][0], str(godot))
         self.assertIn("--headless", record["argv"])
         self.assertIn("June Linux", record["argv"])
         self.assertIn(str(self.output.resolve()), record["argv"])
 
-    def test_removes_bundled_file_when_none_existed_before(self):
+    def test_bundles_raw_files_marked_keep_during_export(self):
         record_path = Path(self.tmp_dir.name) / "record.json"
         godot = self.make_fake_godot(0, record_path)
         junes.export(self.junes_path, self.output, godot, "June Linux")
-        self.assertFalse(self.bundled.exists())
-        self.assertFalse(self.backup.exists())
+        record = json.loads(record_path.read_text())
+        self.assertEqual(record["files"], [
+            "sideeditor/map.tres",
+            "sideeditor/map.tres.import",
+            "songs/a/song_map.json",
+            "songs/a/song_map.json.import",
+        ])
+        for text in record["imports"].values():
+            self.assertEqual(text, junes.KEEP_AS_IS_IMPORT)
 
-    def test_restores_preexisting_bundled_file(self):
-        self.bundled.write_text("original content")
+    def test_removes_bundled_dir_after_export(self):
         record_path = Path(self.tmp_dir.name) / "record.json"
         godot = self.make_fake_godot(0, record_path)
         junes.export(self.junes_path, self.output, godot, "June Linux")
-        self.assertTrue(self.bundled.is_file())
-        self.assertEqual(self.bundled.read_text(), "original content")
-        self.assertFalse(self.backup.exists())
+        self.assertFalse(self.bundled_dir.exists())
 
-    def test_restores_preexisting_bundled_file_when_godot_missing(self):
-        self.bundled.write_text("original content")
+    def test_removes_bundled_dir_when_godot_missing(self):
         missing_godot = Path(self.tmp_dir.name) / "no-such-godot"
         with self.assertRaises(OSError):
             junes.export(self.junes_path, self.output, missing_godot, "June Linux")
-        self.assertTrue(self.bundled.is_file())
-        self.assertEqual(self.bundled.read_text(), "original content")
-        self.assertFalse(self.backup.exists())
+        self.assertFalse(self.bundled_dir.exists())
+
+    @unittest.skipIf(sys.platform == "win32", "needs POSIX signals")
+    def test_removes_bundled_dir_when_terminated(self):
+        record_path = Path(self.tmp_dir.name) / "record.json"
+        godot = self.make_fake_godot(0, record_path, "os.kill(os.getppid(), signal.SIGTERM)\ntime.sleep(30)\n")
+        with self.assertRaises(SystemExit) as ctx:
+            junes.export(self.junes_path, self.output, godot, "June Linux")
+        self.assertEqual(ctx.exception.code, 128 + signal.SIGTERM)
+        self.assertFalse(self.bundled_dir.exists())
+        self.assertEqual(signal.getsignal(signal.SIGTERM), signal.SIG_DFL)
+
+    def test_refuses_to_touch_existing_bundled_dir(self):
+        self.bundled_dir.mkdir()
+        self.addCleanup(shutil.rmtree, self.bundled_dir)
+        (self.bundled_dir / "mine.txt").write_text("original content")
+        record_path = Path(self.tmp_dir.name) / "record.json"
+        godot = self.make_fake_godot(0, record_path)
+        with self.assertRaises(junes.JunesError):
+            junes.export(self.junes_path, self.output, godot, "June Linux")
+        self.assertFalse(record_path.exists())
+        self.assertEqual(os.listdir(self.bundled_dir), ["mine.txt"])
+        self.assertEqual((self.bundled_dir / "mine.txt").read_text(), "original content")
 
 
 class InstallJuneTests(unittest.TestCase):
