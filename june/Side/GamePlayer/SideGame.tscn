@@ -104,6 +104,7 @@ color = Color(1.106, 4.89, 4.8, 1)
 color_ramp = SubResource("Gradient_lypd0")
 
 [node name="MarginContainer2" type="MarginContainer" parent="." unique_id=1999872224]
+visible = false
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -123,6 +124,7 @@ vertical_alignment = 1
 [node name="BackgroundV1" parent="." unique_id=1547852944 instance=ExtResource("10_3f2rh")]
 
 [node name="Label" type="Label" parent="." unique_id=985052208]
+visible = false
 layout_mode = 0
 offset_right = 245.0
 offset_bottom = 78.0

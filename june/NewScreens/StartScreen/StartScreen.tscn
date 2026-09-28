@@ -20,11 +20,13 @@ gradient = SubResource("Gradient_v50bl")
 fill_from = Vector2(1, 1)
 
 [sub_resource type="Gradient" id="Gradient_nnidp"]
+interpolation_mode = 2
 offsets = PackedFloat32Array(0, 0.072289154, 0.92168677, 1)
 colors = PackedColorArray(1, 1, 1, 0.5176471, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0.5176471)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_nnidp"]
 gradient = SubResource("Gradient_nnidp")
+width = 151
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sjphv"]
 texture = SubResource("GradientTexture2D_nnidp")
@@ -157,18 +159,22 @@ layout_mode = 2
 
 [node name="PlayButton" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer" unique_id=1317720362]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 text = "Jogar"
 
 [node name="EditButton" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer" unique_id=1908450790]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 text = "Editar"
 
 [node name="SettingsButton" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer" unique_id=342861524]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 text = "Configurações"
 
 [node name="QuitButton" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer" unique_id=1532012273]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 text = "Sair"
 
 [node name="PressToPlay" type="Control" parent="." unique_id=1372123188]

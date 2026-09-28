@@ -2,8 +2,6 @@ extends Control
 
 class_name LoadingScreen
 
-const _PRESS_TO_PLAY_SCREEN_SCENE := preload("res://Screens/PressToPlayScreen.tscn")
-
 var quantity_loaded : int = 0
 var quantity_of_loaders : int = 0
 
@@ -42,4 +40,4 @@ func loaded(_anim : String = "") -> void:
 	_loading_text.text = "Carregando... (" + str(quantity_loaded) + "/" + str(quantity_of_loaders) + ")"
 	if quantity_loaded >= quantity_of_loaders:
 		await get_tree().create_timer(0.5).timeout
-		get_tree().change_scene_to_packed(_PRESS_TO_PLAY_SCREEN_SCENE)
+		get_tree().change_scene_to_packed(Global.START_SCREEN_SCENE)

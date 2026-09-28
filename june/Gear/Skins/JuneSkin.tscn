@@ -1676,7 +1676,7 @@ grow_vertical = 2
 
 [node name="Precision" type="VBoxContainer" parent="FullGear" unique_id=164746413]
 visible = false
-z_index = 5
+z_index = 8
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -1778,7 +1778,7 @@ autowrap_mode = 0
 vertical_alignment = 1
 
 [node name="Combo" type="MarginContainer" parent="FullGear" unique_id=1595141319]
-z_index = 6
+z_index = 8
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -2110,7 +2110,7 @@ theme_override_font_sizes/font_size = 50
 text = "A"
 
 [node name="Finalization" type="MarginContainer" parent="." unique_id=9290727]
-z_index = 6
+z_index = 10
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://df11ylsthwo5e"]
+[gd_scene format=3 uid="uid://df11ylsthwo5e"]
 
 [ext_resource type="Script" uid="uid://cd5aywpmrurxs" path="res://Screens/LoadingScreen.gd" id="1_ikhrs"]
 
-[node name="LoadingScreen" type="Control"]
+[node name="LoadingScreen" type="Control" unique_id=1424387945]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,7 +11,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ikhrs")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1682519101]
 z_index = 2000
 layout_mode = 1
 anchors_preset = 15
@@ -21,7 +21,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=609981667]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -35,7 +35,7 @@ grow_vertical = 0
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="LoadingText" type="RichTextLabel" parent="MarginContainer"]
+[node name="LoadingText" type="RichTextLabel" parent="MarginContainer" unique_id=138164773]
 z_index = 2000
 layout_mode = 2
 theme_override_colors/font_selected_color = Color(1, 1, 1, 1)

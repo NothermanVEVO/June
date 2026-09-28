@@ -3,13 +3,32 @@
 [ext_resource type="Script" uid="uid://75iumkg05qt2" path="res://NewScreens/ChooseGame/ChooseMode.gd" id="1_7oui3"]
 [ext_resource type="FontFile" uid="uid://cijchlo1rfb44" path="res://assets/fonts/Tokyo.ttf" id="2_jgipx"]
 [ext_resource type="FontFile" uid="uid://bk7uiutchpno7" path="res://assets/fonts/Kalufira.otf" id="3_6c203"]
+[ext_resource type="Texture2D" uid="uid://ljgilyshd23l" path="res://assets/Samples/fall_sample.png" id="3_484v4"]
 [ext_resource type="Theme" uid="uid://cflls7t5oklv0" path="res://themes/SongSelectionTab.tres" id="4_jgipx"]
+[ext_resource type="Texture2D" uid="uid://42qu2xm4wxli" path="res://assets/Samples/side_sample.png" id="5_484v4"]
+
+[sub_resource type="Gradient" id="Gradient_ruiu6"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.2951807, 0.6927711, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_we570"]
+gradient = SubResource("Gradient_ruiu6")
+fill_from = Vector2(1, 1)
 
 [sub_resource type="Gradient" id="Gradient_eeqsg"]
 offsets = PackedFloat32Array(0, 0.67469877)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_l65tw"]
 gradient = SubResource("Gradient_eeqsg")
+fill_from = Vector2(1, 1)
+
+[sub_resource type="Gradient" id="Gradient_2c8u8"]
+offsets = PackedFloat32Array(0.39156628, 0.52409637, 0.6807229)
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_cgc1o"]
+gradient = SubResource("Gradient_2c8u8")
 fill_from = Vector2(1, 1)
 
 [node name="ChooseMode" type="MarginContainer" unique_id=329203949]
@@ -43,15 +62,41 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="FallContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer" unique_id=1149051010]
+clip_children = 2
 layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="FallButton" type="Button" parent="VBoxContainer/HBoxContainer/FallContainer" unique_id=1823213562]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+
+[node name="Sample" type="MarginContainer" parent="VBoxContainer/HBoxContainer/FallContainer" unique_id=868879082]
+modulate = Color(1, 1, 1, 0.5411765)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 40
+
+[node name="TextureRect2" type="TextureRect" parent="VBoxContainer/HBoxContainer/FallContainer/Sample" unique_id=1588308481]
+clip_children = 2
+layout_mode = 2
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_we570")
+
+[node name="FallSample" type="TextureRect" parent="VBoxContainer/HBoxContainer/FallContainer/Sample/TextureRect2" unique_id=128667485]
+layout_mode = 0
+offset_right = 924.0
+offset_bottom = 881.0
+mouse_filter = 2
+texture = ExtResource("3_484v4")
+expand_mode = 1
+stretch_mode = 6
 
 [node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/HBoxContainer/FallContainer" unique_id=547023832]
-modulate = Color(1, 1, 1, 0.45490196)
+modulate = Color(1, 1, 1, 0.8745098)
 clip_children = 2
 layout_mode = 2
 mouse_filter = 2
@@ -88,9 +133,34 @@ size_flags_horizontal = 3
 [node name="SideButton" type="Button" parent="VBoxContainer/HBoxContainer/SideContainer" unique_id=971066165]
 layout_mode = 2
 size_flags_horizontal = 3
+disabled = true
+
+[node name="Sample" type="MarginContainer" parent="VBoxContainer/HBoxContainer/SideContainer" unique_id=1099468981]
+modulate = Color(1, 1, 1, 0.5411765)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 40
+
+[node name="TextureRect2" type="TextureRect" parent="VBoxContainer/HBoxContainer/SideContainer/Sample" unique_id=1912733106]
+clip_children = 2
+layout_mode = 2
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_we570")
+
+[node name="FallSample" type="TextureRect" parent="VBoxContainer/HBoxContainer/SideContainer/Sample/TextureRect2" unique_id=561144076]
+layout_mode = 0
+offset_right = 924.0
+offset_bottom = 881.0
+mouse_filter = 2
+texture = ExtResource("5_484v4")
+expand_mode = 1
+stretch_mode = 6
 
 [node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/HBoxContainer/SideContainer" unique_id=168577922]
-modulate = Color(1, 1, 1, 0.45490196)
+modulate = Color(1, 1, 1, 0.73333335)
 clip_children = 2
 layout_mode = 2
 mouse_filter = 2
@@ -99,7 +169,7 @@ theme_override_constants/shadow_outline_size = 3
 theme_override_constants/shadow_offset_y = 10
 theme_override_fonts/normal_font = ExtResource("3_6c203")
 theme_override_font_sizes/normal_font_size = 290
-text = "Side"
+text = "locked"
 fit_content = true
 autowrap_mode = 0
 horizontal_alignment = 1
@@ -113,13 +183,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-texture = SubResource("GradientTexture2D_l65tw")
+texture = SubResource("GradientTexture2D_cgc1o")
 expand_mode = 1
 
 [node name="ReturnButton" type="Button" parent="VBoxContainer" unique_id=712448372]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 size_flags_horizontal = 8
+mouse_default_cursor_shape = 2
 theme = ExtResource("4_jgipx")
 theme_override_fonts/font = ExtResource("3_6c203")
 theme_override_font_sizes/font_size = 44

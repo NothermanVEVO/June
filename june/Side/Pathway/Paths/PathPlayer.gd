@@ -22,8 +22,6 @@ const TIME_TO_NEXT_HIT_HOLD : float = 0.3
 var _spam_time_since_last_hit : float = 0.0
 const MAX_SPAM_TIME_LAST_HIT : float = 0.75
 
-var _veloc_med : float = 0.0
-
 signal hitted_all_targets(quant_max : int, quant_ok : int, quant_break : int)
 signal hitted_target(precision : int, score : float)
 
@@ -31,12 +29,12 @@ func _ready() -> void:
 	if _currently_manual_target_idx >= _manual_targets.size() and _currently_auto_target_idx >= _auto_targets.size():
 		hitted_all_targets.emit(_quant_max, _quant_max, _quant_break)
 	
-	queue_redraw() ## TEMP
-
-func _draw() -> void: ## TEMP
-	draw_rect(Rect2(0, - HEIGHT / 2, width, HEIGHT), Color.WHITE, false, 1, true)
-	
-	draw_line(Vector2(hitzone, -HEIGHT / 2), Vector2(hitzone, HEIGHT / 2), Color.YELLOW, 10)
+	#queue_redraw() ## TEMP
+#
+#func _draw() -> void: ## TEMP
+	#draw_rect(Rect2(0, - HEIGHT / 2, width, HEIGHT), Color.WHITE, false, 1, true)
+	#
+	#draw_line(Vector2(hitzone, -HEIGHT / 2), Vector2(hitzone, HEIGHT / 2), Color.YELLOW, 10)
 
 func _process(delta: float) -> void:
 	if SideGame.get_current_time() >= SideGame.TIME_TO_START and not Song.is_finished():

@@ -19,15 +19,17 @@ func _init(start_time : float, end_time : float, path_type : Path.Types) -> void
 	_end_hold.texture = texture
 	_middle_hold.modulate.a = 0.75
 	_end_hold.modulate.a = 0.75
+	
+	_can_move_randomly = true
 
 func _process(delta: float) -> void:
-	if _in_knockback_state and not _hided_editor_visual:
-		pass
+	if _in_knockback_state and _hided_editor_visual:
+		_knockback_process(delta)
 	else:
-		if not _hided_editor_visual:
+		if _hided_editor_visual:
 			super._process(delta)
-		elif _can_move_randomly:
-			_move_randomly(delta)
+			if _can_move_randomly:
+				_move_randomly(delta)
 
 func hide_editor_visual() -> void:
 	super.hide_editor_visual()

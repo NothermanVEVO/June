@@ -38,9 +38,8 @@ func _unhandled_input(_event: InputEvent) -> void:
 		_change_to_normal_display()
 
 func _on_play_button_pressed() -> void:
-	#ChooseMode.path_to_go = ChooseMode.Paths.PLAY
-	#get_tree().change_scene_to_packed(_choose_mode_scene) ## TODO
-	pass # Replace with function body.
+	ChooseMode.path_to_go = ChooseMode.Paths.PLAY
+	get_tree().change_scene_to_packed(_choose_mode_scene)
 
 func _on_edit_button_pressed() -> void:
 	ChooseMode.path_to_go = ChooseMode.Paths.EDITOR
