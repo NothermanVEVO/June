@@ -38,6 +38,9 @@ func _ready() -> void:
 	
 	DialogFile.file_selected.connect(_dialog_file_file_selected)
 	
+	if DirAccess.dir_exists_absolute(Global.BUNDLED_SIDE_EDITOR_PATH):
+		file.add_item("Abrir Embutido")
+	
 	_load_editor_save()
 
 func _load_editor_save() -> void:
@@ -121,6 +124,9 @@ func _on_file_id_pressed(id: int) -> void:
 		"Abrir":
 			_last_dialog_choice = DialogChoice.OPEN
 			_last_dialog_id = DialogFile.pop_up(FileDialog.FILE_MODE_OPEN_FILE, FileDialog.ACCESS_USERDATA, Global.SIDE_EDITOR_PATH)
+		"Abrir Embutido":
+			_last_dialog_choice = DialogChoice.OPEN
+			_last_dialog_id = DialogFile.pop_up(FileDialog.FILE_MODE_OPEN_FILE, FileDialog.ACCESS_RESOURCES, Global.BUNDLED_SIDE_EDITOR_PATH)
 		"Salvar":
 			if SideEditor.get_file_path():
 				SideEditor.save_file(SideEditor.get_file_path())

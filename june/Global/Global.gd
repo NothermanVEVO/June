@@ -7,8 +7,8 @@ const SIDE_EDITOR_PATH : String = "user://sideeditor"
 const SONGS_PATH : String = "user://songs"
 const SETTINGS_PATH : String = "user://settings.json"
 const SAVE_PATH : String = "user://save.json"
-const BUNDLED_SONGS_PATH : String = "res://bundled_songs.junes"
-const BUNDLED_SONGS_ROOTS : Array[String] = ["songs", "sideeditor"]
+const BUNDLED_SONGS_PATH : String = "res://bundled/songs"
+const BUNDLED_SIDE_EDITOR_PATH : String = "res://bundled/sideeditor"
 
 var rng := RandomNumberGenerator.new()
 
@@ -54,51 +54,12 @@ func _ready() -> void:
 		DirAccess.make_dir_absolute(SIDE_EDITOR_PATH)
 	if not DirAccess.dir_exists_absolute(SONGS_PATH):
 		DirAccess.make_dir_absolute(SONGS_PATH)
-	_extract_bundled_songs()
 	if not FileAccess.file_exists(SETTINGS_PATH):
 		_create_settings()
 	else:
 		_load_settings()
 	if not FileAccess.file_exists(SAVE_PATH):
 		create_save({})
-
-func _extract_bundled_songs() -> void:
-	if not FileAccess.file_exists(BUNDLED_SONGS_PATH):
-		return
-	var zip := ZIPReader.new()
-	if zip.open(BUNDLED_SONGS_PATH) != OK:
-		push_error("Could not open " + BUNDLED_SONGS_PATH)
-		return
-	var entries := zip.get_files()
-	for entry in entries:
-		if not _is_valid_bundled_entry(entry):
-			push_error("Unsafe entry in " + BUNDLED_SONGS_PATH + ": " + entry)
-			zip.close()
-			return
-	for entry in entries:
-		var target_path := "user://" + entry
-		if entry.ends_with("/") or FileAccess.file_exists(target_path):
-			continue
-		var data := zip.read_file(entry)
-		if data.is_empty():
-			continue
-		DirAccess.make_dir_recursive_absolute(target_path.get_base_dir())
-		var file := FileAccess.open(target_path, FileAccess.WRITE)
-		if file == null:
-			push_error("Could not write %s (error %d)" % [target_path, FileAccess.get_open_error()])
-			continue
-		file.store_buffer(data)
-		file.close()
-	zip.close()
-
-func _is_valid_bundled_entry(entry : String) -> bool:
-	var is_folder := entry.ends_with("/")
-	var parts := entry.trim_suffix("/").split("/")
-	if entry.is_empty() or entry.contains("\\") or entry.contains(":") or not BUNDLED_SONGS_ROOTS.has(parts[0]):
-		return false
-	if not is_folder and parts.size() < 2:
-		return false
-	return not (parts.has("") or parts.has(".") or parts.has(".."))
 
 @warning_ignore("unused_parameter")
 func _process(delta: float) -> void:

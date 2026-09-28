@@ -83,7 +83,7 @@ func open_file(path : String) -> Error:
 	
 	current_editor_save = resource
 	if current_editor_save and current_editor_save is SideEditorResource and not current_editor_save.song_maps.is_empty():
-		_current_file_path = path
+		_current_file_path = "" if path.begins_with("res://") else path
 		_is_saved = true
 		if current_editor_save.song_stream:
 			Song.set_song(current_editor_save.song_stream)
