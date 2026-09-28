@@ -4,8 +4,8 @@ class_name PlayableCharacter
 
 @onready var sprite : Sprite2D = $JuneSpritesheet
 
-const _AIR_ANIMATIONS : Array[String] = ["Uppercut", "LeftPunch", "Kick"]
-const _GROUND_ANIMATIONS : Array[String] = ["HittingDown", "LeftPunch", "Kick"]
+const _AIR_ANIMATIONS : Array[String] = ["Uppercut", "Punch", "Kick"]
+const _GROUND_ANIMATIONS : Array[String] = ["Downcut", "Punch", "Kick"]
 
 @export var _animation_player : AnimationPlayer
 
@@ -33,7 +33,7 @@ func _process(delta: float) -> void:
 		hitted_ground.emit()
 		if _in_the_air:
 			reset_current_air_time()
-			_animation_player.play("HittingDown")
+			_animation_player.play("Downcut")
 			fall()
 		else:
 			_animation_player.stop()
@@ -55,20 +55,10 @@ func jump() -> void:
 	if _fall_tween:
 		_fall_tween.kill()
 	
-	_jump_tween = create_tween()
-
-	_jump_tween.tween_property(
-		sprite,
-		"position:y",
-		-JUMP_HEIGHT,
-		JUMP_DURATION
-	).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
+	sprite.position.y -= JUMP_HEIGHT
 
 func fall() -> void:
 	_in_the_air = false
-	
-	if _jump_tween:
-		_jump_tween.kill()
 	
 	_fall_tween = create_tween()
 

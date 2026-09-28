@@ -1,67 +1,135 @@
 [gd_scene format=3 uid="uid://csuo7bctkh2w3"]
 
-[ext_resource type="Script" uid="uid://ew4vlgw8xwug" path="res://Side/GamePlayer/Background/BackgroundV1.gd" id="1_2bf3w"]
-[ext_resource type="Texture2D" uid="uid://w72dafhq3vac" path="res://assets/Side/BackgroundV1/sky.png" id="1_ns2om"]
-[ext_resource type="Texture2D" uid="uid://bnpxgpeb2viib" path="res://assets/Side/BackgroundV1/back_clouds.png" id="2_2bf3w"]
-[ext_resource type="Texture2D" uid="uid://div45my8cmrb1" path="res://assets/Side/BackgroundV1/front_clouds.png" id="3_ldfhu"]
-[ext_resource type="Texture2D" uid="uid://yhqnjhs0522g" path="res://assets/Side/BackgroundV1/mega_back_floor.png" id="4_6fxjk"]
-[ext_resource type="Texture2D" uid="uid://lwepspmiyeat" path="res://assets/Side/BackgroundV1/back_floor.png" id="5_0r8ne"]
-[ext_resource type="Texture2D" uid="uid://ds6ypqreewo7f" path="res://assets/Side/BackgroundV1/front_floor.png" id="6_coael"]
+[ext_resource type="Texture2D" uid="uid://c2jwtme6kuwl6" path="res://assets/Side/BackgroundV1/sky.png" id="1_ns2om"]
+[ext_resource type="Texture2D" uid="uid://bvdayg4igf10d" path="res://assets/Side/BackgroundV1/back_clouds.png" id="2_2bf3w"]
+[ext_resource type="Texture2D" uid="uid://jvy2i4ubt08x" path="res://assets/Side/BackgroundV1/front_clouds.png" id="3_ldfhu"]
+[ext_resource type="Texture2D" uid="uid://nf7nw1fnvf4w" path="res://assets/Side/BackgroundV1/mega_back_floor.png" id="4_6fxjk"]
+[ext_resource type="Texture2D" uid="uid://bba6dtiawbgcv" path="res://assets/Side/BackgroundV1/back_floor.png" id="5_0r8ne"]
+[ext_resource type="Texture2D" uid="uid://bt7ynrk1yy4bs" path="res://assets/Side/BackgroundV1/front_floor.png" id="6_coael"]
+
+[sub_resource type="Shader" id="Shader_6fxjk"]
+code = "shader_type canvas_item;
+
+uniform float horizontal = 0.0;
+uniform float vertical = 1.0;
+uniform float speed = 0.5;
+
+varying vec4 v_color;
+
+void vertex() {
+	v_color = COLOR;
+
+	UV.x += horizontal * TIME * speed;
+	UV.y += vertical * TIME * speed;
+}
+
+void fragment() {
+	vec2 uv = UV;
+	vec4 tex = texture(TEXTURE, uv);
+
+	COLOR = tex * v_color;
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0r8ne"]
+shader = SubResource("Shader_6fxjk")
+shader_parameter/horizontal = 1.0
+shader_parameter/vertical = 0.0
+shader_parameter/speed = 0.03
+
+[sub_resource type="Shader" id="Shader_coael"]
+code = "shader_type canvas_item;
+
+uniform float horizontal = 0.0;
+uniform float vertical = 1.0;
+uniform float speed = 0.5;
+
+varying vec4 v_color;
+
+void vertex() {
+	v_color = COLOR;
+
+	UV.x += horizontal * TIME * speed;
+	UV.y += vertical * TIME * speed;
+}
+
+void fragment() {
+	vec2 uv = UV;
+	vec4 tex = texture(TEXTURE, uv);
+
+	COLOR = tex * v_color;
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tgm4n"]
+shader = SubResource("Shader_coael")
+shader_parameter/horizontal = 1.0
+shader_parameter/vertical = 0.0
+shader_parameter/speed = 0.1
+
+[sub_resource type="Shader" id="Shader_utanh"]
+code = "shader_type canvas_item;
+
+uniform float horizontal = 0.0;
+uniform float vertical = 1.0;
+uniform float speed = 0.5;
+
+varying vec4 v_color;
+
+void vertex() {
+	v_color = COLOR;
+
+	UV.x += horizontal * TIME * speed;
+	UV.y += vertical * TIME * speed;
+}
+
+void fragment() {
+	vec2 uv = UV;
+	vec4 tex = texture(TEXTURE, uv);
+
+	COLOR = tex * v_color;
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ivax5"]
+shader = SubResource("Shader_utanh")
+shader_parameter/horizontal = 1.0
+shader_parameter/vertical = 0.0
+shader_parameter/speed = 0.3
 
 [node name="BackgroundV1" type="Node2D" unique_id=1547852944]
+modulate = Color(0.86036915, 0.8603692, 0.8603692, 1)
 z_index = -4096
-script = ExtResource("1_2bf3w")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=196486507]
+position = Vector2(0, 305)
 texture = ExtResource("1_ns2om")
 offset = Vector2(1280, 0)
 
-[node name="BackClouds" type="Node2D" parent="." unique_id=813445371]
-
-[node name="BackClouds" type="Sprite2D" parent="BackClouds" unique_id=1551513737]
+[node name="BackClouds2" type="Sprite2D" parent="." unique_id=1551513737]
+position = Vector2(380, 375)
 texture = ExtResource("2_2bf3w")
 offset = Vector2(1280, 0)
 
-[node name="BackClouds2" type="Sprite2D" parent="BackClouds" unique_id=129255970]
-texture = ExtResource("2_2bf3w")
-offset = Vector2(1280, 0)
-
-[node name="FrontClouds" type="Node2D" parent="." unique_id=496248738]
-
-[node name="FrontClouds" type="Sprite2D" parent="FrontClouds" unique_id=1956889339]
+[node name="FrontClouds2" type="Sprite2D" parent="." unique_id=1956889339]
+position = Vector2(-965, 344)
 texture = ExtResource("3_ldfhu")
 offset = Vector2(1280, 0)
 
-[node name="FrontClouds2" type="Sprite2D" parent="FrontClouds" unique_id=714617130]
-texture = ExtResource("3_ldfhu")
-offset = Vector2(1280, 0)
-
-[node name="MegaBackFloor" type="Node2D" parent="." unique_id=885313542]
-
-[node name="MegaBackFloor" type="Sprite2D" parent="MegaBackFloor" unique_id=1113137947]
+[node name="MegaBackFloor2" type="Sprite2D" parent="." unique_id=1113137947]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_0r8ne")
+position = Vector2(0, 535)
 texture = ExtResource("4_6fxjk")
 offset = Vector2(1280, 0)
 
-[node name="MegaBackFloor2" type="Sprite2D" parent="MegaBackFloor" unique_id=1467992797]
-texture = ExtResource("4_6fxjk")
-offset = Vector2(1280, 0)
-
-[node name="BackFloor" type="Node2D" parent="." unique_id=1869376678]
-
-[node name="BackFloor" type="Sprite2D" parent="BackFloor" unique_id=615381823]
+[node name="BackFloor2" type="Sprite2D" parent="." unique_id=615381823]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_tgm4n")
+position = Vector2(0, 507)
 texture = ExtResource("5_0r8ne")
 offset = Vector2(1280, 0)
 
-[node name="BackFloor2" type="Sprite2D" parent="BackFloor" unique_id=1317527370]
-texture = ExtResource("5_0r8ne")
-offset = Vector2(1280, 0)
-
-[node name="FrontFloor" type="Node2D" parent="." unique_id=1634725146]
-
-[node name="FrontFloor" type="Sprite2D" parent="FrontFloor" unique_id=1091542488]
-texture = ExtResource("6_coael")
-offset = Vector2(1280, 0)
-
-[node name="FrontFloor2" type="Sprite2D" parent="FrontFloor" unique_id=1306849350]
+[node name="FrontFloor2" type="Sprite2D" parent="." unique_id=1091542488]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_ivax5")
+position = Vector2(0, 783)
 texture = ExtResource("6_coael")
 offset = Vector2(1280, 0)

@@ -82,8 +82,8 @@ func to_resource() -> SongResource:
 func _on_close_requested() -> void:
 	if not _is_saved:
 		_dialog_confirmation_id = DialogConfirmation.pop_up("Cancelar", "Salvar e sair", "Você tem modificações não salvas.", "Sair sem salvar")
-	#else:
-		#get_tree().quit() ## TODO CONFLICT WITH ''SIDE EDITOR'' GLOBAL CLASS
+	elif not SideEditor.is_on_editor:
+		get_tree().quit() ## TODO CONFLICT WITH ''SIDE EDITOR'' GLOBAL CLASS
 
 func _confirmation_dialog_confirmed() -> void: ## QUIT WITH SAVING
 	var saved_id : int

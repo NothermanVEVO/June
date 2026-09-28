@@ -186,10 +186,17 @@ func WIDTH_IN_SECS_BY_SPEED() -> float:
 
 static func get_pos_x(min_time : float, max_time : float, current_time : float, min_pos_x : float, max_pos_x : float) -> float:
 	var percentage = Global.get_percentage_between(min_time, max_time, current_time)
-	var value = min_pos_x + (max_pos_x - min_pos_x) * percentage
-	return clampf(value, min_pos_x, max_pos_x)
+	return lerpf(min_pos_x, max_pos_x, percentage)
 
 static func get_time_x(min_pos_x : float, max_pos_x : float, current_pos_x : float, min_time : float, max_time : float) -> float:
 	var percentage = Global.get_percentage_between(min_pos_x, max_pos_x, current_pos_x)
-	var value = min_time + (max_time - min_time) * percentage
-	return clampf(value, min_time, max_time)
+	return lerpf(min_time, max_time, percentage)
+
+static func get_time_rotation(min_time: float, max_time: float, current_time: float, min_rotation: float, max_rotation: float) -> float:
+	var percentage = Global.get_percentage_between(min_time, max_time, current_time)
+	return lerpf(min_rotation, max_rotation, percentage)
+
+#static func get_time_x(min_pos_x : float, max_pos_x : float, current_pos_x : float, min_time : float, max_time : float) -> float:
+	#var percentage = Global.get_percentage_between(min_pos_x, max_pos_x, current_pos_x)
+	#var value = min_time + (max_time - min_time) * percentage
+	#return clampf(value, min_time, max_time)

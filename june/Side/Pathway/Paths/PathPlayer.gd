@@ -22,6 +22,8 @@ const TIME_TO_NEXT_HIT_HOLD : float = 0.3
 var _spam_time_since_last_hit : float = 0.0
 const MAX_SPAM_TIME_LAST_HIT : float = 0.75
 
+var _veloc_med : float = 0.0
+
 signal hitted_all_targets(quant_max : int, quant_ok : int, quant_break : int)
 signal hitted_target(precision : int, score : float)
 
@@ -44,7 +46,8 @@ func _process(delta: float) -> void:
 	elif Song.is_finished() and Song.get_time() >= Song.get_duration():
 		_time = Song.get_duration() + PathwayPlayer.get_time_after_song_finished()
 	
-	_display_targets(_time)
+	#_display_targets(_time)
+	_new_display_targets(_time)
 	
 	if _currently_manual_target_idx < _manual_targets.size(): ## MANUAL
 		var manual_target : Target = _manual_targets[_currently_manual_target_idx]
@@ -227,7 +230,7 @@ func _calculate_round_precision(difference : float) -> int: ## YES... EVERYTHING
 	else:
 		return 50
 
-func _display_targets(time : float) -> void:
+func _new_display_targets(time : float) -> void:
 	var targets := get_targets(time - (WIDTH_IN_SECS_BY_SPEED() / 3), time + WIDTH_IN_SECS_BY_SPEED() + (WIDTH_IN_SECS_BY_SPEED() / 3))
 	
 	for target in _last_visible_targets:
@@ -252,31 +255,92 @@ func _display_targets(time : float) -> void:
 				if target.get_end_time() > Song.get_time():
 					target.position.x = hitzone
 					continue
-				else:
+				elif target.velocity == 0:
 					target.position.x = get_pos_x(time, time + WIDTH_IN_SECS_BY_SPEED(), target.get_start_time(), hitzone, width)
-			else:
+			elif target is AxeTrap or target is HammerTap:
+				target.position.x = get_pos_x(time, time + WIDTH_IN_SECS_BY_SPEED(), target.get_start_time(), hitzone, width)
+				var value : int = -1 if target.get_path_type() == Path.Types.GROUND else 1
+				target.rotation = value * get_time_rotation(time, time + WIDTH_IN_SECS_BY_SPEED(), target.get_start_time(), 0, PI)
+				target.modulate.a = 0.0 if (target.rotation > PI / 2 or target.rotation < -PI / 2) else 1.0
+			elif target.velocity == 0:
 				target.position.x = get_pos_x(time, time + WIDTH_IN_SECS_BY_SPEED(), target.get_start_time(), hitzone, width)
 		elif target is Spam:
 			continue
 		
-		if target.get_start_time() < time:
-			var p_time = time
-			var difference = get_pos_x(target.get_start_time(), target.get_start_time() + WIDTH_IN_SECS_BY_SPEED(), p_time, hitzone, width) - hitzone
-			while p_time - WIDTH_IN_SECS_BY_SPEED() > 0.0:
-				p_time -= WIDTH_IN_SECS_BY_SPEED()
-				difference += get_pos_x(target.get_start_time(), target.get_start_time() + WIDTH_IN_SECS_BY_SPEED(), p_time, hitzone, width) - hitzone
-			if not target.is_in_knockback_state():
-				target.position.x -= difference
-		elif target.get_start_time() > time + WIDTH_IN_SECS_BY_SPEED():
-			var p_time = target.get_start_time() - (time + WIDTH_IN_SECS_BY_SPEED())
-			var difference = get_pos_x(0, WIDTH_IN_SECS_BY_SPEED(), p_time, 0, width)
-			while p_time > WIDTH_IN_SECS_BY_SPEED():
-				p_time -= WIDTH_IN_SECS_BY_SPEED()
-				difference -= get_pos_x(0, WIDTH_IN_SECS_BY_SPEED(), p_time, 0, width)
-			if not target.is_in_knockback_state():
-				target.position.x += difference
+		#if target.get_start_time() > time + WIDTH_IN_SECS_BY_SPEED() and target.velocity == 0:
+			#var p_time = target.get_start_time() - (time + WIDTH_IN_SECS_BY_SPEED())
+			#var total_difference : float = 0.0
+			#var difference = get_pos_x(0, WIDTH_IN_SECS_BY_SPEED(), p_time, 0, width)
+			#total_difference += get_time_x(0, width, difference, 0, WIDTH_IN_SECS_BY_SPEED())
+			#while p_time > WIDTH_IN_SECS_BY_SPEED():
+				#p_time -= WIDTH_IN_SECS_BY_SPEED()
+				#difference -= get_pos_x(0, WIDTH_IN_SECS_BY_SPEED(), p_time, 0, width)
+				#target.position.x += difference
+				#total_difference += get_time_x(0, width, difference, 0, WIDTH_IN_SECS_BY_SPEED())
+		
+		if target.velocity == 0:
+			var delta_s := hitzone - target.position.x
+			var delta_t := target.get_start_time() - time
+
+			#print("DeltaT: " + str(delta_t))
+			target.velocity = delta_s / delta_t
+			#print("Veloc: " + str(target.velocity))
+
+func _display_targets(time : float) -> void:
+	var targets := get_targets(time - (WIDTH_IN_SECS_BY_SPEED() / 3), time + WIDTH_IN_SECS_BY_SPEED() + (WIDTH_IN_SECS_BY_SPEED() / 3))
+	
+	for target in _last_visible_targets:
+		if not target in targets:
+			target.visible = false
+	_last_visible_targets.clear()
+	
+	for target in targets:
+		if target is Blank or target is HoldBlank:
+			continue
+		
+		target.visible = true
+		_last_visible_targets.append(target)
+		
+		if not target.is_in_knockback_state():
+			if target is Spam and target.get_current_hits() > 0 and not target.is_dead(): ## SPAM TARGET
+				target.position.x = hitzone
+				continue
+			elif target is HoldManual and not target is Spam and target.has_hitted(): ## HOLD TARGET
+				var fake_time = target.get_end_time() - (Song.get_time() - target.get_start_time())
+				target.fake_end_time(fake_time)
+				if target.get_end_time() > Song.get_time():
+					target.position.x = hitzone
+					continue
+				else:
+					target.position.x = get_pos_x(time, time + WIDTH_IN_SECS_BY_SPEED(), target.get_start_time(), hitzone, width)
+			elif target is AxeTrap or target is HammerTap:
+					target.position.x = get_pos_x(time, time + WIDTH_IN_SECS_BY_SPEED(), target.get_start_time(), hitzone, width)
+					var value : int = -1 if target.get_path_type() == Path.Types.GROUND else 1
+					target.rotation = value * get_time_rotation(time, time + WIDTH_IN_SECS_BY_SPEED(), target.get_start_time(), 0, PI)
+					target.modulate.a = 0.0 if (target.rotation > PI / 2 or target.rotation < -PI / 2) else 1.0
+			else: ## OTHER TARGETS
+				target.position.x = get_pos_x(time, time + WIDTH_IN_SECS_BY_SPEED(), target.get_start_time(), hitzone, width)
+		elif target is Spam:
+			continue
+		
+		#if target.get_start_time() < time:
+			#var p_time = time
+			#var difference = get_pos_x(target.get_start_time(), target.get_start_time() + WIDTH_IN_SECS_BY_SPEED(), p_time, hitzone, width) - hitzone
+			#while p_time - WIDTH_IN_SECS_BY_SPEED() > 0.0:
+				#p_time -= WIDTH_IN_SECS_BY_SPEED()
+				#difference += get_pos_x(target.get_start_time(), target.get_start_time() + WIDTH_IN_SECS_BY_SPEED(), p_time, hitzone, width) - hitzone
+			#if not target.is_in_knockback_state():
+				#target.position.x -= difference
+		#elif target.get_start_time() > time + WIDTH_IN_SECS_BY_SPEED():
+			#var p_time = target.get_start_time() - (time + WIDTH_IN_SECS_BY_SPEED())
+			#var difference = get_pos_x(0, WIDTH_IN_SECS_BY_SPEED(), p_time, 0, width)
+			#while p_time > WIDTH_IN_SECS_BY_SPEED():
+				#p_time -= WIDTH_IN_SECS_BY_SPEED()
+				#difference -= get_pos_x(0, WIDTH_IN_SECS_BY_SPEED(), p_time, 0, width)
+			#if not target.is_in_knockback_state():
+				#target.position.x += difference
 
 func add_manual_target(manual_target : ManualTarget) -> void:
 	super.add_manual_target(manual_target)
-	if manual_target is Spam:
+	if manual_target is HoldManual:
 		manual_target.hide_editor_visual.call_deferred()

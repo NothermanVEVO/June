@@ -518,6 +518,11 @@ func _process_hammer_item() -> void:
 	_attach_mouse_display = true
 	_sample_target.global_position = _get_mouse_position_locked_by_paths()
 	
+	if _get_path_type_at_mouse() == Path.Types.GROUND:
+		_sample_target.global_position.y -= HammerTap.DISTANCE_TO_CENTER
+	else:
+		_sample_target.global_position.y += HammerTap.DISTANCE_TO_CENTER
+	
 	_sample_target.texture = SideEditorTexture.HAMMER_TEXTURE
 	
 	_sample_target.flip_v = _get_path_type_at_mouse() == Path.Types.GROUND
@@ -569,6 +574,11 @@ func _process_axe_item() -> void:
 	_sample_target.visible = true
 	_attach_mouse_display = true
 	_sample_target.global_position = _get_mouse_position_locked_by_paths()
+	
+	if _get_path_type_at_mouse() == Path.Types.GROUND:
+		_sample_target.global_position.y -= AxeTrap.DISTANCE_TO_CENTER
+	else:
+		_sample_target.global_position.y += AxeTrap.DISTANCE_TO_CENTER
 	
 	_sample_target.texture = SideEditorTexture.AXE_TEXTURE
 	

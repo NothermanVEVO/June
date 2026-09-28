@@ -419,7 +419,7 @@ layout_mode = 2
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="Button" type="Button" parent="Bottom" unique_id=767424261]
+[node name="ReturnButton" type="Button" parent="Bottom" unique_id=767424261]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 8
@@ -443,3 +443,4 @@ text = "Sair"
 [connection signal="value_changed" from="First/Right/VBoxContainer/BPM/BPMSpinBox" to="." method="_on_bpm_spin_box_value_changed"]
 [connection signal="pressed" from="Second/Left2/VBoxContainer/Icon/IconButton" to="." method="_on_icon_button_pressed"]
 [connection signal="pressed" from="Second/Left2/VBoxContainer/Banner/ImageButton" to="." method="_on_image_button_pressed"]
+[connection signal="pressed" from="Bottom/ReturnButton" to="." method="_on_return_button_pressed"]

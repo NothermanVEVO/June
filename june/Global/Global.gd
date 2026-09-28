@@ -5,6 +5,7 @@ enum TitleType {BASE, EDITOR_UNSAVED, EDITOR_SAVED, EDITOR_SAVED_CHANGED}
 const EDITOR_PATH : String = "user://editor"
 const SIDE_EDITOR_PATH : String = "user://sideeditor"
 const SONGS_PATH : String = "user://songs"
+const SIDE_SONGS_PATH : String = "user://sidesongs"
 const SETTINGS_PATH : String = "user://settings.json"
 const SAVE_PATH : String = "user://save.json"
 
@@ -28,9 +29,11 @@ const HIGHLIGHT_SHADER = preload("res://shaders/Highlight.gdshader")
 
 var _mouse_effect : MouseEffect
 
-var START_SCREEN_SCENE := load("res://Screens/StartScreen.tscn")
+#var START_SCREEN_SCENE := load("res://Screens/StartScreen.tscn")
+var START_SCREEN_SCENE := load("res://NewScreens/StartScreen/StartScreen.tscn")
 var SELECTION_SCREEN_SCENE := load("res://Screens/SelectionScreen/SelectionScreen.tscn")
 var EDITOR_SCREEN_SCENE := load("res://Screens/EditorScreen.tscn")
+var SIDE_EDITOR_SCREEN_SCENE := load("res://Editor/SIDE/Settings/SideEditorSettings.tscn")
 var SETTING_SCREEN_SCENE := load("res://Screens/SettingsScreen.tscn")
 var GAME_SETTING_SCREEN_SCENE := load("res://Screens/GameSettingsScreen.tscn")
 var VIDEO_SCREEN_SCENE := load("res://Screens/VideoScreen.tscn")
@@ -52,6 +55,8 @@ func _ready() -> void:
 		DirAccess.make_dir_absolute(SIDE_EDITOR_PATH)
 	if not DirAccess.dir_exists_absolute(SONGS_PATH):
 		DirAccess.make_dir_absolute(SONGS_PATH)
+	if not DirAccess.dir_exists_absolute(SIDE_SONGS_PATH):
+		DirAccess.make_dir_absolute(SIDE_SONGS_PATH)
 	if not FileAccess.file_exists(SETTINGS_PATH):
 		_create_settings()
 	else:
@@ -301,6 +306,15 @@ func _adjust_settings_dictionary() -> void:
 	if not _settings_dictionary.has("6_6k"):
 		_settings_dictionary["6_6k"] = 76
 	
+	if not _settings_dictionary.has("1_air"):
+		_settings_dictionary["1_air"] = 83
+	if not _settings_dictionary.has("2_air"):
+		_settings_dictionary["2_air"] = 68
+	if not _settings_dictionary.has("1_ground"):
+		_settings_dictionary["1_ground"] = 75
+	if not _settings_dictionary.has("2_ground"):
+		_settings_dictionary["2_ground"] = 76
+	
 	if not _settings_dictionary.has("video"):
 		_settings_dictionary["video"] = true
 	if not _settings_dictionary.has("particles"):
@@ -367,6 +381,12 @@ func _load_controls_settings() -> void:
 	_rebind_action("4_6k", _settings_dictionary["4_6k"])
 	_rebind_action("5_6k", _settings_dictionary["5_6k"])
 	_rebind_action("6_6k", _settings_dictionary["6_6k"])
+	
+	## SIDE
+	_rebind_action("1_air", _settings_dictionary["1_air"])
+	_rebind_action("2_air", _settings_dictionary["2_air"])
+	_rebind_action("1_ground", _settings_dictionary["1_ground"])
+	_rebind_action("2_ground", _settings_dictionary["2_ground"])
 
 func _rebind_action(action_name : String, physical_keycode : int) -> void:
 	InputMap.erase_action(action_name)

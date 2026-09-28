@@ -9,14 +9,14 @@ var current_song_map := SideSongMap.new()
 
 var _is_saved : bool = false
 
-var is_on_editor : bool = true ## TODO WARNING NOTE THIS SHOULD BE ''FALSE''
+var is_on_editor : bool = false
 var _last_confirmation_id : int = -1
 var _last_file_dialog_id : int = -1
 
-enum SaveBefore {LEAVE, NEW_FILE}
+enum SaveBefore {QUIT, LEAVE, NEW_FILE}
 var _last_save_before_type
 
-enum DialogFileReason {JUST_SAVE, TO_QUIT}
+enum DialogFileReason {JUST_SAVE, TO_QUIT, TO_LEAVE, TO_NEW_FILE}
 var _last_dialog_file_reason : DialogFileReason
 
 signal created_new_file
@@ -33,6 +33,9 @@ func _ready() -> void:
 	get_tree().set_auto_accept_quit(false)
 	
 	DialogFile.file_selected.connect(_dialog_file_file_selected)
+
+func reset_current_file_path() -> void:
+	_current_file_path = ""
 
 func new_file(ask_for_save : bool = false) -> void:
 	if ask_for_save:
@@ -65,6 +68,9 @@ func save_file(path : String) -> Error:
 	
 	save_changes.emit()
 	
+	if path.get_extension() != "tres":
+		path += ".tres"
+	
 	var status = ResourceSaver.save(current_editor_save, path)
 	if status == OK:
 		_current_file_path = path
@@ -76,6 +82,9 @@ func save_file(path : String) -> Error:
 	return status
 
 func open_file(path : String) -> Error:
+	if path.get_extension() != "tres":
+		path += ".tres"
+	
 	var resource = ResourceLoader.load(path)
 	
 	if not resource or not resource is SideEditorResource:
@@ -126,31 +135,48 @@ func changed_file() -> void:
 func get_file_path() -> String:
 	return _current_file_path
 
-func _on_close_requested() -> void:
+func ask_to_leave() -> void:
 	_last_save_before_type = SaveBefore.LEAVE
 	_last_confirmation_id = DialogConfirmation.pop_up("Cancelar", "Salvar e sair", "Você tem modificações não salvas.", "Sair sem salvar")
+
+func _on_close_requested() -> void:
+	if is_on_editor:
+		_last_save_before_type = SaveBefore.QUIT
+		_last_confirmation_id = DialogConfirmation.pop_up("Cancelar", "Salvar e sair", "Você tem modificações não salvas.", "Sair sem salvar")
+	elif not Editor.is_on_editor:
+		get_tree().quit()
 
 func _confirmation_dialog_confirmed() -> void:
 	if _last_confirmation_id == DialogConfirmation.get_last_caller():
 		if _current_file_path:
 			var status = save_file(_current_file_path)
 			
-			if _last_save_before_type == SaveBefore.LEAVE: ## TODO E SE DER ERRO E NÃO SALVAR O ARQUIVO??
+			if _last_save_before_type == SaveBefore.QUIT: ## TODO E SE DER ERRO E NÃO SALVAR O ARQUIVO??
 				get_tree().quit()
 			elif _last_save_before_type == SaveBefore.NEW_FILE:
 				if status == OK:
 					new_file()
+			elif _last_save_before_type == SaveBefore.LEAVE:
+				get_tree().change_scene_to_packed(Global.START_SCREEN_SCENE)
 		else:
-			_last_dialog_file_reason = DialogFileReason.TO_QUIT
+			if _last_save_before_type == SaveBefore.QUIT:
+				_last_dialog_file_reason = DialogFileReason.TO_QUIT
+			elif _last_save_before_type == SaveBefore.LEAVE:
+				_last_dialog_file_reason = DialogFileReason.TO_LEAVE
+			elif _last_save_before_type == SaveBefore.NEW_FILE:
+				_last_dialog_file_reason = DialogFileReason.TO_NEW_FILE
+			
 			_last_file_dialog_id = DialogFile.pop_up(FileDialog.FILE_MODE_SAVE_FILE, FileDialog.ACCESS_USERDATA, Global.SIDE_EDITOR_PATH)
 
 func _confirmation_dialog_canceled(_custom_action : StringName) -> void:
 	if _last_confirmation_id == DialogConfirmation.get_last_caller():
 		DialogConfirmation.remove_last_caller()
-		if _last_save_before_type == SaveBefore.LEAVE:
+		if _last_save_before_type == SaveBefore.QUIT:
 			get_tree().quit()
 		elif _last_save_before_type == SaveBefore.NEW_FILE:
 			new_file()
+		elif _last_save_before_type == SaveBefore.LEAVE:
+			get_tree().change_scene_to_packed(Global.START_SCREEN_SCENE)
 
 func _dialog_file_file_selected(path: String) -> void:
 	if DialogFile.get_last_caller() != _last_file_dialog_id:
@@ -159,9 +185,15 @@ func _dialog_file_file_selected(path: String) -> void:
 	DialogFile.remove_last_caller()
 	
 	if _last_dialog_file_reason == DialogFileReason.JUST_SAVE:
-		path += ".tres"
+		if path.get_extension() != "tres":
+			path += ".tres"
 	
 	var status = save_file(path)
 	
-	if status == OK and _last_dialog_file_reason == DialogFileReason.TO_QUIT:
-		get_tree().quit()
+	if status == OK:
+		if _last_dialog_file_reason == DialogFileReason.TO_QUIT:
+			get_tree().quit()
+		elif _last_dialog_file_reason == DialogFileReason.TO_LEAVE:
+			get_tree().change_scene_to_packed(Global.START_SCREEN_SCENE)
+		elif _last_dialog_file_reason == DialogFileReason.TO_NEW_FILE:
+			new_file()

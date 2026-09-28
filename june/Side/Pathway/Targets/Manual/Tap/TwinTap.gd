@@ -9,6 +9,7 @@ var _older : bool
 var _is_alive : bool
 
 func _init(start_time : float, path_type : Path.Types, _not_use : bool = true) -> void:
+	_can_move_randomly = false
 	_older = _not_use
 	if _older:
 		_twin = TwinTap.new(start_time, Path.reverse_path_type(path_type), false)

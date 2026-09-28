@@ -12,6 +12,8 @@ var _end_hold : Sprite2D = Sprite2D.new()
 var left_edit_button : Button
 var right_edit_button : Button
 
+var _hided_editor_visual : bool = false
+
 signal is_pressing_left_edit_button(hold_target : HoldManual)
 signal is_pressing_right_edit_button(hold_target : HoldManual)
 signal released_left_edit_button
@@ -38,13 +40,17 @@ func _init(start_time : float, end_time : float, path_type : Path.Types) -> void
 	_middle_hold.patch_margin_bottom = 6
 
 func _ready() -> void:
+	super._ready()
 	set_process(false)
 
-func _process(_delta: float) -> void:
-	if left_edit_button and left_edit_button.button_pressed:
-		is_pressing_left_edit_button.emit(self)
-	if right_edit_button and right_edit_button.button_pressed:
-		is_pressing_right_edit_button.emit(self)
+func _process(delta: float) -> void:
+	if not _hided_editor_visual:
+		if left_edit_button and left_edit_button.button_pressed:
+			is_pressing_left_edit_button.emit(self)
+		if right_edit_button and right_edit_button.button_pressed:
+			is_pressing_right_edit_button.emit(self)
+	elif velocity != 0 and not _has_hitted:
+		position.x += velocity * delta
 
 func hit() -> void:
 	print("ai")
@@ -165,3 +171,7 @@ func _left_edit_button_released() -> void:
 
 func _right_edit_button_released() -> void:
 	released_right_edit_button.emit()
+
+func hide_editor_visual() -> void:
+	_hided_editor_visual = true
+	set_process(true)

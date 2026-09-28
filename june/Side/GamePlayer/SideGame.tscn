@@ -28,9 +28,6 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_5o8fh")
 
-[node name="JuneV1" parent="." unique_id=896800401 instance=ExtResource("2_t6ium")]
-position = Vector2(205, 786)
-
 [node name="Combo" parent="." unique_id=209331064 instance=ExtResource("3_73rga")]
 layout_mode = 1
 
@@ -124,4 +121,13 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="BackgroundV1" parent="." unique_id=1547852944 instance=ExtResource("10_3f2rh")]
-position = Vector2(0, 545)
+
+[node name="Label" type="Label" parent="." unique_id=985052208]
+layout_mode = 0
+offset_right = 245.0
+offset_bottom = 78.0
+theme_override_font_sizes/font_size = 32
+text = "FPS:"
+
+[node name="JuneV1" parent="." unique_id=896800401 instance=ExtResource("2_t6ium")]
+position = Vector2(216, 734)

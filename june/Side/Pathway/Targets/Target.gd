@@ -23,11 +23,41 @@ var _knockback_velocity := Vector2.ZERO
 var _rotation_velocity := 0.0
 var _in_knockback_state : bool = false
 
+var velocity : float = 0.0 ## TODO NEW DISPLAY TARGET
+
 var target_editor : TargetEditor
+
+var _air_color : Color = Color(0.702, 1.02, 1.825, 1.0)
+var _ground_color : Color = Color(1.825, 0.702, 0.721, 1.0)
+
+const _MOVE_SPEED : float = 1.0
+const _MOVE_AMPLITUDE : float = 7.5
+
+const _ROTATION_SPEED : float = 1.0
+const _MAX_ANGLE : float = 7.5
+
+var _time_position : float = 0.0
+var _time_rotation : float = 0.0
+var _start_y: float
+
+var _can_move_randomly : bool = true
 
 func _init(start_time : float, path_type : Path.Types) -> void:
 	set_start_time(start_time)
 	set_path_type(path_type)
+
+func _ready() -> void:
+	_start_y = position.y
+	_time_position = Global.rng.randf_range(0.0, 5.0)
+	_time_rotation = Global.rng.randf_range(0.0, 5.0)
+
+func _move_randomly(delta : float) -> void:
+	_time_position += delta
+	_time_rotation += delta
+
+	position.y = _start_y + sin(_time_position * _MOVE_SPEED) * _MOVE_AMPLITUDE
+
+	rotation = sin(_time_rotation * _ROTATION_SPEED) * deg_to_rad(_MAX_ANGLE)
 
 func collide(character : Character) -> void:
 	character.take_damage(_damage)
@@ -102,6 +132,15 @@ func set_start_time(start_time : float) -> void:
 
 func set_path_type(path_type : Path.Types) -> void:
 	_path_type = path_type
+	
+	var alpha : float = modulate.a
+	
+	if path_type == Path.Types.AIR:
+		modulate = _air_color
+	else:
+		modulate = _ground_color
+	
+	modulate.a = alpha
 
 func get_path_type() -> Path.Types:
 	return _path_type

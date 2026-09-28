@@ -1,13 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://blxnnundw6hmy"]
+[gd_scene format=3 uid="uid://blxnnundw6hmy"]
 
 [ext_resource type="Script" uid="uid://bad8ejhlf2gu6" path="res://Screens/PressToPlayScreen.gd" id="1_24uug"]
 [ext_resource type="PackedScene" uid="uid://dj8t1madbd5pe" path="res://Background/AnimatedBackgroundV1.tscn" id="1_m1ony"]
 [ext_resource type="PackedScene" uid="uid://b27k6hedgs82o" path="res://Background/BackgroundBlur.tscn" id="3_m1ony"]
 [ext_resource type="FontFile" uid="uid://bk7uiutchpno7" path="res://assets/fonts/Kalufira.otf" id="4_50c40"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_rcaxk"]
-
-[node name="PressToPlayScreen" type="Control"]
+[node name="PressToPlayScreen" type="Control" unique_id=50100097]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -16,14 +14,13 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_24uug")
 
-[node name="AnimatedBackground" parent="." instance=ExtResource("1_m1ony")]
-material = SubResource("ShaderMaterial_rcaxk")
+[node name="AnimatedBackground" parent="." unique_id=338877834 instance=ExtResource("1_m1ony")]
 layout_mode = 1
 
-[node name="Blur" parent="." instance=ExtResource("3_m1ony")]
+[node name="Blur" parent="." unique_id=289249867 instance=ExtResource("3_m1ony")]
 layout_mode = 1
 
-[node name="MarginContainer2" type="MarginContainer" parent="."]
+[node name="MarginContainer2" type="MarginContainer" parent="." unique_id=1034775087]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -37,7 +34,7 @@ offset_bottom = 31.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer2"]
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer2" unique_id=1818225470]
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 theme_override_fonts/normal_font = ExtResource("4_50c40")

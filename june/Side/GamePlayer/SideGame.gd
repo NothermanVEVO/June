@@ -18,6 +18,7 @@ static var _current_time : float = 0.0
 const TIME_TO_START : float = 4.0
 
 func _ready() -> void:
+	Engine.max_fps = 0
 	_current_time = 0.0
 	
 	Path.hitzone = Path.BASE_HITZONE
@@ -36,6 +37,9 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("Escape") and SideGlobal.was_asked_to_play_from_editor():
 		get_tree().change_scene_to_packed(SideEditor.editor_composer_scene)
+	
+	if $Label:
+		$Label.text = "FPS: " + str(Engine.get_frames_per_second())
 
 func _physics_process(delta: float) -> void:
 	_current_time += delta
