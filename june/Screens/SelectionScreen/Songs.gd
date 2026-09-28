@@ -70,6 +70,8 @@ func _ready() -> void:
 	six_buttons.settings.focus_neighbor_bottom = quit_button.get_path()
 	
 	var song_resource_paths := _check_folder(Global.SONGS_PATH)
+	if DirAccess.dir_exists_absolute(Global.BUNDLED_SONGS_PATH):
+		song_resource_paths.append_array(_check_folder(Global.BUNDLED_SONGS_PATH))
 	for path in song_resource_paths:
 		var file := FileAccess.open(path, FileAccess.READ)
 		var content := file.get_as_text()
@@ -85,6 +87,8 @@ func _ready() -> void:
 				continue
 			else:
 				var song_resource := SongResource.dictionary_to_resource(json_data)
+				if path.begins_with("res://") and _has_song_resource(song_resource.ID):
+					continue
 				if song_resource.song.get_file():
 					song_resource.song = path.get_base_dir() + "/" + song_resource.song.get_file()
 				if song_resource.icon.get_file():
@@ -260,6 +264,12 @@ func _check_folder(path: String) -> Array[String]:
 	
 	dir.list_dir_end()
 	return paths
+
+func _has_song_resource(ID : String) -> bool:
+	for song_resource in _song_resources:
+		if song_resource.ID == ID:
+			return true
+	return false
 
 func _load_difficulty_save(difficulty : SongMap.Difficulty) -> void:
 	if not _last_song_button:

@@ -7,6 +7,8 @@ const SIDE_EDITOR_PATH : String = "user://sideeditor"
 const SONGS_PATH : String = "user://songs"
 const SETTINGS_PATH : String = "user://settings.json"
 const SAVE_PATH : String = "user://save.json"
+const BUNDLED_SONGS_PATH : String = "res://bundled/songs"
+const BUNDLED_SIDE_EDITOR_PATH : String = "res://bundled/sideeditor"
 
 var rng := RandomNumberGenerator.new()
 

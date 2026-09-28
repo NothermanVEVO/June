@@ -13,6 +13,7 @@ func pop_up(mode_file : FileMode, dialog_access : Access, root : String = "") ->
 	_last_caller = _id
 	file_mode = mode_file
 	access = dialog_access
+	use_native_dialog = dialog_access != ACCESS_RESOURCES
 	root_subfolder = root
 	popup()
 	return _id
