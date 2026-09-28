@@ -36,7 +36,8 @@ def fetch_latest_release() -> dict:
 def pick_asset(release: dict) -> dict:
     os_name = "windows" if IS_WINDOWS else "linux"
     for asset in release.get("assets", []):
-        if os_name in asset["name"].lower():
+        name = asset["name"].lower()
+        if name.endswith(".zip") and os_name in name:
             return asset
     raise junes.JunesError(f"the latest June release ({release.get('tag_name')}) has no {os_name} download")
 
@@ -69,7 +70,7 @@ def run() -> None:
     asset = pick_asset(release)
     with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as tmp:
         tmp_dir = Path(tmp)
-        archive = tmp_dir / asset["name"]
+        archive = tmp_dir / "release.zip"
         print(f"Downloading {asset['name']} ({release.get('tag_name')})...")
         download(asset["browser_download_url"], archive)
         print("Extracting...")

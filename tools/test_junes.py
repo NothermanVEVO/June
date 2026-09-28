@@ -89,6 +89,18 @@ class ValidateJunesTests(unittest.TestCase):
         with self.assertRaises(zipfile.BadZipFile):
             junes.validate_junes(path)
 
+    def test_corrupted_member_raises(self):
+        path = Path(self.tmp_dir.name) / "test.junes"
+        with zipfile.ZipFile(path, "w", zipfile.ZIP_STORED) as zf:
+            zf.writestr("songs/a", "data")
+        data = bytearray(path.read_bytes())
+        marker = b"data"
+        index = data.index(marker)
+        data[index] ^= 0xFF
+        path.write_bytes(bytes(data))
+        with self.assertRaises(junes.JunesError):
+            junes.validate_junes(path)
+
 
 class PackTests(unittest.TestCase):
     def setUp(self):
@@ -384,6 +396,18 @@ class PickAssetTests(unittest.TestCase):
             with self.assertRaises(junes.JunesError):
                 june_installer.pick_asset(release)
 
+    def test_ignores_non_zip_asset(self):
+        release = {
+            "tag_name": "Beta v1.2.1",
+            "assets": [
+                {"name": "Beta.v1.2.1.-.Linux.sha256"},
+                {"name": "Beta.v1.2.1.-.Linux.zip"},
+            ],
+        }
+        with mock.patch.object(june_installer, "IS_WINDOWS", False):
+            asset = june_installer.pick_asset(release)
+        self.assertEqual(asset["name"], "Beta.v1.2.1.-.Linux.zip")
+
 
 class FindBinaryTests(unittest.TestCase):
     def setUp(self):
@@ -472,6 +496,31 @@ class MainErrorHandlingTests(unittest.TestCase):
         self.assertEqual(exit_code, 1)
         self.assertIn("could not reach GitHub", output)
         self.install_mock.assert_not_called()
+
+    def test_download_uses_fixed_filename_not_asset_name(self):
+        release = {
+            "tag_name": "v1.2.1",
+            "assets": [
+                {
+                    "name": "../../evil-linux.zip",
+                    "browser_download_url": "https://example.invalid/x.zip",
+                }
+            ],
+        }
+        captured = {}
+
+        def fake_download(url, dest):
+            captured["dest"] = dest
+            raise urllib.error.URLError("boom")
+
+        with mock.patch.object(june_installer, "IS_WINDOWS", False):
+            with mock.patch.object(june_installer, "fetch_latest_release", return_value=release):
+                with mock.patch.object(june_installer, "download", side_effect=fake_download):
+                    with contextlib.redirect_stdout(io.StringIO()):
+                        exit_code = june_installer.main()
+
+        self.assertEqual(exit_code, 1)
+        self.assertEqual(captured["dest"].name, "release.zip")
 
     def test_install_not_called_when_download_fails(self):
         release = {

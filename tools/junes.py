@@ -52,11 +52,14 @@ def validate_junes(junes_path: Path) -> None:
     """Raise JunesError if the .junes archive is empty or has an unsafe or unrecognized entry."""
     with zipfile.ZipFile(junes_path) as zf:
         names = zf.namelist()
-    if not names:
-        raise JunesError(f"{junes_path} is empty")
-    for name in names:
-        if not is_valid_entry(name):
-            raise JunesError(f"unsafe or unrecognized entry in {junes_path}: {name}")
+        if not names:
+            raise JunesError(f"{junes_path} is empty")
+        for name in names:
+            if not is_valid_entry(name):
+                raise JunesError(f"unsafe or unrecognized entry in {junes_path}: {name}")
+        bad_name = zf.testzip()
+        if bad_name is not None:
+            raise JunesError(f"corrupted entry in {junes_path}: {bad_name}")
 
 
 def godot_user_data_dir() -> Path:
