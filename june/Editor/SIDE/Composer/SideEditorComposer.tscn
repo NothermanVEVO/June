@@ -245,7 +245,6 @@ item_14/text = "Hammer"
 item_15/text = "Hold"
 item_15/disabled = true
 item_16/text = "Trap"
-item_16/disabled = true
 item_17/text = "Machado"
 item_17/disabled = true
 item_18/text = "Nota 1"

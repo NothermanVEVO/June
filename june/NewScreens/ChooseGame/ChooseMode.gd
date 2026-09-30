@@ -6,6 +6,13 @@ enum Paths {PLAY, EDITOR}
 
 static var path_to_go : Paths
 
+func _ready() -> void:
+	$VBoxContainer/HBoxContainer/FallContainer/FallButton.grab_focus()
+
+func _process(_delta: float) -> void:
+	if Input.is_action_just_pressed("Escape"):
+		_on_return_button_pressed()
+
 func _on_fall_button_pressed() -> void:
 	match path_to_go:
 		Paths.PLAY:

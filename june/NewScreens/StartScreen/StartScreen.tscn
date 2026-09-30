@@ -220,7 +220,7 @@ anchor_right = 1.0
 offset_left = -165.0
 offset_bottom = 23.0
 grow_horizontal = 0
-text = "Versão 0.00.01 - BETA "
+text = "Versão 0.00.02 - BETA "
 
 [connection signal="pressed" from="VBoxContainer/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/MarginContainer/VBoxContainer/EditButton" to="." method="_on_edit_button_pressed"]

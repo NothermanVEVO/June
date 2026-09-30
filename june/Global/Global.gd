@@ -184,7 +184,7 @@ func _create_settings() -> void:
 	_settings_dictionary["game_gear_position"] = GameSettingsScreen.GearPositions.CENTER
 	
 	_settings_dictionary["video_mode"] = VideoScreen.Modes.FULLSCREEN
-	_settings_dictionary["video_vsync"] = VideoScreen.Vsync.ACTIVATED
+	_settings_dictionary["video_vsync"] = VideoScreen.Vsync.DESACTIVATED
 	_settings_dictionary["video_msaa"] = VideoScreen.MSAA.DISABLED
 	
 	_settings_dictionary["audio_main_volume"] = 0.5
