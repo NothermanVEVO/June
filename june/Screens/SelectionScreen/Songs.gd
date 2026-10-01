@@ -348,3 +348,9 @@ func _on_quit_pressed() -> void:
 
 func _on_open_folder_pressed() -> void:
 	OS.shell_open(ProjectSettings.globalize_path(Global.SONGS_PATH))
+
+func _on_reload_pressed() -> void:
+	if _last_song_button:
+		var difficulty : SongMap.Difficulty = [four_buttons, five_buttons, six_buttons][selected_song_container.current_tab].get_difficulty_selected()
+		Game.save_selection_state(_last_song_button.UUID, selected_song_container.current_tab, difficulty)
+	get_tree().reload_current_scene()

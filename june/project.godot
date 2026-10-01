@@ -41,6 +41,7 @@ Transition="*res://Global/Transition.gd"
 SideEditor="*uid://mftxxc7fhppd"
 SideEditorTexture="*uid://cl1wbthhwq0ck"
 SideGlobal="*uid://crde1s8imgf30"
+SongSync="*res://Global/SongSync.gd"
 
 [display]
 
