@@ -62,7 +62,11 @@ static func dictionary_to_resource(dictionary : Dictionary) -> SongResource:
 
 static func validate_dictionary(dictionary : Dictionary) -> String:
 	if not dictionary.has("VERSION") or typeof(dictionary["VERSION"]) != TYPE_FLOAT:
-		return "\"VERSION\" not found or wrong format in SongResource"
+		## TEMP
+		dictionary["VERSION"] = 1.0
+		## TEMP
+		
+		# return "\"VERSION\" not found or wrong format in SongResource"
 	if not dictionary.has("ID") or typeof(dictionary["ID"]) != TYPE_STRING:
 		return "\"ID\" not found or wrong format in SongResource"
 	if not dictionary.has("name") or typeof(dictionary["name"]) != TYPE_STRING:
@@ -76,7 +80,11 @@ static func validate_dictionary(dictionary : Dictionary) -> String:
 	if not dictionary.has("creator") or typeof(dictionary["creator"]) != TYPE_STRING:
 		return "\"creator\" not found or wrong format in SongResource"
 	if not dictionary.has("offset") or typeof(dictionary["offset"]) != TYPE_FLOAT:
-		return "\"offset\" not found or wrong format in SongResource"
+		## TEMP
+		dictionary["offset"] = 0.0
+		## TEMP
+		
+		#return "\"offset\" not found or wrong format in SongResource"
 	if not dictionary.has("song") or typeof(dictionary["song"]) != TYPE_STRING:
 		return "\"song\" not found or wrong format in SongResource"
 	if not dictionary.has("image") or typeof(dictionary["image"]) != TYPE_STRING:
@@ -92,7 +100,11 @@ static func validate_dictionary(dictionary : Dictionary) -> String:
 		if validate_wrong:
 			return validate_wrong
 	if not dictionary.has("song_time_sample") or typeof(dictionary["song_time_sample"]) != TYPE_FLOAT:
-		return "\"song_time_sample\" not found or wrong format in SongResource"
+		## TEMP
+		dictionary["song_time_sample"] = 0.0
+		## TEMP
+		
+		# return "\"song_time_sample\" not found or wrong format in SongResource"
 	#if not dictionary.has("video_time_sample") or typeof(dictionary["video_time_sample"]) != TYPE_STRING:
 		#return "\"video_time_sample\" not found or wrong format in SongResource"
 	return ""

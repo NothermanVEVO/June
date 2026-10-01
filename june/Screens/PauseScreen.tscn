@@ -1,11 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://dm614dfb13bo3"]
+[gd_scene format=3 uid="uid://dm614dfb13bo3"]
 
 [ext_resource type="Script" uid="uid://t3e5fqlprtkk" path="res://Screens/PauseScreen.gd" id="1_e3ko5"]
 [ext_resource type="Theme" uid="uid://oe21uoww8ls3" path="res://themes/JuneThemeV1.tres" id="2_5bc36"]
 
-[node name="PauseScreen" type="Control"]
+[node name="PauseScreen" type="Control" unique_id=952313395]
 process_mode = 3
-z_index = 8
+z_index = 18
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -14,7 +14,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_e3ko5")
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1173543027]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -22,7 +22,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Pausado" type="MarginContainer" parent="."]
+[node name="Pausado" type="MarginContainer" parent="." unique_id=385472263]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -33,7 +33,7 @@ offset_bottom = 220.0
 grow_horizontal = 2
 theme_override_constants/margin_top = 15
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Pausado"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Pausado" unique_id=407965744]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 150
 text = "Pausado"
@@ -42,7 +42,7 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1316257664]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -60,17 +60,17 @@ theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1143087031]
 layout_mode = 2
 
-[node name="Resume" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="Resume" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1931928244]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme = ExtResource("2_5bc36")
 theme_override_font_sizes/font_size = 70
 text = "Resumir"
 
-[node name="Restart" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="Restart" type="Button" parent="MarginContainer/VBoxContainer" unique_id=347168661]
 custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
 mouse_default_cursor_shape = 2
@@ -78,7 +78,7 @@ theme = ExtResource("2_5bc36")
 theme_override_font_sizes/font_size = 70
 text = "Reiniciar"
 
-[node name="Quit" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="Quit" type="Button" parent="MarginContainer/VBoxContainer" unique_id=118272937]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme = ExtResource("2_5bc36")

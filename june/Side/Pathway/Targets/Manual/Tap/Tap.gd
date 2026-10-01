@@ -5,6 +5,11 @@ class_name Tap
 func _process(delta: float) -> void:
 	if _in_knockback_state:
 		_knockback_process(delta)
+	else:
+		if _can_move_randomly:
+			_move_randomly(delta)
+		if velocity != 0:
+			position.x += velocity * delta
 
 func hit() -> void:
 	_death()

@@ -1,10 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://de7h8h88q4meh"]
+[gd_scene format=3 uid="uid://de7h8h88q4meh"]
 
 [ext_resource type="Script" uid="uid://ddyskrulyqv4k" path="res://Screens/AudioScreen.gd" id="1_wa1wp"]
 [ext_resource type="Theme" uid="uid://oe21uoww8ls3" path="res://themes/JuneThemeV1.tres" id="2_abup8"]
 [ext_resource type="PackedScene" uid="uid://dj8t1madbd5pe" path="res://Background/AnimatedBackgroundV1.tscn" id="2_ny7t3"]
 
-[node name="AudioScreen" type="Control"]
+[node name="AudioScreen" type="Control" unique_id=1251918470]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,10 +13,10 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_wa1wp")
 
-[node name="AnimatedBackground" parent="." instance=ExtResource("2_ny7t3")]
+[node name="AnimatedBackground" parent="." unique_id=919786608 instance=ExtResource("2_ny7t3")]
 layout_mode = 1
 
-[node name="Audio" type="MarginContainer" parent="."]
+[node name="Audio" type="MarginContainer" parent="." unique_id=1058472775]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -27,7 +27,7 @@ offset_bottom = 220.0
 grow_horizontal = 2
 theme_override_constants/margin_top = 15
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Audio"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Audio" unique_id=294778352]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 150
 text = "Aúdio"
@@ -36,7 +36,7 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=129221241]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -50,20 +50,20 @@ offset_bottom = 48.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=457326661]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=766471378]
 layout_mode = 2
 
-[node name="MainVolume" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="MainVolume" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1225161197]
 layout_mode = 2
 
-[node name="MainVolumeText" type="RichTextLabel" parent="PanelContainer/MarginContainer/VBoxContainer/MainVolume"]
+[node name="MainVolumeText" type="RichTextLabel" parent="PanelContainer/MarginContainer/VBoxContainer/MainVolume" unique_id=1568564055]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 30
 text = "Volume principal: 0%"
@@ -72,7 +72,7 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MainVolumeSlider" type="HSlider" parent="PanelContainer/MarginContainer/VBoxContainer/MainVolume"]
+[node name="MainVolumeSlider" type="HSlider" parent="PanelContainer/MarginContainer/VBoxContainer/MainVolume" unique_id=825845843]
 custom_minimum_size = Vector2(700, 50)
 layout_mode = 2
 focus_neighbor_top = NodePath("../../Return")
@@ -80,10 +80,10 @@ theme = ExtResource("2_abup8")
 max_value = 1.0
 step = 0.001
 
-[node name="SFXVolume" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="SFXVolume" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1031633115]
 layout_mode = 2
 
-[node name="SFXVolumeText" type="RichTextLabel" parent="PanelContainer/MarginContainer/VBoxContainer/SFXVolume"]
+[node name="SFXVolumeText" type="RichTextLabel" parent="PanelContainer/MarginContainer/VBoxContainer/SFXVolume" unique_id=168680970]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 30
 text = "Efeitos Sonoros: 0%"
@@ -92,14 +92,14 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SFXVolumeSlider" type="HSlider" parent="PanelContainer/MarginContainer/VBoxContainer/SFXVolume"]
+[node name="SFXVolumeSlider" type="HSlider" parent="PanelContainer/MarginContainer/VBoxContainer/SFXVolume" unique_id=77010164]
 custom_minimum_size = Vector2(700, 50)
 layout_mode = 2
 theme = ExtResource("2_abup8")
 max_value = 1.0
 step = 0.001
 
-[node name="Return" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Return" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=300021440]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("../MainVolume/MainVolumeSlider")
 mouse_default_cursor_shape = 2

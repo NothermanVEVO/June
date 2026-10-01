@@ -1,15 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://bmhuy5v7e77dw"]
+[gd_scene format=3 uid="uid://bmhuy5v7e77dw"]
 
 [ext_resource type="Script" uid="uid://kjw8oqre4jcs" path="res://Screens/SelectionScreen/TabButtons/TabButton.gd" id="1_tgpue"]
 [ext_resource type="Theme" uid="uid://cflls7t5oklv0" path="res://themes/SongSelectionTab.tres" id="2_417wl"]
 
-[node name="Botões" type="TabBar"]
+[node name="Botões" type="TabBar" unique_id=402694539]
 focus_neighbor_bottom = NodePath("MarginContainer/VBoxContainer/Settings")
 focus_next = NodePath("MarginContainer/VBoxContainer/Difficulties/Facil")
 script = ExtResource("1_tgpue")
 metadata/_tab_index = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1607839380]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -21,17 +21,17 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1858177415]
 layout_mode = 2
 
-[node name="Image" type="TextureRect" parent="MarginContainer/VBoxContainer"]
+[node name="Image" type="TextureRect" parent="MarginContainer/VBoxContainer" unique_id=883505976]
 custom_minimum_size = Vector2(0, 300)
 layout_mode = 2
 size_flags_vertical = 0
 expand_mode = 1
 stretch_mode = 4
 
-[node name="SongName" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
+[node name="SongName" type="RichTextLabel" parent="MarginContainer/VBoxContainer" unique_id=1061391815]
 custom_minimum_size = Vector2(0, 55)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -42,45 +42,45 @@ theme_override_font_sizes/normal_font_size = 40
 bbcode_enabled = true
 autowrap_mode = 1
 
-[node name="AuthorName" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
+[node name="AuthorName" type="RichTextLabel" parent="MarginContainer/VBoxContainer" unique_id=888983602]
 custom_minimum_size = Vector2(0, 42)
 layout_mode = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
-theme_override_constants/shadow_offset_y = 1
 theme_override_constants/shadow_offset_x = -1
+theme_override_constants/shadow_offset_y = 1
 theme_override_font_sizes/normal_font_size = 30
 text = "Autor:"
 autowrap_mode = 1
 
-[node name="CreatorName" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
+[node name="CreatorName" type="RichTextLabel" parent="MarginContainer/VBoxContainer" unique_id=1542696990]
 custom_minimum_size = Vector2(0, 42)
 layout_mode = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
-theme_override_constants/shadow_offset_y = 1
 theme_override_constants/shadow_offset_x = -1
+theme_override_constants/shadow_offset_y = 1
 theme_override_font_sizes/normal_font_size = 30
 text = "Criado por:"
 autowrap_mode = 1
 
-[node name="BPM" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
+[node name="BPM" type="RichTextLabel" parent="MarginContainer/VBoxContainer" unique_id=1146061007]
 layout_mode = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
-theme_override_constants/shadow_offset_y = 1
 theme_override_constants/shadow_offset_x = -1
+theme_override_constants/shadow_offset_y = 1
 theme_override_font_sizes/normal_font_size = 30
 text = "BPM:"
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
 
-[node name="Difficulties" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="Difficulties" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1434004809]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 
-[node name="Facil" type="Button" parent="MarginContainer/VBoxContainer/Difficulties"]
+[node name="Facil" type="Button" parent="MarginContainer/VBoxContainer/Difficulties" unique_id=1849775651]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_neighbor_left = NodePath("../Maximus")
@@ -95,7 +95,7 @@ toggle_mode = true
 text = "Facil
  "
 
-[node name="Normal" type="Button" parent="MarginContainer/VBoxContainer/Difficulties"]
+[node name="Normal" type="Button" parent="MarginContainer/VBoxContainer/Difficulties" unique_id=746604405]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_neighbor_left = NodePath("../Facil")
@@ -110,7 +110,7 @@ toggle_mode = true
 text = "Normal
  "
 
-[node name="Hard" type="Button" parent="MarginContainer/VBoxContainer/Difficulties"]
+[node name="Hard" type="Button" parent="MarginContainer/VBoxContainer/Difficulties" unique_id=1539647177]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_neighbor_left = NodePath("../Normal")
@@ -125,7 +125,7 @@ toggle_mode = true
 text = "Hard
  "
 
-[node name="Maximus" type="Button" parent="MarginContainer/VBoxContainer/Difficulties"]
+[node name="Maximus" type="Button" parent="MarginContainer/VBoxContainer/Difficulties" unique_id=346599334]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_neighbor_left = NodePath("../Hard")
@@ -139,37 +139,37 @@ toggle_mode = true
 text = "Maximus
  "
 
-[node name="Score" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
+[node name="Score" type="RichTextLabel" parent="MarginContainer/VBoxContainer" unique_id=921413722]
 layout_mode = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
-theme_override_constants/shadow_offset_y = 1
 theme_override_constants/shadow_offset_x = -1
+theme_override_constants/shadow_offset_y = 1
 theme_override_font_sizes/normal_font_size = 30
 text = "Pontuação:"
 fit_content = true
 autowrap_mode = 0
 
-[node name="Combo" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
+[node name="Combo" type="RichTextLabel" parent="MarginContainer/VBoxContainer" unique_id=953140314]
 layout_mode = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
-theme_override_constants/shadow_offset_y = 1
 theme_override_constants/shadow_offset_x = -1
+theme_override_constants/shadow_offset_y = 1
 theme_override_font_sizes/normal_font_size = 30
 text = "Combo:"
 fit_content = true
 autowrap_mode = 0
 
-[node name="State" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="State" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=2051868637]
 layout_mode = 2
 
-[node name="StateText" type="RichTextLabel" parent="MarginContainer/VBoxContainer/State"]
+[node name="StateText" type="RichTextLabel" parent="MarginContainer/VBoxContainer/State" unique_id=1146289618]
 layout_mode = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
-theme_override_constants/shadow_offset_y = 1
 theme_override_constants/shadow_offset_x = -1
+theme_override_constants/shadow_offset_y = 1
 theme_override_font_sizes/normal_font_size = 50
 text = "Situação: "
 fit_content = true
@@ -177,12 +177,12 @@ scroll_active = false
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="StateValue" type="RichTextLabel" parent="MarginContainer/VBoxContainer/State"]
+[node name="StateValue" type="RichTextLabel" parent="MarginContainer/VBoxContainer/State" unique_id=458383605]
 layout_mode = 2
 fit_content = true
 autowrap_mode = 0
 
-[node name="Play" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="Play" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1874479306]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("../Settings")
 mouse_default_cursor_shape = 2
@@ -190,13 +190,14 @@ theme = ExtResource("2_417wl")
 theme_override_font_sizes/font_size = 30
 text = "Jogar"
 
-[node name="Settings" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="Settings" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1639770037]
 layout_mode = 2
 size_flags_vertical = 10
 focus_neighbor_top = NodePath("../Play")
 mouse_default_cursor_shape = 2
 theme = ExtResource("2_417wl")
 theme_override_font_sizes/font_size = 30
+disabled = true
 text = "Configurações"
 
 [connection signal="focus_entered" from="." to="." method="_on_focus_entered"]

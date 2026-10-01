@@ -113,10 +113,15 @@ func _process(_delta: float) -> void:
 			if video.paused:
 				video.paused = false
 			video.play() ## THIS USES A BUNCH OF FPS!
+			set_video_visible()
 		
 		Song.pitch_scale = 1.0
 		Song.play()
 		set_process(false)
+
+func set_video_visible() -> void: ## IMBECIL
+	await get_tree().process_frame
+	video.visible = true
 
 func start() -> void:
 	if not World.environment:
@@ -196,6 +201,7 @@ func restart() -> void:
 	Song.set_time(0.0)
 	if video.stream:
 		video.stop()
+		video.visible = false
 	_create_gear()
 	start()
 
@@ -220,6 +226,7 @@ func _quit() -> void:
 func reset() -> void:
 	if video:
 		video.stop()
+		video.visible = false
 	video.stream = null
 	image.texture = null
 

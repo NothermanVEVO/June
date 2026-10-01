@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://b4s84ahuhqyry"]
+[gd_scene format=3 uid="uid://b4s84ahuhqyry"]
 
 [ext_resource type="PackedScene" uid="uid://dj8t1madbd5pe" path="res://Background/AnimatedBackgroundV1.tscn" id="1_oa44x"]
 [ext_resource type="Script" uid="uid://dxc8dk3ynt2dc" path="res://Screens/SelectionScreen/Songs.gd" id="1_y8xdi"]
@@ -6,7 +6,7 @@
 [ext_resource type="Theme" uid="uid://cflls7t5oklv0" path="res://themes/SongSelectionTab.tres" id="2_y1arh"]
 [ext_resource type="PackedScene" uid="uid://bmhuy5v7e77dw" path="res://Screens/SelectionScreen/TabButtons/TabButton.tscn" id="2_y8xdi"]
 
-[node name="SelectionScreen" type="Control"]
+[node name="SelectionScreen" type="Control" unique_id=693573385]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -14,10 +14,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="AnimatedBackground" parent="." instance=ExtResource("1_oa44x")]
+[node name="AnimatedBackground" parent="." unique_id=1136682007 instance=ExtResource("1_oa44x")]
 layout_mode = 1
 
-[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="."]
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="." unique_id=129520394]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -29,10 +29,10 @@ autoplay = true
 expand = true
 loop = true
 
-[node name="BackgroundBlur" parent="." instance=ExtResource("2_84rd0")]
+[node name="BackgroundBlur" parent="." unique_id=1213641181 instance=ExtResource("2_84rd0")]
 layout_mode = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1752095616]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -41,14 +41,14 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 10
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer" unique_id=1764954224]
 custom_minimum_size = Vector2(0, 70)
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="Quit" type="Button" parent="VBoxContainer/MarginContainer"]
+[node name="Quit" type="Button" parent="VBoxContainer/MarginContainer" unique_id=1273048862]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 0
@@ -57,16 +57,17 @@ theme = ExtResource("2_y1arh")
 theme_override_font_sizes/font_size = 35
 text = "Voltar"
 
-[node name="Open Folder" type="Button" parent="VBoxContainer/MarginContainer"]
+[node name="Open Folder" type="Button" parent="VBoxContainer/MarginContainer" unique_id=1474862413]
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 size_flags_horizontal = 8
 mouse_default_cursor_shape = 2
 theme = ExtResource("2_y1arh")
 theme_override_font_sizes/font_size = 35
+disabled = true
 text = "Abrir Pasta"
 
-[node name="Reload" type="Button" parent="VBoxContainer/MarginContainer"]
+[node name="Reload" type="Button" parent="VBoxContainer/MarginContainer" unique_id=1780076765]
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -75,22 +76,22 @@ theme = ExtResource("2_y1arh")
 theme_override_font_sizes/font_size = 35
 text = "Recarregar"
 
-[node name="Songs" type="MarginContainer" parent="VBoxContainer"]
+[node name="Songs" type="MarginContainer" parent="VBoxContainer" unique_id=1780076764]
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("1_y8xdi")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Songs"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Songs" unique_id=906110855]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 25
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Songs/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Songs/HBoxContainer" unique_id=1239740990]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="SelectedSong" type="TabContainer" parent="VBoxContainer/Songs/HBoxContainer/MarginContainer"]
+[node name="SelectedSong" type="TabContainer" parent="VBoxContainer/Songs/HBoxContainer/MarginContainer" unique_id=530271694]
 custom_minimum_size = Vector2(700, 0)
 layout_mode = 2
 size_flags_vertical = 3
@@ -98,42 +99,44 @@ theme = ExtResource("2_y1arh")
 theme_override_font_sizes/font_size = 40
 tab_alignment = 1
 current_tab = 0
+tab_1/disabled = true
+tab_2/disabled = true
 
-[node name="4 Botões" parent="VBoxContainer/Songs/HBoxContainer/MarginContainer/SelectedSong" instance=ExtResource("2_y8xdi")]
+[node name="4 Botões" parent="VBoxContainer/Songs/HBoxContainer/MarginContainer/SelectedSong" unique_id=1153354112 instance=ExtResource("2_y8xdi")]
 layout_mode = 2
 gear_type = 4
 
-[node name="5 Botões" parent="VBoxContainer/Songs/HBoxContainer/MarginContainer/SelectedSong" instance=ExtResource("2_y8xdi")]
+[node name="5 Botões" parent="VBoxContainer/Songs/HBoxContainer/MarginContainer/SelectedSong" unique_id=1283399365 instance=ExtResource("2_y8xdi")]
 visible = false
 layout_mode = 2
 gear_type = 5
 metadata/_tab_index = 1
 
-[node name="6 Botões" parent="VBoxContainer/Songs/HBoxContainer/MarginContainer/SelectedSong" instance=ExtResource("2_y8xdi")]
+[node name="6 Botões" parent="VBoxContainer/Songs/HBoxContainer/MarginContainer/SelectedSong" unique_id=221291342 instance=ExtResource("2_y8xdi")]
 visible = false
 layout_mode = 2
 gear_type = 6
 metadata/_tab_index = 2
 
-[node name="Songs" type="MarginContainer" parent="VBoxContainer/Songs/HBoxContainer"]
+[node name="Songs" type="MarginContainer" parent="VBoxContainer/Songs/HBoxContainer" unique_id=669330751]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/Songs/HBoxContainer/Songs"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/Songs/HBoxContainer/Songs" unique_id=1227566031]
 layout_mode = 2
 theme = ExtResource("2_y1arh")
 follow_focus = true
 horizontal_scroll_mode = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Songs/HBoxContainer/Songs/ScrollContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Songs/HBoxContainer/Songs/ScrollContainer" unique_id=920558517]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/margin_right = 10
 
-[node name="SongsContainer" type="VBoxContainer" parent="VBoxContainer/Songs/HBoxContainer/Songs/ScrollContainer/MarginContainer"]
+[node name="SongsContainer" type="VBoxContainer" parent="VBoxContainer/Songs/HBoxContainer/Songs/ScrollContainer/MarginContainer" unique_id=695212595]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3

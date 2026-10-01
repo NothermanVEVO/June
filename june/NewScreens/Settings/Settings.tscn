@@ -1,0 +1,556 @@
+[gd_scene format=3 uid="uid://cta83rjkvmmmo"]
+
+[ext_resource type="PackedScene" uid="uid://dj8t1madbd5pe" path="res://Background/AnimatedBackgroundV1.tscn" id="1_hej5s"]
+[ext_resource type="Script" uid="uid://durwcfi7wgpjm" path="res://NewScreens/Settings/Settings.gd" id="1_xa0bd"]
+[ext_resource type="PackedScene" uid="uid://b27k6hedgs82o" path="res://Background/BackgroundBlur.tscn" id="2_dtbia"]
+[ext_resource type="Theme" uid="uid://oe21uoww8ls3" path="res://themes/JuneThemeV1.tres" id="3_dtbia"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hej5s"]
+
+[node name="Settings" type="Control" unique_id=467719831]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xa0bd")
+
+[node name="AnimatedBackground" parent="." unique_id=1638072130 instance=ExtResource("1_hej5s")]
+material = SubResource("ShaderMaterial_hej5s")
+layout_mode = 1
+
+[node name="Blur" parent="." unique_id=594036728 instance=ExtResource("2_dtbia")]
+layout_mode = 1
+
+[node name="LineEditPassword" type="LineEdit" parent="." unique_id=1901756418]
+custom_minimum_size = Vector2(1000, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -34.25
+offset_top = -15.5
+offset_right = 34.25
+offset_bottom = 15.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 99
+placeholder_text = "Senha secreta..."
+secret = true
+
+[node name="TabContainerSettings" type="TabContainer" parent="." unique_id=689881836]
+visible = false
+custom_minimum_size = Vector2(1000, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -360.0
+offset_top = -235.5
+offset_right = 360.0
+offset_bottom = 235.5
+grow_horizontal = 2
+grow_vertical = 2
+current_tab = 2
+
+[node name="Audio" type="MarginContainer" parent="TabContainerSettings" unique_id=1140061357]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainerSettings/Audio" unique_id=1491313476]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="TabContainerSettings/Audio/VBoxContainer" unique_id=1307474450]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainerSettings/Audio/VBoxContainer/MarginContainer" unique_id=1292356708]
+layout_mode = 2
+
+[node name="MainVolume" type="VBoxContainer" parent="TabContainerSettings/Audio/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1881717119]
+layout_mode = 2
+
+[node name="MainVolumeText" type="RichTextLabel" parent="TabContainerSettings/Audio/VBoxContainer/MarginContainer/VBoxContainer/MainVolume" unique_id=2048308041]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 30
+text = "Volume principal: 0%"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MainVolumeSlider" type="HSlider" parent="TabContainerSettings/Audio/VBoxContainer/MarginContainer/VBoxContainer/MainVolume" unique_id=137936432]
+custom_minimum_size = Vector2(400, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("3_dtbia")
+max_value = 1.0
+step = 0.001
+
+[node name="SFXVolume" type="VBoxContainer" parent="TabContainerSettings/Audio/VBoxContainer/MarginContainer/VBoxContainer" unique_id=848171083]
+layout_mode = 2
+
+[node name="SFXVolumeText" type="RichTextLabel" parent="TabContainerSettings/Audio/VBoxContainer/MarginContainer/VBoxContainer/SFXVolume" unique_id=257235294]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 30
+text = "Efeitos Sonoros: 0%"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SFXVolumeSlider" type="HSlider" parent="TabContainerSettings/Audio/VBoxContainer/MarginContainer/VBoxContainer/SFXVolume" unique_id=129270940]
+custom_minimum_size = Vector2(400, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("3_dtbia")
+max_value = 1.0
+step = 0.001
+
+[node name="Controles" type="MarginContainer" parent="TabContainerSettings" unique_id=1882895000]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainerSettings/Controles" unique_id=1430021995]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="TabContainerSettings/Controles/VBoxContainer" unique_id=664013002]
+layout_mode = 2
+theme_override_constants/margin_bottom = 50
+
+[node name="PanelContainer" type="PanelContainer" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer" unique_id=158378137]
+custom_minimum_size = Vector2(600, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer" unique_id=1740543181]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="4" type="PanelContainer" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer" unique_id=991131820]
+layout_mode = 2
+
+[node name="4 Buttons" type="MarginContainer" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/4" unique_id=841487608]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/4/4 Buttons" unique_id=1564035372]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/4/4 Buttons/VBoxContainer" unique_id=151161956]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 50
+text = "Fall"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/4/4 Buttons/VBoxContainer" unique_id=1837701982]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 15
+
+[node name="1_4k" type="Button" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/4/4 Buttons/VBoxContainer/HBoxContainer" unique_id=1479171395]
+custom_minimum_size = Vector2(75, 115)
+layout_mode = 2
+theme = ExtResource("3_dtbia")
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+
+[node name="2_4k" type="Button" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/4/4 Buttons/VBoxContainer/HBoxContainer" unique_id=1156397671]
+custom_minimum_size = Vector2(75, 115)
+layout_mode = 2
+theme = ExtResource("3_dtbia")
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+
+[node name="3_4k" type="Button" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/4/4 Buttons/VBoxContainer/HBoxContainer" unique_id=325813028]
+custom_minimum_size = Vector2(75, 115)
+layout_mode = 2
+theme = ExtResource("3_dtbia")
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+
+[node name="4_4k" type="Button" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/4/4 Buttons/VBoxContainer/HBoxContainer" unique_id=1649325674]
+custom_minimum_size = Vector2(75, 115)
+layout_mode = 2
+theme = ExtResource("3_dtbia")
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+
+[node name="Side Buttons" type="MarginContainer" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer" unique_id=1797810961]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/Side Buttons" unique_id=1990559436]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/Side Buttons/VBoxContainer" unique_id=1309754119]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 50
+text = "Side"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/Side Buttons/VBoxContainer" unique_id=807730935]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 15
+
+[node name="1_air" type="Button" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/Side Buttons/VBoxContainer/HBoxContainer" unique_id=593992866]
+custom_minimum_size = Vector2(75, 115)
+layout_mode = 2
+theme = ExtResource("3_dtbia")
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+
+[node name="2_air" type="Button" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/Side Buttons/VBoxContainer/HBoxContainer" unique_id=1693823601]
+custom_minimum_size = Vector2(75, 115)
+layout_mode = 2
+theme = ExtResource("3_dtbia")
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+
+[node name="VSeparator" type="VSeparator" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/Side Buttons/VBoxContainer/HBoxContainer" unique_id=130909462]
+layout_mode = 2
+
+[node name="1_ground" type="Button" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/Side Buttons/VBoxContainer/HBoxContainer" unique_id=341171001]
+custom_minimum_size = Vector2(75, 115)
+layout_mode = 2
+theme = ExtResource("3_dtbia")
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+
+[node name="2_ground" type="Button" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/Side Buttons/VBoxContainer/HBoxContainer" unique_id=1242014553]
+custom_minimum_size = Vector2(75, 115)
+layout_mode = 2
+theme = ExtResource("3_dtbia")
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+
+[node name="5 Buttons" type="MarginContainer" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer" unique_id=562930200]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/5 Buttons" unique_id=926497290]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/5 Buttons/VBoxContainer" unique_id=608264603]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 50
+text = "5 Botões"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/5 Buttons/VBoxContainer" unique_id=2025788039]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 15
+
+[node name="1_5k" type="Button" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/5 Buttons/VBoxContainer/HBoxContainer" unique_id=545870602]
+custom_minimum_size = Vector2(75, 115)
+layout_mode = 2
+theme = ExtResource("3_dtbia")
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+
+[node name="2_5k" type="Button" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/5 Buttons/VBoxContainer/HBoxContainer" unique_id=995800707]
+custom_minimum_size = Vector2(75, 115)
+layout_mode = 2
+theme = ExtResource("3_dtbia")
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+
+[node name="3_5k" type="Button" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/5 Buttons/VBoxContainer/HBoxContainer" unique_id=1620265717]
+custom_minimum_size = Vector2(75, 115)
+layout_mode = 2
+theme = ExtResource("3_dtbia")
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+
+[node name="4_5k" type="Button" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/5 Buttons/VBoxContainer/HBoxContainer" unique_id=1973068089]
+custom_minimum_size = Vector2(75, 115)
+layout_mode = 2
+theme = ExtResource("3_dtbia")
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+
+[node name="5_5k" type="Button" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/5 Buttons/VBoxContainer/HBoxContainer" unique_id=297638516]
+custom_minimum_size = Vector2(75, 115)
+layout_mode = 2
+theme = ExtResource("3_dtbia")
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+
+[node name="6" type="PanelContainer" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer" unique_id=284296420]
+visible = false
+layout_mode = 2
+
+[node name="6 Buttons" type="MarginContainer" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/6" unique_id=681570790]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons" unique_id=897341259]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer" unique_id=2057559433]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 50
+text = "6 Botões"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer" unique_id=124922599]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 15
+
+[node name="1_6k" type="Button" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer/HBoxContainer" unique_id=179547739]
+custom_minimum_size = Vector2(75, 115)
+layout_mode = 2
+theme = ExtResource("3_dtbia")
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+
+[node name="2_6k" type="Button" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer/HBoxContainer" unique_id=1969217093]
+custom_minimum_size = Vector2(75, 115)
+layout_mode = 2
+theme = ExtResource("3_dtbia")
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+
+[node name="3_6k" type="Button" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer/HBoxContainer" unique_id=1338582901]
+custom_minimum_size = Vector2(75, 115)
+layout_mode = 2
+theme = ExtResource("3_dtbia")
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+
+[node name="4_6k" type="Button" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer/HBoxContainer" unique_id=156977607]
+custom_minimum_size = Vector2(75, 115)
+layout_mode = 2
+theme = ExtResource("3_dtbia")
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+
+[node name="5_6k" type="Button" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer/HBoxContainer" unique_id=345931558]
+custom_minimum_size = Vector2(75, 115)
+layout_mode = 2
+theme = ExtResource("3_dtbia")
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+
+[node name="6_6k" type="Button" parent="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/6/6 Buttons/VBoxContainer/HBoxContainer" unique_id=1452370938]
+custom_minimum_size = Vector2(75, 115)
+layout_mode = 2
+theme = ExtResource("3_dtbia")
+theme_override_font_sizes/font_size = 75
+toggle_mode = true
+
+[node name="Video" type="MarginContainer" parent="TabContainerSettings" unique_id=1801772191]
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainerSettings/Video" unique_id=2046520048]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="TabContainerSettings/Video/VBoxContainer" unique_id=888275189]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="TabContainerSettings/Video/VBoxContainer/PanelContainer" unique_id=1494582921]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainerSettings/Video/VBoxContainer/PanelContainer/MarginContainer" unique_id=438061125]
+layout_mode = 2
+
+[node name="Mode" type="FlowContainer" parent="TabContainerSettings/Video/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1650517366]
+layout_mode = 2
+alignment = 1
+vertical = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TabContainerSettings/Video/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/Mode" unique_id=1405929141]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 30
+text = "Modo: "
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ModeOptionButton" type="OptionButton" parent="TabContainerSettings/Video/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/Mode" unique_id=798997575]
+layout_mode = 2
+theme = ExtResource("3_dtbia")
+theme_override_font_sizes/font_size = 30
+item_count = 3
+popup/item_0/text = "Janela"
+popup/item_0/id = 0
+popup/item_1/text = "Janela em Tela Cheia"
+popup/item_1/id = 1
+popup/item_2/text = "Tela Cheia"
+popup/item_2/id = 2
+
+[node name="Resolution" type="FlowContainer" parent="TabContainerSettings/Video/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=577301139]
+visible = false
+layout_mode = 2
+alignment = 1
+vertical = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TabContainerSettings/Video/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/Resolution" unique_id=1279451762]
+layout_mode = 2
+text = "Resolução"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="OptionButton" type="OptionButton" parent="TabContainerSettings/Video/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/Resolution" unique_id=112065182]
+layout_mode = 2
+
+[node name="Vsync" type="FlowContainer" parent="TabContainerSettings/Video/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1136626869]
+layout_mode = 2
+alignment = 1
+vertical = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TabContainerSettings/Video/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/Vsync" unique_id=528098109]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 30
+text = "V-sync: "
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VsyncOptionButton" type="OptionButton" parent="TabContainerSettings/Video/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/Vsync" unique_id=399017904]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme = ExtResource("3_dtbia")
+theme_override_font_sizes/font_size = 30
+item_count = 2
+popup/item_0/text = "Ativado"
+popup/item_0/id = 0
+popup/item_1/text = "Desativado"
+popup/item_1/id = 1
+
+[node name="MSAA" type="FlowContainer" parent="TabContainerSettings/Video/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1694631679]
+visible = false
+layout_mode = 2
+alignment = 1
+vertical = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TabContainerSettings/Video/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/MSAA" unique_id=1948413841]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 30
+text = "MSAA"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MSAAOptionButton" type="OptionButton" parent="TabContainerSettings/Video/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/MSAA" unique_id=2118285464]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+item_count = 4
+popup/item_0/text = "Disabled"
+popup/item_0/id = 0
+popup/item_1/text = "2x"
+popup/item_1/id = 1
+popup/item_2/text = "4x"
+popup/item_2/id = 2
+popup/item_3/text = "8x"
+popup/item_3/id = 3
+
+[node name="VideoCheckBox" type="CheckBox" parent="TabContainerSettings/Video/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1025426397]
+layout_mode = 2
+tooltip_text = "Ativa ou desativa o vídeo se o song map possuir. Rodar o vídeo usa bastante do processamento, 
+desative caso esteja com baixa perfomance."
+theme = ExtResource("3_dtbia")
+theme_override_font_sizes/font_size = 30
+text = "Background"
+
+[node name="ParticlesCheckBox" type="CheckBox" parent="TabContainerSettings/Video/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1388676762]
+layout_mode = 2
+tooltip_text = "São efeitos para melhorar o visual do jogo, tem um custo baixa na perfomance quando comparado ao Vídeo e o Glow."
+theme = ExtResource("3_dtbia")
+theme_override_font_sizes/font_size = 30
+text = "Partículas"
+
+[node name="GlowCheckBox" type="CheckBox" parent="TabContainerSettings/Video/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1264643711]
+layout_mode = 2
+tooltip_text = "Esse é um efeito para melhorar o visual do jogo, mas tem um custo alto no desempenho. 
+Desative caso esteja com baixa perfomance."
+theme = ExtResource("3_dtbia")
+theme_override_font_sizes/font_size = 30
+text = "Glow"
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1245140699]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -103.0
+offset_top = -52.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="Return" type="Button" parent="MarginContainer" unique_id=2138126094]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("../Mode/ModeOptionButton")
+mouse_default_cursor_shape = 2
+theme = ExtResource("3_dtbia")
+theme_override_font_sizes/font_size = 89
+text = " Voltar "
+
+[connection signal="text_submitted" from="LineEditPassword" to="." method="_on_line_edit_password_text_submitted"]
+[connection signal="value_changed" from="TabContainerSettings/Audio/VBoxContainer/MarginContainer/VBoxContainer/MainVolume/MainVolumeSlider" to="." method="_on_main_volume_slider_value_changed"]
+[connection signal="value_changed" from="TabContainerSettings/Audio/VBoxContainer/MarginContainer/VBoxContainer/SFXVolume/SFXVolumeSlider" to="." method="_on_sfx_volume_slider_value_changed"]
+[connection signal="toggled" from="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/4/4 Buttons/VBoxContainer/HBoxContainer/1_4k" to="." method="_on_1_4k_toggled"]
+[connection signal="toggled" from="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/4/4 Buttons/VBoxContainer/HBoxContainer/2_4k" to="." method="_on_2_4k_toggled"]
+[connection signal="toggled" from="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/4/4 Buttons/VBoxContainer/HBoxContainer/3_4k" to="." method="_on_3_4k_toggled"]
+[connection signal="toggled" from="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/4/4 Buttons/VBoxContainer/HBoxContainer/4_4k" to="." method="_on_4_4k_toggled"]
+[connection signal="toggled" from="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/Side Buttons/VBoxContainer/HBoxContainer/1_air" to="." method="_on_1_air_toggled"]
+[connection signal="toggled" from="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/Side Buttons/VBoxContainer/HBoxContainer/2_air" to="." method="_on_2_air_toggled"]
+[connection signal="toggled" from="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/Side Buttons/VBoxContainer/HBoxContainer/1_ground" to="." method="_on_1_ground_toggled"]
+[connection signal="toggled" from="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/Side Buttons/VBoxContainer/HBoxContainer/2_ground" to="." method="_on_2_ground_toggled"]
+[connection signal="item_selected" from="TabContainerSettings/Video/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/Mode/ModeOptionButton" to="." method="_on_mode_option_button_item_selected"]
+[connection signal="item_selected" from="TabContainerSettings/Video/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/Vsync/VsyncOptionButton" to="." method="_on_vsync_option_button_item_selected"]
+[connection signal="toggled" from="TabContainerSettings/Video/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/VideoCheckBox" to="." method="_on_video_check_box_toggled"]
+[connection signal="toggled" from="TabContainerSettings/Video/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/ParticlesCheckBox" to="." method="_on_particles_check_box_toggled"]
+[connection signal="toggled" from="TabContainerSettings/Video/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GlowCheckBox" to="." method="_on_glow_check_box_toggled"]
+[connection signal="pressed" from="MarginContainer/Return" to="." method="_on_return_pressed"]

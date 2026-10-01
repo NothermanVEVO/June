@@ -1,0 +1,228 @@
+[gd_scene format=3 uid="uid://d3addhdyubbnb"]
+
+[ext_resource type="Script" uid="uid://mi7kyitfwyav" path="res://NewScreens/StartScreen/StartScreen.gd" id="1_nnidp"]
+[ext_resource type="Texture2D" uid="uid://r8w8qo817r5n" path="res://assets/Side/Screens/start_screen_1.png" id="2_i8ana"]
+[ext_resource type="Texture2D" uid="uid://0fyyu72ejcee" path="res://assets/Side/Screens/start_screen_2.png" id="3_oavut"]
+[ext_resource type="Texture2D" uid="uid://v0px05mnvlu" path="res://assets/Side/Screens/start_screen_3.png" id="4_ao70w"]
+[ext_resource type="FontFile" uid="uid://bk7uiutchpno7" path="res://assets/fonts/Kalufira.otf" id="5_d6idq"]
+[ext_resource type="FontFile" uid="uid://cijchlo1rfb44" path="res://assets/fonts/Tokyo.ttf" id="6_108ln"]
+[ext_resource type="PackedScene" uid="uid://b27k6hedgs82o" path="res://Background/BackgroundBlur.tscn" id="7_cvbkl"]
+
+[sub_resource type="Gradient" id="Gradient_l65tw"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="Gradient" id="Gradient_v50bl"]
+offsets = PackedFloat32Array(0, 0.560241, 1)
+colors = PackedColorArray(0.33228004, 0.101399995, 0.39, 1, 0.8509804, 0.25882354, 1, 1, 0.94600004, 0.73, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_l65tw"]
+gradient = SubResource("Gradient_v50bl")
+fill_from = Vector2(1, 1)
+
+[sub_resource type="Gradient" id="Gradient_nnidp"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.072289154, 0.92168677, 1)
+colors = PackedColorArray(1, 1, 1, 0.5176471, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0.5176471)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_nnidp"]
+gradient = SubResource("Gradient_nnidp")
+width = 151
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sjphv"]
+texture = SubResource("GradientTexture2D_nnidp")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e7u8m"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="Theme" id="Theme_v50bl"]
+Button/font_sizes/font_size = 85
+Button/fonts/font = ExtResource("6_108ln")
+Button/styles/focus = SubResource("StyleBoxTexture_sjphv")
+Button/styles/normal = SubResource("StyleBoxFlat_e7u8m")
+
+[node name="StartScreen" type="Control" unique_id=141097472]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_nnidp")
+
+[node name="Background" type="Control" parent="." unique_id=1394897080]
+modulate = Color(1, 1, 1, 0.16470589)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect3" type="TextureRect" parent="Background" unique_id=1695694229]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_i8ana")
+expand_mode = 1
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Background" unique_id=1391477546]
+position = Vector2(2020, 538)
+amount = 160
+lifetime = 12.0
+emission_shape = 3
+emission_rect_extents = Vector2(100, 540)
+direction = Vector2(-1, 0)
+gravity = Vector2(0, 0)
+initial_velocity_min = 207.92
+initial_velocity_max = 207.92
+angular_velocity_min = -50.0
+angular_velocity_max = 50.0
+linear_accel_min = -17.82
+linear_accel_max = 25.74
+angle_min = -720.0
+angle_max = 720.0
+scale_amount_min = 2.5
+scale_amount_max = 10.0
+split_scale = true
+scale_curve_x = null
+scale_curve_y = null
+color_ramp = SubResource("Gradient_l65tw")
+
+[node name="TextureRect2" type="TextureRect" parent="Background" unique_id=1183607565]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_oavut")
+expand_mode = 1
+
+[node name="TextureRect" type="TextureRect" parent="Background" unique_id=2090427844]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_ao70w")
+expand_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=776219204]
+visible = false
+layout_mode = 0
+offset_left = 68.0
+offset_top = 104.0
+offset_right = 618.0
+offset_bottom = 721.0
+theme_override_constants/separation = 34
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer" unique_id=1796969137]
+clip_children = 2
+layout_mode = 2
+theme_override_colors/default_color = Color(0.8520001, 0.26, 1, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 0.49411765)
+theme_override_constants/shadow_outline_size = 17
+theme_override_constants/shadow_offset_y = 8
+theme_override_fonts/normal_font = ExtResource("5_d6idq")
+theme_override_font_sizes/normal_font_size = 268
+bbcode_enabled = true
+text = "[tornado radius=1 freq=1 connected=1]June[/tornado]"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/RichTextLabel" unique_id=1217616937]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_l65tw")
+expand_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer" unique_id=1621073030]
+layout_mode = 2
+theme = SubResource("Theme_v50bl")
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer" unique_id=471939448]
+layout_mode = 2
+
+[node name="PlayButton" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer" unique_id=1317720362]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "Jogar"
+
+[node name="EditButton" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer" unique_id=1908450790]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "Editar"
+
+[node name="SettingsButton" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer" unique_id=342861524]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "Configurações"
+
+[node name="QuitButton" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer" unique_id=1532012273]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "Sair"
+
+[node name="PressToPlay" type="Control" parent="." unique_id=1372123188]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Blur" parent="PressToPlay" unique_id=1618238122 instance=ExtResource("7_cvbkl")]
+layout_mode = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PressToPlay" unique_id=126878782]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -461.5
+offset_top = -40.0
+offset_right = 461.5
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/normal_font = ExtResource("5_d6idq")
+theme_override_font_sizes/normal_font_size = 45
+bbcode_enabled = true
+text = "[pulse freq=1.0 color=#ffffff40 ease=-2.0]Pressione qualquer botão para continuar...[/pulse]"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="." unique_id=1683309639]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -165.0
+offset_bottom = 23.0
+grow_horizontal = 0
+text = "Versão 0.00.02 - BETA "
+
+[connection signal="pressed" from="VBoxContainer/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/MarginContainer/VBoxContainer/EditButton" to="." method="_on_edit_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/MarginContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/MarginContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]

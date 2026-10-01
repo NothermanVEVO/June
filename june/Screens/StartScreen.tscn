@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://drjxg7k7qdwwx"]
+[gd_scene format=3 uid="uid://drjxg7k7qdwwx"]
 
 [ext_resource type="Script" uid="uid://yibdywuie1sm" path="res://Screens/StartScreen.gd" id="1_3tqua"]
 [ext_resource type="PackedScene" uid="uid://dj8t1madbd5pe" path="res://Background/AnimatedBackgroundV1.tscn" id="2_58tuc"]
@@ -16,7 +16,7 @@ width = 128
 height = 128
 fill_from = Vector2(1, 1)
 
-[node name="StartScreen" type="Control"]
+[node name="StartScreen" type="Control" unique_id=2015097427]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -25,10 +25,10 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_3tqua")
 
-[node name="AnimatedBackground" parent="." instance=ExtResource("2_58tuc")]
+[node name="AnimatedBackground" parent="." unique_id=1451656111 instance=ExtResource("2_58tuc")]
 layout_mode = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1776815555]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -36,17 +36,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer" unique_id=1080675217]
 layout_mode = 2
 theme_override_constants/margin_top = -60
 
-[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/MarginContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/MarginContainer" unique_id=529311698]
 clip_children = 2
 layout_mode = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.423529)
-theme_override_constants/shadow_offset_y = 5
-theme_override_constants/shadow_offset_x = -5
 theme_override_constants/shadow_outline_size = 5
+theme_override_constants/shadow_offset_x = -5
+theme_override_constants/shadow_offset_y = 5
 theme_override_fonts/normal_font = ExtResource("3_rmmlk")
 theme_override_font_sizes/normal_font_size = 360
 bbcode_enabled = true
@@ -56,7 +56,7 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/MarginContainer/RichTextLabel"]
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/MarginContainer/RichTextLabel" unique_id=1683123764]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -65,11 +65,11 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_1xvql")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer" unique_id=233335215]
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="Play" type="Button" parent="VBoxContainer/VBoxContainer"]
+[node name="Play" type="Button" parent="VBoxContainer/VBoxContainer" unique_id=100593312]
 layout_mode = 2
 focus_neighbor_top = NodePath("../Quit")
 mouse_default_cursor_shape = 2
@@ -77,14 +77,14 @@ theme = ExtResource("4_rmmlk")
 theme_override_font_sizes/font_size = 60
 text = "Jogar"
 
-[node name="Editor" type="Button" parent="VBoxContainer/VBoxContainer"]
+[node name="Editor" type="Button" parent="VBoxContainer/VBoxContainer" unique_id=229759444]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme = ExtResource("4_rmmlk")
 theme_override_font_sizes/font_size = 60
 text = "Editor"
 
-[node name="Settings" type="Button" parent="VBoxContainer/VBoxContainer"]
+[node name="Settings" type="Button" parent="VBoxContainer/VBoxContainer" unique_id=2121960511]
 custom_minimum_size = Vector2(450, 0)
 layout_mode = 2
 mouse_default_cursor_shape = 2
@@ -92,7 +92,7 @@ theme = ExtResource("4_rmmlk")
 theme_override_font_sizes/font_size = 60
 text = "Configurações"
 
-[node name="Quit" type="Button" parent="VBoxContainer/VBoxContainer"]
+[node name="Quit" type="Button" parent="VBoxContainer/VBoxContainer" unique_id=1068857103]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("../Play")
 mouse_default_cursor_shape = 2
@@ -100,7 +100,7 @@ theme = ExtResource("4_rmmlk")
 theme_override_font_sizes/font_size = 60
 text = "Sair"
 
-[node name="Version" type="RichTextLabel" parent="VBoxContainer"]
+[node name="Version" type="RichTextLabel" parent="VBoxContainer" unique_id=541659839]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 10

@@ -74,5 +74,9 @@ static func validate_dictionary(dictionary : Dictionary) -> String:
 	if not dictionary.has("is_selected") or typeof(dictionary["is_selected"]) != TYPE_BOOL:
 		return "\"is_selected\" not found or wrong format in NoteResource"
 	if not dictionary.has("is_side_note") or typeof(dictionary["is_side_note"]) != TYPE_BOOL:
-		return "\"is_side_note\" not found or wrong format in NoteResource"
+		## TEMP
+		dictionary["is_side_note"] = false
+		## TEMP
+		
+		# return "\"is_side_note\" not found or wrong format in NoteResource"
 	return ""

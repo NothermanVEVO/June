@@ -38,6 +38,9 @@ func _ready() -> void:
 	
 	DialogFile.file_selected.connect(_dialog_file_file_selected)
 	
+	SideEditor.is_on_editor = true
+	SideEditor.reset_current_file_path()
+	
 	_load_editor_save()
 
 func _load_editor_save() -> void:
@@ -248,3 +251,7 @@ func _on_song_sample_test_button_pressed() -> void:
 	elif song_sample_test_button.text == "Parar":
 		song_sample_test_button.text = "Testar"
 		_song_sample_tween_finished()
+
+
+func _on_return_button_pressed() -> void:
+	SideEditor.ask_to_leave()

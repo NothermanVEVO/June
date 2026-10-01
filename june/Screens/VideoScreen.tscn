@@ -1,10 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://dnquj78rnqlvn"]
+[gd_scene format=3 uid="uid://dnquj78rnqlvn"]
 
 [ext_resource type="Script" uid="uid://dqxeaf1p2wk20" path="res://Screens/VideoScreen.gd" id="1_54cql"]
 [ext_resource type="Theme" uid="uid://oe21uoww8ls3" path="res://themes/JuneThemeV1.tres" id="2_3ggaa"]
 [ext_resource type="PackedScene" uid="uid://dj8t1madbd5pe" path="res://Background/AnimatedBackgroundV1.tscn" id="2_w1qnn"]
 
-[node name="VideoScreen" type="Control"]
+[node name="VideoScreen" type="Control" unique_id=1938074618]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,10 +13,10 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_54cql")
 
-[node name="AnimatedBackground" parent="." instance=ExtResource("2_w1qnn")]
+[node name="AnimatedBackground" parent="." unique_id=1773871156 instance=ExtResource("2_w1qnn")]
 layout_mode = 1
 
-[node name="Vídeo" type="MarginContainer" parent="."]
+[node name="Vídeo" type="MarginContainer" parent="." unique_id=1899723791]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -27,7 +27,7 @@ offset_bottom = 220.0
 grow_horizontal = 2
 theme_override_constants/margin_top = 15
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Vídeo"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Vídeo" unique_id=1944706393]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 150
 text = "Vídeo"
@@ -36,7 +36,7 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1016779969]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -50,22 +50,22 @@ offset_bottom = 106.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=382514990]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=1218462497]
 layout_mode = 2
 
-[node name="Mode" type="FlowContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Mode" type="FlowContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=702686820]
 layout_mode = 2
 alignment = 1
 vertical = true
 
-[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Mode"]
+[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Mode" unique_id=481925590]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 30
 text = "Modo: "
@@ -74,7 +74,7 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ModeOptionButton" type="OptionButton" parent="PanelContainer/MarginContainer/VBoxContainer/Mode"]
+[node name="ModeOptionButton" type="OptionButton" parent="PanelContainer/MarginContainer/VBoxContainer/Mode" unique_id=1941898588]
 layout_mode = 2
 focus_neighbor_top = NodePath("../../Return")
 theme = ExtResource("2_3ggaa")
@@ -87,13 +87,13 @@ popup/item_1/id = 1
 popup/item_2/text = "Tela Cheia"
 popup/item_2/id = 2
 
-[node name="Resolution" type="FlowContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Resolution" type="FlowContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=590581946]
 visible = false
 layout_mode = 2
 alignment = 1
 vertical = true
 
-[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Resolution"]
+[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Resolution" unique_id=740305457]
 layout_mode = 2
 text = "Resolução"
 fit_content = true
@@ -101,15 +101,15 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="OptionButton" type="OptionButton" parent="PanelContainer/MarginContainer/VBoxContainer/Resolution"]
+[node name="OptionButton" type="OptionButton" parent="PanelContainer/MarginContainer/VBoxContainer/Resolution" unique_id=283923569]
 layout_mode = 2
 
-[node name="Vsync" type="FlowContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Vsync" type="FlowContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1250955984]
 layout_mode = 2
 alignment = 1
 vertical = true
 
-[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Vsync"]
+[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Vsync" unique_id=1690330494]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 30
 text = "V-sync: "
@@ -118,7 +118,7 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="VsyncOptionButton" type="OptionButton" parent="PanelContainer/MarginContainer/VBoxContainer/Vsync"]
+[node name="VsyncOptionButton" type="OptionButton" parent="PanelContainer/MarginContainer/VBoxContainer/Vsync" unique_id=1146799822]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 theme = ExtResource("2_3ggaa")
@@ -129,13 +129,13 @@ popup/item_0/id = 0
 popup/item_1/text = "Desativado"
 popup/item_1/id = 1
 
-[node name="MSAA" type="FlowContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="MSAA" type="FlowContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=277300201]
 visible = false
 layout_mode = 2
 alignment = 1
 vertical = true
 
-[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/MarginContainer/VBoxContainer/MSAA"]
+[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/MarginContainer/VBoxContainer/MSAA" unique_id=193593090]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 30
 text = "MSAA"
@@ -144,7 +144,7 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MSAAOptionButton" type="OptionButton" parent="PanelContainer/MarginContainer/VBoxContainer/MSAA"]
+[node name="MSAAOptionButton" type="OptionButton" parent="PanelContainer/MarginContainer/VBoxContainer/MSAA" unique_id=98866711]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
 item_count = 4
@@ -157,7 +157,7 @@ popup/item_2/id = 2
 popup/item_3/text = "8x"
 popup/item_3/id = 3
 
-[node name="Video" type="CheckBox" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Video" type="CheckBox" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=630174708]
 layout_mode = 2
 tooltip_text = "Ativa ou desativa o vídeo se o song map possuir. Rodar o vídeo usa bastante do processamento, 
 desative caso esteja com baixa perfomance."
@@ -165,14 +165,14 @@ theme = ExtResource("2_3ggaa")
 theme_override_font_sizes/font_size = 30
 text = "Vídeo"
 
-[node name="Particles" type="CheckBox" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Particles" type="CheckBox" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=2002217818]
 layout_mode = 2
 tooltip_text = "São efeitos para melhorar o visual do jogo, tem um custo baixa na perfomance quando comparado ao Vídeo e o Glow."
 theme = ExtResource("2_3ggaa")
 theme_override_font_sizes/font_size = 30
 text = "Partículas"
 
-[node name="Glow" type="CheckBox" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Glow" type="CheckBox" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1934444920]
 layout_mode = 2
 tooltip_text = "Esse é um efeito para melhorar o visual do jogo, mas tem um custo alto no desempenho. 
 Desative caso esteja com baixa perfomance."
@@ -180,7 +180,7 @@ theme = ExtResource("2_3ggaa")
 theme_override_font_sizes/font_size = 30
 text = "Glow"
 
-[node name="Return" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Return" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1368091001]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("../Mode/ModeOptionButton")
 mouse_default_cursor_shape = 2

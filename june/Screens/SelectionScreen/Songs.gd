@@ -35,9 +35,12 @@ func _ready() -> void:
 	Song.pitch_scale = 1.0
 	
 	for child in selected_song_container.get_children(true):
-		if not child is TabButton and child is TabBar:
+		if child is TabButton:
 			tab_bar_selection = child
 			break
+	
+	if not tab_bar_selection:
+		return
 	
 	four_buttons.load_difficulty_save.connect(_load_difficulty_save)
 	four_buttons.play_difficulty.connect(_play_difficulty)

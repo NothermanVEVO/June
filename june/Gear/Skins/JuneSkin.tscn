@@ -1676,7 +1676,7 @@ grow_vertical = 2
 
 [node name="Precision" type="VBoxContainer" parent="FullGear" unique_id=164746413]
 visible = false
-z_index = 5
+z_index = 8
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -1736,7 +1736,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Base" type="MarginContainer" parent="FullGear" unique_id=1495156801]
-z_index = 6
+z_index = 8
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.527
@@ -1778,7 +1778,7 @@ autowrap_mode = 0
 vertical_alignment = 1
 
 [node name="Combo" type="MarginContainer" parent="FullGear" unique_id=1595141319]
-z_index = 6
+z_index = 8
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -1854,7 +1854,7 @@ offset_bottom = 770.0
 texture = ExtResource("2_syavq")
 
 [node name="Control" type="Control" parent="FullGear/Gear" unique_id=1368929014]
-z_index = 5
+z_index = 7
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -2110,7 +2110,7 @@ theme_override_font_sizes/font_size = 50
 text = "A"
 
 [node name="Finalization" type="MarginContainer" parent="." unique_id=9290727]
-z_index = 6
+z_index = 10
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

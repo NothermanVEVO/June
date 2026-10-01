@@ -42,10 +42,10 @@ static func target_to_resource(target : Target) -> TargetResource:
 		return HammerTapResource.new(target.get_start_time(), target.get_path_type())
 	elif target is HoldManual:
 		return HoldResource.new(target.get_start_time(), target.get_end_time(), target.get_path_type())
-	elif target is Trap:
-		return TrapResource.new(target.get_start_time(), target.get_path_type())
 	elif target is AxeTrap:
 		return AxeTrapResource.new(target.get_start_time(), target.get_path_type())
+	elif target is Trap:
+		return TrapResource.new(target.get_start_time(), target.get_path_type())
 	elif target is MusicalNote:
 		return MusicalNoteResource.new(target.get_start_time(), target.get_path_type(), target.get_variant())
 	elif target is Heart:
@@ -77,10 +77,10 @@ static func resource_to_target(target_resource : TargetResource) -> Target:
 		return HammerTap.new(target_resource.start_time, target_resource.path_type)
 	elif target_resource is HoldResource:
 		return HoldManual.new(target_resource.start_time, target_resource.end_time, target_resource.path_type)
-	elif target_resource is TrapResource:
-		return Trap.new(target_resource.start_time, target_resource.path_type)
 	elif target_resource is AxeTrapResource:
 		return AxeTrap.new(target_resource.start_time, target_resource.path_type)
+	elif target_resource is TrapResource:
+		return Trap.new(target_resource.start_time, target_resource.path_type)
 	elif target_resource is MusicalNoteResource:
 		return MusicalNote.new(target_resource.start_time, target_resource.path_type, target_resource.variant)
 	elif target_resource is HeartResource:

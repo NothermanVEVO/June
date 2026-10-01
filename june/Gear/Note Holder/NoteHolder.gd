@@ -216,6 +216,11 @@ func _hit_hold_note(time : float) -> void:
 	if _notes[_currently_note_idx] is HoldNote and _notes[_currently_note_idx].state == Note.State.HITTED:
 		_notes[_currently_note_idx].end_state = Note.State.HITTED
 		var precision := _calculate_difference(time, _notes[_currently_note_idx].get_end_time())
+		
+		##TEMP ## TODO
+		if precision <= -70:
+			precision = 100
+		
 		if time < _notes[_currently_note_idx].get_end_time() - MAX_TIME_HIT:
 			_notes[_currently_note_idx].modulate.a = 0.5
 			_notes[_currently_note_idx].end_state = Note.State.BREAK
