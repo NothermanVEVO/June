@@ -44,6 +44,96 @@ colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1)
 gradient = SubResource("Gradient_l1bnb")
 fill_from = Vector2(1, 1)
 
+[sub_resource type="Animation" id="Animation_8vy08"]
+resource_name = "Appear Pop"
+length = 1.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FullGear/Precision:offset_transform_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.16666667, 0.33333334),
+"transitions": PackedFloat32Array(0.3660217, 0.16493855, 1),
+"update": 0,
+"values": [Vector2(0.7, 0.7), Vector2(1.13, 1.13), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("FullGear/Precision:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.16666667, 1, 1.25),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_4axup"]
+resource_name = "Pop"
+length = 1.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FullGear/Precision:offset_transform_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.16666667, 0.33333334),
+"transitions": PackedFloat32Array(0.3660217, 0.16493855, 1),
+"update": 0,
+"values": [Vector2(0.9, 0.9), Vector2(1.1, 1.1), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("FullGear/Precision:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1, 1.25),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_00oe6"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FullGear/Precision:offset_transform_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("FullGear/Precision:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6odlj"]
+_data = {
+&"Appear Pop": SubResource("Animation_8vy08"),
+&"Pop": SubResource("Animation_4axup"),
+&"RESET": SubResource("Animation_00oe6")
+}
+
 [sub_resource type="Animation" id="Animation_54wux"]
 resource_name = "Pop"
 length = 0.1
@@ -79,67 +169,6 @@ tracks/0/keys = {
 _data = {
 &"Pop": SubResource("Animation_54wux"),
 &"RESET": SubResource("Animation_r2g2g")
-}
-
-[sub_resource type="Animation" id="Animation_glv2v"]
-resource_name = "Pop up"
-length = 1.25
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("FullGear/Precision:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 1, 1.25),
-"transitions": PackedFloat32Array(0.31864, 1, 1.86607, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("FullGear/Precision:scale")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.133333),
-"transitions": PackedFloat32Array(0.183011, 0.241484, 1),
-"update": 0,
-"values": [Vector2(0.9, 0.9), Vector2(1.05, 1.05), Vector2(1, 1)]
-}
-
-[sub_resource type="Animation" id="Animation_uu6xs"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("FullGear/Precision:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("FullGear/Precision:scale")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(1, 1)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_r0du0"]
-_data = {
-&"Pop Up Precision": SubResource("Animation_glv2v"),
-&"RESET": SubResource("Animation_uu6xs")
 }
 
 [sub_resource type="Animation" id="Animation_u7dcu"]
@@ -1863,7 +1892,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Precision" type="VBoxContainer" parent="FullGear" unique_id=164746413]
-visible = false
+modulate = Color(1, 1, 1, 0)
 z_index = 8
 layout_mode = 1
 anchors_preset = 8
@@ -1871,16 +1900,19 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -91.5
-offset_top = -27.0
-offset_right = 91.5
-offset_bottom = 27.0
+offset_left = -170.5
+offset_top = -66.5
+offset_right = 170.5
+offset_bottom = 66.5
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(0.9, 0.9)
 pivot_offset = Vector2(170.5, 76.5)
+offset_transform_enabled = true
 theme_override_constants/separation = -15
 
 [node name="Speed" type="RichTextLabel" parent="FullGear/Precision" unique_id=743431282]
+visible = false
 clip_children = 2
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1997,16 +2029,16 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_vvqmb")
 
+[node name="PrecisionAnimation" type="AnimationPlayer" parent="FullGear" unique_id=89029933]
+root_node = NodePath("../..")
+libraries/ = SubResource("AnimationLibrary_6odlj")
+
 [node name="ComboAnimation" type="AnimationPlayer" parent="FullGear" unique_id=1449139103]
 root_node = NodePath("../Combo")
 libraries/ = SubResource("AnimationLibrary_jii80")
 
-[node name="TextAnimation" type="AnimationPlayer" parent="FullGear" unique_id=51485049]
-root_node = NodePath("../..")
-libraries/ = SubResource("AnimationLibrary_r0du0")
-
 [node name="BeatAnimation" type="AnimationPlayer" parent="FullGear" unique_id=1132546769]
-root_node = NodePath("../TextAnimation")
+root_node = NodePath("")
 libraries/ = SubResource("AnimationLibrary_dh8pw")
 
 [node name="Fever Star Effect" type="AnimationPlayer" parent="FullGear" unique_id=1904555463]

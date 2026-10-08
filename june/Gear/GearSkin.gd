@@ -6,7 +6,7 @@ class_name GearSkin
 @onready var precision_speed_text : RichTextLabel = $FullGear/Precision/Speed
 @onready var precision_percentage_text : RichTextLabel = $FullGear/Precision/MarginContainer/Percentage
 
-@onready var text_animation : AnimationPlayer = $FullGear/TextAnimation
+@onready var precision_animation: AnimationPlayer = $FullGear/PrecisionAnimation
 @onready var beat_animation : AnimationPlayer = $FullGear/BeatAnimation
 
 @onready var score_text : Label = $FullGear/Base/VBoxContainer/Score
@@ -87,6 +87,8 @@ func _ready() -> void:
 	#text_animation.play("RESET")
 	#_finalization_animation.play("RESET")
 	
+	precision_animation.play("RESET")
+	
 	var dict := Global.get_settings_dictionary()
 	
 	if dict["game_gear_position"] == Settings.GearPositions.LEFT:
@@ -131,9 +133,12 @@ func pop_precision(precision : int) -> void:
 		_precision_texture_rect.material = null
 		precision_speed_text.visible = false
 		precision_percentage_text.text = "BREAK"
-	if text_animation.is_playing():
-		text_animation.play("RESET")
-	text_animation.play("Pop Up Precision")
+	
+	if precision_animation.is_playing():
+		precision_animation.stop()
+		precision_animation.play("Pop")
+	else:
+		precision_animation.play("Appear Pop")
 
 func set_fever_value(value : float, fever : Note.Fever, hit_again : bool = false, _no_effect : bool = false) -> void:
 	fever_bar.value = value
@@ -313,7 +318,7 @@ func load_gear(loading_screen : LoadingScreen) -> int:
 	_combo_animation.play("Pop")
 	quantity += 1
 	
-	text_animation.play("Pop Up Precision")
+	precision_animation.play("Pop")
 	quantity += 1
 	
 	beat_animation.play("Beat")
@@ -324,7 +329,7 @@ func load_gear(loading_screen : LoadingScreen) -> int:
 	quantity += _load_finalization_animations(loading_screen)
 	
 	_combo_animation.animation_finished.connect(loading_screen.loaded)
-	text_animation.animation_finished.connect(loading_screen.loaded)
+	precision_animation.animation_finished.connect(loading_screen.loaded)
 	beat_animation.animation_finished.connect(loading_screen.loaded)
 	
 	return quantity
