@@ -343,7 +343,8 @@ func _settings_pressed() -> void:
 			for song_map in song_resource.song_maps:
 				if song_map.gear_type == _currently_selected_gear_type and song_map.difficulty == difficulty:
 					Game.save_selection_state(_last_song_button.UUID, selected_song_container.current_tab, song_map.difficulty)
-	SettingsScreen.SCENE_CALLER = Global.SELECTION_SCREEN_SCENE
+	
+	Settings.last_scene_before = Settings.LastSceneBefore.SELECTION
 	get_tree().change_scene_to_packed(Global.SETTING_SCREEN_SCENE)
 
 func _on_quit_pressed() -> void:

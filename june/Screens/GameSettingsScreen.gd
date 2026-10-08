@@ -2,7 +2,7 @@ extends Control
 
 class_name GameSettingsScreen
 
-enum GearPositions {CENTER, LEFT, RIGHT}
+#enum GearPositions {CENTER, LEFT, RIGHT}
 
 @onready var _velocity_text : RichTextLabel = $PanelContainer/MarginContainer/VBoxContainer/VelocityText
 @onready var _velocity_slider : HSlider = $PanelContainer/MarginContainer/VBoxContainer/VelocitySlider
@@ -21,7 +21,7 @@ func _ready() -> void:
 	_velocity_text.text = "Velocidade: %.1fx" % [dict["game_speed"]]
 	_velocity_slider.value = dict["game_speed"]
 	
-	_gear_transparency_text.text = "Transparência do fundo da Gear:" + str(int(dict["game_gear_transparency"] * 100)) + "%"
+	_gear_transparency_text.text = "Transparência do fundo da Gear: " + str(int(dict["game_gear_transparency"] * 100)) + "%"
 	_gear_transparency_slider.value = dict["game_gear_transparency"]
 	
 	_gear_position_option.select(dict["game_gear_position"])
@@ -42,7 +42,7 @@ func _on_velocity_slider_value_changed(value: float) -> void:
 
 func _on_gear_transparency_slider_value_changed(value: float) -> void:
 	var dict := Global.get_settings_dictionary()
-	_gear_transparency_text.text = "Transparência do fundo da Gear:" + str(int(value * 100)) + "%"
+	_gear_transparency_text.text = "Transparência do fundo da Gear: " + str(int(value * 100)) + "%"
 	dict["game_gear_transparency"] = value
 	Global.save_settings(dict)
 

@@ -23,26 +23,7 @@ layout_mode = 1
 [node name="Blur" parent="." unique_id=594036728 instance=ExtResource("2_dtbia")]
 layout_mode = 1
 
-[node name="LineEditPassword" type="LineEdit" parent="." unique_id=1901756418]
-custom_minimum_size = Vector2(1000, 0)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -34.25
-offset_top = -15.5
-offset_right = 34.25
-offset_bottom = 15.5
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 99
-placeholder_text = "Senha secreta..."
-secret = true
-
 [node name="TabContainerSettings" type="TabContainer" parent="." unique_id=689881836]
-visible = false
 custom_minimum_size = Vector2(1000, 0)
 layout_mode = 1
 anchors_preset = 8
@@ -56,10 +37,9 @@ offset_right = 360.0
 offset_bottom = 235.5
 grow_horizontal = 2
 grow_vertical = 2
-current_tab = 2
+current_tab = 0
 
 [node name="Audio" type="MarginContainer" parent="TabContainerSettings" unique_id=1140061357]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -376,9 +356,85 @@ theme = ExtResource("3_dtbia")
 theme_override_font_sizes/font_size = 75
 toggle_mode = true
 
-[node name="Video" type="MarginContainer" parent="TabContainerSettings" unique_id=1801772191]
+[node name="Jogo" type="MarginContainer" parent="TabContainerSettings" unique_id=7714226]
+visible = false
 layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
 metadata/_tab_index = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainerSettings/Jogo" unique_id=319444325]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="VelocityText" type="RichTextLabel" parent="TabContainerSettings/Jogo/VBoxContainer" unique_id=1876153234]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 30
+text = "Velocidade: 1.0"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VelocitySlider" type="HSlider" parent="TabContainerSettings/Jogo/VBoxContainer" unique_id=29773643]
+custom_minimum_size = Vector2(400, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+min_value = 1.0
+max_value = 10.0
+step = 0.1
+value = 1.0
+
+[node name="GearTransparencyText" type="RichTextLabel" parent="TabContainerSettings/Jogo/VBoxContainer" unique_id=337054134]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 30
+text = "Transparência do fundo da Gear: 50%"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GearTransparencySlider" type="HSlider" parent="TabContainerSettings/Jogo/VBoxContainer" unique_id=4367698]
+custom_minimum_size = Vector2(400, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+max_value = 1.0
+step = 0.1
+value = 0.5
+
+[node name="GearPositionText" type="RichTextLabel" parent="TabContainerSettings/Jogo/VBoxContainer" unique_id=1971121482]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 30
+text = "Posição da Gear:"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GearPositionOption" type="OptionButton" parent="TabContainerSettings/Jogo/VBoxContainer" unique_id=286697768]
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_default_cursor_shape = 2
+theme = ExtResource("3_dtbia")
+theme_override_font_sizes/font_size = 30
+selected = 0
+item_count = 3
+popup/item_0/text = " Centro"
+popup/item_0/id = 0
+popup/item_1/text = " Esquerda"
+popup/item_1/id = 1
+popup/item_2/text = " Direita"
+popup/item_2/id = 2
+
+[node name="Video" type="MarginContainer" parent="TabContainerSettings" unique_id=1801772191]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TabContainerSettings/Video" unique_id=2046520048]
 layout_mode = 2
@@ -494,26 +550,29 @@ popup/item_3/id = 3
 
 [node name="VideoCheckBox" type="CheckBox" parent="TabContainerSettings/Video/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1025426397]
 layout_mode = 2
+size_flags_horizontal = 0
 tooltip_text = "Ativa ou desativa o vídeo se o song map possuir. Rodar o vídeo usa bastante do processamento, 
 desative caso esteja com baixa perfomance."
 theme = ExtResource("3_dtbia")
 theme_override_font_sizes/font_size = 30
-text = "Background"
+text = "Background "
 
 [node name="ParticlesCheckBox" type="CheckBox" parent="TabContainerSettings/Video/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1388676762]
 layout_mode = 2
+size_flags_horizontal = 0
 tooltip_text = "São efeitos para melhorar o visual do jogo, tem um custo baixa na perfomance quando comparado ao Vídeo e o Glow."
 theme = ExtResource("3_dtbia")
 theme_override_font_sizes/font_size = 30
-text = "Partículas"
+text = "Partículas "
 
 [node name="GlowCheckBox" type="CheckBox" parent="TabContainerSettings/Video/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1264643711]
 layout_mode = 2
+size_flags_horizontal = 0
 tooltip_text = "Esse é um efeito para melhorar o visual do jogo, mas tem um custo alto no desempenho. 
 Desative caso esteja com baixa perfomance."
 theme = ExtResource("3_dtbia")
 theme_override_font_sizes/font_size = 30
-text = "Glow"
+text = "Glow "
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1245140699]
 layout_mode = 1
@@ -537,7 +596,6 @@ theme = ExtResource("3_dtbia")
 theme_override_font_sizes/font_size = 89
 text = " Voltar "
 
-[connection signal="text_submitted" from="LineEditPassword" to="." method="_on_line_edit_password_text_submitted"]
 [connection signal="value_changed" from="TabContainerSettings/Audio/VBoxContainer/MarginContainer/VBoxContainer/MainVolume/MainVolumeSlider" to="." method="_on_main_volume_slider_value_changed"]
 [connection signal="value_changed" from="TabContainerSettings/Audio/VBoxContainer/MarginContainer/VBoxContainer/SFXVolume/SFXVolumeSlider" to="." method="_on_sfx_volume_slider_value_changed"]
 [connection signal="toggled" from="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/4/4 Buttons/VBoxContainer/HBoxContainer/1_4k" to="." method="_on_1_4k_toggled"]
@@ -548,6 +606,9 @@ text = " Voltar "
 [connection signal="toggled" from="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/Side Buttons/VBoxContainer/HBoxContainer/2_air" to="." method="_on_2_air_toggled"]
 [connection signal="toggled" from="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/Side Buttons/VBoxContainer/HBoxContainer/1_ground" to="." method="_on_1_ground_toggled"]
 [connection signal="toggled" from="TabContainerSettings/Controles/VBoxContainer/MarginContainer/PanelContainer/VBoxContainer/Side Buttons/VBoxContainer/HBoxContainer/2_ground" to="." method="_on_2_ground_toggled"]
+[connection signal="value_changed" from="TabContainerSettings/Jogo/VBoxContainer/VelocitySlider" to="." method="_on_velocity_slider_value_changed"]
+[connection signal="value_changed" from="TabContainerSettings/Jogo/VBoxContainer/GearTransparencySlider" to="." method="_on_gear_transparency_slider_value_changed"]
+[connection signal="item_selected" from="TabContainerSettings/Jogo/VBoxContainer/GearPositionOption" to="." method="_on_gear_position_option_item_selected"]
 [connection signal="item_selected" from="TabContainerSettings/Video/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/Mode/ModeOptionButton" to="." method="_on_mode_option_button_item_selected"]
 [connection signal="item_selected" from="TabContainerSettings/Video/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/Vsync/VsyncOptionButton" to="." method="_on_vsync_option_button_item_selected"]
 [connection signal="toggled" from="TabContainerSettings/Video/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/VideoCheckBox" to="." method="_on_video_check_box_toggled"]

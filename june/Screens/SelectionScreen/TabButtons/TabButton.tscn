@@ -197,7 +197,6 @@ focus_neighbor_top = NodePath("../Play")
 mouse_default_cursor_shape = 2
 theme = ExtResource("2_417wl")
 theme_override_font_sizes/font_size = 30
-disabled = true
 text = "Configurações"
 
 [connection signal="focus_entered" from="." to="." method="_on_focus_entered"]

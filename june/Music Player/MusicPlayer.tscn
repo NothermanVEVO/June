@@ -4,6 +4,19 @@
 [ext_resource type="PackedScene" uid="uid://ygpxmyrvsexw" path="res://Gear/Skins/JuneSkin.tscn" id="2_3cmtn"]
 [ext_resource type="PackedScene" uid="uid://dm614dfb13bo3" path="res://Screens/PauseScreen.tscn" id="3_3cmtn"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3cmtn"]
+
+[sub_resource type="Gradient" id="Gradient_3cmtn"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0.74, 0.74, 0.74, 0.43137255, 1, 1, 1, 0.43137255, 0.74, 0.74, 0.74, 0.43137255)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_tmfg2"]
+gradient = SubResource("Gradient_3cmtn")
+fill_from = Vector2(1, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_we570"]
+texture = SubResource("GradientTexture2D_tmfg2")
+
 [node name="MusicPlayer" type="Control" unique_id=1624473436]
 z_index = 3
 layout_mode = 3
@@ -46,3 +59,15 @@ expand = true
 [node name="PauseScreen" parent="." unique_id=891396986 instance=ExtResource("3_3cmtn")]
 visible = false
 layout_mode = 1
+
+[node name="SongTimeProgress" type="ProgressBar" parent="." unique_id=1976148315]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 10.0
+grow_horizontal = 2
+theme_override_styles/background = SubResource("StyleBoxEmpty_3cmtn")
+theme_override_styles/fill = SubResource("StyleBoxTexture_we570")
+show_percentage = false
+
+[connection signal="finished" from="VideoStreamPlayer" to="." method="_on_video_stream_player_finished"]

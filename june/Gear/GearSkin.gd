@@ -9,8 +9,8 @@ class_name GearSkin
 @onready var text_animation : AnimationPlayer = $FullGear/TextAnimation
 @onready var beat_animation : AnimationPlayer = $FullGear/BeatAnimation
 
-@onready var score_text : RichTextLabel = $FullGear/Base/VBoxContainer/Score
-@onready var speed_text : RichTextLabel = $FullGear/Base/VBoxContainer/MarginContainer/Speed
+@onready var score_text : Label = $FullGear/Base/VBoxContainer/Score
+@onready var speed_text : Label = $FullGear/Base/VBoxContainer/MarginContainer/Speed
 
 @onready var fever_bar : TextureProgressBar = $FullGear/Gear/Control/FeverBar
 @onready var star : NinePatchRect = $FullGear/Gear/Control/Star
@@ -67,6 +67,9 @@ enum Finalization{UNCLEAR, CLEAR, MAX_COMBO, PERFECT_COMBO}
 @onready var _button5 : Button = $FullGear/Controls/HBoxContainer/Button5
 @onready var _button6 : Button = $FullGear/Controls/HBoxContainer/Button6
 
+@onready var speed_text_animation: AnimationPlayer = $FullGear/SpeedTextAnimation
+@onready var score_text_animation: AnimationPlayer = $FullGear/ScoreTextAnimation
+
 signal loaded
 
 func _ready() -> void:
@@ -86,9 +89,9 @@ func _ready() -> void:
 	
 	var dict := Global.get_settings_dictionary()
 	
-	if dict["game_gear_position"] == GameSettingsScreen.GearPositions.LEFT:
+	if dict["game_gear_position"] == Settings.GearPositions.LEFT:
 		$FullGear.position.x -= 625
-	elif dict["game_gear_position"] == GameSettingsScreen.GearPositions.RIGHT:
+	elif dict["game_gear_position"] == Settings.GearPositions.RIGHT:
 		$FullGear.position.x += 625
 	
 	$FullGear/Gear/Control/Base/Background.color.a = 1 - dict["game_gear_transparency"]
@@ -234,10 +237,35 @@ func set_fever_value(value : float, fever : Note.Fever, hit_again : bool = false
 			fever_bar.texture_progress = _ZONE_FEVER_TEXTURE
 
 func set_score(score : int) -> void:
-	score_text.text = "Score: " + str(score)
+	var score_str : String = str(score)
+	const MAX_PLACES : int = 7
+	
+	if score_str.length() < MAX_PLACES:
+		for i in range(MAX_PLACES - score_str.length()):
+			score_str = score_str.insert(0, "0")
+	
+	if int(score_text.text.trim_prefix("Score: ")) != score:
+		score_text_animation.stop()
+		score_text_animation.play("Pop")
+	
+	score_text.text = "Score: " + score_str
 
 func set_speed(speed : float) -> void:
+	var last_speed : float = float(speed_text.text.trim_prefix("Speed: "))
+	
 	speed_text.text = "Speed: %.1fx" % [speed]
+	
+	if ((is_equal_approx(last_speed, 1.0) and is_equal_approx(speed, 1.0)) or 
+		(is_equal_approx(last_speed, 10.0) and is_equal_approx(speed, 10.0)) or
+		is_equal_approx(last_speed, 0.0)):
+			return
+	
+	speed_text_animation.stop()
+	
+	if last_speed < speed:
+		speed_text_animation.play("More")
+	elif last_speed > speed:
+		speed_text_animation.play("Less")
 
 func set_combo(combo : int) -> void:
 	$FullGear/Combo/ComboText.text = "COMBO " + str(combo)

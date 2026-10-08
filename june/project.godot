@@ -16,7 +16,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 config/name="June"
 config/description="Um jogo de ritmo onde você pode criar seu próprio mapa musical."
-config/version="0.0.2"
+config/version="0.1.0"
 config/tags=PackedStringArray("rythm")
 run/main_scene="uid://df11ylsthwo5e"
 config/use_custom_user_dir=true

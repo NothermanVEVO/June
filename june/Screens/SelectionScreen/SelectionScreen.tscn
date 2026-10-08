@@ -64,7 +64,6 @@ size_flags_horizontal = 8
 mouse_default_cursor_shape = 2
 theme = ExtResource("2_y1arh")
 theme_override_font_sizes/font_size = 35
-disabled = true
 text = "Abrir Pasta"
 
 [node name="Songs" type="MarginContainer" parent="VBoxContainer" unique_id=1780076764]

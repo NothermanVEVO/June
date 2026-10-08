@@ -34,7 +34,8 @@ var START_SCREEN_SCENE := load("res://NewScreens/StartScreen/StartScreen.tscn")
 var SELECTION_SCREEN_SCENE := load("res://Screens/SelectionScreen/SelectionScreen.tscn")
 var EDITOR_SCREEN_SCENE := load("res://Screens/EditorScreen.tscn")
 var SIDE_EDITOR_SCREEN_SCENE := load("res://Editor/SIDE/Settings/SideEditorSettings.tscn")
-var SETTING_SCREEN_SCENE := load("res://Screens/SettingsScreen.tscn")
+#var SETTING_SCREEN_SCENE := load("res://Screens/SettingsScreen.tscn")
+var SETTING_SCREEN_SCENE := load("res://NewScreens/Settings/Settings.tscn")
 var GAME_SETTING_SCREEN_SCENE := load("res://Screens/GameSettingsScreen.tscn")
 var VIDEO_SCREEN_SCENE := load("res://Screens/VideoScreen.tscn")
 var AUDIO_SCREEN_SCENE := load("res://Screens/AudioScreen.tscn")
@@ -181,7 +182,7 @@ func save_sample() -> Dictionary:
 func _create_settings() -> void:
 	_settings_dictionary["game_speed"] = 3.0
 	_settings_dictionary["game_gear_transparency"] = 0.5
-	_settings_dictionary["game_gear_position"] = GameSettingsScreen.GearPositions.CENTER
+	_settings_dictionary["game_gear_position"] = Settings.GearPositions.CENTER
 	
 	_settings_dictionary["video_mode"] = VideoScreen.Modes.FULLSCREEN
 	_settings_dictionary["video_vsync"] = VideoScreen.Vsync.DESACTIVATED
@@ -259,7 +260,7 @@ func _adjust_settings_dictionary() -> void:
 	if not _settings_dictionary.has("game_gear_transparency"):
 		_settings_dictionary["game_gear_transparency"] = 0.5
 	if not _settings_dictionary.has("game_gear_position"):
-		_settings_dictionary["game_gear_position"] = GameSettingsScreen.GearPositions.CENTER
+		_settings_dictionary["game_gear_position"] = Settings.GearPositions.CENTER
 	
 	if not _settings_dictionary.has("video_mode"):
 		_settings_dictionary["video_mode"] = VideoScreen.Modes.FULLSCREEN

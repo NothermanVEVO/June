@@ -45,9 +45,9 @@ func _init(type : Type, mode : Mode, center_screen : bool = true, max_size_y : f
 	if max_size_y >= 0:
 		_max_size_y = max_size_y
 	var dict := Global.get_settings_dictionary()
-	if dict["game_gear_position"] == GameSettingsScreen.GearPositions.LEFT:
+	if dict["game_gear_position"] == Settings.GearPositions.LEFT:
 		position.x -= 625
-	elif dict["game_gear_position"] == GameSettingsScreen.GearPositions.RIGHT:
+	elif dict["game_gear_position"] == Settings.GearPositions.RIGHT:
 		position.x += 625
 	
 	y_sort_enabled = true

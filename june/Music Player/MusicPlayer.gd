@@ -15,6 +15,8 @@ var _gear_skin : GearSkin
 
 @onready var _pause_screen : PauseScreen = $PauseScreen
 
+@onready var song_time_progress: ProgressBar = $SongTimeProgress
+
 var _song_map : SongMap
 var song_stream : AudioStream
 var video_stream : VideoStream
@@ -49,6 +51,10 @@ var _fade_out_reseted : bool = true
 
 var _current_uuid : String = ""
 
+var _fade_video_tween : Tween
+var _fade_song_progress_tween : Tween
+var _fade_duration : float = 1.0
+
 signal game_started
 
 signal quit_request
@@ -65,6 +71,8 @@ func _ready() -> void:
 	_pause_screen.resume_pressed.connect(pause)
 	_pause_screen.restart_pressed.connect(restart)
 	_pause_screen.quit_pressed.connect(_quit)
+	
+	Song.finished.connect(_song_finished)
 	
 	if autoload:
 		Gear.set_speed(Game.speed)
@@ -104,6 +112,8 @@ func _physics_process(delta: float) -> void:
 				Gear.set_speed(clampf(Gear.get_speed() + 0.1, 1.0, 10.0))
 	if Input.is_action_just_released("Decrease Speed") or Input.is_action_just_released("Increase Speed"):
 		_holding_time = 0.0
+	
+	song_time_progress.value = Global.get_percentage_between(0.0, Song.get_duration(), Song.get_time()) * 100
 
 func _process(_delta: float) -> void:
 	_current_time += _delta
@@ -122,6 +132,19 @@ func _process(_delta: float) -> void:
 func set_video_visible() -> void: ## IMBECIL
 	await get_tree().process_frame
 	video.visible = true
+
+func _song_finished() -> void:
+	if _fade_song_progress_tween:
+		_fade_song_progress_tween.kill()
+	
+	_fade_song_progress_tween = create_tween()
+	
+	_fade_song_progress_tween.tween_property(
+		song_time_progress,
+		"modulate:a",
+		0.0,
+		_fade_duration
+	)
 
 func start() -> void:
 	if not World.environment:
@@ -203,6 +226,15 @@ func restart() -> void:
 		video.stop()
 		video.visible = false
 	_create_gear()
+	
+	if _fade_video_tween:
+		_fade_video_tween.kill()
+	if _fade_song_progress_tween:
+		_fade_song_progress_tween.kill()
+	
+	video.modulate.a = 1.0
+	song_time_progress.modulate.a = 1.0
+	
 	start()
 
 func pause() -> void:
@@ -250,6 +282,10 @@ func _gear_fade_out() -> void:
 	fade_tween.parallel().tween_property(_gear, "modulate:a", 0.0, 1) \
 		.set_trans(Tween.TRANS_SINE) \
 		.set_ease(Tween.EASE_OUT)
+	
+	fade_tween.parallel().tween_property(song_time_progress, "modulate:a", 0.0, 1) \
+		.set_trans(Tween.TRANS_SINE) \
+		.set_ease(Tween.EASE_OUT)
 
 func _gear_fade_in() -> void:
 	if fade_tween:
@@ -259,6 +295,9 @@ func _gear_fade_in() -> void:
 		.set_trans(Tween.TRANS_SINE) \
 		.set_ease(Tween.EASE_IN)
 	fade_tween.parallel().tween_property(_gear, "modulate:a", 1, 1) \
+		.set_trans(Tween.TRANS_SINE) \
+		.set_ease(Tween.EASE_IN)
+	fade_tween.parallel().tween_property(song_time_progress, "modulate:a", 1, 1) \
 		.set_trans(Tween.TRANS_SINE) \
 		.set_ease(Tween.EASE_IN)
 
@@ -428,3 +467,16 @@ func _section_has_not_perfect_precision(section : Dictionary) -> bool:
 				#image_texture = Loader.load_image(_song_resource.image)
 				#image.texture = image_texture
 	#_load_song_map()
+
+func _on_video_stream_player_finished() -> void:
+	if _fade_video_tween:
+		_fade_video_tween.kill()
+	
+	_fade_video_tween = create_tween()
+	
+	_fade_video_tween.tween_property(
+		video,
+		"modulate:a",
+		0.0,
+		_fade_duration
+	)

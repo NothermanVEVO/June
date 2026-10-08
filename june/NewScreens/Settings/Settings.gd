@@ -1,8 +1,8 @@
 extends Control
 
-## TEMP
-@onready var line_edit_password: LineEdit = $LineEditPassword
-@onready var tab_container_settings: TabContainer = $TabContainerSettings
+class_name Settings
+
+enum GearPositions {CENTER, LEFT, RIGHT}
 
 ## AUDIO
 @onready var main_volume_text: RichTextLabel = $TabContainerSettings/Audio/VBoxContainer/MarginContainer/VBoxContainer/MainVolume/MainVolumeText
@@ -25,6 +25,15 @@ var _button_toggled_on : Button
 
 const INVALID_PHYSICAL_KEYCODE : Array[int] = [4194305, 49, 50, 4194336] ## [ESCAPE, 1, 2, F5].
 
+## GAME
+@onready var _velocity_text: RichTextLabel = $TabContainerSettings/Jogo/VBoxContainer/VelocityText
+@onready var _velocity_slider: HSlider = $TabContainerSettings/Jogo/VBoxContainer/VelocitySlider
+
+@onready var _gear_transparency_text: RichTextLabel = $TabContainerSettings/Jogo/VBoxContainer/GearTransparencyText
+@onready var _gear_transparency_slider: HSlider = $TabContainerSettings/Jogo/VBoxContainer/GearTransparencySlider
+
+@onready var _gear_position_option: OptionButton = $TabContainerSettings/Jogo/VBoxContainer/GearPositionOption
+
 ## VIDEO
 @onready var mode_option_button: OptionButton = $TabContainerSettings/Video/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/Mode/ModeOptionButton
 @onready var vsync_option_button: OptionButton = $TabContainerSettings/Video/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/Vsync/VsyncOptionButton
@@ -33,10 +42,11 @@ const INVALID_PHYSICAL_KEYCODE : Array[int] = [4194305, 49, 50, 4194336] ## [ESC
 @onready var glow_check_box: CheckBox = $TabContainerSettings/Video/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GlowCheckBox
 
 ## OTHERS
-var _start_screen_scene : PackedScene = load("res://NewScreens/StartScreen/StartScreen.tscn")
+enum LastSceneBefore {START, SELECTION}
+static var last_scene_before : LastSceneBefore
 
 func _ready() -> void:
-	#Song.finished.connect(_on_song_finished)
+	Song.finished.connect(_on_song_finished)
 	
 	#main_volume_slider.grab_focus() ## TODO
 	
@@ -61,6 +71,15 @@ func _ready() -> void:
 	_2_air.text = char(dict[_2_air.name])
 	_1_ground.text = char(dict[_1_ground.name])
 	_2_ground.text = char(dict[_2_ground.name])
+	
+	## GAME
+	_velocity_text.text = "Velocidade: %.1fx" % [dict["game_speed"]]
+	_velocity_slider.value = dict["game_speed"]
+	
+	_gear_transparency_text.text = "Transparência do fundo da Gear: " + str(int(dict["game_gear_transparency"] * 100)) + "%"
+	_gear_transparency_slider.value = dict["game_gear_transparency"]
+	
+	_gear_position_option.select(dict["game_gear_position"])
 	
 	## VIDEO
 	mode_option_button.select(dict["video_mode"])
@@ -88,17 +107,15 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		Global.save_settings(dict)
 		_button_toggled_on.button_pressed = false
 
-#func _on_song_finished() -> void:
-	#if is_inside_tree():
-		#Song.play()
-
-func _on_line_edit_password_text_submitted(new_text: String) -> void:
-	if new_text == "8892":
-		line_edit_password.visible = false
-		tab_container_settings.visible = true
+func _on_song_finished() -> void:
+	if is_inside_tree():
+		Song.play()
 
 func _on_return_pressed() -> void:
-	get_tree().change_scene_to_packed(_start_screen_scene)
+	if last_scene_before == LastSceneBefore.START:
+		get_tree().change_scene_to_packed(Global.START_SCREEN_SCENE)
+	else: ## SELECTION
+		get_tree().change_scene_to_packed(Global.SELECTION_SCREEN_SCENE)
 
 ## AUDIO
 func _on_main_volume_slider_value_changed(value: float) -> void:
@@ -181,3 +198,21 @@ func _on_glow_check_box_toggled(toggled_on: bool) -> void:
 	if dict["glow"] != toggled_on:
 		dict["glow"] = toggled_on
 		Global.save_settings(dict)
+
+## GAME
+func _on_velocity_slider_value_changed(value: float) -> void:
+	var dict := Global.get_settings_dictionary()
+	_velocity_text.text = "Velocidade: " + str(value)
+	dict["game_speed"] = value
+	Global.save_settings(dict)
+
+func _on_gear_transparency_slider_value_changed(value: float) -> void:
+	var dict := Global.get_settings_dictionary()
+	_gear_transparency_text.text = "Transparência do fundo da Gear: " + str(int(value * 100)) + "%"
+	dict["game_gear_transparency"] = value
+	Global.save_settings(dict)
+
+func _on_gear_position_option_item_selected(index: int) -> void:
+	var dict := Global.get_settings_dictionary()
+	dict["game_gear_position"] = index
+	Global.save_settings(dict)

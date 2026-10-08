@@ -2,7 +2,7 @@ extends Node
 
 var speed : float = 1.0
 var gear_transparency : float = 0.5
-var gear_position : GameSettingsScreen.GearPositions = GameSettingsScreen.GearPositions.CENTER
+var gear_position : Settings.GearPositions = Settings.GearPositions.CENTER
 
 var _gear_type : Gear.Type
 var _song_map : SongMap
