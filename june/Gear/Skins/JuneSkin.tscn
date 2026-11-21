@@ -85,7 +85,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.16666667, 0.33333334),
 "transitions": PackedFloat32Array(0.3660217, 0.16493855, 1),
 "update": 0,
-"values": [Vector2(0.9, 0.9), Vector2(1.1, 1.1), Vector2(1, 1)]
+"values": [Vector2(0.7, 0.7), Vector2(1.2, 1.2), Vector2(1, 1)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -1901,12 +1901,11 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -170.5
-offset_top = -66.5
+offset_top = -206.0
 offset_right = 170.5
-offset_bottom = 66.5
+offset_bottom = -73.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.9, 0.9)
 pivot_offset = Vector2(170.5, 76.5)
 offset_transform_enabled = true
 theme_override_constants/separation = -15
@@ -2038,7 +2037,7 @@ root_node = NodePath("../Combo")
 libraries/ = SubResource("AnimationLibrary_jii80")
 
 [node name="BeatAnimation" type="AnimationPlayer" parent="FullGear" unique_id=1132546769]
-root_node = NodePath("")
+root_node = NodePath("../Gear")
 libraries/ = SubResource("AnimationLibrary_dh8pw")
 
 [node name="Fever Star Effect" type="AnimationPlayer" parent="FullGear" unique_id=1904555463]

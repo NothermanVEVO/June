@@ -1,6 +1,6 @@
 extends Control
 
-const CURRENT_VERSION : String = "0.01.00-beta"
+const CURRENT_VERSION : String = "0.01.01-beta"
 const GITHUB_API : String = "https://api.github.com/repos/NothermanVEVO/June/releases/latest"
 
 @onready var background: Control = $Background
