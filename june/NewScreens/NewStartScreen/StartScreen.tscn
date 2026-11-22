@@ -23,7 +23,7 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="Gradient" id="Gradient_tcube"]
 offsets = PackedFloat32Array(0, 0.51492536, 1)
-colors = PackedColorArray(0, 0.2566667, 0.55, 1, 0, 0.8166666, 1, 1, 0.84000003, 1, 0.9626667, 1)
+colors = PackedColorArray(0, 0.2566667, 0.55, 1, 0, 0.8166666, 1, 1, 0.47000003, 0.7968333, 1, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_bj2bm"]
 gradient = SubResource("Gradient_tcube")
@@ -44,7 +44,7 @@ shader_parameter/transparent_background = true
 [sub_resource type="Gradient" id="Gradient_ou6w2"]
 interpolation_mode = 2
 offsets = PackedFloat32Array(0, 0.10240964, 0.31325302, 0.6686747, 0.8674699, 1)
-colors = PackedColorArray(0.27, 0.27, 0.27, 0, 0.06043356, 0.06043356, 0.06043356, 0.03652574, 0, 0, 0, 0.047058824, 0, 0, 0, 0.047058824, 0.020172814, 0.020172814, 0.020172814, 0.040730104, 0.15, 0.15, 0.15, 0)
+colors = PackedColorArray(0.27, 0.27, 0.27, 0, 0.06043356, 0.06043356, 0.06043356, 0.03652574, 0, 0, 0, 0.101960786, 0, 0, 0, 0.101960786, 0.020172814, 0.020172814, 0.020172814, 0.040730104, 0.15, 0.15, 0.15, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_tmfg2"]
 gradient = SubResource("Gradient_ou6w2")
