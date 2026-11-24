@@ -4,9 +4,163 @@
 [ext_resource type="FontFile" uid="uid://bk7uiutchpno7" path="res://assets/fonts/Kalufira.otf" id="1_mo4av"]
 [ext_resource type="Script" uid="uid://dd7c88gk5nhmi" path="res://NewScreens/NewStartScreen/StartScreen.gd" id="1_rkkjs"]
 [ext_resource type="Shader" uid="uid://cot3vk4m1rkb0" path="res://shaders/BetterShine.gdshader" id="1_xxjun"]
+[ext_resource type="Shader" uid="uid://dmhuashjiv5ta" path="res://shaders/Wave.gdshader" id="2_0rngs"]
 [ext_resource type="Script" uid="uid://b671ha10jv10r" path="res://NewScreens/NewStartScreen/StartScreenButton.gd" id="2_tcube"]
 [ext_resource type="FontFile" uid="uid://dro0q8ftlalhm" path="res://assets/fonts/josefin_sans/JosefinSans-SemiBold.ttf" id="2_xxjun"]
 [ext_resource type="Texture2D" uid="uid://c6h5in3dhssrx" path="res://assets/icons/globe.png" id="6_ou6w2"]
+
+[sub_resource type="Gradient" id="Gradient_kcfov"]
+offsets = PackedFloat32Array(0, 0.71686745)
+colors = PackedColorArray(0.304, 0.58519995, 0.76, 1, 0.39999998, 0.94000006, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_4d65i"]
+gradient = SubResource("Gradient_kcfov")
+fill_from = Vector2(0, 1)
+
+[sub_resource type="Gradient" id="Gradient_aqhs8"]
+offsets = PackedFloat32Array(0.6111111, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="Gradient" id="Gradient_0rngs"]
+colors = PackedColorArray(1, 1, 1, 0.101960786, 1, 1, 1, 0.6313726)
+
+[sub_resource type="Curve" id="Curve_aqhs8"]
+_limits = [-1.0, 1.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Shader" id="Shader_0rngs"]
+code = "// Made by PWira
+// MIT License
+shader_type canvas_item;
+
+// Liquid Property
+uniform float liquid_level : hint_range(0.0, 1.0) = 0.5;
+uniform vec4 liquid_color : source_color = vec4(0.2, 0.5, 1.0, 0.8);
+uniform vec4 foam_color : source_color = vec4(0.8, 0.9, 1.0, 0.6);
+
+// Wave property
+uniform float wave_amplitude : hint_range(0.0, 0.1) = 0.02;
+uniform float wave_frequency : hint_range(0.0, 20.0) = 5.0;
+uniform float wave_speed : hint_range(0.0, 5.0) = 2.0;
+
+// Gravity property
+uniform float gravity_angle : hint_range(-3.14159, 3.14159) = 0.0; // rotate in radian
+uniform vec2 gravity_direction = vec2(0.0, 1.0);
+
+// Visual property
+uniform float foam_thickness : hint_range(0.0, 0.1) = 0.02;
+uniform float shine_intensity : hint_range(0.0, 1.0) = 0.3;
+uniform bool add_bubble = true;
+uniform float bubble_scale : hint_range(0.0, 50.0) = 10.0;
+uniform float bubble_speed : hint_range(0.0, 2.0) = 0.5;
+
+// Simple Noise
+float random(vec2 st) {
+    return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
+}
+
+float noise(vec2 st) {
+    vec2 i = floor(st);
+    vec2 f = fract(st);
+
+    float a = random(i);
+    float b = random(i + vec2(1.0, 0.0));
+    float c = random(i + vec2(0.0, 1.0));
+    float d = random(i + vec2(1.0, 1.0));
+
+    vec2 u = f * f * (3.0 - 2.0 * f);
+
+    return mix(a, b, u.x) + (c - a)* u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
+}
+
+vec2 rotate(vec2 v, float angle) {
+    float c = cos(angle);
+    float s = sin(angle);
+    return vec2(v.x * c - v.y * s, v.x * s + v.y * c);
+}
+
+void fragment() {
+    vec2 uv = UV;
+    vec2 centered_uv = uv - 0.5;
+    vec2 rotated_uv = rotate(centered_uv, -gravity_angle);
+    rotated_uv += 0.5;
+
+    // Wave based on X in gravity coordinate
+    float wave = sin(rotated_uv.x * wave_frequency + TIME * wave_speed) * wave_amplitude;
+    float surface_y = (1.0 - liquid_level) + wave;
+
+
+    if (rotated_uv.y > surface_y) {
+
+        vec4 base_color = liquid_color;
+
+        float internal_wave = noise(vec2(rotated_uv.x * 3.0, rotated_uv.y * 3.0 + TIME * 0.5)) * 0.1;
+        base_color.rgb += vec3(internal_wave);
+
+
+		if (add_bubble){
+			vec2 bubble_uv = rotated_uv * bubble_scale;
+	        bubble_uv.y += TIME * bubble_speed;
+	        float bubble_noise = noise(bubble_uv);
+	        float bubbles = step(0.95, bubble_noise);
+	        base_color.rgb += vec3(bubbles * 0.3);
+		}
+
+        float shine = pow(1.0 - abs(uv.x - 0.5) * 2.0, 3.0) * shine_intensity;
+        base_color.rgb += vec3(shine);
+
+        float depth_factor = 1.0 - (rotated_uv.y - surface_y) / (1.0 - surface_y);
+        base_color.rgb *= 0.7 + depth_factor * 0.3;
+
+        COLOR = base_color;
+
+    } else if (rotated_uv.y > surface_y - foam_thickness) {
+
+        float foam_factor = (surface_y - rotated_uv.y) / foam_thickness;
+        float foam_noise = noise(vec2(rotated_uv.x * 20.0, TIME * 2.0));
+        foam_factor *= foam_noise;
+
+        vec4 final_foam = mix(liquid_color, foam_color, foam_factor);
+        COLOR = final_foam;
+
+    } else {
+
+        COLOR = vec4(0.0, 0.0, 0.0, 0.0);
+    }
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_aqhs8"]
+shader = SubResource("Shader_0rngs")
+shader_parameter/liquid_level = 0.2170000103075
+shader_parameter/liquid_color = Color(0.29000002, 0.55033344, 1, 0.5254902)
+shader_parameter/foam_color = Color(0.8, 0.9, 1, 0.6)
+shader_parameter/wave_amplitude = 0.0390000018525
+shader_parameter/wave_frequency = 2.802000133095
+shader_parameter/wave_speed = 1.286000061085
+shader_parameter/gravity_angle = 0.0
+shader_parameter/gravity_direction = Vector2(0, 1)
+shader_parameter/foam_thickness = 0.0
+shader_parameter/shine_intensity = 0.0
+shader_parameter/add_bubble = false
+shader_parameter/bubble_scale = 10.0
+shader_parameter/bubble_speed = 0.5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kcfov"]
+shader = ExtResource("2_0rngs")
+shader_parameter/liquid_level = 0.2250000106875
+shader_parameter/liquid_color = Color(0.29000002, 0.55033344, 1, 0.64705884)
+shader_parameter/foam_color = Color(0.8, 0.9, 1, 0.6)
+shader_parameter/wave_amplitude = 0.02
+shader_parameter/wave_frequency = 5.0
+shader_parameter/wave_speed = 2.0
+shader_parameter/gravity_angle = 0.1384100373917998
+shader_parameter/gravity_direction = Vector2(0, 1)
+shader_parameter/foam_thickness = 0.0
+shader_parameter/shine_intensity = 0.0
+shader_parameter/add_bubble = false
+shader_parameter/bubble_scale = 10.0
+shader_parameter/bubble_speed = 0.5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c51tn"]
 bg_color = Color(1, 1, 1, 1)
@@ -23,7 +177,7 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="Gradient" id="Gradient_tcube"]
 offsets = PackedFloat32Array(0, 0.51492536, 1)
-colors = PackedColorArray(0, 0.2566667, 0.55, 1, 0, 0.8166666, 1, 1, 0.47000003, 0.7968333, 1, 1)
+colors = PackedColorArray(0, 0.2566667, 0.55, 1, 0, 0.7268333, 0.89, 1, 0.47000003, 0.7968333, 1, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_bj2bm"]
 gradient = SubResource("Gradient_tcube")
@@ -74,9 +228,53 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_rkkjs")
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=1791811039]
+[node name="OriginalBackgroundColor" type="ColorRect" parent="." unique_id=633767848]
 layout_mode = 2
-color = Color(0.5751201, 0.03640002, 0.91, 1)
+color = Color(0.23529412, 0.7254902, 0.77254903, 1)
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=362773250]
+layout_mode = 2
+texture = SubResource("GradientTexture2D_4d65i")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1791811039]
+visible = false
+layout_mode = 2
+color = Color(0.10800001, 0.33899996, 0.36, 1)
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=2086770725]
+position = Vector2(960, 1300)
+amount = 80
+lifetime = 15.0
+preprocess = 10.0
+emission_shape = 3
+emission_rect_extents = Vector2(960, 150)
+direction = Vector2(0, -1)
+spread = 0.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 25.0
+initial_velocity_max = 100.0
+angular_velocity_min = -90.0
+angular_velocity_max = 90.0
+tangential_accel_min = -30.0
+tangential_accel_max = 30.0
+angle_min = -720.0
+angle_max = 720.0
+scale_amount_max = 12.5
+color_ramp = SubResource("Gradient_aqhs8")
+color_initial_ramp = SubResource("Gradient_0rngs")
+hue_variation_min = -0.05
+hue_variation_max = 0.05
+hue_variation_curve = SubResource("Curve_aqhs8")
+
+[node name="Wave2" type="ColorRect" parent="." unique_id=865384633]
+visible = false
+material = SubResource("ShaderMaterial_aqhs8")
+layout_mode = 2
+
+[node name="Wave1" type="ColorRect" parent="." unique_id=921547550]
+visible = false
+material = SubResource("ShaderMaterial_kcfov")
+layout_mode = 2
 
 [node name="Buttons" type="MarginContainer" parent="." unique_id=1863248512]
 layout_mode = 2
@@ -88,12 +286,13 @@ layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Buttons/VBoxContainer" unique_id=369285184]
 layout_mode = 2
-theme_override_constants/separation = 40
+theme_override_constants/separation = 60
 
 [node name="Stage" type="MarginContainer" parent="Buttons/VBoxContainer/HBoxContainer" unique_id=632104757 node_paths=PackedStringArray("shine_color_rect", "button", "side_lines", "color_progress_bar", "icon_texture_rect", "description")]
 clip_children = 2
 custom_minimum_size = Vector2(500, 250)
 layout_mode = 2
+offset_transform_enabled = true
 script = ExtResource("2_tcube")
 shine_color_rect = NodePath("PanelContainer/Shine")
 button = NodePath("Button")
@@ -110,7 +309,7 @@ offset_transform_position = Vector2(0, 10)
 theme_override_styles/panel = SubResource("StyleBoxFlat_c51tn")
 
 [node name="PanelContainer" type="PanelContainer" parent="Buttons/VBoxContainer/HBoxContainer/Stage" unique_id=938423657]
-modulate = Color(0.64, 0.64, 0.64, 1)
+self_modulate = Color(0.6392157, 0.6392157, 0.6392157, 1)
 clip_children = 2
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_acmvo")
@@ -122,7 +321,6 @@ offset_transform_enabled = true
 offset_transform_scale = Vector2(1.395, 1)
 theme_override_styles/background = SubResource("StyleBoxFlat_we570")
 theme_override_styles/fill = SubResource("StyleBoxTexture_fjp5r")
-value = 100.0
 show_percentage = false
 
 [node name="SideLines" type="ColorRect" parent="Buttons/VBoxContainer/HBoxContainer/Stage/PanelContainer" unique_id=1288881761]
@@ -159,7 +357,7 @@ offset_transform_enabled = true
 offset_transform_scale = Vector2(1.595, 1)
 
 [node name="BarShadow" type="TextureRect" parent="Buttons/VBoxContainer/HBoxContainer/Stage/PanelContainer" unique_id=1036581250]
-modulate = Color(18.892157, 18.892157, 18.892157, 1)
+modulate = Color(18.892157, 18.892157, 18.892157, 0.2509804)
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 size_flags_vertical = 0
@@ -169,7 +367,7 @@ texture = SubResource("GradientTexture2D_tmfg2")
 expand_mode = 1
 
 [node name="PinColor" type="PanelContainer" parent="Buttons/VBoxContainer/HBoxContainer/Stage/PanelContainer" unique_id=887197055]
-modulate = Color(0, 0.3833332, 1, 1)
+modulate = Color(0, 0.47645396, 1.224127, 1)
 custom_minimum_size = Vector2(20, 50.5)
 layout_mode = 2
 size_flags_horizontal = 0
@@ -187,6 +385,7 @@ theme_override_constants/margin_top = 6
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer/Stage/PanelContainer/TitleText" unique_id=932653692]
 texture_filter = 6
+custom_minimum_size = Vector2(400, 50)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
@@ -195,9 +394,7 @@ theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_fonts/normal_font = ExtResource("2_xxjun")
 theme_override_font_sizes/normal_font_size = 46
 text = "STAGE"
-fit_content = true
 autowrap_mode = 0
-horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Shine" type="ColorRect" parent="Buttons/VBoxContainer/HBoxContainer/Stage/PanelContainer" unique_id=2095490761]
@@ -240,6 +437,7 @@ mouse_default_cursor_shape = 2
 flat = true
 
 [node name="Title" type="MarginContainer" parent="." unique_id=1392246055]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0

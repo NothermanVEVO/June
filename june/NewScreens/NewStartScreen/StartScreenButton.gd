@@ -28,12 +28,17 @@ const CLICK_FLASH_DURATION := 0.08
 const CLICK_FLASH_OPACITY := 0.65
 
 # Floating do ícone
-const FLOAT_DISTANCE := Vector2(2.0, 2.0)
+const FLOAT_DISTANCE := Vector2(1.0, 1.0)
 const FLOAT_DURATION := 5
-const FLOAT_ROTATION := 1.5
+const FLOAT_ROTATION := 0.75
 
 const NORMAL_SIDE_LINES_SPEED := 16
 const FAST_SIDE_LINES_SPEED := 3
+
+# Floating do próprio card
+const SELF_FLOAT_DISTANCE := 3.0
+const SELF_FLOAT_DURATION := 4.0
+const SELF_FLOAT_ROTATION := 0.25 # Graus
 
 var scale_tween : Tween
 var float_tween : Tween
@@ -46,6 +51,10 @@ var original_material : Material
 
 var icon_base_offset_position : Vector2
 var icon_base_offset_rotation : float
+
+var self_float_tween : Tween
+var self_base_offset_position : Vector2
+var self_base_offset_rotation : float
 
 func _ready() -> void:
 	await get_tree().process_frame
@@ -66,12 +75,16 @@ func _ready() -> void:
 	
 	button.button_down.connect(_on_button_down)
 	button.button_up.connect(_on_button_up)
-
+	
+	self_base_offset_position = offset_transform_position
+	self_base_offset_rotation = offset_transform_rotation
 
 func _on_mouse_entered() -> void:
 	_stop_tween(scale_tween)
 	_stop_floating()
 	_stop_tween(shine_tween)
+	
+	_start_self_floating()
 	
 	description.visible = true
 
@@ -138,6 +151,32 @@ func _on_button_up() -> void:
 		RELEASE_DURATION
 	)
 
+func _start_self_floating() -> void:
+	_stop_tween(self_float_tween)
+
+	self_float_tween = create_tween()
+	self_float_tween.set_loops()
+
+	var phase := randf_range(0.0, TAU)
+
+	self_float_tween.tween_method(
+		func(t: float):
+			var vertical := sin(t) * SELF_FLOAT_DISTANCE
+			var rotation := sin(t) * deg_to_rad(SELF_FLOAT_ROTATION)
+
+			offset_transform_position = (
+				self_base_offset_position +
+				Vector2(0.0, vertical)
+			)
+
+			offset_transform_rotation = (
+				self_base_offset_rotation + rotation
+			),
+		phase,
+		phase + TAU,
+		SELF_FLOAT_DURATION
+	).set_trans(Tween.TRANS_LINEAR)
+
 func _play_click_flash() -> void:
 	var flash_tween := create_tween()
 
@@ -172,6 +211,10 @@ func _on_mouse_exited() -> void:
 	_stop_floating()
 	_stop_tween(scale_tween)
 	_stop_tween(progress_tween)
+	_stop_tween(self_float_tween)
+	
+	self.offset_transform_position = Vector2(0, 0)
+	self.offset_transform_rotation = 0.0
 	
 	description.visible = false
 
