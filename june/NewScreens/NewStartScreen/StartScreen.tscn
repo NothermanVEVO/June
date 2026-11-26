@@ -4,10 +4,28 @@
 [ext_resource type="FontFile" uid="uid://bk7uiutchpno7" path="res://assets/fonts/Kalufira.otf" id="1_mo4av"]
 [ext_resource type="Script" uid="uid://dd7c88gk5nhmi" path="res://NewScreens/NewStartScreen/StartScreen.gd" id="1_rkkjs"]
 [ext_resource type="Shader" uid="uid://cot3vk4m1rkb0" path="res://shaders/BetterShine.gdshader" id="1_xxjun"]
-[ext_resource type="Shader" uid="uid://dmhuashjiv5ta" path="res://shaders/Wave.gdshader" id="2_0rngs"]
+[ext_resource type="Shader" uid="uid://bmw5s43v6d2yp" path="res://shaders/ParallaxStars.gdshader" id="2_aqhs8"]
 [ext_resource type="Script" uid="uid://b671ha10jv10r" path="res://NewScreens/NewStartScreen/StartScreenButton.gd" id="2_tcube"]
 [ext_resource type="FontFile" uid="uid://dro0q8ftlalhm" path="res://assets/fonts/josefin_sans/JosefinSans-SemiBold.ttf" id="2_xxjun"]
+[ext_resource type="Script" uid="uid://bjen2vsrrni52" path="res://NewScreens/NewStartScreen/TitleEcos.gd" id="6_4rnyi"]
+[ext_resource type="Shader" uid="uid://berjxunrpp7vv" path="res://shaders/Skew.gdshader" id="6_6akkh"]
 [ext_resource type="Texture2D" uid="uid://c6h5in3dhssrx" path="res://assets/icons/globe.png" id="6_ou6w2"]
+[ext_resource type="FontFile" uid="uid://b7430pyexuxhq" path="res://assets/fonts/BBHBartle/BBHBartle-Regular.ttf" id="7_4rnyi"]
+[ext_resource type="Texture2D" uid="uid://dwe3uo5f6nb5" path="res://assets/icons/user.png" id="9_sf7k8"]
+[ext_resource type="Texture2D" uid="uid://cqhh8y674dns1" path="res://assets/icons/hammer.png" id="13_3tisi"]
+[ext_resource type="Texture2D" uid="uid://7rav66g7nvoe" path="res://assets/particles/star_sample.png" id="14_368sr"]
+[ext_resource type="Texture2D" uid="uid://b6mqdlncpmjvs" path="res://assets/icons/setting.png" id="14_jboig"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_we570"]
+shader = ExtResource("2_aqhs8")
+shader_parameter/bg_color = Color(0, 0, 0, 0)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/bigStarSlow = 1.0
+shader_parameter/mediumStarSlow = 3.0
+shader_parameter/smallStarSlow = 6.0
+shader_parameter/smallStarAmount = 0.001
+shader_parameter/mediumStarAmount = 0.005
+shader_parameter/bigStarAmount = 0.01
 
 [sub_resource type="Gradient" id="Gradient_kcfov"]
 offsets = PackedFloat32Array(0, 0.71686745)
@@ -17,156 +35,123 @@ colors = PackedColorArray(0.304, 0.58519995, 0.76, 1, 0.39999998, 0.94000006, 1,
 gradient = SubResource("Gradient_kcfov")
 fill_from = Vector2(0, 1)
 
+[sub_resource type="Gradient" id="Gradient_6akkh"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(1, 1, 1, 0.3137255, 0, 0, 0, 0, 1, 1, 1, 0.3137255)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_l65tw"]
+gradient = SubResource("Gradient_6akkh")
+width = 256
+height = 256
+use_hdr = true
+fill_from = Vector2(1, 1)
+
+[sub_resource type="Shader" id="Shader_jboig"]
+code = "shader_type canvas_item;
+
+uniform vec4 bg_color: source_color;
+uniform vec2 offset;
+uniform float bigStarSlow = 2.0;
+uniform float mediumStarSlow = 6.0;
+uniform float smallStarSlow = 8.0;
+
+uniform float smallStarAmount = 0.002;
+uniform float mediumStarAmount = 0.01;
+uniform float bigStarAmount = 0.02;
+
+float rand(vec2 st) {
+    return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
+}
+
+void fragment() {
+	vec2 normCoordBig = FRAGCOORD.xy+floor(offset/bigStarSlow);
+	vec2 normCoordMedium = FRAGCOORD.xy+floor(offset/mediumStarSlow);
+	vec2 normCoordSmall = FRAGCOORD.xy+floor(offset/smallStarSlow);
+	
+	float color = 0.0;
+	
+	float size = 20.0;
+	float prob = 1.0-mediumStarAmount;
+	vec2 pos = floor(1.0 / size * normCoordMedium);
+	float starValue = rand(pos);
+
+	// Draw medium Stars
+	if (starValue > prob)
+	{
+		vec2 center = size * pos + vec2(size, size) * 0.5;
+		float t = 0.9 + 0.2 * sin(TIME * 8.0 + (starValue - prob) / (1.0 - prob) * 45.0);
+		color = 1.0 - distance(normCoordMedium.xy, center) / (0.5 * size);
+		color = color * t / (abs(normCoordMedium.y - center.y)) * t / (abs(normCoordMedium.x - center.x));
+	}
+	
+	// Draw Big stars
+	size = 100.0;
+	prob = 1.0-bigStarAmount;
+	pos = floor(1.0 / size * normCoordBig);
+	starValue = rand(pos);
+
+	if (starValue > prob)
+	{
+		vec2 center = size * pos + vec2(size, size) * 0.5;
+		float t = 0.9 + 0.2 * sin(TIME * 8.0 + (starValue - prob) / (1.0 - prob) * 45.0);
+		color = 1.0 - distance(normCoordBig.xy, center) / (0.5 * size);
+		color = color * t / (abs(normCoordBig.y - center.y)) * t / (abs(normCoordBig.x - center.x));
+	}
+	
+	// Draw Small stars
+	if (rand(normCoordSmall / 20.0) > 1.0-smallStarAmount)
+	{
+		float r = rand(normCoordSmall);
+		color = r * (0.85 * sin(TIME * (r * 5.0) + 720.0 * r) + 0.95);
+	}
+	COLOR = vec4(vec3(color),color) + bg_color;
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_07jrr"]
+shader = SubResource("Shader_jboig")
+shader_parameter/bg_color = Color(0, 0, 0, 0)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/bigStarSlow = 1.0
+shader_parameter/mediumStarSlow = 3.0
+shader_parameter/smallStarSlow = 6.0
+shader_parameter/smallStarAmount = 0.001
+shader_parameter/mediumStarAmount = 0.005
+shader_parameter/bigStarAmount = 0.01
+
+[sub_resource type="Gradient" id="Gradient_4rnyi"]
+offsets = PackedFloat32Array(0, 0.56626505, 1)
+colors = PackedColorArray(0.016800001, 0.07429334, 0.14, 1, 0.16319999, 0.43776003, 0.48, 1, 0.015686275, 0.07450981, 0.14117648, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_sf7k8"]
+gradient = SubResource("Gradient_4rnyi")
+width = 256
+height = 256
+use_hdr = true
+fill_from = Vector2(0, 1)
+
 [sub_resource type="Gradient" id="Gradient_aqhs8"]
 offsets = PackedFloat32Array(0.6111111, 1)
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+colors = PackedColorArray(1, 1, 1, 0.6627451, 1, 1, 1, 0)
 
 [sub_resource type="Gradient" id="Gradient_0rngs"]
-colors = PackedColorArray(1, 1, 1, 0.101960786, 1, 1, 1, 0.6313726)
+colors = PackedColorArray(1, 1, 1, 0.101960786, 1, 1, 1, 0.42352942)
 
 [sub_resource type="Curve" id="Curve_aqhs8"]
 _limits = [-1.0, 1.0, 0.0, 1.0]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="Shader" id="Shader_0rngs"]
-code = "// Made by PWira
-// MIT License
-shader_type canvas_item;
+[sub_resource type="Gradient" id="Gradient_368sr"]
+colors = PackedColorArray(5.7756904e-07, 0.41904834, 0.54668623, 1, 1, 1, 1, 0)
 
-// Liquid Property
-uniform float liquid_level : hint_range(0.0, 1.0) = 0.5;
-uniform vec4 liquid_color : source_color = vec4(0.2, 0.5, 1.0, 0.8);
-uniform vec4 foam_color : source_color = vec4(0.8, 0.9, 1.0, 0.6);
-
-// Wave property
-uniform float wave_amplitude : hint_range(0.0, 0.1) = 0.02;
-uniform float wave_frequency : hint_range(0.0, 20.0) = 5.0;
-uniform float wave_speed : hint_range(0.0, 5.0) = 2.0;
-
-// Gravity property
-uniform float gravity_angle : hint_range(-3.14159, 3.14159) = 0.0; // rotate in radian
-uniform vec2 gravity_direction = vec2(0.0, 1.0);
-
-// Visual property
-uniform float foam_thickness : hint_range(0.0, 0.1) = 0.02;
-uniform float shine_intensity : hint_range(0.0, 1.0) = 0.3;
-uniform bool add_bubble = true;
-uniform float bubble_scale : hint_range(0.0, 50.0) = 10.0;
-uniform float bubble_speed : hint_range(0.0, 2.0) = 0.5;
-
-// Simple Noise
-float random(vec2 st) {
-    return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
-}
-
-float noise(vec2 st) {
-    vec2 i = floor(st);
-    vec2 f = fract(st);
-
-    float a = random(i);
-    float b = random(i + vec2(1.0, 0.0));
-    float c = random(i + vec2(0.0, 1.0));
-    float d = random(i + vec2(1.0, 1.0));
-
-    vec2 u = f * f * (3.0 - 2.0 * f);
-
-    return mix(a, b, u.x) + (c - a)* u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
-}
-
-vec2 rotate(vec2 v, float angle) {
-    float c = cos(angle);
-    float s = sin(angle);
-    return vec2(v.x * c - v.y * s, v.x * s + v.y * c);
-}
-
-void fragment() {
-    vec2 uv = UV;
-    vec2 centered_uv = uv - 0.5;
-    vec2 rotated_uv = rotate(centered_uv, -gravity_angle);
-    rotated_uv += 0.5;
-
-    // Wave based on X in gravity coordinate
-    float wave = sin(rotated_uv.x * wave_frequency + TIME * wave_speed) * wave_amplitude;
-    float surface_y = (1.0 - liquid_level) + wave;
-
-
-    if (rotated_uv.y > surface_y) {
-
-        vec4 base_color = liquid_color;
-
-        float internal_wave = noise(vec2(rotated_uv.x * 3.0, rotated_uv.y * 3.0 + TIME * 0.5)) * 0.1;
-        base_color.rgb += vec3(internal_wave);
-
-
-		if (add_bubble){
-			vec2 bubble_uv = rotated_uv * bubble_scale;
-	        bubble_uv.y += TIME * bubble_speed;
-	        float bubble_noise = noise(bubble_uv);
-	        float bubbles = step(0.95, bubble_noise);
-	        base_color.rgb += vec3(bubbles * 0.3);
-		}
-
-        float shine = pow(1.0 - abs(uv.x - 0.5) * 2.0, 3.0) * shine_intensity;
-        base_color.rgb += vec3(shine);
-
-        float depth_factor = 1.0 - (rotated_uv.y - surface_y) / (1.0 - surface_y);
-        base_color.rgb *= 0.7 + depth_factor * 0.3;
-
-        COLOR = base_color;
-
-    } else if (rotated_uv.y > surface_y - foam_thickness) {
-
-        float foam_factor = (surface_y - rotated_uv.y) / foam_thickness;
-        float foam_noise = noise(vec2(rotated_uv.x * 20.0, TIME * 2.0));
-        foam_factor *= foam_noise;
-
-        vec4 final_foam = mix(liquid_color, foam_color, foam_factor);
-        COLOR = final_foam;
-
-    } else {
-
-        COLOR = vec4(0.0, 0.0, 0.0, 0.0);
-    }
-}"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_aqhs8"]
-shader = SubResource("Shader_0rngs")
-shader_parameter/liquid_level = 0.2170000103075
-shader_parameter/liquid_color = Color(0.29000002, 0.55033344, 1, 0.5254902)
-shader_parameter/foam_color = Color(0.8, 0.9, 1, 0.6)
-shader_parameter/wave_amplitude = 0.0390000018525
-shader_parameter/wave_frequency = 2.802000133095
-shader_parameter/wave_speed = 1.286000061085
-shader_parameter/gravity_angle = 0.0
-shader_parameter/gravity_direction = Vector2(0, 1)
-shader_parameter/foam_thickness = 0.0
-shader_parameter/shine_intensity = 0.0
-shader_parameter/add_bubble = false
-shader_parameter/bubble_scale = 10.0
-shader_parameter/bubble_speed = 0.5
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_kcfov"]
-shader = ExtResource("2_0rngs")
-shader_parameter/liquid_level = 0.2250000106875
-shader_parameter/liquid_color = Color(0.29000002, 0.55033344, 1, 0.64705884)
-shader_parameter/foam_color = Color(0.8, 0.9, 1, 0.6)
-shader_parameter/wave_amplitude = 0.02
-shader_parameter/wave_frequency = 5.0
-shader_parameter/wave_speed = 2.0
-shader_parameter/gravity_angle = 0.1384100373917998
-shader_parameter/gravity_direction = Vector2(0, 1)
-shader_parameter/foam_thickness = 0.0
-shader_parameter/shine_intensity = 0.0
-shader_parameter/add_bubble = false
-shader_parameter/bubble_scale = 10.0
-shader_parameter/bubble_speed = 0.5
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fjp5r"]
+gradient = SubResource("Gradient_368sr")
+fill_from = Vector2(1, 0)
+fill_to = Vector2(0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c51tn"]
 bg_color = Color(1, 1, 1, 1)
 skew = Vector2(-0.47, 0)
-expand_margin_left = 14.0
-expand_margin_bottom = 13.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_acmvo"]
 bg_color = Color(1, 1, 1, 1)
@@ -177,23 +162,64 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="Gradient" id="Gradient_tcube"]
 offsets = PackedFloat32Array(0, 0.51492536, 1)
-colors = PackedColorArray(0, 0.2566667, 0.55, 1, 0, 0.7268333, 0.89, 1, 0.47000003, 0.7968333, 1, 1)
+colors = PackedColorArray(0, 0.4, 0.8392157, 1, 0.101960786, 0.6392157, 0.9411765, 1, 0.36862746, 0.8627451, 1, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_bj2bm"]
 gradient = SubResource("Gradient_tcube")
+width = 128
+height = 128
+use_hdr = true
 fill_to = Vector2(1, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fjp5r"]
 texture = SubResource("GradientTexture2D_bj2bm")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_rkkjs"]
-shader = ExtResource("1_acmvo")
+[sub_resource type="Shader" id="Shader_sf7k8"]
+code = "
+shader_type canvas_item;
+
+uniform float line_width : hint_range(0.001, 1.0) = 0.2;
+uniform float spacing : hint_range(0.001, 2.0) = 0.2;
+uniform float angle : hint_range(0.0, 360.0) = 45.0;
+uniform float time_per_cycle : hint_range(0.1, 30.0) = 8.0;
+
+uniform vec4 line_color : source_color = vec4(0.75, 0.75, 0.8, 1.0);
+
+uniform bool transparent_background = true;
+
+void fragment() {
+    float adjusted_spacing = line_width + spacing;
+
+    float rad = radians(angle);
+    vec2 direction = vec2(cos(rad), sin(rad));
+
+    float diagonal = dot(UV, direction);
+    diagonal += TIME / time_per_cycle;
+
+    float spaced_diagonal = mod(diagonal, adjusted_spacing);
+
+    bool is_line = spaced_diagonal < line_width;
+
+    if (is_line) {
+        COLOR = line_color * COLOR;
+    } else if (transparent_background) {
+        COLOR = vec4(0.0);
+    }
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_368sr"]
+shader = SubResource("Shader_sf7k8")
 shader_parameter/line_width = 0.06800000323000001
 shader_parameter/spacing = 0.046000002185
 shader_parameter/angle = 192.1230091258425
 shader_parameter/time_per_cycle = 16.00000075674012
 shader_parameter/line_color = Color(0, 0, 0, 0.050980393)
 shader_parameter/transparent_background = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fjp5r"]
+shader = ExtResource("6_6akkh")
+shader_parameter/skew = 0.4000000665000001
 
 [sub_resource type="Gradient" id="Gradient_ou6w2"]
 interpolation_mode = 2
@@ -204,6 +230,79 @@ colors = PackedColorArray(0.27, 0.27, 0.27, 0, 0.06043356, 0.06043356, 0.0604335
 gradient = SubResource("Gradient_ou6w2")
 fill_from = Vector2(1, 1)
 
+[sub_resource type="Shader" id="Shader_3tisi"]
+code = "
+shader_type canvas_item;
+render_mode blend_mix;
+
+uniform float width = 0.1;
+uniform float strength = 1.3;
+uniform float angle : hint_range(0.0, 360.0, 1.0) = 45.0;
+uniform float progress : hint_range(0.0, 1.0) = -1.0;
+
+uniform vec4 shine_color : source_color = vec4(1.0, 0.92, 0.7, 1.0);
+
+void fragment() {
+    if (progress < 0.0) {
+        discard;
+    }
+
+    vec2 uv = UV - vec2(0.5);
+
+    float rad = radians(angle);
+    vec2 dir = vec2(cos(rad), sin(rad));
+
+    float d = dot(uv, dir);
+
+    float t = progress * 1.4 - 0.7;
+
+    float band = 1.0 - smoothstep(0.0, width, abs(d - t));
+    float core = 1.0 - smoothstep(0.0, width * 0.25, abs(d - t));
+
+    float shine = (band * 0.6 + core * 0.8) * strength;
+
+    if (shine <= 0.001) {
+        discard;
+    }
+
+    COLOR = vec4(
+        shine_color.rgb,
+        clamp(shine * shine_color.a, 0.0, 1.0)
+    );
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jboig"]
+shader = SubResource("Shader_3tisi")
+shader_parameter/width = 0.2
+shader_parameter/strength = 6.45
+shader_parameter/angle = 350.0
+shader_parameter/progress = -1.0
+shader_parameter/shine_color = Color(1, 1, 1, 1)
+
+[sub_resource type="Gradient" id="Gradient_sf7k8"]
+offsets = PackedFloat32Array(0, 0.51492536, 1)
+colors = PackedColorArray(0.7019608, 0.07058824, 0.16862746, 1, 0.9411765, 0.19607843, 0.2901961, 1, 1, 0.5411765, 0.56078434, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_368sr"]
+gradient = SubResource("Gradient_sf7k8")
+width = 128
+height = 128
+use_hdr = true
+fill_to = Vector2(1, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3tisi"]
+texture = SubResource("GradientTexture2D_368sr")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rkkjs"]
+shader = ExtResource("1_acmvo")
+shader_parameter/line_width = 0.06800000323000001
+shader_parameter/spacing = 0.046000002185
+shader_parameter/angle = 192.1230091258425
+shader_parameter/time_per_cycle = 16.00000075674012
+shader_parameter/line_color = Color(0, 0, 0, 0.050980393)
+shader_parameter/transparent_background = true
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_l65tw"]
 shader = ExtResource("1_xxjun")
 shader_parameter/width = 0.2
@@ -211,6 +310,132 @@ shader_parameter/strength = 6.45
 shader_parameter/angle = 350.0
 shader_parameter/progress = -1.0
 shader_parameter/shine_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_368sr"]
+bg_color = Color(1, 1, 1, 1)
+skew = Vector2(0.47, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3tisi"]
+bg_color = Color(1, 1, 1, 1)
+skew = Vector2(0.47, 0)
+
+[sub_resource type="Gradient" id="Gradient_jboig"]
+offsets = PackedFloat32Array(0, 0.51492536, 1)
+colors = PackedColorArray(0.043137256, 0.56078434, 0.3529412, 1, 0.13333334, 0.7882353, 0.47843137, 1, 0.60784316, 0.9490196, 0.72156864, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_07jrr"]
+gradient = SubResource("Gradient_jboig")
+width = 128
+height = 128
+use_hdr = true
+fill_to = Vector2(1, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qrgr3"]
+texture = SubResource("GradientTexture2D_07jrr")
+
+[sub_resource type="Shader" id="Shader_qrgr3"]
+code = "
+shader_type canvas_item;
+
+uniform float line_width : hint_range(0.001, 1.0) = 0.2;
+uniform float spacing : hint_range(0.001, 2.0) = 0.2;
+uniform float angle : hint_range(0.0, 360.0) = 45.0;
+uniform float time_per_cycle : hint_range(0.1, 30.0) = 8.0;
+
+uniform vec4 line_color : source_color = vec4(0.75, 0.75, 0.8, 1.0);
+
+uniform bool transparent_background = true;
+
+void fragment() {
+    float adjusted_spacing = line_width + spacing;
+
+    float rad = radians(angle);
+    vec2 direction = vec2(cos(rad), sin(rad));
+
+    float diagonal = dot(UV, direction);
+    diagonal += TIME / time_per_cycle;
+
+    float spaced_diagonal = mod(diagonal, adjusted_spacing);
+
+    bool is_line = spaced_diagonal < line_width;
+
+    if (is_line) {
+        COLOR = line_color * COLOR;
+    } else if (transparent_background) {
+        COLOR = vec4(0.0);
+    }
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sd0h8"]
+shader = SubResource("Shader_qrgr3")
+shader_parameter/line_width = 0.06800000323000001
+shader_parameter/spacing = 0.046000002185
+shader_parameter/angle = 192.1230091258425
+shader_parameter/time_per_cycle = 16.00000075674012
+shader_parameter/line_color = Color(0, 0, 0, 0.050980393)
+shader_parameter/transparent_background = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jboig"]
+bg_color = Color(1, 1, 1, 1)
+skew = Vector2(0.47, 0)
+
+[sub_resource type="Gradient" id="Gradient_07jrr"]
+offsets = PackedFloat32Array(0, 0.51492536, 1)
+colors = PackedColorArray(0.29411766, 0.33333334, 0.3882353, 1, 0.4862745, 0.5294118, 0.5882353, 1, 0.7647059, 0.7921569, 0.827451, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_qrgr3"]
+gradient = SubResource("Gradient_07jrr")
+width = 128
+height = 128
+use_hdr = true
+fill_to = Vector2(1, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sd0h8"]
+texture = SubResource("GradientTexture2D_qrgr3")
+
+[sub_resource type="Shader" id="Shader_07jrr"]
+code = "
+shader_type canvas_item;
+
+uniform float line_width : hint_range(0.001, 1.0) = 0.2;
+uniform float spacing : hint_range(0.001, 2.0) = 0.2;
+uniform float angle : hint_range(0.0, 360.0) = 45.0;
+uniform float time_per_cycle : hint_range(0.1, 30.0) = 8.0;
+
+uniform vec4 line_color : source_color = vec4(0.75, 0.75, 0.8, 1.0);
+
+uniform bool transparent_background = true;
+
+void fragment() {
+    float adjusted_spacing = line_width + spacing;
+
+    float rad = radians(angle);
+    vec2 direction = vec2(cos(rad), sin(rad));
+
+    float diagonal = dot(UV, direction);
+    diagonal += TIME / time_per_cycle;
+
+    float spaced_diagonal = mod(diagonal, adjusted_spacing);
+
+    bool is_line = spaced_diagonal < line_width;
+
+    if (is_line) {
+        COLOR = line_color * COLOR;
+    } else if (transparent_background) {
+        COLOR = vec4(0.0);
+    }
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qrgr3"]
+shader = SubResource("Shader_07jrr")
+shader_parameter/line_width = 0.06800000323000001
+shader_parameter/spacing = 0.046000002185
+shader_parameter/angle = 192.1230091258425
+shader_parameter/time_per_cycle = 16.00000075674012
+shader_parameter/line_color = Color(0, 0, 0, 0.050980393)
+shader_parameter/transparent_background = true
 
 [sub_resource type="Gradient" id="Gradient_v50bl"]
 offsets = PackedFloat32Array(0, 0.560241, 1)
@@ -220,30 +445,67 @@ colors = PackedColorArray(0.33228004, 0.101399995, 0.39, 1, 0.8509804, 0.2588235
 gradient = SubResource("Gradient_v50bl")
 fill_from = Vector2(1, 1)
 
-[node name="StartScreen" type="MarginContainer" unique_id=514367470]
+[sub_resource type="Gradient" id="Gradient_3tisi"]
+interpolation_mode = 2
+colors = PackedColorArray(1, 0.9490196, 0.47843137, 1, 1, 0.72156864, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_we570"]
+gradient = SubResource("Gradient_3tisi")
+use_hdr = true
+fill = 2
+fill_from = Vector2(1, 0)
+fill_to = Vector2(0, 1)
+
+[node name="StartScreen" type="MarginContainer" unique_id=514367470 node_paths=PackedStringArray("background_elements", "middle_elements")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_rkkjs")
+background_elements = NodePath("Title2")
+background_material = SubResource("ShaderMaterial_we570")
+middle_elements = NodePath("Buttons")
 
 [node name="OriginalBackgroundColor" type="ColorRect" parent="." unique_id=633767848]
+visible = false
 layout_mode = 2
 color = Color(0.23529412, 0.7254902, 0.77254903, 1)
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=362773250]
+visible = false
 layout_mode = 2
 texture = SubResource("GradientTexture2D_4d65i")
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=1791811039]
+[node name="TextureRect2" type="TextureRect" parent="." unique_id=704177313]
 visible = false
+clip_children = 2
 layout_mode = 2
-color = Color(0.10800001, 0.33899996, 0.36, 1)
+texture = SubResource("GradientTexture2D_l65tw")
+
+[node name="ColorRect" type="ColorRect" parent="TextureRect2" unique_id=299695294]
+material = SubResource("ShaderMaterial_07jrr")
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="TextureRect3" type="TextureRect" parent="." unique_id=443776497]
+clip_children = 2
+z_index = -1
+layout_mode = 2
+offset_transform_enabled = true
+texture = SubResource("GradientTexture2D_sf7k8")
+
+[node name="ColorRect" type="ColorRect" parent="TextureRect3" unique_id=1625515993]
+material = SubResource("ShaderMaterial_we570")
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=2086770725]
 position = Vector2(960, 1300)
 amount = 80
+texture = ExtResource("14_368sr")
 lifetime = 15.0
 preprocess = 10.0
 emission_shape = 3
@@ -252,69 +514,90 @@ direction = Vector2(0, -1)
 spread = 0.0
 gravity = Vector2(0, 0)
 initial_velocity_min = 25.0
-initial_velocity_max = 100.0
+initial_velocity_max = 50.0
 angular_velocity_min = -90.0
 angular_velocity_max = 90.0
-tangential_accel_min = -30.0
-tangential_accel_max = 30.0
+tangential_accel_min = -15.0
+tangential_accel_max = 15.0
 angle_min = -720.0
 angle_max = 720.0
-scale_amount_max = 12.5
+scale_amount_min = 0.0
+scale_amount_max = 0.15
 color_ramp = SubResource("Gradient_aqhs8")
 color_initial_ramp = SubResource("Gradient_0rngs")
 hue_variation_min = -0.05
 hue_variation_max = 0.05
 hue_variation_curve = SubResource("Curve_aqhs8")
 
-[node name="Wave2" type="ColorRect" parent="." unique_id=865384633]
-visible = false
-material = SubResource("ShaderMaterial_aqhs8")
+[node name="Title2" type="MarginContainer" parent="." unique_id=778657477]
+z_index = -1
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+offset_transform_enabled = true
 
-[node name="Wave1" type="ColorRect" parent="." unique_id=921547550]
-visible = false
-material = SubResource("ShaderMaterial_kcfov")
+[node name="RichTextLabel" type="RichTextLabel" parent="Title2" unique_id=1460952241]
+self_modulate = Color(1, 1, 1, 0.49411765)
+clip_children = 2
 layout_mode = 2
+theme_override_colors/default_color = Color(1, 1, 1, 0.5137255)
+theme_override_fonts/normal_font = ExtResource("7_4rnyi")
+theme_override_font_sizes/normal_font_size = 297
+bbcode_enabled = true
+text = "[tornado radius=2 freq=1 connected=1]June[/tornado]"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="Title2/RichTextLabel" unique_id=1828670832]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_fjp5r")
 
 [node name="Buttons" type="MarginContainer" parent="." unique_id=1863248512]
 layout_mode = 2
 size_flags_vertical = 4
-theme_override_constants/margin_left = 111
+offset_transform_enabled = true
+offset_transform_visual_only = false
+theme_override_constants/margin_left = 110
+theme_override_constants/margin_right = 110
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Buttons" unique_id=1884345031]
 layout_mode = 2
+theme_override_constants/separation = 70
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Buttons/VBoxContainer" unique_id=369285184]
 layout_mode = 2
-theme_override_constants/separation = 60
+theme_override_constants/separation = 70
+alignment = 1
 
-[node name="Stage" type="MarginContainer" parent="Buttons/VBoxContainer/HBoxContainer" unique_id=632104757 node_paths=PackedStringArray("shine_color_rect", "button", "side_lines", "color_progress_bar", "icon_texture_rect", "description")]
+[node name="Solo" type="MarginContainer" parent="Buttons/VBoxContainer/HBoxContainer" unique_id=632104757]
 clip_children = 2
 custom_minimum_size = Vector2(500, 250)
 layout_mode = 2
 offset_transform_enabled = true
 script = ExtResource("2_tcube")
-shine_color_rect = NodePath("PanelContainer/Shine")
-button = NodePath("Button")
-side_lines = NodePath("PanelContainer/SideLines")
-color_progress_bar = NodePath("PanelContainer/ColorProgressBar")
-icon_texture_rect = NodePath("PanelContainer/Icon")
-description = NodePath("PanelContainer/Description")
 
-[node name="Shadow" type="PanelContainer" parent="Buttons/VBoxContainer/HBoxContainer/Stage" unique_id=377993378]
+[node name="Shadow" type="PanelContainer" parent="Buttons/VBoxContainer/HBoxContainer/Solo" unique_id=377993378]
 modulate = Color(0, 0, 0, 0.3529412)
+z_index = -1
 layout_mode = 2
 offset_transform_enabled = true
-offset_transform_position = Vector2(0, 10)
+offset_transform_position = Vector2(-7.5, 15)
 theme_override_styles/panel = SubResource("StyleBoxFlat_c51tn")
 
-[node name="PanelContainer" type="PanelContainer" parent="Buttons/VBoxContainer/HBoxContainer/Stage" unique_id=938423657]
+[node name="PanelContainer" type="PanelContainer" parent="Buttons/VBoxContainer/HBoxContainer/Solo" unique_id=938423657]
 self_modulate = Color(0.6392157, 0.6392157, 0.6392157, 1)
 clip_children = 2
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_acmvo")
 
-[node name="ColorProgressBar" type="ProgressBar" parent="Buttons/VBoxContainer/HBoxContainer/Stage/PanelContainer" unique_id=1026324911]
+[node name="ColorProgressBar" type="ProgressBar" parent="Buttons/VBoxContainer/HBoxContainer/Solo/PanelContainer" unique_id=1026324911]
 layout_mode = 2
 size_flags_vertical = 1
 offset_transform_enabled = true
@@ -323,32 +606,80 @@ theme_override_styles/background = SubResource("StyleBoxFlat_we570")
 theme_override_styles/fill = SubResource("StyleBoxTexture_fjp5r")
 show_percentage = false
 
-[node name="SideLines" type="ColorRect" parent="Buttons/VBoxContainer/HBoxContainer/Stage/PanelContainer" unique_id=1288881761]
-material = SubResource("ShaderMaterial_rkkjs")
+[node name="SideLines" type="ColorRect" parent="Buttons/VBoxContainer/HBoxContainer/Solo/PanelContainer" unique_id=1288881761]
+material = SubResource("ShaderMaterial_368sr")
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_scale = Vector2(1.21, 1)
 
-[node name="Description" type="MarginContainer" parent="Buttons/VBoxContainer/HBoxContainer/Stage/PanelContainer" unique_id=1315680232]
+[node name="TitleEcos" type="Control" parent="Buttons/VBoxContainer/HBoxContainer/Solo/PanelContainer" unique_id=432036818]
+visible = false
 layout_mode = 2
-theme_override_constants/margin_left = 58
+script = ExtResource("6_4rnyi")
+text = "SOLO"
+
+[node name="TitleEco" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer/Solo/PanelContainer/TitleEcos" unique_id=543532751]
+modulate = Color(1, 1, 1, 0.08627451)
+texture_repeat = 2
+material = SubResource("ShaderMaterial_fjp5r")
+layout_mode = 0
+offset_left = -94.0
+offset_top = 18.0
+offset_right = 630.0
+offset_bottom = 268.0
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_constants/shadow_offset_x = -4
+theme_override_constants/shadow_offset_y = 4
+theme_override_fonts/normal_font = ExtResource("7_4rnyi")
+theme_override_font_sizes/normal_font_size = 116
+text = "SOLO"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TitleEco2" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer/Solo/PanelContainer/TitleEcos" unique_id=401650273]
+modulate = Color(1, 1, 1, 0.08627451)
+texture_repeat = 2
+material = SubResource("ShaderMaterial_fjp5r")
+layout_mode = 0
+offset_left = -94.0
+offset_top = 18.0
+offset_right = 630.0
+offset_bottom = 268.0
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_constants/shadow_offset_x = -4
+theme_override_constants/shadow_offset_y = 4
+theme_override_fonts/normal_font = ExtResource("7_4rnyi")
+theme_override_font_sizes/normal_font_size = 116
+text = "SOLO"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="MarginContainer" parent="Buttons/VBoxContainer/HBoxContainer/Solo/PanelContainer" unique_id=1315680232]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 60
 theme_override_constants/margin_bottom = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer/Stage/PanelContainer/Description" unique_id=1283396508]
+[node name="RichTextLabel" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer/Solo/PanelContainer/Description" unique_id=310372702]
 texture_filter = 6
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
 theme_override_colors/default_color = Color(0, 0, 0, 0.5803922)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.41568628)
+theme_override_constants/shadow_offset_x = -1
+theme_override_constants/shadow_offset_y = 1
 theme_override_fonts/normal_font = ExtResource("2_xxjun")
 theme_override_font_sizes/normal_font_size = 22
-text = "Choose a song and play."
+text = "Just you and the music."
 fit_content = true
 autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Bar" type="ColorRect" parent="Buttons/VBoxContainer/HBoxContainer/Stage/PanelContainer" unique_id=521451478]
+[node name="Bar" type="ColorRect" parent="Buttons/VBoxContainer/HBoxContainer/Solo/PanelContainer" unique_id=521451478]
 modulate = Color(18.892157, 18.892157, 18.892157, 1)
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
@@ -356,7 +687,7 @@ size_flags_vertical = 0
 offset_transform_enabled = true
 offset_transform_scale = Vector2(1.595, 1)
 
-[node name="BarShadow" type="TextureRect" parent="Buttons/VBoxContainer/HBoxContainer/Stage/PanelContainer" unique_id=1036581250]
+[node name="BarShadow" type="TextureRect" parent="Buttons/VBoxContainer/HBoxContainer/Solo/PanelContainer" unique_id=1036581250]
 modulate = Color(18.892157, 18.892157, 18.892157, 0.2509804)
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
@@ -366,7 +697,7 @@ offset_transform_scale = Vector2(1.595, 1)
 texture = SubResource("GradientTexture2D_tmfg2")
 expand_mode = 1
 
-[node name="PinColor" type="PanelContainer" parent="Buttons/VBoxContainer/HBoxContainer/Stage/PanelContainer" unique_id=887197055]
+[node name="PinColor" type="PanelContainer" parent="Buttons/VBoxContainer/HBoxContainer/Solo/PanelContainer" unique_id=887197055]
 modulate = Color(0, 0.47645396, 1.224127, 1)
 custom_minimum_size = Vector2(20, 50.5)
 layout_mode = 2
@@ -376,14 +707,14 @@ offset_transform_enabled = true
 offset_transform_position = Vector2(-50, 0)
 theme_override_styles/panel = SubResource("StyleBoxFlat_acmvo")
 
-[node name="TitleText" type="MarginContainer" parent="Buttons/VBoxContainer/HBoxContainer/Stage/PanelContainer" unique_id=2056720111]
+[node name="TitleText" type="MarginContainer" parent="Buttons/VBoxContainer/HBoxContainer/Solo/PanelContainer" unique_id=2056720111]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 theme_override_constants/margin_left = -5
 theme_override_constants/margin_top = 6
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer/Stage/PanelContainer/TitleText" unique_id=932653692]
+[node name="RichTextLabel" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer/Solo/PanelContainer/TitleText" unique_id=932653692]
 texture_filter = 6
 custom_minimum_size = Vector2(400, 50)
 layout_mode = 2
@@ -393,18 +724,209 @@ offset_transform_enabled = true
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_fonts/normal_font = ExtResource("2_xxjun")
 theme_override_font_sizes/normal_font_size = 46
-text = "STAGE"
+text = "SOLO"
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="Shine" type="ColorRect" parent="Buttons/VBoxContainer/HBoxContainer/Stage/PanelContainer" unique_id=2095490761]
+[node name="Shine" type="ColorRect" parent="Buttons/VBoxContainer/HBoxContainer/Solo/PanelContainer" unique_id=2095490761]
+material = SubResource("ShaderMaterial_jboig")
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.285, 1)
+color = Color(18.892157, 18.892157, 18.892157, 1)
+
+[node name="IconShadow" type="TextureRect" parent="Buttons/VBoxContainer/HBoxContainer/Solo/PanelContainer" unique_id=681897272]
+modulate = Color(0, 0, 0, 0.2901961)
+texture_filter = 6
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(333.14, 47.715)
+offset_transform_rotation = 0.27925268
+offset_transform_pivot = Vector2(-128, 0)
+texture = ExtResource("9_sf7k8")
+expand_mode = 1
+stretch_mode = 2
+
+[node name="Icon" type="TextureRect" parent="Buttons/VBoxContainer/HBoxContainer/Solo/PanelContainer" unique_id=746068138]
+modulate = Color(18.892157, 18.892157, 18.892157, 1)
+texture_filter = 6
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(331.075, 41.495)
+offset_transform_rotation = 0.27925268
+offset_transform_pivot = Vector2(-128, 0)
+texture = ExtResource("9_sf7k8")
+expand_mode = 1
+stretch_mode = 2
+
+[node name="Button" type="Button" parent="Buttons/VBoxContainer/HBoxContainer/Solo" unique_id=1441938903]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.25, 1)
+offset_transform_visual_only = false
+mouse_default_cursor_shape = 2
+flat = true
+
+[node name="Online" type="MarginContainer" parent="Buttons/VBoxContainer/HBoxContainer" unique_id=568611163]
+clip_children = 2
+custom_minimum_size = Vector2(500, 250)
+layout_mode = 2
+offset_transform_enabled = true
+script = ExtResource("2_tcube")
+
+[node name="Shadow" type="PanelContainer" parent="Buttons/VBoxContainer/HBoxContainer/Online" unique_id=819520577]
+modulate = Color(0, 0, 0, 0.3529412)
+z_index = -1
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(-7.5, 15)
+theme_override_styles/panel = SubResource("StyleBoxFlat_c51tn")
+
+[node name="PanelContainer" type="PanelContainer" parent="Buttons/VBoxContainer/HBoxContainer/Online" unique_id=595147017]
+self_modulate = Color(0.6392157, 0.6392157, 0.6392157, 1)
+clip_children = 2
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_acmvo")
+
+[node name="ColorProgressBar" type="ProgressBar" parent="Buttons/VBoxContainer/HBoxContainer/Online/PanelContainer" unique_id=1378932117]
+layout_mode = 2
+size_flags_vertical = 1
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.395, 1)
+theme_override_styles/background = SubResource("StyleBoxFlat_we570")
+theme_override_styles/fill = SubResource("StyleBoxTexture_3tisi")
+show_percentage = false
+
+[node name="SideLines" type="ColorRect" parent="Buttons/VBoxContainer/HBoxContainer/Online/PanelContainer" unique_id=188614912]
+material = SubResource("ShaderMaterial_rkkjs")
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.21, 1)
+
+[node name="TitleEcos" type="Control" parent="Buttons/VBoxContainer/HBoxContainer/Online/PanelContainer" unique_id=676758485]
+visible = false
+layout_mode = 2
+script = ExtResource("6_4rnyi")
+text = "ONLINE"
+
+[node name="TitleEco" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer/Online/PanelContainer/TitleEcos" unique_id=72778611]
+modulate = Color(1, 1, 1, 0.08627451)
+texture_repeat = 2
+material = SubResource("ShaderMaterial_fjp5r")
+layout_mode = 0
+offset_left = -339.0
+offset_top = 18.0
+offset_right = 705.0
+offset_bottom = 268.0
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_constants/shadow_offset_x = -4
+theme_override_constants/shadow_offset_y = 4
+theme_override_fonts/normal_font = ExtResource("7_4rnyi")
+theme_override_font_sizes/normal_font_size = 116
+text = "ONLINE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TitleEco2" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer/Online/PanelContainer/TitleEcos" unique_id=685888633]
+modulate = Color(1, 1, 1, 0.08627451)
+texture_repeat = 2
+material = SubResource("ShaderMaterial_fjp5r")
+layout_mode = 0
+offset_left = -339.0
+offset_top = 18.0
+offset_right = 705.0
+offset_bottom = 268.0
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_constants/shadow_offset_x = -4
+theme_override_constants/shadow_offset_y = 4
+theme_override_fonts/normal_font = ExtResource("7_4rnyi")
+theme_override_font_sizes/normal_font_size = 116
+text = "ONLINE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="MarginContainer" parent="Buttons/VBoxContainer/HBoxContainer/Online/PanelContainer" unique_id=139890860]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 60
+theme_override_constants/margin_bottom = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer/Online/PanelContainer/Description" unique_id=863276689]
+texture_filter = 6
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_colors/default_color = Color(0, 0, 0, 0.5803922)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.41568628)
+theme_override_constants/shadow_offset_x = -1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/normal_font = ExtResource("2_xxjun")
+theme_override_font_sizes/normal_font_size = 22
+text = "Prove you're the greatest."
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Bar" type="ColorRect" parent="Buttons/VBoxContainer/HBoxContainer/Online/PanelContainer" unique_id=298028422]
+modulate = Color(18.892157, 18.892157, 18.892157, 1)
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_vertical = 0
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.595, 1)
+
+[node name="BarShadow" type="TextureRect" parent="Buttons/VBoxContainer/HBoxContainer/Online/PanelContainer" unique_id=330429044]
+modulate = Color(18.892157, 18.892157, 18.892157, 0.2509804)
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_vertical = 0
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.595, 1)
+texture = SubResource("GradientTexture2D_tmfg2")
+expand_mode = 1
+
+[node name="PinColor" type="PanelContainer" parent="Buttons/VBoxContainer/HBoxContainer/Online/PanelContainer" unique_id=845783722]
+modulate = Color(1, 0, 0, 1)
+custom_minimum_size = Vector2(20, 50.5)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+offset_transform_enabled = true
+offset_transform_position = Vector2(-50, 0)
+theme_override_styles/panel = SubResource("StyleBoxFlat_acmvo")
+
+[node name="TitleText" type="MarginContainer" parent="Buttons/VBoxContainer/HBoxContainer/Online/PanelContainer" unique_id=1806406966]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_constants/margin_left = -5
+theme_override_constants/margin_top = 6
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer/Online/PanelContainer/TitleText" unique_id=1507004392]
+texture_filter = 6
+custom_minimum_size = Vector2(400, 50)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+offset_transform_enabled = true
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("2_xxjun")
+theme_override_font_sizes/normal_font_size = 46
+text = "ONLINE"
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="Shine" type="ColorRect" parent="Buttons/VBoxContainer/HBoxContainer/Online/PanelContainer" unique_id=351692033]
 material = SubResource("ShaderMaterial_l65tw")
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_scale = Vector2(1.285, 1)
 color = Color(18.892157, 18.892157, 18.892157, 1)
 
-[node name="IconShadow" type="TextureRect" parent="Buttons/VBoxContainer/HBoxContainer/Stage/PanelContainer" unique_id=681897272]
+[node name="IconShadow" type="TextureRect" parent="Buttons/VBoxContainer/HBoxContainer/Online/PanelContainer" unique_id=739514092]
 modulate = Color(0, 0, 0, 0.2901961)
 texture_filter = 6
 layout_mode = 2
@@ -416,7 +938,7 @@ texture = ExtResource("6_ou6w2")
 expand_mode = 1
 stretch_mode = 2
 
-[node name="Icon" type="TextureRect" parent="Buttons/VBoxContainer/HBoxContainer/Stage/PanelContainer" unique_id=746068138]
+[node name="Icon" type="TextureRect" parent="Buttons/VBoxContainer/HBoxContainer/Online/PanelContainer" unique_id=1628945288]
 modulate = Color(18.892157, 18.892157, 18.892157, 1)
 texture_filter = 6
 layout_mode = 2
@@ -428,7 +950,404 @@ texture = ExtResource("6_ou6w2")
 expand_mode = 1
 stretch_mode = 2
 
-[node name="Button" type="Button" parent="Buttons/VBoxContainer/HBoxContainer/Stage" unique_id=1441938903]
+[node name="Button" type="Button" parent="Buttons/VBoxContainer/HBoxContainer/Online" unique_id=188427677]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.25, 1)
+offset_transform_visual_only = false
+mouse_default_cursor_shape = 2
+flat = true
+
+[node name="VSeparator" type="VSeparator" parent="Buttons/VBoxContainer/HBoxContainer" unique_id=1258429103]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+theme_override_constants/separation = 93
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Buttons/VBoxContainer" unique_id=1535056625]
+layout_mode = 2
+theme_override_constants/separation = 70
+alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="Buttons/VBoxContainer/HBoxContainer2" unique_id=73944427]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+theme_override_constants/separation = 93
+
+[node name="Editor" type="MarginContainer" parent="Buttons/VBoxContainer/HBoxContainer2" unique_id=188159548]
+clip_children = 2
+custom_minimum_size = Vector2(500, 250)
+layout_mode = 2
+offset_transform_enabled = true
+script = ExtResource("2_tcube")
+
+[node name="Shadow" type="PanelContainer" parent="Buttons/VBoxContainer/HBoxContainer2/Editor" unique_id=777689045]
+modulate = Color(0, 0, 0, 0.3529412)
+z_index = -1
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(-20, 15)
+theme_override_styles/panel = SubResource("StyleBoxFlat_368sr")
+
+[node name="PanelContainer" type="PanelContainer" parent="Buttons/VBoxContainer/HBoxContainer2/Editor" unique_id=296993291]
+self_modulate = Color(0.6392157, 0.6392157, 0.6392157, 1)
+clip_children = 2
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_3tisi")
+
+[node name="ColorProgressBar" type="ProgressBar" parent="Buttons/VBoxContainer/HBoxContainer2/Editor/PanelContainer" unique_id=2022285834]
+layout_mode = 2
+size_flags_vertical = 1
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.395, 1)
+theme_override_styles/background = SubResource("StyleBoxFlat_we570")
+theme_override_styles/fill = SubResource("StyleBoxTexture_qrgr3")
+show_percentage = false
+
+[node name="SideLines" type="ColorRect" parent="Buttons/VBoxContainer/HBoxContainer2/Editor/PanelContainer" unique_id=720619983]
+material = SubResource("ShaderMaterial_sd0h8")
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.21, 1)
+
+[node name="TitleEcos" type="Control" parent="Buttons/VBoxContainer/HBoxContainer2/Editor/PanelContainer" unique_id=1295710641]
+visible = false
+layout_mode = 2
+script = ExtResource("6_4rnyi")
+text = "EDITOR"
+
+[node name="TitleEco" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer2/Editor/PanelContainer/TitleEcos" unique_id=214715617]
+modulate = Color(1, 1, 1, 0.08627451)
+texture_repeat = 2
+material = SubResource("ShaderMaterial_fjp5r")
+layout_mode = 0
+offset_left = -416.0
+offset_top = 18.0
+offset_right = 630.0
+offset_bottom = 268.0
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_constants/shadow_offset_x = -4
+theme_override_constants/shadow_offset_y = 4
+theme_override_fonts/normal_font = ExtResource("7_4rnyi")
+theme_override_font_sizes/normal_font_size = 116
+text = "EDITOR"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TitleEco2" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer2/Editor/PanelContainer/TitleEcos" unique_id=783865339]
+modulate = Color(1, 1, 1, 0.08627451)
+texture_repeat = 2
+material = SubResource("ShaderMaterial_fjp5r")
+layout_mode = 0
+offset_left = -416.0
+offset_top = 18.0
+offset_right = 630.0
+offset_bottom = 268.0
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_constants/shadow_offset_x = -4
+theme_override_constants/shadow_offset_y = 4
+theme_override_fonts/normal_font = ExtResource("7_4rnyi")
+theme_override_font_sizes/normal_font_size = 116
+text = "EDITOR"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="MarginContainer" parent="Buttons/VBoxContainer/HBoxContainer2/Editor/PanelContainer" unique_id=253011604]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = -36
+theme_override_constants/margin_bottom = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer2/Editor/PanelContainer/Description" unique_id=24919067]
+texture_filter = 6
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_colors/default_color = Color(0, 0, 0, 0.5803922)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.41568628)
+theme_override_constants/shadow_offset_x = -1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/normal_font = ExtResource("2_xxjun")
+theme_override_font_sizes/normal_font_size = 22
+text = "You define the rule of the music."
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Bar" type="ColorRect" parent="Buttons/VBoxContainer/HBoxContainer2/Editor/PanelContainer" unique_id=1853395639]
+modulate = Color(18.892157, 18.892157, 18.892157, 1)
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_vertical = 0
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.595, 1)
+
+[node name="BarShadow" type="TextureRect" parent="Buttons/VBoxContainer/HBoxContainer2/Editor/PanelContainer" unique_id=629519907]
+modulate = Color(18.892157, 18.892157, 18.892157, 0.2509804)
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_vertical = 0
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.595, 1)
+texture = SubResource("GradientTexture2D_tmfg2")
+expand_mode = 1
+
+[node name="PinColor" type="PanelContainer" parent="Buttons/VBoxContainer/HBoxContainer2/Editor/PanelContainer" unique_id=265952144]
+modulate = Color(0.06575739, 0.6891463, 0.43979073, 1)
+custom_minimum_size = Vector2(20, 50.5)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+offset_transform_enabled = true
+offset_transform_position = Vector2(45, 0)
+theme_override_styles/panel = SubResource("StyleBoxFlat_jboig")
+
+[node name="TitleText" type="MarginContainer" parent="Buttons/VBoxContainer/HBoxContainer2/Editor/PanelContainer" unique_id=990390600]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_constants/margin_left = 85
+theme_override_constants/margin_top = 6
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer2/Editor/PanelContainer/TitleText" unique_id=1661719006]
+texture_filter = 6
+custom_minimum_size = Vector2(400, 50)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+offset_transform_enabled = true
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("2_xxjun")
+theme_override_font_sizes/normal_font_size = 46
+text = "EDITOR"
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="Shine" type="ColorRect" parent="Buttons/VBoxContainer/HBoxContainer2/Editor/PanelContainer" unique_id=1092599648]
+material = SubResource("ShaderMaterial_jboig")
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.285, 1)
+color = Color(18.892157, 18.892157, 18.892157, 1)
+
+[node name="IconShadow" type="TextureRect" parent="Buttons/VBoxContainer/HBoxContainer2/Editor/PanelContainer" unique_id=1666380670]
+modulate = Color(0, 0, 0, 0.2901961)
+texture_filter = 6
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(338.14, 47.715)
+offset_transform_rotation = 0.27925268
+offset_transform_pivot = Vector2(-128, 0)
+texture = ExtResource("13_3tisi")
+expand_mode = 1
+stretch_mode = 2
+
+[node name="Icon" type="TextureRect" parent="Buttons/VBoxContainer/HBoxContainer2/Editor/PanelContainer" unique_id=886987521]
+modulate = Color(18.892157, 18.892157, 18.892157, 1)
+texture_filter = 6
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(336.075, 41.495)
+offset_transform_rotation = 0.27925268
+offset_transform_pivot = Vector2(-128, 0)
+texture = ExtResource("13_3tisi")
+expand_mode = 1
+stretch_mode = 2
+
+[node name="Button" type="Button" parent="Buttons/VBoxContainer/HBoxContainer2/Editor" unique_id=1218637462]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.25, 1)
+offset_transform_visual_only = false
+mouse_default_cursor_shape = 2
+flat = true
+
+[node name="Settings" type="MarginContainer" parent="Buttons/VBoxContainer/HBoxContainer2" unique_id=1086426358]
+clip_children = 2
+custom_minimum_size = Vector2(500, 250)
+layout_mode = 2
+offset_transform_enabled = true
+script = ExtResource("2_tcube")
+
+[node name="Shadow" type="PanelContainer" parent="Buttons/VBoxContainer/HBoxContainer2/Settings" unique_id=104734440]
+modulate = Color(0, 0, 0, 0.3529412)
+z_index = -1
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(-20, 15)
+theme_override_styles/panel = SubResource("StyleBoxFlat_368sr")
+
+[node name="PanelContainer" type="PanelContainer" parent="Buttons/VBoxContainer/HBoxContainer2/Settings" unique_id=1221157510]
+self_modulate = Color(0.6392157, 0.6392157, 0.6392157, 1)
+clip_children = 2
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_3tisi")
+
+[node name="ColorProgressBar" type="ProgressBar" parent="Buttons/VBoxContainer/HBoxContainer2/Settings/PanelContainer" unique_id=1750873035]
+layout_mode = 2
+size_flags_vertical = 1
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.395, 1)
+theme_override_styles/background = SubResource("StyleBoxFlat_we570")
+theme_override_styles/fill = SubResource("StyleBoxTexture_sd0h8")
+show_percentage = false
+
+[node name="SideLines" type="ColorRect" parent="Buttons/VBoxContainer/HBoxContainer2/Settings/PanelContainer" unique_id=1238083608]
+material = SubResource("ShaderMaterial_qrgr3")
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.21, 1)
+
+[node name="TitleEcos" type="Control" parent="Buttons/VBoxContainer/HBoxContainer2/Settings/PanelContainer" unique_id=148734060]
+visible = false
+layout_mode = 2
+script = ExtResource("6_4rnyi")
+text = "Settings"
+
+[node name="TitleEco" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer2/Settings/PanelContainer/TitleEcos" unique_id=1294392474]
+modulate = Color(1, 1, 1, 0.08627451)
+texture_repeat = 2
+material = SubResource("ShaderMaterial_fjp5r")
+layout_mode = 0
+offset_left = -732.0
+offset_top = 18.0
+offset_right = 630.0
+offset_bottom = 268.0
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_constants/shadow_offset_x = -4
+theme_override_constants/shadow_offset_y = 4
+theme_override_fonts/normal_font = ExtResource("7_4rnyi")
+theme_override_font_sizes/normal_font_size = 116
+text = "SETTINGS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TitleEco2" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer2/Settings/PanelContainer/TitleEcos" unique_id=1752732627]
+modulate = Color(1, 1, 1, 0.08627451)
+texture_repeat = 2
+material = SubResource("ShaderMaterial_fjp5r")
+layout_mode = 0
+offset_left = -732.0
+offset_top = 18.0
+offset_right = 630.0
+offset_bottom = 268.0
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_constants/shadow_offset_x = -4
+theme_override_constants/shadow_offset_y = 4
+theme_override_fonts/normal_font = ExtResource("7_4rnyi")
+theme_override_font_sizes/normal_font_size = 116
+text = "SETTINGS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="MarginContainer" parent="Buttons/VBoxContainer/HBoxContainer2/Settings/PanelContainer" unique_id=2146384666]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = -36
+theme_override_constants/margin_bottom = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer2/Settings/PanelContainer/Description" unique_id=1231772940]
+texture_filter = 6
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_colors/default_color = Color(0, 0, 0, 0.5803922)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.41568628)
+theme_override_constants/shadow_offset_x = -1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/normal_font = ExtResource("2_xxjun")
+theme_override_font_sizes/normal_font_size = 22
+text = "Find the perfect tune."
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Bar" type="ColorRect" parent="Buttons/VBoxContainer/HBoxContainer2/Settings/PanelContainer" unique_id=5331131]
+modulate = Color(18.892157, 18.892157, 18.892157, 1)
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_vertical = 0
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.595, 1)
+
+[node name="BarShadow" type="TextureRect" parent="Buttons/VBoxContainer/HBoxContainer2/Settings/PanelContainer" unique_id=583625643]
+modulate = Color(18.892157, 18.892157, 18.892157, 0.2509804)
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_vertical = 0
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.595, 1)
+texture = SubResource("GradientTexture2D_tmfg2")
+expand_mode = 1
+
+[node name="PinColor" type="PanelContainer" parent="Buttons/VBoxContainer/HBoxContainer2/Settings/PanelContainer" unique_id=1580268716]
+modulate = Color(0.3701919, 0.4173817, 0.48344734, 1)
+custom_minimum_size = Vector2(20, 50.5)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+offset_transform_enabled = true
+offset_transform_position = Vector2(45, 0)
+theme_override_styles/panel = SubResource("StyleBoxFlat_jboig")
+
+[node name="TitleText" type="MarginContainer" parent="Buttons/VBoxContainer/HBoxContainer2/Settings/PanelContainer" unique_id=2051919774]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_constants/margin_left = 85
+theme_override_constants/margin_top = 6
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer2/Settings/PanelContainer/TitleText" unique_id=827738117]
+texture_filter = 6
+custom_minimum_size = Vector2(400, 50)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+offset_transform_enabled = true
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("2_xxjun")
+theme_override_font_sizes/normal_font_size = 46
+text = "SETTINGS"
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="Shine" type="ColorRect" parent="Buttons/VBoxContainer/HBoxContainer2/Settings/PanelContainer" unique_id=1117085383]
+material = SubResource("ShaderMaterial_jboig")
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.285, 1)
+color = Color(18.892157, 18.892157, 18.892157, 1)
+
+[node name="IconShadow" type="TextureRect" parent="Buttons/VBoxContainer/HBoxContainer2/Settings/PanelContainer" unique_id=316377897]
+modulate = Color(0, 0, 0, 0.2901961)
+texture_filter = 6
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(333.14, 47.715)
+offset_transform_rotation = 0.27925268
+offset_transform_pivot = Vector2(-128, 0)
+texture = ExtResource("14_jboig")
+expand_mode = 1
+stretch_mode = 2
+
+[node name="Icon" type="TextureRect" parent="Buttons/VBoxContainer/HBoxContainer2/Settings/PanelContainer" unique_id=729328042]
+modulate = Color(18.892157, 18.892157, 18.892157, 1)
+texture_filter = 6
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(331.075, 41.495)
+offset_transform_rotation = 0.27925268
+offset_transform_pivot = Vector2(-128, 0)
+texture = ExtResource("14_jboig")
+expand_mode = 1
+stretch_mode = 2
+
+[node name="Button" type="Button" parent="Buttons/VBoxContainer/HBoxContainer2/Settings" unique_id=1320033802]
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_scale = Vector2(1.25, 1)
@@ -469,3 +1388,44 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_xxjun")
 expand_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=684553143]
+modulate = Color(1, 1, 1, 0.92941177)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 15
+
+[node name="TitleStar" type="Sprite2D" parent="MarginContainer" unique_id=1713688432]
+self_modulate = Color(1, 0.8235294, 0.24705882, 1)
+clip_children = 2
+texture_filter = 6
+position = Vector2(226, 55)
+scale = Vector2(0.3828125, 0.3828125)
+texture = ExtResource("14_368sr")
+
+[node name="TitleStarGradient" type="TextureRect" parent="MarginContainer/TitleStar" unique_id=1403070280]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -64.0
+offset_top = -64.0
+offset_right = -64.0
+offset_bottom = -64.0
+grow_horizontal = 2
+grow_vertical = 2
+offset_transform_enabled = true
+texture = SubResource("GradientTexture2D_we570")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer" unique_id=1187665681]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.972549, 0.98039216, 0.98039216, 1)
+theme_override_constants/shadow_offset_x = -2
+theme_override_constants/shadow_offset_y = 2
+theme_override_fonts/normal_font = ExtResource("7_4rnyi")
+theme_override_font_sizes/normal_font_size = 101
+bbcode_enabled = true
+text = "JUNE"
+fit_content = true
+autowrap_mode = 0

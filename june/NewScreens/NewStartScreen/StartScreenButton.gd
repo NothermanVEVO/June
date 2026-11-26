@@ -1,20 +1,24 @@
 
 extends MarginContainer
 
-@export var shine_color_rect : ColorRect
-@export var button : Button
-@export var side_lines : ColorRect
-@export var color_progress_bar : ProgressBar
-@export var icon_texture_rect : TextureRect
-@export var description : MarginContainer
+@onready var shine_color_rect : ColorRect = $PanelContainer/Shine
+@onready var button : Button = $Button
+@onready var side_lines : ColorRect = $PanelContainer/SideLines
+@onready var color_progress_bar : ProgressBar = $PanelContainer/ColorProgressBar
+@onready var icon_texture_rect : TextureRect = $PanelContainer/Icon
+@onready var description : MarginContainer = $PanelContainer/Description
+@onready var title_ecos : Control = $PanelContainer/TitleEcos
+@onready var shadow: PanelContainer = $Shadow
+
+const SHADOW_HOVER_OFFSET := Vector2(-7, 7)
 
 # Configurações
 const HOVER_SCALE := 1.1
 const SCALE_DURATION := 0.18
 
-const PROGRESS_DURATION := 0.45
+const PROGRESS_DURATION := 0.25
 
-const FLASH_DURATION := 0.1
+const FLASH_DURATION := 0.2
 const FLASH_OPACITY := 1.0
 
 const SHINE_DURATION := 0.25
@@ -56,8 +60,12 @@ var self_float_tween : Tween
 var self_base_offset_position : Vector2
 var self_base_offset_rotation : float
 
+var shadow_base_position: Vector2
+
 func _ready() -> void:
 	await get_tree().process_frame
+
+	shadow_base_position = shadow.offset_transform_position
 
 	base_position = position
 	pivot_offset = size / 2.0
@@ -87,6 +95,7 @@ func _on_mouse_entered() -> void:
 	_start_self_floating()
 	
 	description.visible = true
+	title_ecos.visible = true
 
 	position = base_position
 
@@ -94,11 +103,19 @@ func _on_mouse_entered() -> void:
 	scale_tween = create_tween()
 	scale_tween.set_trans(Tween.TRANS_BACK)
 	scale_tween.set_ease(Tween.EASE_OUT)
+	scale_tween.set_parallel(true)
 
 	scale_tween.tween_property(
 		self,
 		"scale",
 		Vector2.ONE * HOVER_SCALE,
+		SCALE_DURATION
+	)
+	
+	scale_tween.tween_property(
+		shadow,
+		"offset_transform_position",
+		shadow_base_position + SHADOW_HOVER_OFFSET,
 		SCALE_DURATION
 	)
 
@@ -212,18 +229,24 @@ func _on_mouse_exited() -> void:
 	_stop_tween(scale_tween)
 	_stop_tween(progress_tween)
 	_stop_tween(self_float_tween)
+	_stop_tween(shine_tween)
+	
+	shine_color_rect.color.a = 0.0
+	shine_color_rect.material = null
 	
 	self.offset_transform_position = Vector2(0, 0)
 	self.offset_transform_rotation = 0.0
 	
 	description.visible = false
+	title_ecos.visible = false
 
 	side_lines.material.set_shader_parameter(
 		"time_per_cycle",
 		NORMAL_SIDE_LINES_SPEED
 	)
 
-	color_progress_bar.value = color_progress_bar.min_value
+	_unfill_color_bar()
+	#color_progress_bar.value = color_progress_bar.min_value
 
 	# Retorna à posição original
 	var return_tween := create_tween()
@@ -241,11 +264,19 @@ func _on_mouse_exited() -> void:
 	scale_tween = create_tween()
 	scale_tween.set_trans(Tween.TRANS_BACK)
 	scale_tween.set_ease(Tween.EASE_OUT)
+	scale_tween.set_parallel(true)
 
 	scale_tween.tween_property(
 		self,
 		"scale",
 		Vector2.ONE,
+		SCALE_DURATION
+	)
+	
+	scale_tween.tween_property(
+		shadow,
+		"offset_transform_position",
+		shadow_base_position,
 		SCALE_DURATION
 	)
 
@@ -367,6 +398,18 @@ func _fill_color_bar() -> void:
 		PROGRESS_DURATION
 	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
+# DESPREENCHIMENTO DA BARRA
+func _unfill_color_bar() -> void:
+	_stop_tween(progress_tween)
+
+	progress_tween = create_tween()
+
+	progress_tween.tween_property(
+		color_progress_bar,
+		"value",
+		color_progress_bar.min_value,
+		PROGRESS_DURATION / 2
+	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
 # UTILITÁRIO
 func _stop_tween(tween: Tween) -> void:
