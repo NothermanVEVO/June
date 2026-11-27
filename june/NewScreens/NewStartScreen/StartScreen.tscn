@@ -15,6 +15,12 @@
 [ext_resource type="Texture2D" uid="uid://cqhh8y674dns1" path="res://assets/icons/hammer.png" id="13_3tisi"]
 [ext_resource type="Texture2D" uid="uid://7rav66g7nvoe" path="res://assets/particles/star_sample.png" id="14_368sr"]
 [ext_resource type="Texture2D" uid="uid://b6mqdlncpmjvs" path="res://assets/icons/setting.png" id="14_jboig"]
+[ext_resource type="FontFile" uid="uid://byqkw8g2yglvu" path="res://assets/fonts/Poppins/Poppins-Medium.ttf" id="15_qrgr3"]
+[ext_resource type="Texture2D" uid="uid://ddu4tk26dyn1j" path="res://assets/icons/exit.png" id="16_jboig"]
+[ext_resource type="Texture2D" uid="uid://cecbkr3dfwix0" path="res://assets/icons/fost.jpg" id="16_qrgr3"]
+[ext_resource type="Texture2D" uid="uid://be1chal0v3218" path="res://assets/icons/chinese-coin.png" id="16_r6uio"]
+[ext_resource type="FontFile" uid="uid://dyra1cbm1igyb" path="res://assets/fonts/Poppins/Poppins-SemiBold.ttf" id="17_m077r"]
+[ext_resource type="Texture2D" uid="uid://bkb4uf65ggqfe" path="res://assets/icons/star.png" id="18_m077r"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_we570"]
 shader = ExtResource("2_aqhs8")
@@ -437,6 +443,27 @@ shader_parameter/time_per_cycle = 16.00000075674012
 shader_parameter/line_color = Color(0, 0, 0, 0.050980393)
 shader_parameter/transparent_background = true
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sd0h8"]
+bg_color = Color(0, 0, 0, 0.5647059)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 1
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_m077r"]
+color = Color(1, 1, 1, 1)
+grow_begin = -10.0
+grow_end = -10.0
+vertical = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qrgr3"]
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 20
+
 [sub_resource type="Gradient" id="Gradient_v50bl"]
 offsets = PackedFloat32Array(0, 0.560241, 1)
 colors = PackedColorArray(0.33228004, 0.101399995, 0.39, 1, 0.8509804, 0.25882354, 1, 1, 0.94600004, 0.73, 1, 1)
@@ -456,7 +483,7 @@ fill = 2
 fill_from = Vector2(1, 0)
 fill_to = Vector2(0, 1)
 
-[node name="StartScreen" type="MarginContainer" unique_id=514367470 node_paths=PackedStringArray("background_elements", "middle_elements")]
+[node name="StartScreen" type="MarginContainer" unique_id=514367470 node_paths=PackedStringArray("background_elements", "border_elements", "middle_elements")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -465,7 +492,8 @@ grow_vertical = 2
 script = ExtResource("1_rkkjs")
 background_elements = NodePath("Title2")
 background_material = SubResource("ShaderMaterial_we570")
-middle_elements = NodePath("Buttons")
+border_elements = NodePath("BorderButtons")
+middle_elements = NodePath("MiddleButtons")
 
 [node name="OriginalBackgroundColor" type="ColorRect" parent="." unique_id=633767848]
 visible = false
@@ -559,31 +587,31 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_fjp5r")
 
-[node name="Buttons" type="MarginContainer" parent="." unique_id=1863248512]
+[node name="MiddleButtons" type="MarginContainer" parent="." unique_id=1863248512]
 layout_mode = 2
-size_flags_vertical = 4
 offset_transform_enabled = true
 offset_transform_visual_only = false
 theme_override_constants/margin_left = 110
 theme_override_constants/margin_right = 110
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Buttons" unique_id=1884345031]
+[node name="VBoxContainer" type="VBoxContainer" parent="MiddleButtons" unique_id=1884345031]
 layout_mode = 2
+size_flags_vertical = 4
 theme_override_constants/separation = 70
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Buttons/VBoxContainer" unique_id=369285184]
+[node name="HBoxContainer" type="HBoxContainer" parent="MiddleButtons/VBoxContainer" unique_id=369285184]
 layout_mode = 2
 theme_override_constants/separation = 70
 alignment = 1
 
-[node name="Solo" type="MarginContainer" parent="Buttons/VBoxContainer/HBoxContainer" unique_id=632104757]
+[node name="Solo" type="MarginContainer" parent="MiddleButtons/VBoxContainer/HBoxContainer" unique_id=632104757]
 clip_children = 2
 custom_minimum_size = Vector2(500, 250)
 layout_mode = 2
 offset_transform_enabled = true
 script = ExtResource("2_tcube")
 
-[node name="Shadow" type="PanelContainer" parent="Buttons/VBoxContainer/HBoxContainer/Solo" unique_id=377993378]
+[node name="Shadow" type="PanelContainer" parent="MiddleButtons/VBoxContainer/HBoxContainer/Solo" unique_id=377993378]
 modulate = Color(0, 0, 0, 0.3529412)
 z_index = -1
 layout_mode = 2
@@ -591,13 +619,13 @@ offset_transform_enabled = true
 offset_transform_position = Vector2(-7.5, 15)
 theme_override_styles/panel = SubResource("StyleBoxFlat_c51tn")
 
-[node name="PanelContainer" type="PanelContainer" parent="Buttons/VBoxContainer/HBoxContainer/Solo" unique_id=938423657]
+[node name="PanelContainer" type="PanelContainer" parent="MiddleButtons/VBoxContainer/HBoxContainer/Solo" unique_id=938423657]
 self_modulate = Color(0.6392157, 0.6392157, 0.6392157, 1)
 clip_children = 2
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_acmvo")
 
-[node name="ColorProgressBar" type="ProgressBar" parent="Buttons/VBoxContainer/HBoxContainer/Solo/PanelContainer" unique_id=1026324911]
+[node name="ColorProgressBar" type="ProgressBar" parent="MiddleButtons/VBoxContainer/HBoxContainer/Solo/PanelContainer" unique_id=1026324911]
 layout_mode = 2
 size_flags_vertical = 1
 offset_transform_enabled = true
@@ -606,19 +634,19 @@ theme_override_styles/background = SubResource("StyleBoxFlat_we570")
 theme_override_styles/fill = SubResource("StyleBoxTexture_fjp5r")
 show_percentage = false
 
-[node name="SideLines" type="ColorRect" parent="Buttons/VBoxContainer/HBoxContainer/Solo/PanelContainer" unique_id=1288881761]
+[node name="SideLines" type="ColorRect" parent="MiddleButtons/VBoxContainer/HBoxContainer/Solo/PanelContainer" unique_id=1288881761]
 material = SubResource("ShaderMaterial_368sr")
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_scale = Vector2(1.21, 1)
 
-[node name="TitleEcos" type="Control" parent="Buttons/VBoxContainer/HBoxContainer/Solo/PanelContainer" unique_id=432036818]
+[node name="TitleEcos" type="Control" parent="MiddleButtons/VBoxContainer/HBoxContainer/Solo/PanelContainer" unique_id=432036818]
 visible = false
 layout_mode = 2
 script = ExtResource("6_4rnyi")
 text = "SOLO"
 
-[node name="TitleEco" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer/Solo/PanelContainer/TitleEcos" unique_id=543532751]
+[node name="TitleEco" type="RichTextLabel" parent="MiddleButtons/VBoxContainer/HBoxContainer/Solo/PanelContainer/TitleEcos" unique_id=543532751]
 modulate = Color(1, 1, 1, 0.08627451)
 texture_repeat = 2
 material = SubResource("ShaderMaterial_fjp5r")
@@ -637,7 +665,7 @@ text = "SOLO"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TitleEco2" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer/Solo/PanelContainer/TitleEcos" unique_id=401650273]
+[node name="TitleEco2" type="RichTextLabel" parent="MiddleButtons/VBoxContainer/HBoxContainer/Solo/PanelContainer/TitleEcos" unique_id=401650273]
 modulate = Color(1, 1, 1, 0.08627451)
 texture_repeat = 2
 material = SubResource("ShaderMaterial_fjp5r")
@@ -656,13 +684,13 @@ text = "SOLO"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Description" type="MarginContainer" parent="Buttons/VBoxContainer/HBoxContainer/Solo/PanelContainer" unique_id=1315680232]
+[node name="Description" type="MarginContainer" parent="MiddleButtons/VBoxContainer/HBoxContainer/Solo/PanelContainer" unique_id=1315680232]
 visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 60
 theme_override_constants/margin_bottom = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer/Solo/PanelContainer/Description" unique_id=310372702]
+[node name="RichTextLabel" type="RichTextLabel" parent="MiddleButtons/VBoxContainer/HBoxContainer/Solo/PanelContainer/Description" unique_id=310372702]
 texture_filter = 6
 layout_mode = 2
 size_flags_horizontal = 0
@@ -679,7 +707,7 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Bar" type="ColorRect" parent="Buttons/VBoxContainer/HBoxContainer/Solo/PanelContainer" unique_id=521451478]
+[node name="Bar" type="ColorRect" parent="MiddleButtons/VBoxContainer/HBoxContainer/Solo/PanelContainer" unique_id=521451478]
 modulate = Color(18.892157, 18.892157, 18.892157, 1)
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
@@ -687,7 +715,7 @@ size_flags_vertical = 0
 offset_transform_enabled = true
 offset_transform_scale = Vector2(1.595, 1)
 
-[node name="BarShadow" type="TextureRect" parent="Buttons/VBoxContainer/HBoxContainer/Solo/PanelContainer" unique_id=1036581250]
+[node name="BarShadow" type="TextureRect" parent="MiddleButtons/VBoxContainer/HBoxContainer/Solo/PanelContainer" unique_id=1036581250]
 modulate = Color(18.892157, 18.892157, 18.892157, 0.2509804)
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
@@ -697,7 +725,7 @@ offset_transform_scale = Vector2(1.595, 1)
 texture = SubResource("GradientTexture2D_tmfg2")
 expand_mode = 1
 
-[node name="PinColor" type="PanelContainer" parent="Buttons/VBoxContainer/HBoxContainer/Solo/PanelContainer" unique_id=887197055]
+[node name="PinColor" type="PanelContainer" parent="MiddleButtons/VBoxContainer/HBoxContainer/Solo/PanelContainer" unique_id=887197055]
 modulate = Color(0, 0.47645396, 1.224127, 1)
 custom_minimum_size = Vector2(20, 50.5)
 layout_mode = 2
@@ -707,14 +735,14 @@ offset_transform_enabled = true
 offset_transform_position = Vector2(-50, 0)
 theme_override_styles/panel = SubResource("StyleBoxFlat_acmvo")
 
-[node name="TitleText" type="MarginContainer" parent="Buttons/VBoxContainer/HBoxContainer/Solo/PanelContainer" unique_id=2056720111]
+[node name="TitleText" type="MarginContainer" parent="MiddleButtons/VBoxContainer/HBoxContainer/Solo/PanelContainer" unique_id=2056720111]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 theme_override_constants/margin_left = -5
 theme_override_constants/margin_top = 6
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer/Solo/PanelContainer/TitleText" unique_id=932653692]
+[node name="RichTextLabel" type="RichTextLabel" parent="MiddleButtons/VBoxContainer/HBoxContainer/Solo/PanelContainer/TitleText" unique_id=932653692]
 texture_filter = 6
 custom_minimum_size = Vector2(400, 50)
 layout_mode = 2
@@ -728,14 +756,7 @@ text = "SOLO"
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="Shine" type="ColorRect" parent="Buttons/VBoxContainer/HBoxContainer/Solo/PanelContainer" unique_id=2095490761]
-material = SubResource("ShaderMaterial_jboig")
-layout_mode = 2
-offset_transform_enabled = true
-offset_transform_scale = Vector2(1.285, 1)
-color = Color(18.892157, 18.892157, 18.892157, 1)
-
-[node name="IconShadow" type="TextureRect" parent="Buttons/VBoxContainer/HBoxContainer/Solo/PanelContainer" unique_id=681897272]
+[node name="IconShadow" type="TextureRect" parent="MiddleButtons/VBoxContainer/HBoxContainer/Solo/PanelContainer" unique_id=681897272]
 modulate = Color(0, 0, 0, 0.2901961)
 texture_filter = 6
 layout_mode = 2
@@ -747,7 +768,7 @@ texture = ExtResource("9_sf7k8")
 expand_mode = 1
 stretch_mode = 2
 
-[node name="Icon" type="TextureRect" parent="Buttons/VBoxContainer/HBoxContainer/Solo/PanelContainer" unique_id=746068138]
+[node name="Icon" type="TextureRect" parent="MiddleButtons/VBoxContainer/HBoxContainer/Solo/PanelContainer" unique_id=746068138]
 modulate = Color(18.892157, 18.892157, 18.892157, 1)
 texture_filter = 6
 layout_mode = 2
@@ -759,7 +780,14 @@ texture = ExtResource("9_sf7k8")
 expand_mode = 1
 stretch_mode = 2
 
-[node name="Button" type="Button" parent="Buttons/VBoxContainer/HBoxContainer/Solo" unique_id=1441938903]
+[node name="Shine" type="ColorRect" parent="MiddleButtons/VBoxContainer/HBoxContainer/Solo/PanelContainer" unique_id=2095490761]
+material = SubResource("ShaderMaterial_jboig")
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.285, 1)
+color = Color(18.892157, 18.892157, 18.892157, 1)
+
+[node name="Button" type="Button" parent="MiddleButtons/VBoxContainer/HBoxContainer/Solo" unique_id=1441938903]
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_scale = Vector2(1.25, 1)
@@ -767,14 +795,14 @@ offset_transform_visual_only = false
 mouse_default_cursor_shape = 2
 flat = true
 
-[node name="Online" type="MarginContainer" parent="Buttons/VBoxContainer/HBoxContainer" unique_id=568611163]
+[node name="Online" type="MarginContainer" parent="MiddleButtons/VBoxContainer/HBoxContainer" unique_id=568611163]
 clip_children = 2
 custom_minimum_size = Vector2(500, 250)
 layout_mode = 2
 offset_transform_enabled = true
 script = ExtResource("2_tcube")
 
-[node name="Shadow" type="PanelContainer" parent="Buttons/VBoxContainer/HBoxContainer/Online" unique_id=819520577]
+[node name="Shadow" type="PanelContainer" parent="MiddleButtons/VBoxContainer/HBoxContainer/Online" unique_id=819520577]
 modulate = Color(0, 0, 0, 0.3529412)
 z_index = -1
 layout_mode = 2
@@ -782,13 +810,13 @@ offset_transform_enabled = true
 offset_transform_position = Vector2(-7.5, 15)
 theme_override_styles/panel = SubResource("StyleBoxFlat_c51tn")
 
-[node name="PanelContainer" type="PanelContainer" parent="Buttons/VBoxContainer/HBoxContainer/Online" unique_id=595147017]
+[node name="PanelContainer" type="PanelContainer" parent="MiddleButtons/VBoxContainer/HBoxContainer/Online" unique_id=595147017]
 self_modulate = Color(0.6392157, 0.6392157, 0.6392157, 1)
 clip_children = 2
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_acmvo")
 
-[node name="ColorProgressBar" type="ProgressBar" parent="Buttons/VBoxContainer/HBoxContainer/Online/PanelContainer" unique_id=1378932117]
+[node name="ColorProgressBar" type="ProgressBar" parent="MiddleButtons/VBoxContainer/HBoxContainer/Online/PanelContainer" unique_id=1378932117]
 layout_mode = 2
 size_flags_vertical = 1
 offset_transform_enabled = true
@@ -797,19 +825,19 @@ theme_override_styles/background = SubResource("StyleBoxFlat_we570")
 theme_override_styles/fill = SubResource("StyleBoxTexture_3tisi")
 show_percentage = false
 
-[node name="SideLines" type="ColorRect" parent="Buttons/VBoxContainer/HBoxContainer/Online/PanelContainer" unique_id=188614912]
+[node name="SideLines" type="ColorRect" parent="MiddleButtons/VBoxContainer/HBoxContainer/Online/PanelContainer" unique_id=188614912]
 material = SubResource("ShaderMaterial_rkkjs")
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_scale = Vector2(1.21, 1)
 
-[node name="TitleEcos" type="Control" parent="Buttons/VBoxContainer/HBoxContainer/Online/PanelContainer" unique_id=676758485]
+[node name="TitleEcos" type="Control" parent="MiddleButtons/VBoxContainer/HBoxContainer/Online/PanelContainer" unique_id=676758485]
 visible = false
 layout_mode = 2
 script = ExtResource("6_4rnyi")
 text = "ONLINE"
 
-[node name="TitleEco" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer/Online/PanelContainer/TitleEcos" unique_id=72778611]
+[node name="TitleEco" type="RichTextLabel" parent="MiddleButtons/VBoxContainer/HBoxContainer/Online/PanelContainer/TitleEcos" unique_id=72778611]
 modulate = Color(1, 1, 1, 0.08627451)
 texture_repeat = 2
 material = SubResource("ShaderMaterial_fjp5r")
@@ -828,7 +856,7 @@ text = "ONLINE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TitleEco2" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer/Online/PanelContainer/TitleEcos" unique_id=685888633]
+[node name="TitleEco2" type="RichTextLabel" parent="MiddleButtons/VBoxContainer/HBoxContainer/Online/PanelContainer/TitleEcos" unique_id=685888633]
 modulate = Color(1, 1, 1, 0.08627451)
 texture_repeat = 2
 material = SubResource("ShaderMaterial_fjp5r")
@@ -847,13 +875,13 @@ text = "ONLINE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Description" type="MarginContainer" parent="Buttons/VBoxContainer/HBoxContainer/Online/PanelContainer" unique_id=139890860]
+[node name="Description" type="MarginContainer" parent="MiddleButtons/VBoxContainer/HBoxContainer/Online/PanelContainer" unique_id=139890860]
 visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 60
 theme_override_constants/margin_bottom = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer/Online/PanelContainer/Description" unique_id=863276689]
+[node name="RichTextLabel" type="RichTextLabel" parent="MiddleButtons/VBoxContainer/HBoxContainer/Online/PanelContainer/Description" unique_id=863276689]
 texture_filter = 6
 layout_mode = 2
 size_flags_horizontal = 0
@@ -870,7 +898,7 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Bar" type="ColorRect" parent="Buttons/VBoxContainer/HBoxContainer/Online/PanelContainer" unique_id=298028422]
+[node name="Bar" type="ColorRect" parent="MiddleButtons/VBoxContainer/HBoxContainer/Online/PanelContainer" unique_id=298028422]
 modulate = Color(18.892157, 18.892157, 18.892157, 1)
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
@@ -878,7 +906,7 @@ size_flags_vertical = 0
 offset_transform_enabled = true
 offset_transform_scale = Vector2(1.595, 1)
 
-[node name="BarShadow" type="TextureRect" parent="Buttons/VBoxContainer/HBoxContainer/Online/PanelContainer" unique_id=330429044]
+[node name="BarShadow" type="TextureRect" parent="MiddleButtons/VBoxContainer/HBoxContainer/Online/PanelContainer" unique_id=330429044]
 modulate = Color(18.892157, 18.892157, 18.892157, 0.2509804)
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
@@ -888,7 +916,7 @@ offset_transform_scale = Vector2(1.595, 1)
 texture = SubResource("GradientTexture2D_tmfg2")
 expand_mode = 1
 
-[node name="PinColor" type="PanelContainer" parent="Buttons/VBoxContainer/HBoxContainer/Online/PanelContainer" unique_id=845783722]
+[node name="PinColor" type="PanelContainer" parent="MiddleButtons/VBoxContainer/HBoxContainer/Online/PanelContainer" unique_id=845783722]
 modulate = Color(1, 0, 0, 1)
 custom_minimum_size = Vector2(20, 50.5)
 layout_mode = 2
@@ -898,14 +926,14 @@ offset_transform_enabled = true
 offset_transform_position = Vector2(-50, 0)
 theme_override_styles/panel = SubResource("StyleBoxFlat_acmvo")
 
-[node name="TitleText" type="MarginContainer" parent="Buttons/VBoxContainer/HBoxContainer/Online/PanelContainer" unique_id=1806406966]
+[node name="TitleText" type="MarginContainer" parent="MiddleButtons/VBoxContainer/HBoxContainer/Online/PanelContainer" unique_id=1806406966]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 theme_override_constants/margin_left = -5
 theme_override_constants/margin_top = 6
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer/Online/PanelContainer/TitleText" unique_id=1507004392]
+[node name="RichTextLabel" type="RichTextLabel" parent="MiddleButtons/VBoxContainer/HBoxContainer/Online/PanelContainer/TitleText" unique_id=1507004392]
 texture_filter = 6
 custom_minimum_size = Vector2(400, 50)
 layout_mode = 2
@@ -919,14 +947,7 @@ text = "ONLINE"
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="Shine" type="ColorRect" parent="Buttons/VBoxContainer/HBoxContainer/Online/PanelContainer" unique_id=351692033]
-material = SubResource("ShaderMaterial_l65tw")
-layout_mode = 2
-offset_transform_enabled = true
-offset_transform_scale = Vector2(1.285, 1)
-color = Color(18.892157, 18.892157, 18.892157, 1)
-
-[node name="IconShadow" type="TextureRect" parent="Buttons/VBoxContainer/HBoxContainer/Online/PanelContainer" unique_id=739514092]
+[node name="IconShadow" type="TextureRect" parent="MiddleButtons/VBoxContainer/HBoxContainer/Online/PanelContainer" unique_id=739514092]
 modulate = Color(0, 0, 0, 0.2901961)
 texture_filter = 6
 layout_mode = 2
@@ -938,7 +959,7 @@ texture = ExtResource("6_ou6w2")
 expand_mode = 1
 stretch_mode = 2
 
-[node name="Icon" type="TextureRect" parent="Buttons/VBoxContainer/HBoxContainer/Online/PanelContainer" unique_id=1628945288]
+[node name="Icon" type="TextureRect" parent="MiddleButtons/VBoxContainer/HBoxContainer/Online/PanelContainer" unique_id=1628945288]
 modulate = Color(18.892157, 18.892157, 18.892157, 1)
 texture_filter = 6
 layout_mode = 2
@@ -950,7 +971,14 @@ texture = ExtResource("6_ou6w2")
 expand_mode = 1
 stretch_mode = 2
 
-[node name="Button" type="Button" parent="Buttons/VBoxContainer/HBoxContainer/Online" unique_id=188427677]
+[node name="Shine" type="ColorRect" parent="MiddleButtons/VBoxContainer/HBoxContainer/Online/PanelContainer" unique_id=351692033]
+material = SubResource("ShaderMaterial_l65tw")
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.285, 1)
+color = Color(18.892157, 18.892157, 18.892157, 1)
+
+[node name="Button" type="Button" parent="MiddleButtons/VBoxContainer/HBoxContainer/Online" unique_id=188427677]
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_scale = Vector2(1.25, 1)
@@ -958,29 +986,29 @@ offset_transform_visual_only = false
 mouse_default_cursor_shape = 2
 flat = true
 
-[node name="VSeparator" type="VSeparator" parent="Buttons/VBoxContainer/HBoxContainer" unique_id=1258429103]
+[node name="VSeparator" type="VSeparator" parent="MiddleButtons/VBoxContainer/HBoxContainer" unique_id=1258429103]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 theme_override_constants/separation = 93
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="Buttons/VBoxContainer" unique_id=1535056625]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MiddleButtons/VBoxContainer" unique_id=1535056625]
 layout_mode = 2
 theme_override_constants/separation = 70
 alignment = 1
 
-[node name="VSeparator" type="VSeparator" parent="Buttons/VBoxContainer/HBoxContainer2" unique_id=73944427]
+[node name="VSeparator" type="VSeparator" parent="MiddleButtons/VBoxContainer/HBoxContainer2" unique_id=73944427]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 theme_override_constants/separation = 93
 
-[node name="Editor" type="MarginContainer" parent="Buttons/VBoxContainer/HBoxContainer2" unique_id=188159548]
+[node name="Editor" type="MarginContainer" parent="MiddleButtons/VBoxContainer/HBoxContainer2" unique_id=188159548]
 clip_children = 2
 custom_minimum_size = Vector2(500, 250)
 layout_mode = 2
 offset_transform_enabled = true
 script = ExtResource("2_tcube")
 
-[node name="Shadow" type="PanelContainer" parent="Buttons/VBoxContainer/HBoxContainer2/Editor" unique_id=777689045]
+[node name="Shadow" type="PanelContainer" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Editor" unique_id=777689045]
 modulate = Color(0, 0, 0, 0.3529412)
 z_index = -1
 layout_mode = 2
@@ -988,13 +1016,13 @@ offset_transform_enabled = true
 offset_transform_position = Vector2(-20, 15)
 theme_override_styles/panel = SubResource("StyleBoxFlat_368sr")
 
-[node name="PanelContainer" type="PanelContainer" parent="Buttons/VBoxContainer/HBoxContainer2/Editor" unique_id=296993291]
+[node name="PanelContainer" type="PanelContainer" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Editor" unique_id=296993291]
 self_modulate = Color(0.6392157, 0.6392157, 0.6392157, 1)
 clip_children = 2
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_3tisi")
 
-[node name="ColorProgressBar" type="ProgressBar" parent="Buttons/VBoxContainer/HBoxContainer2/Editor/PanelContainer" unique_id=2022285834]
+[node name="ColorProgressBar" type="ProgressBar" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Editor/PanelContainer" unique_id=2022285834]
 layout_mode = 2
 size_flags_vertical = 1
 offset_transform_enabled = true
@@ -1003,19 +1031,19 @@ theme_override_styles/background = SubResource("StyleBoxFlat_we570")
 theme_override_styles/fill = SubResource("StyleBoxTexture_qrgr3")
 show_percentage = false
 
-[node name="SideLines" type="ColorRect" parent="Buttons/VBoxContainer/HBoxContainer2/Editor/PanelContainer" unique_id=720619983]
+[node name="SideLines" type="ColorRect" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Editor/PanelContainer" unique_id=720619983]
 material = SubResource("ShaderMaterial_sd0h8")
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_scale = Vector2(1.21, 1)
 
-[node name="TitleEcos" type="Control" parent="Buttons/VBoxContainer/HBoxContainer2/Editor/PanelContainer" unique_id=1295710641]
+[node name="TitleEcos" type="Control" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Editor/PanelContainer" unique_id=1295710641]
 visible = false
 layout_mode = 2
 script = ExtResource("6_4rnyi")
 text = "EDITOR"
 
-[node name="TitleEco" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer2/Editor/PanelContainer/TitleEcos" unique_id=214715617]
+[node name="TitleEco" type="RichTextLabel" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Editor/PanelContainer/TitleEcos" unique_id=214715617]
 modulate = Color(1, 1, 1, 0.08627451)
 texture_repeat = 2
 material = SubResource("ShaderMaterial_fjp5r")
@@ -1034,7 +1062,7 @@ text = "EDITOR"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TitleEco2" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer2/Editor/PanelContainer/TitleEcos" unique_id=783865339]
+[node name="TitleEco2" type="RichTextLabel" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Editor/PanelContainer/TitleEcos" unique_id=783865339]
 modulate = Color(1, 1, 1, 0.08627451)
 texture_repeat = 2
 material = SubResource("ShaderMaterial_fjp5r")
@@ -1053,13 +1081,13 @@ text = "EDITOR"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Description" type="MarginContainer" parent="Buttons/VBoxContainer/HBoxContainer2/Editor/PanelContainer" unique_id=253011604]
+[node name="Description" type="MarginContainer" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Editor/PanelContainer" unique_id=253011604]
 visible = false
 layout_mode = 2
 theme_override_constants/margin_left = -36
 theme_override_constants/margin_bottom = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer2/Editor/PanelContainer/Description" unique_id=24919067]
+[node name="RichTextLabel" type="RichTextLabel" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Editor/PanelContainer/Description" unique_id=24919067]
 texture_filter = 6
 layout_mode = 2
 size_flags_horizontal = 0
@@ -1076,7 +1104,7 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Bar" type="ColorRect" parent="Buttons/VBoxContainer/HBoxContainer2/Editor/PanelContainer" unique_id=1853395639]
+[node name="Bar" type="ColorRect" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Editor/PanelContainer" unique_id=1853395639]
 modulate = Color(18.892157, 18.892157, 18.892157, 1)
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
@@ -1084,7 +1112,7 @@ size_flags_vertical = 0
 offset_transform_enabled = true
 offset_transform_scale = Vector2(1.595, 1)
 
-[node name="BarShadow" type="TextureRect" parent="Buttons/VBoxContainer/HBoxContainer2/Editor/PanelContainer" unique_id=629519907]
+[node name="BarShadow" type="TextureRect" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Editor/PanelContainer" unique_id=629519907]
 modulate = Color(18.892157, 18.892157, 18.892157, 0.2509804)
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
@@ -1094,7 +1122,7 @@ offset_transform_scale = Vector2(1.595, 1)
 texture = SubResource("GradientTexture2D_tmfg2")
 expand_mode = 1
 
-[node name="PinColor" type="PanelContainer" parent="Buttons/VBoxContainer/HBoxContainer2/Editor/PanelContainer" unique_id=265952144]
+[node name="PinColor" type="PanelContainer" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Editor/PanelContainer" unique_id=265952144]
 modulate = Color(0.06575739, 0.6891463, 0.43979073, 1)
 custom_minimum_size = Vector2(20, 50.5)
 layout_mode = 2
@@ -1104,14 +1132,14 @@ offset_transform_enabled = true
 offset_transform_position = Vector2(45, 0)
 theme_override_styles/panel = SubResource("StyleBoxFlat_jboig")
 
-[node name="TitleText" type="MarginContainer" parent="Buttons/VBoxContainer/HBoxContainer2/Editor/PanelContainer" unique_id=990390600]
+[node name="TitleText" type="MarginContainer" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Editor/PanelContainer" unique_id=990390600]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 theme_override_constants/margin_left = 85
 theme_override_constants/margin_top = 6
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer2/Editor/PanelContainer/TitleText" unique_id=1661719006]
+[node name="RichTextLabel" type="RichTextLabel" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Editor/PanelContainer/TitleText" unique_id=1661719006]
 texture_filter = 6
 custom_minimum_size = Vector2(400, 50)
 layout_mode = 2
@@ -1125,14 +1153,7 @@ text = "EDITOR"
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="Shine" type="ColorRect" parent="Buttons/VBoxContainer/HBoxContainer2/Editor/PanelContainer" unique_id=1092599648]
-material = SubResource("ShaderMaterial_jboig")
-layout_mode = 2
-offset_transform_enabled = true
-offset_transform_scale = Vector2(1.285, 1)
-color = Color(18.892157, 18.892157, 18.892157, 1)
-
-[node name="IconShadow" type="TextureRect" parent="Buttons/VBoxContainer/HBoxContainer2/Editor/PanelContainer" unique_id=1666380670]
+[node name="IconShadow" type="TextureRect" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Editor/PanelContainer" unique_id=1666380670]
 modulate = Color(0, 0, 0, 0.2901961)
 texture_filter = 6
 layout_mode = 2
@@ -1144,7 +1165,7 @@ texture = ExtResource("13_3tisi")
 expand_mode = 1
 stretch_mode = 2
 
-[node name="Icon" type="TextureRect" parent="Buttons/VBoxContainer/HBoxContainer2/Editor/PanelContainer" unique_id=886987521]
+[node name="Icon" type="TextureRect" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Editor/PanelContainer" unique_id=886987521]
 modulate = Color(18.892157, 18.892157, 18.892157, 1)
 texture_filter = 6
 layout_mode = 2
@@ -1156,7 +1177,14 @@ texture = ExtResource("13_3tisi")
 expand_mode = 1
 stretch_mode = 2
 
-[node name="Button" type="Button" parent="Buttons/VBoxContainer/HBoxContainer2/Editor" unique_id=1218637462]
+[node name="Shine" type="ColorRect" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Editor/PanelContainer" unique_id=1092599648]
+material = SubResource("ShaderMaterial_jboig")
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.285, 1)
+color = Color(18.892157, 18.892157, 18.892157, 1)
+
+[node name="Button" type="Button" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Editor" unique_id=1218637462]
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_scale = Vector2(1.25, 1)
@@ -1164,14 +1192,14 @@ offset_transform_visual_only = false
 mouse_default_cursor_shape = 2
 flat = true
 
-[node name="Settings" type="MarginContainer" parent="Buttons/VBoxContainer/HBoxContainer2" unique_id=1086426358]
+[node name="Settings" type="MarginContainer" parent="MiddleButtons/VBoxContainer/HBoxContainer2" unique_id=1086426358]
 clip_children = 2
 custom_minimum_size = Vector2(500, 250)
 layout_mode = 2
 offset_transform_enabled = true
 script = ExtResource("2_tcube")
 
-[node name="Shadow" type="PanelContainer" parent="Buttons/VBoxContainer/HBoxContainer2/Settings" unique_id=104734440]
+[node name="Shadow" type="PanelContainer" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Settings" unique_id=104734440]
 modulate = Color(0, 0, 0, 0.3529412)
 z_index = -1
 layout_mode = 2
@@ -1179,13 +1207,13 @@ offset_transform_enabled = true
 offset_transform_position = Vector2(-20, 15)
 theme_override_styles/panel = SubResource("StyleBoxFlat_368sr")
 
-[node name="PanelContainer" type="PanelContainer" parent="Buttons/VBoxContainer/HBoxContainer2/Settings" unique_id=1221157510]
+[node name="PanelContainer" type="PanelContainer" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Settings" unique_id=1221157510]
 self_modulate = Color(0.6392157, 0.6392157, 0.6392157, 1)
 clip_children = 2
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_3tisi")
 
-[node name="ColorProgressBar" type="ProgressBar" parent="Buttons/VBoxContainer/HBoxContainer2/Settings/PanelContainer" unique_id=1750873035]
+[node name="ColorProgressBar" type="ProgressBar" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Settings/PanelContainer" unique_id=1750873035]
 layout_mode = 2
 size_flags_vertical = 1
 offset_transform_enabled = true
@@ -1194,19 +1222,19 @@ theme_override_styles/background = SubResource("StyleBoxFlat_we570")
 theme_override_styles/fill = SubResource("StyleBoxTexture_sd0h8")
 show_percentage = false
 
-[node name="SideLines" type="ColorRect" parent="Buttons/VBoxContainer/HBoxContainer2/Settings/PanelContainer" unique_id=1238083608]
+[node name="SideLines" type="ColorRect" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Settings/PanelContainer" unique_id=1238083608]
 material = SubResource("ShaderMaterial_qrgr3")
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_scale = Vector2(1.21, 1)
 
-[node name="TitleEcos" type="Control" parent="Buttons/VBoxContainer/HBoxContainer2/Settings/PanelContainer" unique_id=148734060]
+[node name="TitleEcos" type="Control" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Settings/PanelContainer" unique_id=148734060]
 visible = false
 layout_mode = 2
 script = ExtResource("6_4rnyi")
 text = "Settings"
 
-[node name="TitleEco" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer2/Settings/PanelContainer/TitleEcos" unique_id=1294392474]
+[node name="TitleEco" type="RichTextLabel" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Settings/PanelContainer/TitleEcos" unique_id=1294392474]
 modulate = Color(1, 1, 1, 0.08627451)
 texture_repeat = 2
 material = SubResource("ShaderMaterial_fjp5r")
@@ -1225,7 +1253,7 @@ text = "SETTINGS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TitleEco2" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer2/Settings/PanelContainer/TitleEcos" unique_id=1752732627]
+[node name="TitleEco2" type="RichTextLabel" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Settings/PanelContainer/TitleEcos" unique_id=1752732627]
 modulate = Color(1, 1, 1, 0.08627451)
 texture_repeat = 2
 material = SubResource("ShaderMaterial_fjp5r")
@@ -1244,13 +1272,13 @@ text = "SETTINGS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Description" type="MarginContainer" parent="Buttons/VBoxContainer/HBoxContainer2/Settings/PanelContainer" unique_id=2146384666]
+[node name="Description" type="MarginContainer" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Settings/PanelContainer" unique_id=2146384666]
 visible = false
 layout_mode = 2
 theme_override_constants/margin_left = -36
 theme_override_constants/margin_bottom = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer2/Settings/PanelContainer/Description" unique_id=1231772940]
+[node name="RichTextLabel" type="RichTextLabel" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Settings/PanelContainer/Description" unique_id=1231772940]
 texture_filter = 6
 layout_mode = 2
 size_flags_horizontal = 0
@@ -1267,7 +1295,7 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Bar" type="ColorRect" parent="Buttons/VBoxContainer/HBoxContainer2/Settings/PanelContainer" unique_id=5331131]
+[node name="Bar" type="ColorRect" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Settings/PanelContainer" unique_id=5331131]
 modulate = Color(18.892157, 18.892157, 18.892157, 1)
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
@@ -1275,7 +1303,7 @@ size_flags_vertical = 0
 offset_transform_enabled = true
 offset_transform_scale = Vector2(1.595, 1)
 
-[node name="BarShadow" type="TextureRect" parent="Buttons/VBoxContainer/HBoxContainer2/Settings/PanelContainer" unique_id=583625643]
+[node name="BarShadow" type="TextureRect" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Settings/PanelContainer" unique_id=583625643]
 modulate = Color(18.892157, 18.892157, 18.892157, 0.2509804)
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
@@ -1285,7 +1313,7 @@ offset_transform_scale = Vector2(1.595, 1)
 texture = SubResource("GradientTexture2D_tmfg2")
 expand_mode = 1
 
-[node name="PinColor" type="PanelContainer" parent="Buttons/VBoxContainer/HBoxContainer2/Settings/PanelContainer" unique_id=1580268716]
+[node name="PinColor" type="PanelContainer" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Settings/PanelContainer" unique_id=1580268716]
 modulate = Color(0.3701919, 0.4173817, 0.48344734, 1)
 custom_minimum_size = Vector2(20, 50.5)
 layout_mode = 2
@@ -1295,14 +1323,14 @@ offset_transform_enabled = true
 offset_transform_position = Vector2(45, 0)
 theme_override_styles/panel = SubResource("StyleBoxFlat_jboig")
 
-[node name="TitleText" type="MarginContainer" parent="Buttons/VBoxContainer/HBoxContainer2/Settings/PanelContainer" unique_id=2051919774]
+[node name="TitleText" type="MarginContainer" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Settings/PanelContainer" unique_id=2051919774]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 theme_override_constants/margin_left = 85
 theme_override_constants/margin_top = 6
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Buttons/VBoxContainer/HBoxContainer2/Settings/PanelContainer/TitleText" unique_id=827738117]
+[node name="RichTextLabel" type="RichTextLabel" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Settings/PanelContainer/TitleText" unique_id=827738117]
 texture_filter = 6
 custom_minimum_size = Vector2(400, 50)
 layout_mode = 2
@@ -1316,14 +1344,7 @@ text = "SETTINGS"
 autowrap_mode = 0
 vertical_alignment = 1
 
-[node name="Shine" type="ColorRect" parent="Buttons/VBoxContainer/HBoxContainer2/Settings/PanelContainer" unique_id=1117085383]
-material = SubResource("ShaderMaterial_jboig")
-layout_mode = 2
-offset_transform_enabled = true
-offset_transform_scale = Vector2(1.285, 1)
-color = Color(18.892157, 18.892157, 18.892157, 1)
-
-[node name="IconShadow" type="TextureRect" parent="Buttons/VBoxContainer/HBoxContainer2/Settings/PanelContainer" unique_id=316377897]
+[node name="IconShadow" type="TextureRect" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Settings/PanelContainer" unique_id=316377897]
 modulate = Color(0, 0, 0, 0.2901961)
 texture_filter = 6
 layout_mode = 2
@@ -1335,7 +1356,7 @@ texture = ExtResource("14_jboig")
 expand_mode = 1
 stretch_mode = 2
 
-[node name="Icon" type="TextureRect" parent="Buttons/VBoxContainer/HBoxContainer2/Settings/PanelContainer" unique_id=729328042]
+[node name="Icon" type="TextureRect" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Settings/PanelContainer" unique_id=729328042]
 modulate = Color(18.892157, 18.892157, 18.892157, 1)
 texture_filter = 6
 layout_mode = 2
@@ -1347,7 +1368,404 @@ texture = ExtResource("14_jboig")
 expand_mode = 1
 stretch_mode = 2
 
-[node name="Button" type="Button" parent="Buttons/VBoxContainer/HBoxContainer2/Settings" unique_id=1320033802]
+[node name="Shine" type="ColorRect" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Settings/PanelContainer" unique_id=1117085383]
+material = SubResource("ShaderMaterial_jboig")
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.285, 1)
+color = Color(18.892157, 18.892157, 18.892157, 1)
+
+[node name="Button" type="Button" parent="MiddleButtons/VBoxContainer/HBoxContainer2/Settings" unique_id=1320033802]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.25, 1)
+offset_transform_visual_only = false
+mouse_default_cursor_shape = 2
+flat = true
+
+[node name="BorderButtons" type="MarginContainer" parent="." unique_id=1037636264]
+layout_mode = 2
+offset_transform_enabled = true
+mouse_filter = 2
+theme_override_constants/margin_left = 60
+theme_override_constants/margin_top = 45
+theme_override_constants/margin_right = 60
+theme_override_constants/margin_bottom = 45
+
+[node name="User" type="MarginContainer" parent="BorderButtons" unique_id=243237268]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="BorderButtons/User" unique_id=829212136]
+custom_minimum_size = Vector2(500, 150)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_sd0h8")
+
+[node name="MarginContainer" type="MarginContainer" parent="BorderButtons/User/PanelContainer" unique_id=258435029]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BorderButtons/User/PanelContainer/MarginContainer" unique_id=140769769]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BorderButtons/User/PanelContainer/MarginContainer/HBoxContainer" unique_id=1149441573]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="NameContainer" type="MarginContainer" parent="BorderButtons/User/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer" unique_id=364491396]
+layout_mode = 2
+theme_override_constants/margin_right = 10
+
+[node name="RichTextLabel" type="RichTextLabel" parent="BorderButtons/User/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer/NameContainer" unique_id=925291959]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = -2
+theme_override_constants/shadow_offset_y = 2
+theme_override_fonts/normal_font = ExtResource("15_qrgr3")
+theme_override_font_sizes/normal_font_size = 28
+text = "Notherman"
+scroll_active = false
+autowrap_trim_flags = 0
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="BorderButtons/User/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1204421499]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BorderButtons/User/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer" unique_id=903826594]
+layout_mode = 2
+
+[node name="CoinsContainer" type="MarginContainer" parent="BorderButtons/User/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=1621917332]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BorderButtons/User/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/CoinsContainer" unique_id=589388766]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="BorderButtons/User/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/CoinsContainer/HBoxContainer" unique_id=259498591]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("16_r6uio")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="TextureRect" type="TextureRect" parent="BorderButtons/User/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/CoinsContainer/HBoxContainer/TextureRect" unique_id=1952247545]
+modulate = Color(0, 0, 0, 1)
+show_behind_parent = true
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+offset_transform_enabled = true
+offset_transform_position = Vector2(-1.38, 2.33)
+texture = ExtResource("16_r6uio")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="RichTextLabel" type="RichTextLabel" parent="BorderButtons/User/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/CoinsContainer/HBoxContainer" unique_id=506776695]
+custom_maximum_size = Vector2(125, -1)
+layout_mode = 2
+theme_override_colors/default_color = Color(0.9219369, 0.9415145, 0.9611358, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = -1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/normal_font = ExtResource("17_m077r")
+theme_override_font_sizes/normal_font_size = 26
+bbcode_enabled = true
+text = "0"
+fit_content = true
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="BorderButtons/User/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=289010138]
+layout_mode = 2
+theme_override_constants/separation = 8
+theme_override_styles/separator = SubResource("StyleBoxLine_m077r")
+
+[node name="CoinsContainer2" type="MarginContainer" parent="BorderButtons/User/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=949991015]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BorderButtons/User/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/CoinsContainer2" unique_id=1298630858]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="BorderButtons/User/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/CoinsContainer2/HBoxContainer" unique_id=448021943]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("18_m077r")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="TextureRect" type="TextureRect" parent="BorderButtons/User/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/CoinsContainer2/HBoxContainer/TextureRect" unique_id=1312530655]
+modulate = Color(0, 0, 0, 1)
+show_behind_parent = true
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+offset_transform_enabled = true
+offset_transform_position = Vector2(-1.38, 2.33)
+texture = ExtResource("18_m077r")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="RichTextLabel" type="RichTextLabel" parent="BorderButtons/User/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/CoinsContainer2/HBoxContainer" unique_id=1270226148]
+custom_maximum_size = Vector2(125, -1)
+layout_mode = 2
+theme_override_colors/default_color = Color(0.92156863, 0.9411765, 0.9607843, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = -1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/normal_font = ExtResource("17_m077r")
+theme_override_font_sizes/normal_font_size = 26
+bbcode_enabled = true
+text = "1402"
+fit_content = true
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="IconContainer" type="MarginContainer" parent="BorderButtons/User/PanelContainer/MarginContainer/HBoxContainer" unique_id=1545686856]
+layout_mode = 2
+
+[node name="PanelContainer2" type="PanelContainer" parent="BorderButtons/User/PanelContainer/MarginContainer/HBoxContainer/IconContainer" unique_id=1001266580]
+modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+offset_transform_enabled = true
+offset_transform_position = Vector2(-4.79, 4.365)
+theme_override_styles/panel = SubResource("StyleBoxFlat_qrgr3")
+
+[node name="PanelContainer" type="PanelContainer" parent="BorderButtons/User/PanelContainer/MarginContainer/HBoxContainer/IconContainer" unique_id=1289333129]
+clip_children = 2
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_qrgr3")
+
+[node name="ProgressBar" type="TextureProgressBar" parent="BorderButtons/User/PanelContainer/MarginContainer/HBoxContainer/IconContainer/PanelContainer" unique_id=331321237]
+visible = false
+custom_minimum_size = Vector2(106, 106)
+layout_mode = 2
+size_flags_vertical = 4
+nine_patch_stretch = true
+
+[node name="TextureRect" type="TextureRect" parent="BorderButtons/User/PanelContainer/MarginContainer/HBoxContainer/IconContainer/PanelContainer" unique_id=833912124]
+texture_repeat = 3
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+offset_transform_enabled = true
+texture = ExtResource("16_qrgr3")
+expand_mode = 1
+
+[node name="Exit" type="MarginContainer" parent="BorderButtons" unique_id=1651021986]
+clip_children = 2
+custom_minimum_size = Vector2(260, 0)
+custom_maximum_size = Vector2(310, -1)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+offset_transform_enabled = true
+script = ExtResource("2_tcube")
+
+[node name="Shadow" type="PanelContainer" parent="BorderButtons/Exit" unique_id=857729649]
+modulate = Color(0, 0, 0, 0.3529412)
+z_index = -1
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(-20, 15)
+theme_override_styles/panel = SubResource("StyleBoxFlat_368sr")
+
+[node name="PanelContainer" type="PanelContainer" parent="BorderButtons/Exit" unique_id=1526376408]
+self_modulate = Color(0.6392157, 0.6392157, 0.6392157, 1)
+clip_children = 2
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_3tisi")
+
+[node name="ColorProgressBar" type="ProgressBar" parent="BorderButtons/Exit/PanelContainer" unique_id=1999136975]
+visible = false
+layout_mode = 2
+size_flags_vertical = 1
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.395, 1)
+theme_override_styles/background = SubResource("StyleBoxFlat_we570")
+theme_override_styles/fill = SubResource("StyleBoxTexture_qrgr3")
+show_percentage = false
+
+[node name="SideLines" type="ColorRect" parent="BorderButtons/Exit/PanelContainer" unique_id=1955123680]
+visible = false
+material = SubResource("ShaderMaterial_sd0h8")
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.21, 1)
+
+[node name="TitleEcos" type="Control" parent="BorderButtons/Exit/PanelContainer" unique_id=354703130]
+visible = false
+layout_mode = 2
+script = ExtResource("6_4rnyi")
+text = "EDITOR"
+
+[node name="TitleEco" type="RichTextLabel" parent="BorderButtons/Exit/PanelContainer/TitleEcos" unique_id=1105237782]
+modulate = Color(1, 1, 1, 0.08627451)
+texture_repeat = 2
+material = SubResource("ShaderMaterial_fjp5r")
+layout_mode = 0
+offset_left = -416.0
+offset_top = 18.0
+offset_right = 630.0
+offset_bottom = 268.0
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_constants/shadow_offset_x = -4
+theme_override_constants/shadow_offset_y = 4
+theme_override_fonts/normal_font = ExtResource("7_4rnyi")
+theme_override_font_sizes/normal_font_size = 116
+text = "EDITOR"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TitleEco2" type="RichTextLabel" parent="BorderButtons/Exit/PanelContainer/TitleEcos" unique_id=1335091635]
+modulate = Color(1, 1, 1, 0.08627451)
+texture_repeat = 2
+material = SubResource("ShaderMaterial_fjp5r")
+layout_mode = 0
+offset_left = -416.0
+offset_top = 18.0
+offset_right = 630.0
+offset_bottom = 268.0
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_constants/shadow_offset_x = -4
+theme_override_constants/shadow_offset_y = 4
+theme_override_fonts/normal_font = ExtResource("7_4rnyi")
+theme_override_font_sizes/normal_font_size = 116
+text = "EDITOR"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="MarginContainer" parent="BorderButtons/Exit/PanelContainer" unique_id=222239613]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = -36
+theme_override_constants/margin_bottom = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="BorderButtons/Exit/PanelContainer/Description" unique_id=699632185]
+texture_filter = 6
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_colors/default_color = Color(0, 0, 0, 0.5803922)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.41568628)
+theme_override_constants/shadow_offset_x = -1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/normal_font = ExtResource("2_xxjun")
+theme_override_font_sizes/normal_font_size = 22
+text = "You define the rule of the music."
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Bar" type="ColorRect" parent="BorderButtons/Exit/PanelContainer" unique_id=1031410673]
+modulate = Color(18.892157, 18.892157, 18.892157, 1)
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_vertical = 0
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.595, 1)
+
+[node name="BarShadow" type="TextureRect" parent="BorderButtons/Exit/PanelContainer" unique_id=60827048]
+modulate = Color(18.892157, 18.892157, 18.892157, 0.2509804)
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_vertical = 0
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.595, 1)
+texture = SubResource("GradientTexture2D_tmfg2")
+expand_mode = 1
+
+[node name="PinColor" type="PanelContainer" parent="BorderButtons/Exit/PanelContainer" unique_id=1912669046]
+modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(20, 51)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+offset_transform_enabled = true
+offset_transform_position = Vector2(-2, 0)
+theme_override_styles/panel = SubResource("StyleBoxFlat_jboig")
+
+[node name="TitleText" type="MarginContainer" parent="BorderButtons/Exit/PanelContainer" unique_id=1717040639]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 6)
+theme_override_constants/margin_left = 36
+
+[node name="RichTextLabel" type="RichTextLabel" parent="BorderButtons/Exit/PanelContainer/TitleText" unique_id=408606007]
+texture_filter = 6
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+offset_transform_enabled = true
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("2_xxjun")
+theme_override_font_sizes/normal_font_size = 46
+text = "EXIT"
+fit_content = true
+autowrap_mode = 0
+
+[node name="IconShadow" type="TextureRect" parent="BorderButtons/Exit/PanelContainer" unique_id=1202966358]
+modulate = Color(0, 0, 0, 0.4392157)
+texture_filter = 6
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(205.27, -22.585)
+offset_transform_scale = Vector2(0.22, 0.22)
+offset_transform_rotation = 0.27925268
+offset_transform_pivot = Vector2(-128, 0)
+texture = ExtResource("16_jboig")
+expand_mode = 1
+stretch_mode = 2
+
+[node name="Icon" type="TextureRect" parent="BorderButtons/Exit/PanelContainer" unique_id=227644900]
+modulate = Color(0, 0, 0, 1)
+texture_filter = 6
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(204.175, -24.43)
+offset_transform_scale = Vector2(0.22, 0.22)
+offset_transform_rotation = 0.27925268
+offset_transform_pivot = Vector2(-128, 0)
+texture = ExtResource("16_jboig")
+expand_mode = 1
+stretch_mode = 2
+
+[node name="Shine" type="ColorRect" parent="BorderButtons/Exit/PanelContainer" unique_id=1808844784]
+material = SubResource("ShaderMaterial_jboig")
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.285, 1)
+color = Color(18.892157, 18.892157, 18.892157, 1)
+
+[node name="Button" type="Button" parent="BorderButtons/Exit" unique_id=88403283]
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_scale = Vector2(1.25, 1)

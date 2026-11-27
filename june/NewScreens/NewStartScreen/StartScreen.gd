@@ -13,19 +13,21 @@ var icon_reset_tween : Tween
 @export_group("Layers")
 @export var background_elements: Control
 @export var background_material: ShaderMaterial
+@export var border_elements: Control
 @export var middle_elements: Control
 
 var mouse_direction := Vector2.ZERO
 
 var layers: Array[Control]
 var original_positions: Array[Vector2]
-var layer_multipliers := [0.35, 0.75]
+var layer_multipliers := [0.35, 0.075, 0.75]
 
 var background_original_offset: Vector2
 
 func _ready() -> void:
-	layers = [
+	layers = [ ## THEY NEED TO HAVE OFFSET_TRANSFORM ENABlED
 		background_elements,
+		border_elements,
 		middle_elements,
 	]
 
