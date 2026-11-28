@@ -445,11 +445,20 @@ shader_parameter/transparent_background = true
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sd0h8"]
 bg_color = Color(0, 0, 0, 0.5647059)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
+corner_radius_top_right = 30
+corner_radius_bottom_left = 30
 corner_detail = 1
+
+[sub_resource type="Gradient" id="Gradient_m077r"]
+offsets = PackedFloat32Array(0.14457831, 0.53614455, 0.8493976)
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_eu8dd"]
+gradient = SubResource("Gradient_m077r")
+width = 128
+height = 128
+use_hdr = true
+fill_from = Vector2(0, 1)
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_m077r"]
 color = Color(1, 1, 1, 1)
@@ -458,10 +467,10 @@ grow_end = -10.0
 vertical = true
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qrgr3"]
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
 corner_detail = 20
 
 [sub_resource type="Gradient" id="Gradient_v50bl"]
@@ -1397,7 +1406,29 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 
+[node name="PanelContainer2" type="PanelContainer" parent="BorderButtons/User" unique_id=2097373203]
+modulate = Color(1, 1, 1, 0.7058824)
+clip_children = 2
+custom_minimum_size = Vector2(500, 150)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_sd0h8")
+
+[node name="TextureRect" type="TextureRect" parent="BorderButtons/User/PanelContainer2" unique_id=1214238562]
+modulate = Color(1, 1, 1, 0.11764706)
+layout_mode = 2
+texture = SubResource("GradientTexture2D_eu8dd")
+
+[node name="PanelContainer3" type="PanelContainer" parent="BorderButtons/User" unique_id=1384179093]
+modulate = Color(0, 0, 0, 0.20392157)
+clip_children = 2
+custom_minimum_size = Vector2(500, 150)
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(-6, 6)
+theme_override_styles/panel = SubResource("StyleBoxFlat_sd0h8")
+
 [node name="PanelContainer" type="PanelContainer" parent="BorderButtons/User" unique_id=829212136]
+self_modulate = Color(1, 1, 1, 0.37254903)
 custom_minimum_size = Vector2(500, 150)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_sd0h8")
