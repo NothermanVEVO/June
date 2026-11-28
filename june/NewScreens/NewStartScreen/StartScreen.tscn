@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://cqhh8y674dns1" path="res://assets/icons/hammer.png" id="13_3tisi"]
 [ext_resource type="Texture2D" uid="uid://7rav66g7nvoe" path="res://assets/particles/star_sample.png" id="14_368sr"]
 [ext_resource type="Texture2D" uid="uid://b6mqdlncpmjvs" path="res://assets/icons/setting.png" id="14_jboig"]
+[ext_resource type="Script" uid="uid://b230yfamtgxov" path="res://NewScreens/NewStartScreen/User.gd" id="15_ag3ns"]
 [ext_resource type="FontFile" uid="uid://byqkw8g2yglvu" path="res://assets/fonts/Poppins/Poppins-Medium.ttf" id="15_qrgr3"]
 [ext_resource type="Texture2D" uid="uid://ddu4tk26dyn1j" path="res://assets/icons/exit.png" id="16_jboig"]
 [ext_resource type="Texture2D" uid="uid://cecbkr3dfwix0" path="res://assets/icons/fost.jpg" id="16_qrgr3"]
@@ -445,8 +446,8 @@ shader_parameter/transparent_background = true
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sd0h8"]
 bg_color = Color(0, 0, 0, 0.5647059)
-corner_radius_top_right = 30
-corner_radius_bottom_left = 30
+corner_radius_top_right = 20
+corner_radius_bottom_left = 20
 corner_detail = 1
 
 [sub_resource type="Gradient" id="Gradient_m077r"]
@@ -472,6 +473,56 @@ corner_radius_top_right = 15
 corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
 corner_detail = 20
+
+[sub_resource type="Shader" id="Shader_420u5"]
+code = "
+shader_type canvas_item;
+render_mode blend_mix;
+
+uniform float width = 0.1;
+uniform float strength = 1.3;
+uniform float angle : hint_range(0.0, 360.0, 1.0) = 45.0;
+uniform float progress : hint_range(0.0, 1.0) = -1.0;
+
+uniform vec4 shine_color : source_color = vec4(1.0, 0.92, 0.7, 1.0);
+
+void fragment() {
+    if (progress < 0.0) {
+        discard;
+    }
+
+    vec2 uv = UV - vec2(0.5);
+
+    float rad = radians(angle);
+    vec2 dir = vec2(cos(rad), sin(rad));
+
+    float d = dot(uv, dir);
+
+    float t = progress * 1.4 - 0.7;
+
+    float band = 1.0 - smoothstep(0.0, width, abs(d - t));
+    float core = 1.0 - smoothstep(0.0, width * 0.25, abs(d - t));
+
+    float shine = (band * 0.6 + core * 0.8) * strength;
+
+    if (shine <= 0.001) {
+        discard;
+    }
+
+    COLOR = vec4(
+        shine_color.rgb,
+        clamp(shine * shine_color.a, 0.0, 1.0)
+    );
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5c5xv"]
+shader = SubResource("Shader_420u5")
+shader_parameter/width = 0.2
+shader_parameter/strength = 6.45
+shader_parameter/angle = 315.0
+shader_parameter/progress = 0.0
+shader_parameter/shine_color = Color(1, 1, 1, 1)
 
 [sub_resource type="Gradient" id="Gradient_v50bl"]
 offsets = PackedFloat32Array(0, 0.560241, 1)
@@ -1405,11 +1456,12 @@ theme_override_constants/margin_bottom = 45
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
+script = ExtResource("15_ag3ns")
 
 [node name="PanelContainer2" type="PanelContainer" parent="BorderButtons/User" unique_id=2097373203]
 modulate = Color(1, 1, 1, 0.7058824)
 clip_children = 2
-custom_minimum_size = Vector2(500, 150)
+custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_sd0h8")
 
@@ -1421,7 +1473,7 @@ texture = SubResource("GradientTexture2D_eu8dd")
 [node name="PanelContainer3" type="PanelContainer" parent="BorderButtons/User" unique_id=1384179093]
 modulate = Color(0, 0, 0, 0.20392157)
 clip_children = 2
-custom_minimum_size = Vector2(500, 150)
+custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_position = Vector2(-6, 6)
@@ -1429,16 +1481,16 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_sd0h8")
 
 [node name="PanelContainer" type="PanelContainer" parent="BorderButtons/User" unique_id=829212136]
 self_modulate = Color(1, 1, 1, 0.37254903)
-custom_minimum_size = Vector2(500, 150)
+custom_minimum_size = Vector2(500, 130)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_sd0h8")
 
 [node name="MarginContainer" type="MarginContainer" parent="BorderButtons/User/PanelContainer" unique_id=258435029]
 layout_mode = 2
 theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
+theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
+theme_override_constants/margin_bottom = 10
 
 [node name="HBoxContainer" type="HBoxContainer" parent="BorderButtons/User/PanelContainer/MarginContainer" unique_id=140769769]
 layout_mode = 2
@@ -1571,6 +1623,7 @@ vertical_alignment = 1
 
 [node name="IconContainer" type="MarginContainer" parent="BorderButtons/User/PanelContainer/MarginContainer/HBoxContainer" unique_id=1545686856]
 layout_mode = 2
+offset_transform_enabled = true
 
 [node name="PanelContainer2" type="PanelContainer" parent="BorderButtons/User/PanelContainer/MarginContainer/HBoxContainer/IconContainer" unique_id=1001266580]
 modulate = Color(0, 0, 0, 1)
@@ -1605,6 +1658,22 @@ size_flags_vertical = 4
 offset_transform_enabled = true
 texture = ExtResource("16_qrgr3")
 expand_mode = 1
+
+[node name="Shine" type="ColorRect" parent="BorderButtons/User/PanelContainer/MarginContainer/HBoxContainer/IconContainer/PanelContainer" unique_id=2038643800]
+material = SubResource("ShaderMaterial_5c5xv")
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.285, 1)
+color = Color(18.892157, 18.892157, 18.892157, 1)
+
+[node name="Flash" type="ColorRect" parent="BorderButtons/User/PanelContainer/MarginContainer/HBoxContainer/IconContainer/PanelContainer" unique_id=920309376]
+layout_mode = 2
+color = Color(1, 1, 1, 0)
+
+[node name="Button" type="Button" parent="BorderButtons/User/PanelContainer/MarginContainer/HBoxContainer/IconContainer" unique_id=474748587]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+flat = true
 
 [node name="Exit" type="MarginContainer" parent="BorderButtons" unique_id=1651021986]
 clip_children = 2
@@ -1878,3 +1947,8 @@ bbcode_enabled = true
 text = "JUNE"
 fit_content = true
 autowrap_mode = 0
+
+[connection signal="button_down" from="BorderButtons/User/PanelContainer/MarginContainer/HBoxContainer/IconContainer/Button" to="BorderButtons/User" method="_on_button_button_down"]
+[connection signal="button_up" from="BorderButtons/User/PanelContainer/MarginContainer/HBoxContainer/IconContainer/Button" to="BorderButtons/User" method="_on_button_button_up"]
+[connection signal="mouse_entered" from="BorderButtons/User/PanelContainer/MarginContainer/HBoxContainer/IconContainer/Button" to="BorderButtons/User" method="_on_button_mouse_entered"]
+[connection signal="mouse_exited" from="BorderButtons/User/PanelContainer/MarginContainer/HBoxContainer/IconContainer/Button" to="BorderButtons/User" method="_on_button_mouse_exited"]
